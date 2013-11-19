@@ -1,0 +1,62 @@
+ <div class="form">
+    <h3>Signing Up with xauto is easy!</h3>
+
+    <form method="post" action="/auth/register/">
+
+            {% csrf_token %}
+            <div class="row">
+                <label class="heading">Name</label>
+                <div class="box error">
+                    <input name="" type="text" class="input">
+                    <div class="message">error message appears here</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="heading">Email Address <span class="note">This will be your username</span></label>
+                <div class="box">
+                    <input name="" type="text" class="input">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <label class="heading">Password</label>
+                    <div class="box">
+                        <input name="" type="password" class="input">
+                    </div>
+                </div>
+                <div class="col nomar">
+                    <label class="heading">Confirm Password</label>
+                    <div class="box">
+                        <input name="" type="password" class="input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="heading">Your Location</label>
+                <div class="box">
+                    <input name="" type="text" class="input">
+                </div>
+            </div>
+
+            <div class="row last">
+                <label class="checkbox"><input name="" type="checkbox" value="">I am over the age of 18 years</label>
+                <label class="checkbox"><input name="" type="checkbox" value="">I agree to all Terms and Conditions governing the use of xauto</label>
+            </div>
+
+            <div class="row">
+                <input name="" class="btn-service" type="submit" value="Sign up now">
+            </div>
+
+    </form>
+
+ </div>
+
+ <div class="socials">
+    <h4>Use Your Social Logins</h4>
+    <p><a href="#"><img src="images/btn-connect-facebook.png" width="202" height="26" alt="Facebook"></a></p>
+    <p><a href="#"><img src="images/btn-connect-tweet.png" width="202" height="26" alt="Twitter"></a></p>
+ </div>
+

@@ -1,0 +1,41 @@
+{% load verbatim account_tags %}
+
+<meta charset="utf-8">
+
+<div id="fileupload">
+
+    {% comment %} ------------------------------------------------- {% endcomment %}
+    {% comment %} ----  General POST Form to start Upload Image --- {% endcomment %}
+    <form action="{% url 'multi' %}" method="POST" enctype="multipart/form-data">
+        <input  id="category_images" type="hidden"  name="category_images" value="{{ category_image }}" >
+        <div class="fileupload-buttonbar">
+            <label class="fileinput-button">
+                <span>Add files...</span>
+                <input type="file" name="files[]" multiple>
+            </label>
+            <button type="submit" class="start">Start upload</button>
+            <button type="reset" class="cancel">Cancel upload</button>
+            <button type="button" class="delete">Delete files</button>
+        </div>
+    </form>
+
+    {% comment %} ------------------------------------------------- {% endcomment %}
+    {% comment %} ----  Listing of current Images content       --- {% endcomment %}
+    <div class="fileupload-content">
+        <input  id="count_images" type="hidden" value="{{ total_count }}" >
+        <div id="block-uploaded-images">
+            {% get_image_list member %}
+        </div>
+        <table class="files"></table>
+        <div class="fileupload-progressbar"></div>
+    </div>
+
+</div>
+
+<div id="help" style="color:gray;">
+    <h2>
+        <p>You can select Multiple files at once using Ctrl(Win) or Command(Mac), or you can drag'n'drop your files on this form.</p>
+    </h2>
+</div>
+
+{% include 'multiuploader/verbatim_html.html' %}
