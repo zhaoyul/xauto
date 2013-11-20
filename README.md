@@ -10,10 +10,6 @@ Installation:
 
 4. create database structure:
    bin/django syncdb
-
-   bin/django migrate event 0001
-   bin/django migrate multiuploader 0001
-
    bin/django migrate
 
 5. start django application using:
