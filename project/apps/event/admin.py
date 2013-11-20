@@ -463,7 +463,9 @@ class EventAdmin(AdminImageMixin, admin.ModelAdmin):
         return '%s' % (convDateAsFormat(obj.expire_at, '%Y-%m-%d %H:%M:%S', '%Y-%m-%d'))
 
     def Author(self, obj):
-        return '%s' % (obj.author.email)
+        if obj.author:
+            return '%s' % (obj.author.email)
+        return ""
 
     def FollowedBy(self, obj):
         return '%s' % (obj.followed.all().count())

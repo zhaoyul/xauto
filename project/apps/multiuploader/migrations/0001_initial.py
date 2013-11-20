@@ -7,6 +7,10 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
+    depends_on = (
+        ("event", "0001_initial"),
+    )
+
     def forwards(self, orm):
         # Adding model 'MultiuploaderImage'
         db.create_table(u'multiuploader_multiuploaderimage', (

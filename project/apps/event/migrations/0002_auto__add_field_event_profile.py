@@ -7,6 +7,10 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
+    depends_on = (
+        ("member", "0001_initial"),
+    )
+
     def forwards(self, orm):
         # Adding field 'Event.profile'
         db.add_column(u'event_event', 'profile',

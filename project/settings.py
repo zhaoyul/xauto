@@ -132,6 +132,8 @@ INSTALLED_APPS = [
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'sorl.thumbnail',
+    'livesettings',
+    'livesettings_config',
     'pagination',
     'registration',
     'south',
