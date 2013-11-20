@@ -1,0 +1,320 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>XAuto Specification &mdash; XAuto 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="XAuto 1.0 documentation" href="index.html" />
+    <link rel="prev" title="Welcome to XAuto’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to XAuto’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">XAuto 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="xauto-specification">
+<h1>XAuto Specification<a class="headerlink" href="#xauto-specification" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="home-page">
+<h2>Home page<a class="headerlink" href="#home-page" title="Permalink to this headline">¶</a></h2>
+<ol class="upperroman">
+<li><p class="first">Welcome page</p>
+<blockquote>
+<div><p>There should be a simple home page.</p>
+<p>Backend:</p>
+<ol class="loweralpha simple">
+<li>&#8212;</li>
+</ol>
+<p>Frontend:</p>
+<ol class="loweralpha simple">
+<li>Prepare home page and plug it into the project</li>
+</ol>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="users-management">
+<h2>Users management<a class="headerlink" href="#users-management" title="Permalink to this headline">¶</a></h2>
+<p>From the home page there should be a way to sign in and to log in.</p>
+<p>User account has the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li>display name (required)</li>
+<li>username (required)</li>
+<li>email (required)</li>
+<li>password (required)</li>
+<li>about</li>
+<li>location (required)</li>
+<li>user thumbnail image</li>
+<li>user hero image</li>
+</ul>
+</div></blockquote>
+<ol class="arabic">
+<li><p class="first">Registration</p>
+<blockquote>
+<div><p>In order to use the app user has to be registered</p>
+<p>Backend:</p>
+<ol class="loweralpha simple">
+<li>Create a registration end point, allowing registration for anonymous users. Assumption is that all fields from account are to be filled here)</li>
+<li>After registration data is received a registration confirmation email should be sent. User should click on a link in this email to activate his account</li>
+</ol>
+<p>Frontend:</p>
+<ol class="loweralpha simple">
+<li>Add a registration popup with fields like the ones above and a service that will call backend endpoint in order to register a new user.</li>
+<li>It&#8217;s possible that the data that is going to be stored in the database might be rejected by the server (for example username is already taken) so it&#8217;s possible that the server will return Bad Request response with some error message - this should be handled in the frontend.</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Log in</p>
+<blockquote>
+<div><p>In order to use the app user has to be logged in</p>
+<p>Backend:</p>
+<ol class="loweralpha simple">
+<li>Create authentication end-point that will log a user in and return user&#8217;s details to the browser, so that it will be able to use it to show user details (like photo and name in the top right corner)</li>
+</ol>
+<p>Frontend:</p>
+<ol class="loweralpha simple">
+<li>Build login popup, plug the endpoint into it and also somehow force authentication on the pages that should be protected (check if user is logged in). Probably in router&#8217;s resolvers.</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Log out</p>
+<blockquote>
+<div><p>Backend:</p>
+<ol class="loweralpha simple">
+<li>Create log out endpoint</li>
+</ol>
+<p>Frontend:</p>
+<ol class="loweralpha simple">
+<li>Plug the endpoint into the logout function in the frontend</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Account management</p>
+<blockquote>
+<div><p>Users should be allowed to manage their accounts so there&#8217;s a page dedicated for this task</p>
+<p>Backend:</p>
+<ol class="loweralpha simple">
+<li>Create endopoint (this and other endpoints will require authenticated user) to save and to receive account data</li>
+</ol>
+<p>Frontend:</p>
+<ol class="loweralpha simple">
+<li>Plug the account management endpoint into the account page</li>
+</ol>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="events">
+<h2>Events<a class="headerlink" href="#events" title="Permalink to this headline">¶</a></h2>
+<p>Events are the key component in the system.</p>
+<p>Facts about events:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Everyone can add events. Everyone can follow events.</p>
+</li>
+<li><p class="first">Event creator can manage (edit/delete) his events.</p>
+</li>
+<li><p class="first">One event may be shown multiple times on the events list in case it has multiple dates and locations (<strong>?</strong>)</p>
+</li>
+<li><p class="first">One event is shown only once on the list of events even if it has multiple dates and locations (<strong>?</strong>)</p>
+</li>
+<li><p class="first">Each event has the following attributes:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Event Title</p>
+</li>
+<li><p class="first">About Event</p>
+</li>
+<li><p class="first">Short link (event ulr in xau.to)</p>
+</li>
+<li><p class="first">Event Image</p>
+</li>
+<li><p class="first">Event Size (how many cars)</p>
+</li>
+<li><p class="first">Dates and locations</p>
+<blockquote>
+<div><ul class="simple">
+<li>Location name (optional)</li>
+<li>Geolocated address (lat/lon)</li>
+<li>Address 1</li>
+<li>Address 2</li>
+<li>City</li>
+<li>State</li>
+<li>Zip/Postal Code</li>
+<li>Country</li>
+<li>Date</li>
+<li>Start time</li>
+<li>End time</li>
+<li>Attendance cost
+* Free or Price range (low, high) and currency</li>
+<li>Exhibition cost
+* Free or Price range (low, high) and currency</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">It must be possible to somehow determine if a stream is happening now. Might be enought to check the current
+date and time</p>
+</li>
+</ul>
+</div></blockquote>
+<ol class="arabic">
+<li><p class="first">Create / edit /delete event</p>
+<blockquote>
+<div><p>Everyone is allowed to create an event.</p>
+<p>Backend:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>add endpoint to manage event details</li>
+<li>add endpoint to manage event locations and dates</li>
+<li>add endpoint to manage event photos</li>
+<li>add endpoint to delete events</li>
+</ol>
+</div></blockquote>
+<p>Frontend:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>add page to gather event details</li>
+<li>add page to gather event locations and dates</li>
+<li>prepare popup to select event photos</li>
+<li>on edit page add photo management panel</li>
+<li>plug into the edit page the delete endpoint</li>
+</ol>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p class="first">List events</p>
+<blockquote>
+<div><p>Everyone is allowed to view, filter and follow events.</p>
+<p>Backend:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>create endpoint that will return list of events; should be able to filter events (text search in event name, headline and location; followed; streaming now), order events and to paginate them.</li>
+<li>create &#8220;follow&#8221; endpoint</li>
+</ol>
+</div></blockquote>
+<p>Frontend:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>plug the list endpoint into the events list page</li>
+<li>plug the &#8220;follow&#8221; endpoint into the page</li>
+</ol>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p class="first">View event detail</p>
+<blockquote>
+<div><p>Event data is to be shown to the app users accessing the event page.</p>
+<p><strong>What exactly is &#8220;go to&#8221;?</strong></p>
+<p>Backend:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>make sure that the photo management endpoint makes it possible to add photos even if user is not the event&#8217;s owener</li>
+</ol>
+</div></blockquote>
+<p>Frontend:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>Add a panel to add photos to selected event date</li>
+</ol>
+</div></blockquote>
+</div></blockquote>
+</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">XAuto Specification</a><ul>
+<li><a class="reference internal" href="#home-page">Home page</a></li>
+<li><a class="reference internal" href="#users-management">Users management</a></li>
+<li><a class="reference internal" href="#events">Events</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to XAuto&#8217;s documentation!</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/functional.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to XAuto’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">XAuto 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, XAuto.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>
