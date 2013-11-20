@@ -119,8 +119,8 @@ Facts about events:
            * Exhibition cost
              * Free or Price range (low, high) and currency
 
-    * It must be possible to somehow determine if a stream is happening now. Might be enought to check the current
-      date and time
+    * It must be possible to somehow determine if a stream is happening now. Might be enough to check the current
+      date and time in the frontend.
 
 1. Create / edit /delete event
 
@@ -164,6 +164,8 @@ Facts about events:
     Backend:
 
         a) make sure that the photo management endpoint makes it possible to add photos even if user is not the event's owener
+        b) add endpoint that will return all data about the event including location and dates (in case it will be different
+           than endopoint used in event management).
 
     Frontend:
 
