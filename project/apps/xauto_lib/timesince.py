@@ -1,5 +1,4 @@
 import datetime
-import time
 
 from django.utils.tzinfo import LocalTimezone
 from django.utils import dateformat
@@ -8,7 +7,7 @@ from django.utils.translation import ungettext
 def timesince(d, now=None):
     """
     Xauto-style version of django.utils.timesince.
-    
+
     Displays a single (lowest) relative time value, changing to absolute
     time over a preset limit.
     """
@@ -42,7 +41,7 @@ def timesince(d, now=None):
         if since < 0:
             # d is in the future compared to now, stop processing.
             return u""
-    
+
         for i, (seconds, name) in enumerate(chunks):
             count = since // seconds
             if count != 0:

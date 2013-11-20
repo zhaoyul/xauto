@@ -1,13 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User, _
-from django.conf import settings
-from django.db.models import Avg, Count, Q, Sum
+from django.contrib.auth.models import User
 from xauto_lib.models import TimestampedModel
 from xauto_lib.managers import manager_from
-import sys
 
-from datetime import timedelta, datetime
-import sys, string
+from datetime import datetime
+import string
 
 
 class EventKeywordManager(object):

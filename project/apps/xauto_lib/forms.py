@@ -4,7 +4,6 @@ from django import forms
 from django.forms.forms import BoundField
 from django.template import Context, loader
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
 
 import re
 
@@ -117,7 +116,7 @@ class SLBaseModelForm(TemplatedModelForm):
     """
     def __init__(self, data=None, files=None, **kwargs):
         super(SLBaseModelForm, self).__init__(data=data, files=files, **kwargs)
-        
+
         # TimestampedModel support
         if self.fields.has_key('created'):
             self.fields['created'].widget = ReadOnlyWidget()

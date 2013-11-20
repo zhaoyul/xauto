@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models.fields import IntegerField, FieldDoesNotExist
+from django.db.models.fields import IntegerField
 
 class OrderingField(IntegerField):
     empty_strings_allowed=False

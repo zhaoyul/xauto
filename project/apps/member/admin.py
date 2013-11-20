@@ -1,23 +1,11 @@
 from django.contrib import admin
-from django.conf import settings
-from django.core import urlresolvers
-from django.http import HttpResponseRedirect
-from django.utils.encoding import force_unicode
-from django.utils.translation import ugettext as _
 from django.db.models import Q
 
-from sorl.thumbnail import default
-ADMIN_THUMBS_SIZE = '60x60'
-from sorl.thumbnail.admin import AdminImageMixin
-
-
 from member.models import *
-from xauto_lib.calutil import convDateAsFormat, convDatetimeToIsoDate
-from multiuploader.models import MultiuploaderImage
-from livesettings import models
-
 from keywords.models import *
-from xauto_lib.admin import SLBaseModelAdmin, SLStackedInline, SLTabularInline
+from xauto_lib.admin import SLBaseModelAdmin
+
+ADMIN_THUMBS_SIZE = '60x60'
 
 
 class CityAdmin(SLBaseModelAdmin):

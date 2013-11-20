@@ -6,16 +6,10 @@
 # 2010-10-09
 
 
-import babel.dates
-from babel.dates import format_date, format_datetime, format_time
 import datetime
-import math
-import re
 import string
-import sys
 import time
 import timezoneutil
-from datetime import datetime
 
 libdate = {}
 libdate ['FUTURE']              = '*'

@@ -1,12 +1,11 @@
-from forms import TimestampedModelForm, ReordableModelForm, SLBaseModelForm
-from widgets import AdminImageWidget
+from forms import TimestampedModelForm, SLBaseModelForm
 from xauto_lib.models import TimestampedModel
 
 from django.contrib import admin
 from django.db import models
 from django.forms import MediaDefiningClass
 from django.conf.urls import patterns
-from django.http import Http404, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.utils.safestring import mark_safe
 from django_extensions.admin import ForeignKeyAutocompleteAdmin
 

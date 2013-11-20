@@ -6,7 +6,6 @@
 # 2001-06-11
 
 import os
-import sys
 import time
 from django.conf import settings
 
@@ -16,10 +15,10 @@ def tofile(filename, content, format='%Y-%m', clear = None, mode='staging'):
     logFile = settings.LOG_XAUTO_FILE
   else:
     logFile = settings.SITE_LOGGING_LOCAL
-    
+
   now = time.localtime(time.time())
   fullFilename = "%s%s_%s.log" % (logFile, filename, time.strftime(format, now))
-  
+
   try:
     if os.path.isfile(fullFilename):
       if clear:

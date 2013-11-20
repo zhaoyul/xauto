@@ -5,14 +5,7 @@ from lib.utils import CheckNumeric
 from xauto.member.views.userprofile import get_user_address, get_userprofile_reviews
 from xauto.event.models import *
 from django.db.models import Q
-from django.db.models.query import QuerySet
-from django.conf.urls import url
-from django.template.defaultfilters import stringfilter
-from xauto.member.services.messages import Messages
-from xauto import container
-from lib.calutil import convDatetimeToIsoDate
 from event.models import FeedbackRating, Event
-from django.template import RequestContext
 from django.conf import settings
 
 register = template.Library()
@@ -65,7 +58,7 @@ def user_location(context):
 def located_near(context):
     if context.get('located_near_override', False):
         return {'count': context.get('located_near_override', 0)}
-        
+
     try:
         event_list = Event.objects.within_radius()
     except:
@@ -135,20 +128,20 @@ def category_breadcrumbs(category_id, service_id=None, link_service=False, capti
     flag = False
     while id:
         category = get_category_from_cache(id)
-        
+
         if (category and category['parent_id'] is None) or flag:
             flag = False
             breadcrumbs.append({
-                'url': reverse('category_filter', args=[category['id']]), 
-                'text': "%s%s" % (category['name'], SEPARATOR), 
-                'link': captions, 
+                'url': reverse('category_filter', args=[category['id']]),
+                'text': "%s%s" % (category['name'], SEPARATOR),
+                'link': captions,
                 #'category_object':category
             })
-        else: 
+        else:
             breadcrumbs.append({'text': "%s%s" % (category['name'], SEPARATOR), 'link': False, 'category_object':category})
         id = category['parent_id']
         flag = category['can_add']
-    
+
     breadcrumbs.reverse()
     if service_id:
         s = breadcrumbs[-1]['text']
@@ -227,12 +220,12 @@ def getFeedbackStatus(event, user):
     """
     get Feedback status
     """
-    
+
     returnStatus = ""
     typeUser = ""
-    
+
     if event:
-        
+
         # -----------------------------------------------------------------
         # --- determine if current Logged user is a provide or Customer ---
         if event.author == user:
@@ -241,7 +234,7 @@ def getFeedbackStatus(event, user):
             if event.current_active_bid:
                 if event.current_active_bid.provider == user:
                     typeUser = 'p'
-                    
+
         # ----------------------------------------------------------------
         # --- for specific case try to check if feedback has been left ---
         if event.current_active_status == 'completed' and event.current_active_bid:
@@ -249,7 +242,7 @@ def getFeedbackStatus(event, user):
                 returnStatus = 'Feedback Left'
             else:
                 returnStatus = 'No Feedback'
-                
+
     return returnStatus
 
 
@@ -260,7 +253,7 @@ def roundValue(value, decimal=1):
     """
     get number of Rating the user received
     """
-    
+
     if CheckNumeric(value, wcheck='FLOAT') and CheckNumeric(decimal, wcheck='INT'):
         if value > settings.MINI_VALUE_ROUND or value == 0:
             return int(value)

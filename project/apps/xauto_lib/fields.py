@@ -2,10 +2,8 @@ from django import forms
 from django.db import models
 from django.db.models import OneToOneField
 from django.db.models.fields.related import SingleRelatedObjectDescriptor
-from django.utils.safestring import mark_safe
 from django.utils.text import capfirst
 
-from functools import partial
 
 class StatusComparator(object):
     """

@@ -1,12 +1,10 @@
-from django.db import transaction
 from django.conf import settings
 from django.template import loader, RequestContext
 from django.http import HttpResponse
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils import simplejson
-from django.conf import settings
 from django.core.mail import mail_admins
-from xauto.lib.utils import set_cookie, checkDic
+from xauto.lib.utils import set_cookie
 
 import sys
 import string
@@ -57,7 +55,7 @@ templates = {}
 def django_template_to_string(request, variables, template):
     """
     usage:
-      
+
     django_template_to_string(request, { 'title' : 'hello' }, "base.html")
     """
     device = getattr(request, 'device', '')
@@ -88,24 +86,24 @@ def render_to(func, template=None):
         return variables
     """
     def wrapper(request, *args, **kwargs):
-        
+
         response = func(request, *args, **kwargs)
-        
+
         # -- store in flash the last current form used ---
         try:
-            
+
             arrayTemplate = string.split(template,'/')
             templateName = arrayTemplate[len(arrayTemplate)-1]
             currentForm = string.split(templateName,'.')[0]
         except:
             currentForm = template
         request.flash['html_form'] = currentForm
-        
+
         if isinstance(response, HttpResponse):
             return response
         stringForm = django_template_to_string(request, response, template)
         return HttpResponse(stringForm)
-        
+
     wrapper.__name__ = func.__name__
     wrapper.__dict__ = func.__dict__
     wrapper.__doc__ = func.__doc__
@@ -122,32 +120,32 @@ def render_to_cookies(func, template=None):
         return variables
     """
     def wrapper(request, *args, **kwargs):
-        
+
         try:
             (response, cookies)  = func(request, *args, **kwargs)
         except:
             response = func(request, *args, **kwargs)
             cookies = None
-        
+
         # -- store in flash the last current form used ---
         try:
-            
+
             arrayTemplate = string.split(template,'/')
             templateName = arrayTemplate[len(arrayTemplate)-1]
             currentForm = string.split(templateName,'.')[0]
         except:
             currentForm = template
         request.flash['html_form'] = currentForm
-        
+
         if isinstance(response, HttpResponse):
             return response
         stringForm = django_template_to_string(request, response, template)
         responseHttp = HttpResponse(stringForm)
         if cookies:
             set_cookie(responseHttp, cookies['key'], cookies['value'])
-            
+
         return responseHttp
-        
+
     wrapper.__name__ = func.__name__
     wrapper.__dict__ = func.__dict__
     wrapper.__doc__ = func.__doc__
@@ -191,7 +189,7 @@ def render_paginated_to(func, template=None):
             else:
                 # Page is not 'last', nor can it be converted to an int
                 raise Http404
-    
+
         try:
             objects = paginator.page(page)
         except InvalidPage:
@@ -214,7 +212,7 @@ def render_paginated_to(func, template=None):
             })
         string = django_template_to_string(request, variables, template)
         return HttpResponse(string)
-        
+
     wrapper.__name__ = func.__name__
     wrapper.__dict__ = func.__dict__
     wrapper.__doc__ = func.__doc__
@@ -258,7 +256,7 @@ def json_view(func):
 
         json = simplejson.dumps(response)
         http_response = HttpResponse(json, content_type='application/json; charset=utf8')
-        
+
         for cookie in cookies:
             http_response.set_cookie(**cookie)
         return http_response
@@ -348,7 +346,7 @@ def json_post_view(func):
 
         json = simplejson.dumps(response)
         http_response = HttpResponse(json, content_type='application/json; charset=utf8')
-        
+
         for cookie in cookies:
             http_response.set_cookie(**cookie)
         return http_response

@@ -1,42 +1,25 @@
 # ---------------------------------------------------
 # --- Django base core code (system)              ---
 # ---------------------------------------------------
-from django.utils.hashcompat import sha_constructor, md5_constructor
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.contrib.auth.models import User, _
-from django.conf import settings
-from django.db.models.signals import post_save, pre_save, pre_delete
-from django.db.models import Avg, Count, Q, Sum, Max
-from django.core.urlresolvers import reverse
-from django.utils import simplejson
+from django.contrib.auth.models import User
+from django.db.models import Avg, Count, Q, Max
 from geoip2.models import Country
-from django.conf import settings
-from django.contrib.gis.geos import Point
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
 
 # ---------------------------------
 # -- Various Python libraries   ---
 # ---------------------------------
-import sys
-import datetime
 import socket
 import struct
-from string import capitalize
-from math import fabs
 import string
-from datetime import timedelta, datetime
 
 # ---------------------------------------------------
 # --- Django addon                                ---
 # ---------------------------------------------------
-from livesettings.models import Setting
-from livesettings import config_value
 from sorl.thumbnail.fields import ImageField as ImageWithThumbnailsField
-from sorl.thumbnail import get_thumbnail
 
 # ---------------------------------------------------
 # --- Xauto Data models                           ---
@@ -48,7 +31,7 @@ from xauto_utils.video import VideoHelperFactory
 from video.fields import YouTubeField
 from xauto_utils.image_utils import *
 from xauto_utils.logger import Reporter
-from keywords.models import KeywordService, UserKeywordService
+from keywords.models import KeywordService
 
 reporter = Reporter()
 

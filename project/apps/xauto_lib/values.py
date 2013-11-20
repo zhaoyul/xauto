@@ -2,7 +2,6 @@
 Custom value types for django-livesettings app.
 """
 from django import forms
-from django.utils.text import smart_split, unescape_string_literal
 from django.utils.safestring import mark_safe
 
 from livesettings.values import Value, NOTSET, PercentValue as BrokenPercentValue

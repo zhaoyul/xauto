@@ -1,15 +1,6 @@
 from django.contrib import admin
-from django.conf import settings
-from django.core import urlresolvers
-from django.http import HttpResponseRedirect
-from django.utils.encoding import force_unicode
-from django.utils.translation import ugettext as _
 from account.models import AlertEvent, AlertSystem, AlertSent, Parameters, Application
 
-from xauto_lib.admin import SLBaseModelAdmin, SLStackedInline, SLTabularInline
-
-from datetime import timedelta, datetime
-import sys
 
 class AlertEventAdmin(admin.ModelAdmin):
     """
@@ -21,6 +12,7 @@ class AlertEventAdmin(admin.ModelAdmin):
     fields = ('user', 'event', 'type', 'distance', 'frequency', 'location_address', 'latitude', 'longitude', 'activated',  'status', 'keywords', 'user_keywords', 'nbr_sent', 'nbr_alert',)
     ordering = ('-created', 'keywords', 'type' ,'status')
     filter_horizontal = ('keywords',  'user_keywords')
+
 
 class AlertSystemAdmin(admin.ModelAdmin):
     """
