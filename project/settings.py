@@ -145,6 +145,7 @@ INSTALLED_APPS = [
     'multiuploader',
     'member',
     'account',
+    'docs',
     #'xauto_lib',
 ]
 
@@ -173,6 +174,9 @@ MAX_POPULAR_KEYWORD = 6
 GEOIP_PATH = os.path.join(os.path.dirname(__file__), 'apps', 'geoip2')
 GEOIP2_USER = 67594
 GEOIP2_KEY = 'qlJc88YJR1Ki'
+
+DOCS_ROOT = os.path.join(os.path.dirname(__file__), '../docs/html')
+DOCS_ACCESS = 'staff'
 
 
 # A sample logging configuration. The only tangible logging

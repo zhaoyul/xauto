@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
     url(r'^settings/', include('livesettings.urls')),
+    url(r'^documentation/', include('docs.urls')),
     #url(r'^auth/', include('auth.urls')),
 )
 
