@@ -53,10 +53,6 @@
 <li><p class="first">Welcome page</p>
 <blockquote>
 <div><p>There should be a simple home page.</p>
-<p>Backend:</p>
-<ol class="loweralpha simple">
-<li>&#8212;</li>
-</ol>
 <p>Frontend:</p>
 <ol class="loweralpha simple">
 <li>Prepare home page and plug it into the project</li>
@@ -65,9 +61,32 @@
 </li>
 </ol>
 </div>
+<div class="section" id="image-uploads">
+<h2>Image uploads<a class="headerlink" href="#image-uploads" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>It is always possible for mobile users to upload photos (always visible upload button). Every uploaded image is
+automatically assigned to an event using: datetime and lat/lon.</p>
+<p>In case there are multiple matches then user is allowed to choose the right one.</p>
+<p>In case there&#8217;s no match the image is only assigned to the user and shown in his profile.</p>
+<p>Backend:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>image upload endpoint (that makes use of Amazon AWS and is smart enough to return list of matching events
+in case it&#8217;s more than one matching lat/lon and datetime)</li>
+</ol>
+</div></blockquote>
+<p>Frontend</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>make it possible for end-users to take and upload photos</li>
+<li>implement selection of the event in case there are multiple events matching lat/lon and datetime</li>
+</ol>
+</div></blockquote>
+</div></blockquote>
+</div>
 <div class="section" id="users-management">
 <h2>Users management<a class="headerlink" href="#users-management" title="Permalink to this headline">¶</a></h2>
-<p>From the home page there should be a way to sign in and to log in.</p>
+<p>From pages accessible for anonymous users there should be a way to sign in and to log in.</p>
 <p>User account has the following fields:</p>
 <blockquote>
 <div><ul class="simple">
@@ -84,16 +103,19 @@
 <ol class="arabic">
 <li><p class="first">Registration</p>
 <blockquote>
-<div><p>In order to use the app user has to be registered</p>
+<div><p>In order to use features like creating new events, adding photos, following events or profiles user has to be registered</p>
 <p>Backend:</p>
 <ol class="loweralpha simple">
-<li>Create a registration end point, allowing registration for anonymous users. Assumption is that all fields from account are to be filled here)</li>
+<li>Create a registration endpoint, allowing registration for anonymous users. Assumption is that all fields from account are to be filled here)</li>
 <li>After registration data is received a registration confirmation email should be sent. User should click on a link in this email to activate his account</li>
+<li>Create endpoint to check username availability</li>
 </ol>
 <p>Frontend:</p>
 <ol class="loweralpha simple">
 <li>Add a registration popup with fields like the ones above and a service that will call backend endpoint in order to register a new user.</li>
-<li>It&#8217;s possible that the data that is going to be stored in the database might be rejected by the server (for example username is already taken) so it&#8217;s possible that the server will return Bad Request response with some error message - this should be handled in the frontend.</li>
+<li>It&#8217;s possible that the data that is going to be stored in the database might be rejected by the server
+(for example username is already taken) so it&#8217;s possible that the server will return Bad Request response with some error message - this should be handled in the frontend.</li>
+<li>plug into the page checking for username availability</li>
 </ol>
 </div></blockquote>
 </li>
@@ -147,9 +169,8 @@
 </li>
 <li><p class="first">Event creator can manage (edit/delete) his events.</p>
 </li>
-<li><p class="first">One event may be shown multiple times on the events list in case it has multiple dates and locations (<strong>?</strong>)</p>
-</li>
-<li><p class="first">One event is shown only once on the list of events even if it has multiple dates and locations (<strong>?</strong>)</p>
+<li><p class="first">One event is shown only once on the list of events even if it has multiple dates and locations (those are shown
+in the dropdown from the event detail page.</p>
 </li>
 <li><p class="first">Each event has the following attributes:</p>
 <blockquote>
@@ -196,7 +217,7 @@ date and time in the frontend.</p>
 <ol class="arabic">
 <li><p class="first">Create / edit /delete event</p>
 <blockquote>
-<div><p>Everyone is allowed to create an event.</p>
+<div><p>Every authenticated user is allowed to create an event and to manage his own events.</p>
 <p>Backend:</p>
 <blockquote>
 <div><ol class="loweralpha simple">
@@ -218,13 +239,33 @@ date and time in the frontend.</p>
 </div></blockquote>
 </div></blockquote>
 </li>
-<li><p class="first">List events</p>
+<li><p class="first">List of my events</p>
 <blockquote>
-<div><p>Everyone is allowed to view, filter and follow events.</p>
+<div><p>A user can browse events he created. List shows basic details about the events like image, name, location, number
+of followers, number of images. It&#8217;s also possible to delete an event or to get into edit event page.</p>
+<img alt="_images/events_my_list.png" src="_images/events_my_list.png" />
+<dl class="docutils">
+<dt>Frontend</dt>
+<dd><ol class="first last loweralpha simple">
+<li>attach list of my events to rest endpoint (probably the same endpoint as for general list of events might be
+used here</li>
+</ol>
+</dd>
+</dl>
+</div></blockquote>
+</li>
+<li><p class="first">List of events</p>
+<blockquote>
+<div><p>Everyone is allowed to view, filter and follow events. A lot of details about particular events are shown for each
+event: name, date, price, organizer, number of photos, number of followers (with ability to follow the event),
+image, location, headline, description, information if stream is currently active.</p>
+<img alt="_images/event_on_the_list.png" src="_images/event_on_the_list.png" />
 <p>Backend:</p>
 <blockquote>
 <div><ol class="loweralpha simple">
-<li>create endpoint that will return list of events; should be able to filter events (text search in event name, headline and location; followed; streaming now), order events and to paginate them.</li>
+<li>create endpoint that will return list of events; should be able to filter events (text search in event name,
+headline and location; followed; streaming now), order events and to paginate them. That endpoint should also
+be used by the global search box.</li>
 <li>create &#8220;follow&#8221; endpoint</li>
 </ol>
 </div></blockquote>
@@ -237,25 +278,159 @@ date and time in the frontend.</p>
 </div></blockquote>
 </div></blockquote>
 </li>
-<li><p class="first">View event detail</p>
+</ol>
+<ol class="arabic" id="event-details" start="4">
+<li><p class="first">View event details</p>
 <blockquote>
-<div><p>Event data is to be shown to the app users accessing the event page.</p>
-<p><strong>What exactly is &#8220;go to&#8221;?</strong></p>
+<div><p>Event data is to be shown to the application users accessing the event page.</p>
+<p>From that page:</p>
+<ol class="loweralpha simple">
+<li>mobile users can use &#8220;go to&#8221; function to open navigation app and check how to get to the event.</li>
+<li>users can add photos to the selected event date. This would be used, for example, by a professional photographer
+who is uploading pictures from a non-mobile camera at home, or at time after the expiration of the event.</li>
+<li>follow event</li>
+<li>view other event dates and locations</li>
+<li>view event&#8217;s image stream. Each image may be marked as favorite (by authenticated users), shared with other people
+or reported as inappropriate. images are grouped by dates</li>
+<li>it&#8217;s possible to share album for specific date and event</li>
+</ol>
+<img alt="_images/event_details.png" src="_images/event_details.png" />
 <p>Backend:</p>
 <blockquote>
 <div><ol class="loweralpha simple">
-<li>make sure that the photo management endpoint makes it possible to add photos even if user is not the event&#8217;s owener</li>
-<li>add endpoint that will return all data about the event including location and dates (in case it will be different
-than endopoint used in event management).</li>
+<li>make sure that the photo management endpoint makes it possible to add photos even if user is not the event&#8217;s
+owner</li>
+<li>add endpoint that will return all data about the event including location and dates (in case it will be
+different than endopoint used in event management).</li>
+<li>for the image stream implement some solution that will provide data (might be something AJAX based or
+WebSockets based like SockJS + Tornado)</li>
+<li>add endpoint for fav&#8217;ing images</li>
+<li>add endpoint for flagging images as inappropriate</li>
+<li>album / date sharing (<strong>this probably means that there should also be a dedicated page to view shared album?</strong>)</li>
 </ol>
 </div></blockquote>
 <p>Frontend:</p>
 <blockquote>
 <div><ol class="loweralpha simple">
+<li>Use real event data</li>
 <li>Add a panel to add photos to selected event date</li>
+<li>Add calls to backend to the follow button</li>
+<li>Add support for &#8220;Go to&#8221; button</li>
+<li>Make the image stream alive (use some client library like sockjs or socketio)</li>
+<li>plug favorite and flag endpoints into the frontend</li>
 </ol>
 </div></blockquote>
 </div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="profiles">
+<h2>Profiles<a class="headerlink" href="#profiles" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>Profiles is a section where it is possible to browse profiles of registered users, to view their photos and to
+follow them.</div></blockquote>
+<ol class="arabic">
+<li><p class="first">List of profiles</p>
+<blockquote>
+<div><p>Everyone is allowed to view, filter and follow profiles. List shows profiles. Each has the following data shown:
+image, full name, twitter/username (<strong>what is this &#64;LewHamF1 on the profile list?</strong>), location, information about user,
+amount of photos, amount of followers and amount of followed people (<strong>events too?</strong>), link to user webpage.
+It&#8217;s also possible to follow a user.</p>
+<p>List is filterable and has predefined categories: all, followers, following</p>
+<img alt="_images/profile_list.png" src="_images/profile_list.png" />
+<p>Backend:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>create endpoint that will return list of profiles; should be able to filter profiles (text search in user full name,
+about and location), order (there&#8217;s no ordering of neither events nor profiles in the layout)
+profiles and to paginate them. That endpoint should also be used by the global search box.</li>
+<li>create &#8220;follow&#8221; endpoint for following users</li>
+</ol>
+</div></blockquote>
+<p>Frontend:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>plug the list endpoint into the events list page</li>
+<li>plug the &#8220;follow&#8221; endpoint into the page</li>
+</ol>
+</div></blockquote>
+</div></blockquote>
+</li>
+</ol>
+<ol class="arabic" id="profile-details" start="2">
+<li><p class="first">User details</p>
+<blockquote>
+<div><p>Page shows details of user and his photo-stream. It&#8217;s allowed to follow a user.
+Except for user details (image, full name, twitter/username (<strong>what is this &#64;LewHamF1 on the profile list?</strong>), location, information about user,
+amount of photos, amount of followers and amount of followed people (<strong>events too?</strong>), link to user webpage) there
+is also a photo stream</p>
+<img alt="_images/profile_details.png" src="_images/profile_details.png" />
+<p>Backend:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>endpoint to retrieve single user&#8217;s details</li>
+<li>stream of user photos</li>
+</ol>
+</div></blockquote>
+<p>Frontend:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>plug the user details endpoint into the page</li>
+<li>plug the stream of photos</li>
+</ol>
+</div></blockquote>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="streams">
+<h2>Streams<a class="headerlink" href="#streams" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>The image streams appear in few places accross the site. Those are:</p>
+<ul class="simple">
+<li>event details (described <a class="reference internal" href="#event-details"><em>above</em></a>)</li>
+<li>user profile details (described <a class="reference internal" href="#profile-details"><em>above</em></a>)</li>
+<li>my photos</li>
+<li>stream</li>
+</ul>
+</div></blockquote>
+<ol class="arabic">
+<li><dl class="first docutils">
+<dt>My photos</dt>
+<dd><p class="first">A place where user can manage his own photos</p>
+<dl class="last docutils">
+<dt>Backend:</dt>
+<dd><ol class="first last loweralpha simple">
+<li>endpoint ot list user photos (this is not a stream)</li>
+<li>endpoint to delete user photos</li>
+</ol>
+</dd>
+<dt>Frontend:</dt>
+<dd><ol class="first last loweralpha simple">
+<li>plug the endpoints into the gui</li>
+</ol>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Stream</dt>
+<dd><p class="first">Real-time images from followed events and profiles</p>
+<p>Backend:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>set up endpoint to serve realtime images</li>
+</ol>
+</div></blockquote>
+<p>Frontend:</p>
+<blockquote class="last">
+<div><ol class="loweralpha simple" start="2">
+<li>connect to server to get and display images</li>
+</ol>
+</div></blockquote>
+</dd>
+</dl>
 </li>
 </ol>
 </div>
@@ -271,8 +446,11 @@ than endopoint used in event management).</li>
   <ul>
 <li><a class="reference internal" href="#">XAuto Specification</a><ul>
 <li><a class="reference internal" href="#home-page">Home page</a></li>
+<li><a class="reference internal" href="#image-uploads">Image uploads</a></li>
 <li><a class="reference internal" href="#users-management">Users management</a></li>
 <li><a class="reference internal" href="#events">Events</a></li>
+<li><a class="reference internal" href="#profiles">Profiles</a></li>
+<li><a class="reference internal" href="#streams">Streams</a></li>
 </ul>
 </li>
 </ul>
