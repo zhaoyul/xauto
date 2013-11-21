@@ -72,8 +72,8 @@ STATICFILES_DIRS = (
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.DefaultStorageFinder',
     'compressor.finders.CompressorFinder',
 )
@@ -128,6 +128,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     #'django.contrib.flatpages',
     # Uncomment the next line to enable the admin:
+    'grappelli',
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
@@ -144,6 +145,7 @@ INSTALLED_APPS = [
     'multiuploader',
     'member',
     'account',
+    'docs',
     #'xauto_lib',
 ]
 
@@ -172,6 +174,9 @@ MAX_POPULAR_KEYWORD = 6
 GEOIP_PATH = os.path.join(os.path.dirname(__file__), 'apps', 'geoip2')
 GEOIP2_USER = 67594
 GEOIP2_KEY = 'qlJc88YJR1Ki'
+
+DOCS_ROOT = os.path.join(os.path.dirname(__file__), '../docs/html')
+DOCS_ACCESS = 'staff'
 
 
 # A sample logging configuration. The only tangible logging
