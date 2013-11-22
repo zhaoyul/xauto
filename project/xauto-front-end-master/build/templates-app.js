@@ -372,25 +372,25 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "  <div class=\"col-xs-12 col-sm-6\">\n" +
     "    <div class=\"event-listing-filter pull-right\">\n" +
     "      <span>Display:</span>\n" +
-    "      <a \n" +
-    "        href=\"javascript:;\" \n" +
-    "        ng-click=\"changeDisplayFilter('all')\" \n" +
-    "        ng-class=\"{active:!search.srv_following && !search.srv_live}\" \n" +
-    "        tooltip-placement=\"bottom\" \n" +
+    "      <a\n" +
+    "        href=\"javascript:;\"\n" +
+    "        ng-click=\"changeDisplayFilter('all')\"\n" +
+    "        ng-class=\"{active:!search.srv_following && !search.srv_live}\"\n" +
+    "        tooltip-placement=\"bottom\"\n" +
     "        tooltip=\"Following\"\n" +
     "        >All</a>\n" +
-    "      <a \n" +
-    "        href=\"javascript:;\" \n" +
-    "        ng-click=\"changeDisplayFilter('following')\" \n" +
-    "        ng-class=\"{active:search.srv_following}\" \n" +
-    "        tooltip-placement=\"bottom\" \n" +
+    "      <a\n" +
+    "        href=\"javascript:;\"\n" +
+    "        ng-click=\"changeDisplayFilter('following')\"\n" +
+    "        ng-class=\"{active:search.srv_following}\"\n" +
+    "        tooltip-placement=\"bottom\"\n" +
     "        tooltip=\"Following\"\n" +
     "      ><i class=\"xa-icon-xauto-white\"></i></a>\n" +
-    "      <a \n" +
-    "        href=\"javascript:;\" \n" +
-    "        ng-click=\"changeDisplayFilter('live')\" \n" +
-    "        ng-class=\"{active:search.srv_live}\" \n" +
-    "        tooltip-placement=\"bottom\" \n" +
+    "      <a\n" +
+    "        href=\"javascript:;\"\n" +
+    "        ng-click=\"changeDisplayFilter('live')\"\n" +
+    "        ng-class=\"{active:search.srv_live}\"\n" +
+    "        tooltip-placement=\"bottom\"\n" +
     "        tooltip=\"Streaming\"\n" +
     "        ><i class=\"xa-icon-stream-white\"></i></a>\n" +
     "    </div>\n" +
@@ -433,7 +433,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "          </div>\n" +
     "        </div>\n" +
     "        <div class=\"event-picture-container\">\n" +
-    "          <img ng-src=\"uploads/events/{{event.id}}/main/{{event.photo[0]}}\" alt=\"\">\n" +
+    "          <img ng-src=\"/media/{{event.photo}}\" alt=\"\">\n" +
     "        </div>\n" +
     "        <div class=\"event-text\">\n" +
     "          <p>\n" +
@@ -453,7 +453,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "                 {{event.srv_photosCount}}\n" +
     "              </span>\n" +
     "            </a>\n" +
-    "            <a href=\"javascript:;\" class=\"btn btn-default btn-follow\" \n" +
+    "            <a href=\"javascript:;\" class=\"btn btn-default btn-follow\"\n" +
     "              ng-click=\"event.srv_following=!event.srv_following\"\n" +
     "              ng-class=\"{following:event.srv_following}\">\n" +
     "              <span class=\"badge badge-purple\">\n" +

@@ -5,7 +5,7 @@ from django_resized.forms import ResizedImageField
 from django.contrib.auth.models import User
 
 from event.models import Event
-from member.models import UserProfile, Message
+from account.models import UserProfile
 
 from django.conf import settings
 from xauto_lib.models import TimestampedModel
@@ -95,7 +95,6 @@ class MultiuploaderFiles(TimestampedModel):
         ('user', 'user' ))
 
     user = models.ForeignKey(User, blank=True, null=True, related_name='upload_files')
-    message = models.ForeignKey(Message, blank=True, null=True, related_name='upload_messages_files')
     event = models.ForeignKey(Event, blank=True, null=True, related_name='event_upload_files')
     filename = models.CharField(max_length=60, blank=True, null=True)
     file_type = models.CharField(max_length=10, blank=True, null=True)

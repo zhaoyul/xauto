@@ -1,6 +1,6 @@
 angular.module('eventServices', ['ngResource']).
 factory('EventList', function($resource){
-  return $resource('http://localhost\\:8000/api/events/?', {}, {
+  return $resource('/api/events/', {}, {
 		getArray: { method: 'GET', isArray: true }
 	});
 }).

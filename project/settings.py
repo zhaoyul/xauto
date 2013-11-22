@@ -135,20 +135,18 @@ INSTALLED_APPS = [
     # 'django.contrib.admindocs',
     'rest_framework',
     'sorl.thumbnail',
-    'livesettings',
-    'livesettings_config',
     'pagination',
     'registration',
     'south',
     'mailer',
     'compressor',
     'event',
-    'keywords',
+    #'keywords',
     'multiuploader',
-    'member',
+    #'member',
     'account',
     'docs',
-    #'xauto_lib',
+    'xauto_lib',
 ]
 
 EMAIL_BACKEND = "mailer.backend.DbBackend"
@@ -162,20 +160,17 @@ AUTHENTICATION_BACKENDS = (
 ACCOUNT_ACTIVATION_DAYS = 3
 LOGIN_REDIRECT_URL = '/'
 
-#django-crispy-forms settings
-CRISPY_TEMPLATE_PACK = 'bootstrap'
-#CRISPY_FAIL_SILENTLY = not DEBUG
 
 # -----------------------------------
 # --- Event imaging
 # -----------------------------------
-EVENT_IMAGES_ROOT = 'event_images/'
-MAX_EVENT_IMAGES = 2
-MAX_POPULAR_KEYWORD = 6
-
-GEOIP_PATH = os.path.join(os.path.dirname(__file__), 'apps', 'geoip2')
-GEOIP2_USER = 67594
-GEOIP2_KEY = 'qlJc88YJR1Ki'
+# EVENT_IMAGES_ROOT = 'event_images/'
+# MAX_EVENT_IMAGES = 2
+# MAX_POPULAR_KEYWORD = 6
+#
+# GEOIP_PATH = os.path.join(os.path.dirname(__file__), 'apps', 'geoip2')
+# GEOIP2_USER = 67594
+# GEOIP2_KEY = 'qlJc88YJR1Ki'
 
 DOCS_ROOT = os.path.join(os.path.dirname(__file__), '../docs/html')
 DOCS_ACCESS = 'staff'

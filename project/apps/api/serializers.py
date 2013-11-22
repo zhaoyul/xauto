@@ -5,25 +5,67 @@ from event.models import Event
 
 
 class EventSerializer(serializers.ModelSerializer):
-    about = serializers.SerializerMethodField('get_about')
-    venue = serializers.Field(source='venue.venue')
-    city = serializers.Field(source='venue.city')
-    state = serializers.Field(source='venue.state')
-    country = serializers.Field(source='venue.country')
-    #photo = serializers.Field(source='main_image.image')
-    photo = serializers.SerializerMethodField('get_photo')
+    photo = serializers.Field(source='main_image')
+    venue = serializers.SerializerMethodField('get_venue')
+    addr1 = serializers.SerializerMethodField('get_addr1')
+    addr2 = serializers.SerializerMethodField('get_addr2')
+    city = serializers.SerializerMethodField('get_city')
+    state = serializers.SerializerMethodField('get_state')
+    zipcode = serializers.SerializerMethodField('get_zip')
+    country = serializers.SerializerMethodField('get_country')
+    srv_followersCount = serializers.SerializerMethodField('srv_followers_count')
+    srv_photosCount = serializers.SerializerMethodField('srv_photos_count')
 
     class Meta:
         model = Event
-        fields = ('id', 'title', 'about', 'venue', 'city', 'state', 'country',
-            'photo')
+        fields = ('id', 'title', 'about', 'eventSize', 'srv_followersCount',
+            'srv_photosCount', 'photo', 'venue', 'addr1', 'addr2', 'city',
+            'state', 'zipcode', 'country')
 
-    def get_about(self, obj):
-        return obj.description
+    def get_venue(self, obj):
+        nearest_date = obj.get_nearest_date()
+        if nearest_date:
+            return nearest_date.location_name
+        return ""
 
-    def get_photo(self, obj):
-        return obj.EVENT_IMAGE()
-        image = obj.getEventImage()
-        if image:
-            return image.image
+    def get_addr1(self, obj):
+        nearest_date = obj.get_nearest_date()
+        if nearest_date:
+            return nearest_date.address_1
+        return ""
 
+    def get_addr2(self, obj):
+        nearest_date = obj.get_nearest_date()
+        if nearest_date:
+            return nearest_date.address_2
+        return ""
+
+    def get_city(self, obj):
+        nearest_date = obj.get_nearest_date()
+        if nearest_date:
+            return nearest_date.city
+        return ""
+
+    def get_state(self, obj):
+        nearest_date = obj.get_nearest_date()
+        if nearest_date:
+            return nearest_date.state
+        return ""
+
+    def get_zip(self, obj):
+        nearest_date = obj.get_nearest_date()
+        if nearest_date:
+            return nearest_date.zipcode
+        return ""
+
+    def get_country(self, obj):
+        nearest_date = obj.get_nearest_date()
+        if nearest_date:
+            return nearest_date.country
+        return ""
+
+    def srv_followers_count(self, obj):
+        return obj.followed.count()
+
+    def srv_photos_count(self, obj):
+        return obj.event_upload_images.count()
