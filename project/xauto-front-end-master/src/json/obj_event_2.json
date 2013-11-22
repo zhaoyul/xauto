@@ -1,0 +1,52 @@
+{
+  "id": "2",
+  "title": "The new BMW 3-Series Show",
+  "about": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum fermentum, tortor in commodo congue, erat diam dignissim augue, a volutpat felis nisi tempus nibh. Quisque felis turpis, consectetur in elementum a, bibendum ac sem. Nulla suscipit urna rhoncus ipsum pharetra, et imperdiet lorem bibendum. ",
+  "venue": "The Park",
+  "addr1": "Lorem Addres Line 1",
+  "addr2": "Lorem Addr Line 2",
+  "city": "Los Angeles",
+  "state": "California",
+  "zip": "1111",
+  "country": "USA",
+  "eventSize": "100",
+  "photo": ["main_photo.jpg"],
+  "dates": [
+    {
+      "dateText": "Saturday, 7 Sep",
+      "date": "09/07/2013",
+      "startTime": "11:00am",
+      "endTime": "8:00pm",
+      "featureHeadline": "Lorem Feature Headline",
+      "featureDetail": "Lorem Detail"
+    },
+    {
+      "dateText": "Sunday, 20 Apr",
+      "date": "04/30/2013",
+      "startTime": "9:12am",
+      "endTime": "11:22pm",
+      "featureHeadline": "Two Lorem Feature",
+      "featureDetail": "Two Lorem Detail"
+    } 
+  ],
+  "costAttend": {
+    "free": "true",
+    "low": "100",
+    "high": "400",
+    "currency": "USD"
+  },
+  "costExhibit": {
+    "free": "",
+    "low": "300",
+    "high": "600",
+    "currency": "USD"
+  },
+  "albums": [
+    "12",
+    "42",
+    "43"
+  ],
+  "followersCount": "129",
+  "photosCount": "311",
+  "following":"true"
+}
