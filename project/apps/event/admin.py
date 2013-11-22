@@ -111,7 +111,7 @@ class EventAdmin(AdminImageMixin, admin.ModelAdmin):
 
     def Author(self, obj):
         if obj.author:
-            return '%s' % (obj.author.email)
+            return '%s' % (obj.author.full_name)
         return ""
 
 
