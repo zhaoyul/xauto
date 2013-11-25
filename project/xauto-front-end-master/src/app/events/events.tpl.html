@@ -46,20 +46,20 @@
           <div class="row-wrapper date-headline">
             <div class="pull-left">
               <a href="#" tooltip-placement="right" tooltip="View schedule">
-                <span class="badge badge-primary">{{event.srv_nextDate.date | date: 'MMM d'}}</span>
+                <span class="badge badge-primary">{{event.date_info.date | date: 'MMM d'}}</span>
               </a>
             </div>
             <div class="pull-right">
-              <strong>{{event.dates[0].featureHeadline}}</strong>
+              <strong>{{event.date_info.featureHeadline}}</strong>
             </div>
           </div>
           <div class="row-wrapper price-location">
             <div class="pull-left">
-              <a href="#" class="price" tooltip-placement="right" tooltip="Price for attendance">{{event.costAttend.low}} {{event.costAttend.currency}}</a>
+              <a href="#" class="price" tooltip-placement="right" tooltip="Price for attendance">{{event.date_info.attend_low}} {{event.date_info.attend_currency}}</a>
             </div>
             <div class="pull-right">
               <span class="event-location">
-                <a href="#">{{event.city}}, {{event.state}}</a>
+                <a href="#">{{event.date_info.city}}, {{event.date_info.state}}</a>
                 <i class="xa-icon-location"></i>
               </span>
             </div>
@@ -75,8 +75,8 @@
         </div>
         <div class="event-footer">
           <div class="pull-left">
-            <a href="#" tooltip-placement="right" tooltip="Organizer: John Smith">
-              <img class="img-rounded user-pic" ng-src="assets/images/profile_pic_1.jpg" alt="">
+            <a href="#" tooltip-placement="right" tooltip="Organizer: {{event.author_name}}">
+              <img class="img-rounded user-pic" ng-src="{{ event.author_photo }}" alt="">
             </a>
           </div>
           <div class="pull-right follow-btn-container">

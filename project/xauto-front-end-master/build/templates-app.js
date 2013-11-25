@@ -349,8 +349,8 @@ angular.module("events/events-my.tpl.html", []).run(["$templateCache", function(
     "  		<tbody>\n" +
     "  			<tr ng-repeat=\"event in myEvents\">	\n" +
     "  				<td class=\"name\">\n" +
-    "            <img class=\"img-rounded user-pic\" alt=\"\" ng-src=\"uploads/events/{{event.id}}/main/{{event.photoThumb[0]}}\"> {{event.title}}</td>\n" +
-    "  				<td>{{event.city}}, {{event.country}}</td>\n" +
+    "            <img class=\"img-rounded user-pic\" alt=\"\" ng-src=\"/media/{{event.photo}}\"> {{event.title}}</td>\n" +
+    "  				<td>{{event.date_info.city}}, {{event.date_info.country}}</td>\n" +
     "  				<td><span class=\"label label-success\">{{event.srv_followersCount}} Followers</span> <span class=\"label label-info\">{{event.srv_photosCount}} Photos</span></td>\n" +
     "  				<td>\n" +
     "            <a class=\"btn btn-primary btn-sm\" href=\"#/events/1/edit\">Edit</a> <a class=\"btn btn-danger btn-sm\">Delete</a>\n" +
@@ -413,20 +413,20 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "          <div class=\"row-wrapper date-headline\">\n" +
     "            <div class=\"pull-left\">\n" +
     "              <a href=\"#\" tooltip-placement=\"right\" tooltip=\"View schedule\">\n" +
-    "                <span class=\"badge badge-primary\">{{event.srv_nextDate.date | date: 'MMM d'}}</span>\n" +
+    "                <span class=\"badge badge-primary\">{{event.date_info.date | date: 'MMM d'}}</span>\n" +
     "              </a>\n" +
     "            </div>\n" +
     "            <div class=\"pull-right\">\n" +
-    "              <strong>{{event.dates[0].featureHeadline}}</strong>\n" +
+    "              <strong>{{event.date_info.featureHeadline}}</strong>\n" +
     "            </div>\n" +
     "          </div>\n" +
     "          <div class=\"row-wrapper price-location\">\n" +
     "            <div class=\"pull-left\">\n" +
-    "              <a href=\"#\" class=\"price\" tooltip-placement=\"right\" tooltip=\"Price for attendance\">{{event.costAttend.low}} {{event.costAttend.currency}}</a>\n" +
+    "              <a href=\"#\" class=\"price\" tooltip-placement=\"right\" tooltip=\"Price for attendance\">{{event.date_info.attend_low}} {{event.date_info.attend_currency}}</a>\n" +
     "            </div>\n" +
     "            <div class=\"pull-right\">\n" +
     "              <span class=\"event-location\">\n" +
-    "                <a href=\"#\">{{event.city}}, {{event.state}}</a>\n" +
+    "                <a href=\"#\">{{event.date_info.city}}, {{event.date_info.state}}</a>\n" +
     "                <i class=\"xa-icon-location\"></i>\n" +
     "              </span>\n" +
     "            </div>\n" +
@@ -442,8 +442,8 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "        </div>\n" +
     "        <div class=\"event-footer\">\n" +
     "          <div class=\"pull-left\">\n" +
-    "            <a href=\"#\" tooltip-placement=\"right\" tooltip=\"Organizer: John Smith\">\n" +
-    "              <img class=\"img-rounded user-pic\" ng-src=\"assets/images/profile_pic_1.jpg\" alt=\"\">\n" +
+    "            <a href=\"#\" tooltip-placement=\"right\" tooltip=\"Organizer: {{event.author_name}}\">\n" +
+    "              <img class=\"img-rounded user-pic\" ng-src=\"{{ event.author_photo }}\" alt=\"\">\n" +
     "            </a>\n" +
     "          </div>\n" +
     "          <div class=\"pull-right follow-btn-container\">\n" +

@@ -131,10 +131,10 @@ class Event(TimestampedModel):
 
     followed = models.ManyToManyField(UserProfile, related_name='followed_events', null=True, blank=True, verbose_name='Event followed by')
 
-    def get_nearest_date(self):
+    def get_nearest_date(self, only_future=False):
         nearest_dates = self.event_dates.filter(
-            end_date__gt=datetime.now()).order_by('start_date')
-        if nearest_dates.count() == 0:
+            end_date__lt=datetime.now()).order_by('start_date')
+        if nearest_dates.count() == 0 and not only_future:
             nearest_dates = self.event_dates.order_by('-start_date')
         if nearest_dates.count() > 0:
             return nearest_dates[0]
