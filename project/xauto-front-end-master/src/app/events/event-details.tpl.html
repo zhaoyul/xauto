@@ -6,15 +6,15 @@
 					<div class="row-wrapper">
 						<div class="row" id="event-details-cover-wrapper">
 							<div class="col-xs-12" >
-							<div 
+							<div
 								class="event-details-cover-photo"
-								style="background-image:url('uploads/events/{{EventObj.id}}/main/{{EventObj.photo[0]}}')"
+								style="background-image:url('/media/{{ EventObj.photo }}')"
 							></div>
 							<div class="event-details-overlay">
 								<div class="event-details-header">
 									<h1 class="pull-left">{{EventObj.title}}</h1>
-									<a href="#" class="organizer" tooltip-placement="bottom" tooltip="Organizer: John Smith">
-										<img class="user-pic" alt="" ng-src="assets/images/profile_pic_1.jpg">
+									<a href="#" class="organizer" tooltip-placement="bottom" tooltip="Organizer: {{EventObj.author_name}}">
+										<img class="user-pic" alt="" ng-src="{{ EventObj.author_photo }}">
 									</a>
 								</div>
 								<div class="event-details-about" ng-init="eventDetailsExpanded=false" ng-class="{expanded: eventDetailsExpanded}" bx-event-detailed-text-mobile-toggle>
@@ -60,7 +60,7 @@
 														</div>
 														<div class="col-xs-12 col-md-4 schedule-price-wrapper">
 															<span class="pull-right">
-																Price: {{futureDate.cost}}
+																Price: {{futureDate.attend_low}} {{futureDate.attend_currency}}
 															</span>
 														</div>
 													</div>
@@ -98,13 +98,13 @@
 									<li>
 										<a data-toggle="tab" data-target="#photos">
 											<i class="xa-icon-event-details-photos"></i>
-											<div class="badge">213</div> Photos
+											<div class="badge">{{event.srv_photosCount}}</div> Photos
 										</a>
 									</li>
 									<li>
 										<a href="#">
 											<i class="xa-icon-event-details-follow"></i>
-											<div class="badge">54</div> Follow
+											<div class="badge">{{event.srv_followersCount}}</div> Follow
 										</a>
 									</li>
 								</ul>

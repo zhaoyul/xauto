@@ -210,7 +210,10 @@ angular.module( 'blvdx.events', [
 .controller( 'EventDetailsCtrl', function EventsCtrl( $scope, titleService, $stateParams, EventObj ) {
   titleService.setTitle( 'Event Details' );
   $scope.stateParams = $stateParams;
-  $scope.EventObj = EventObj.get({eventId:$stateParams.eventId});
+  //$scope.EventObj = EventObj.get({eventId:$stateParams.eventId});
+  EventObj.getDetails($stateParams.eventId).then(function (event) {
+      $scope.EventObj = event;
+  });
 
   $('.schedule-dropdown-menu').click(function(e) {
       e.stopPropagation();

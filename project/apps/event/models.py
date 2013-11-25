@@ -131,14 +131,24 @@ class Event(TimestampedModel):
 
     followed = models.ManyToManyField(UserProfile, related_name='followed_events', null=True, blank=True, verbose_name='Event followed by')
 
+    def get_future_dates(self):
+        return self.event_dates.filter(
+            start_date__gt=datetime.now()).order_by('start_date')
+
     def get_nearest_date(self, only_future=False):
         nearest_dates = self.event_dates.filter(
-            end_date__lt=datetime.now()).order_by('start_date')
+            end_date__gt=datetime.now()).order_by('start_date')
         if nearest_dates.count() == 0 and not only_future:
             nearest_dates = self.event_dates.order_by('-start_date')
         if nearest_dates.count() > 0:
             return nearest_dates[0]
         return None
+
+    def is_live_streaming(self):
+        if self.event_dates.filter(start_date__lt=datetime.now()).filter(
+                end_date__gt=datetime.now()).count():
+            return True
+        return False
 
 class EventImage(TimestampedModel):
     """

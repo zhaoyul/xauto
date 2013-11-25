@@ -154,15 +154,15 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "					<div class=\"row-wrapper\">\n" +
     "						<div class=\"row\" id=\"event-details-cover-wrapper\">\n" +
     "							<div class=\"col-xs-12\" >\n" +
-    "							<div \n" +
+    "							<div\n" +
     "								class=\"event-details-cover-photo\"\n" +
-    "								style=\"background-image:url('uploads/events/{{EventObj.id}}/main/{{EventObj.photo[0]}}')\"\n" +
+    "								style=\"background-image:url('/media/{{ EventObj.photo }}')\"\n" +
     "							></div>\n" +
     "							<div class=\"event-details-overlay\">\n" +
     "								<div class=\"event-details-header\">\n" +
     "									<h1 class=\"pull-left\">{{EventObj.title}}</h1>\n" +
-    "									<a href=\"#\" class=\"organizer\" tooltip-placement=\"bottom\" tooltip=\"Organizer: John Smith\">\n" +
-    "										<img class=\"user-pic\" alt=\"\" ng-src=\"assets/images/profile_pic_1.jpg\">\n" +
+    "									<a href=\"#\" class=\"organizer\" tooltip-placement=\"bottom\" tooltip=\"Organizer: {{EventObj.author_name}}\">\n" +
+    "										<img class=\"user-pic\" alt=\"\" ng-src=\"{{ EventObj.author_photo }}\">\n" +
     "									</a>\n" +
     "								</div>\n" +
     "								<div class=\"event-details-about\" ng-init=\"eventDetailsExpanded=false\" ng-class=\"{expanded: eventDetailsExpanded}\" bx-event-detailed-text-mobile-toggle>\n" +
@@ -208,7 +208,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "														</div>\n" +
     "														<div class=\"col-xs-12 col-md-4 schedule-price-wrapper\">\n" +
     "															<span class=\"pull-right\">\n" +
-    "																Price: {{futureDate.cost}}\n" +
+    "																Price: {{futureDate.attend_low}} {{futureDate.attend_currency}}\n" +
     "															</span>\n" +
     "														</div>\n" +
     "													</div>\n" +
@@ -246,13 +246,13 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "									<li>\n" +
     "										<a data-toggle=\"tab\" data-target=\"#photos\">\n" +
     "											<i class=\"xa-icon-event-details-photos\"></i>\n" +
-    "											<div class=\"badge\">213</div> Photos\n" +
+    "											<div class=\"badge\">{{event.srv_photosCount}}</div> Photos\n" +
     "										</a>\n" +
     "									</li>\n" +
     "									<li>\n" +
     "										<a href=\"#\">\n" +
     "											<i class=\"xa-icon-event-details-follow\"></i>\n" +
-    "											<div class=\"badge\">54</div> Follow\n" +
+    "											<div class=\"badge\">{{event.srv_followersCount}}</div> Follow\n" +
     "										</a>\n" +
     "									</li>\n" +
     "								</ul>\n" +

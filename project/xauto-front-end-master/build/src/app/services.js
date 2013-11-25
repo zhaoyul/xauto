@@ -15,6 +15,11 @@ angular.module('eventServices', ['restangular'])
 	});*/
 }])
 
-.factory('EventObj', function($resource){
-  return $resource('json/obj_event_1.json');
-});
+.factory('EventObj', ['Restangular', function(Restangular){
+  var EventObj = {};
+  EventObj.getDetails = function (pk) {
+      return Restangular.one('events', pk).get();
+  };
+  return EventObj;
+  //return $resource('json/obj_event_1.json');
+}]);
