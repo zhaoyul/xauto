@@ -68,7 +68,7 @@ angular.module( 'blvdx.events', [
 
 .controller( 'EventsCtrl', function EventsCtrl( $scope, titleService, EventList ) { // TODO: must be EventObj
   titleService.setTitle( 'All events' );
-  $scope.Events = EventList.getList(); // TODO: must be EventObj
+  $scope.Events = EventList.getEvents(); // TODO: must be EventObj
   $scope.search ={};
 
   $scope.changeDisplayFilter = function(type){
