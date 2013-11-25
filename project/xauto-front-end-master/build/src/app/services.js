@@ -5,7 +5,7 @@ angular.module('eventServices', ['restangular'])
   var EventList = {};
 
   EventList.getEvents = function () {
-      Restangular.all('events').getList();
+      return Restangular.all('events').getList();
   };
 
   return EventList;
