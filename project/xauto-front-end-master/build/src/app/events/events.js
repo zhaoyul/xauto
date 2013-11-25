@@ -27,7 +27,7 @@ angular.module( 'blvdx.events', [
       }
     }
   })
-  
+
   .state( 'eventsMy', {
     url: '/events/my',
     views: {
@@ -96,11 +96,11 @@ angular.module( 'blvdx.events', [
       $scope.search.srv_live = '';
     }
   };
-  
+
 })
 .controller( 'EventAddCtrl', function EventsCtrl( $scope, titleService, EventObj ) {
   titleService.setTitle( 'Add New Event' );
-  
+
   $scope.today = function() {
     $scope.dt = new Date();
   };
@@ -145,7 +145,7 @@ angular.module( 'blvdx.events', [
   // scope.$watch("addEventSubmit", function(newValue, oldValue, srcScope) {
   //   console.log(newValue);
   // });
-  
+
 
 })
 .controller( 'EventEditCtrl', function EventEditCtrl( $scope, titleService, $stateParams, EventObj ) {
@@ -173,7 +173,7 @@ angular.module( 'blvdx.events', [
     // alert("aa");
   };
   // $scope.resetDate = function(){
-    
+
   // };
 
   $scope.setThisEditableDate = function(date){
@@ -182,10 +182,10 @@ angular.module( 'blvdx.events', [
 
   // console.log($scope.EventObj);
 
-  
 
-  $scope.removeDate=function($index){ 
-    $scope.EventObj.dates.splice($index,1); 
+
+  $scope.removeDate=function($index){
+    $scope.EventObj.dates.splice($index,1);
     console.log($index);
   };
 
@@ -196,7 +196,7 @@ angular.module( 'blvdx.events', [
   $scope.today();
 
   $scope.showWeeks = true;
-  
+
 
 
 
@@ -210,22 +210,23 @@ angular.module( 'blvdx.events', [
 .controller( 'EventDetailsCtrl', function EventsCtrl( $scope, titleService, $stateParams, EventObj ) {
   titleService.setTitle( 'Event Details' );
   $scope.stateParams = $stateParams;
-  $scope.EventObj = EventObj.get({eventId:$stateParams.eventId});  
-  
+  $scope.EventObj = EventObj.get({eventId:$stateParams.eventId});
+
   $('.schedule-dropdown-menu').click(function(e) {
       e.stopPropagation();
   });
 
-  
+
   // console.log($scope.eventPhotoAlbums);
 })
 .controller( 'EventsMyCtrl', function EventsCtrl( $scope, titleService, $stateParams, EventList ) {
   titleService.setTitle( 'My Events' );
   $scope.stateParams = $stateParams;
+  EventList.getEvents().then(function (events) {
+      $scope.myEvents = events; // TODO: must be EventObj
+  }); // TODO: must be EventObj
 
-  $scope.myEvents = EventList.get(); // TODO: must be EventObj with "MY" filter
 
-  
 
 })
 .directive('bxSlideSchedule', [function() {
@@ -251,10 +252,10 @@ angular.module( 'blvdx.events', [
         $buttonElement.html("show description");
       }
       else{
-        $buttonElement.html("hide description"); 
+        $buttonElement.html("hide description");
       }
       $pElement.slideToggle(150);
-        
+
     });
   };
 }])
