@@ -40,6 +40,8 @@ class EventsListView(ListAPIView):
             serializer = self.get_pagination_serializer(page)
         else:
             serializer = self.get_serializer(self.object_list, many=True)
+        print serializer.data
+        return Response(serializer.data)
 
         # We must return dictionary, because angular expected this format.
         #TODO Maybe we can change expected format for my events page.
