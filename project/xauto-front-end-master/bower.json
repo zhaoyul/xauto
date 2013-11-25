@@ -10,7 +10,10 @@
     "angular-bootstrap": "0.5.0",
     "angular-ui-router": "~0.0.1",
     "angular-ui-utils": "~0.0.3",
-    "jquery-colorbox":""
+    "jquery-colorbox": "",
+    "restangular": "1.1.8"
   },
-  "dependencies": {}
+  "dependencies": {
+    "lodash": "2.3.0"
+  }
 }

@@ -10,13 +10,21 @@ angular.module( 'blvdx', [
   'ui.state',
   'ui.route',
 
-  'eventServices'
+  'eventServices',
+  'restangular'
 ])
 
-.config( function myAppConfig ( $stateProvider, $urlRouterProvider ) {
+.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'RestangularProvider',
+        function myAppConfig ( $stateProvider, $urlRouterProvider, $httpProvider, RestangularProvider ) {
   $urlRouterProvider.otherwise( '/events' );
 
-})
+  $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+  $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+  $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+  RestangularProvider.setBaseUrl('/api');
+  RestangularProvider.setRequestSuffix('/');
+}])
 
 .run( function run ( titleService ) {
   titleService.setSuffix( ' | xAu.to' );
