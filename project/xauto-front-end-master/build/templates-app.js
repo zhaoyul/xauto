@@ -454,7 +454,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "              </span>\n" +
     "            </a>\n" +
     "            <a href=\"javascript:;\" class=\"btn btn-default btn-follow\"\n" +
-    "              ng-click=\"event.srv_following=!event.srv_following\"\n" +
+    "              ng-click=\"Follow(event)\"\n" +
     "              ng-class=\"{following:event.srv_following}\">\n" +
     "              <span class=\"badge badge-purple\">\n" +
     "                {{event.srv_followersCount}}\n" +

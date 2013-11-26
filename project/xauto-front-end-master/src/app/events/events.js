@@ -66,7 +66,7 @@ angular.module( 'blvdx.events', [
   });
 })
 
-.controller( 'EventsCtrl', function EventsCtrl( $scope, titleService, EventList ) { // TODO: must be EventObj
+.controller( 'EventsCtrl', function EventsCtrl( $scope, titleService, EventList, EventObj ) { // TODO: must be EventObj
   titleService.setTitle( 'All events' );
   EventList.getEvents().then(function (events) {
       $scope.Events = events; // TODO: must be EventObj
@@ -95,6 +95,16 @@ angular.module( 'blvdx.events', [
       $scope.search.srv_following = '';
       $scope.search.srv_live = '';
     }
+  };
+
+  $scope.Follow = function($event) {
+      EventObj.Follow($event.id).then(function (event) {
+          //$scope.EventObj = event;
+          console.log(event);
+          $event.srv_following = event.srv_following;
+          $event.srv_followersCount = event.srv_followersCount;
+      });
+
   };
 
 })

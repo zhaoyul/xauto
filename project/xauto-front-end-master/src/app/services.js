@@ -20,6 +20,9 @@ angular.module('eventServices', ['restangular'])
   EventObj.getDetails = function (pk) {
       return Restangular.one('events', pk).get();
   };
+  EventObj.Follow = function (pk) {
+      return Restangular.one('events', pk).customPUT(pk, 'follow');
+  };
   return EventObj;
   //return $resource('json/obj_event_1.json');
 }]);
