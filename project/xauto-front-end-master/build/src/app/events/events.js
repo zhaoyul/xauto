@@ -68,10 +68,9 @@ angular.module( 'blvdx.events', [
 
 .controller( 'EventsCtrl', function EventsCtrl( $scope, titleService, EventList, EventObj ) { // TODO: must be EventObj
   titleService.setTitle( 'All events' );
-  EventList.getEvents().then(function (events) {
+  EventList.getEvents(false).then(function (events) {
       $scope.Events = events; // TODO: must be EventObj
   }); // TODO: must be EventObj
-  console.log($scope.Events);
   $scope.search ={};
 
   $scope.changeDisplayFilter = function(type){
@@ -99,8 +98,6 @@ angular.module( 'blvdx.events', [
 
   $scope.Follow = function($event) {
       EventObj.Follow($event.id).then(function (event) {
-          //$scope.EventObj = event;
-          console.log(event);
           $event.srv_following = event.srv_following;
           $event.srv_followersCount = event.srv_followersCount;
       });
@@ -147,10 +144,16 @@ angular.module( 'blvdx.events', [
     'starting-day': 1
   };
 
-
-  $scope.EventObj = new EventObj();
+/*
+  EventObj.getNewEvent().then(function (event) {
+      $scope.EventObj = event;
+  });
+*/
+  $scope.EventObj = EventObj;
   $scope.eventSubmit = function(){
-    $scope.EventObj.$save();
+    $scope.EventObj.createEvent($scope.EventObj).then(function (event) {
+        $('.xa-icon-nav-events').click();
+    });
   };
   // scope.$watch("addEventSubmit", function(newValue, oldValue, srcScope) {
   //   console.log(newValue);
@@ -158,15 +161,27 @@ angular.module( 'blvdx.events', [
 
 
 })
-.controller( 'EventEditCtrl', function EventEditCtrl( $scope, titleService, $stateParams, EventObj ) {
+.controller( 'EventEditCtrl', function EventEditCtrl( $scope, titleService, $stateParams, EventObj, DateObj ) {
   titleService.setTitle( 'Edit Event' );
-  // $scope.stateParams = $stateParams;
+  //$scope.stateParams = $stateParams;
   $scope.eventId = $stateParams.eventId;
 
-  $scope.EventObj = EventObj.get({eventId:$scope.eventId});
+  EventObj.getEvent($scope.eventId).then(function (event) {
+      $scope.EventObj = event;
+  });
+  //$scope.EventObj = EventObj.getEvent($scope.eventId);
 
   $scope.eventSubmit = function(){
-    $scope.EventObj.$save();
+    EventObj.saveEvent($scope.EventObj).then(function (event) {
+        $('.xa-icon-nav-events').click();
+    });
+    //$scope.EventObj.$save();
+  };
+
+  $scope.removeEvent=function($pk){
+    EventObj.removeEvent($pk).then(function () {
+        $('.xa-icon-nav-events').click();
+    });
   };
 
   // $scope.dateSubmit = function(){
@@ -174,29 +189,40 @@ angular.module( 'blvdx.events', [
   // };
 
   $scope.addDate = function(){
-    $scope.editDate = {};
+    $scope.editDate = {event: $scope.EventObj.id};
     $scope.editDate.date = new Date();
   };
+
   $scope.saveNewDate = function(){
     $scope.EventObj.dates.push($scope.editDate);
-    $(".modal:visible").find(".close").click();
-    // alert("aa");
   };
   // $scope.resetDate = function(){
 
   // };
+  $scope.saveDate = function(){
+    if ($scope.editDate.id !== undefined){
+        DateObj.saveDate($scope.editDate).then(function (date) {
+            $(".modal:visible").find(".close").click();
+        });
+    } else {
+        DateObj.createDate($scope.editDate).then(function (date) {
+            $(".modal:visible").find(".close").click();
+        });
+    }
 
-  $scope.setThisEditableDate = function(date){
-    $scope.editDate = date;
   };
 
-  // console.log($scope.EventObj);
+  $scope.setThisEditableDate = function(date){
+      DateObj.getDate(date.id).then(function (date) {
+          $scope.editDate = date;
+      });
+    //$scope.editDate = date;
+  };
 
-
-
-  $scope.removeDate=function($index){
-    $scope.EventObj.dates.splice($index,1);
-    console.log($index);
+  $scope.removeDate=function($index, $pk){
+    DateObj.removeDate($pk).then(function () {
+        $scope.EventObj.dates.splice($index,1);
+    });
   };
 
   /* datepicker */
@@ -232,14 +258,20 @@ angular.module( 'blvdx.events', [
 
   // console.log($scope.eventPhotoAlbums);
 })
-.controller( 'EventsMyCtrl', function EventsCtrl( $scope, titleService, $stateParams, EventList ) {
+.controller( 'EventsMyCtrl', function EventsCtrl( $scope, titleService, $stateParams, EventList, EventObj ) {
   titleService.setTitle( 'My Events' );
   $scope.stateParams = $stateParams;
-  EventList.getEvents().then(function (events) {
+  EventList.getEvents(true).then(function (events) {
       $scope.myEvents = events; // TODO: must be EventObj
   }); // TODO: must be EventObj
 
 
+
+  $scope.removeEvent=function($pk){
+    EventObj.removeEvent($pk).then(function () {
+        $('.xa-icon-nav-events').click();
+    });
+  };
 
 })
 .directive('bxSlideSchedule', [function() {

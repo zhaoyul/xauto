@@ -7,7 +7,7 @@
 			  <div class="form-group">
 			    <div class="col-lg-offset-3 col-lg-9">
 			      <button type="submit" class="btn btn-success btn-lg">Save Event!</button>
-			      <button type="button" class="btn btn-danger btn-lg">Delete Event</button>
+			      <button type="button" class="btn btn-danger btn-lg" ng-click="removeEvent(EventObj.id)">Delete Event</button>
 			    </div>
 			  </div>
 		</form>
@@ -23,14 +23,14 @@
         <h4 class="modal-title" ng-hide="editDate.id">Add Event Date</h4>
         <h4 class="modal-title" ng-show="editDate.id">Edit Event Date</h4>
       </div>
-      <form class="form-horizontal" role="form" ng-submit="saveNewDate()">
+      <form class="form-horizontal" role="form" ng-submit="saveDate()">
         <div class="modal-body">
           <ng-include src="'events/partial_form_date.tpl.html'"></ng-include>
         </div>
         <div class="modal-footer">
           <!-- <button type="reset" class="btn btn-default" ng-click="resetDate()">Close</button> -->
           <button ng-hide="editDate.id" type="submit" class="btn btn-primary" >Add Date!</button>
-          <button ng-show="editDate.id" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+          <button ng-show="editDate.id" type="sumbit" class="btn btn-primary">Save</button>
         </div>
       </form>
     </div><!-- /.modal-content -->

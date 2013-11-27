@@ -1,8 +1,33 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
 
-from event.models import Event
+from event.models import Event, EventImage, EventDate
 
+
+class EventImageSerializer(serializers.ModelSerializer):
+    """
+    A serializer for ``EventImage``.
+    """
+    class Meta(object):
+        model = EventImage
+
+
+class EventDateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = EventDate
+        #fields = ('id', 'location_name', 'address_1', 'address_2', 'country',
+            #'city', 'state', 'zipcode', 'event')
+
+
+class EventModelSerializer(serializers.ModelSerializer):
+
+    dates = EventDateSerializer(source='event_dates', read_only=True)
+
+    class Meta:
+        model = Event
+        fields = ('id', 'title', 'about', 'eventSize', 'short_link',
+            'main_image', 'author', 'dates')
 
 class EventSerializer(serializers.ModelSerializer):
     photo = serializers.Field(source='main_image')

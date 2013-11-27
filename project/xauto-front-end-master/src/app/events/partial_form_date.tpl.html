@@ -1,15 +1,62 @@
   <div class="partial-form-date">
+      <div class="form-group">
+        <label class="col-lg-3 control-label">Location Name</label>
+        <div class="col-lg-9">
+          <input type="text" class="form-control" placeholder="" ng-model="editDate.location_name">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-lg-3 control-label">Address line 1</label>
+        <div class="col-lg-9">
+          <input type="text" class="form-control" placeholder="" ng-model="editDate.address_1">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-lg-3 control-label">Address line 2</label>
+        <div class="col-lg-9">
+          <input type="text" class="form-control" placeholder="" ng-model="editDate.address_2">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-lg-3 control-label">City</label>
+        <div class="col-lg-9">
+          <input type="text" class="form-control" placeholder="" ng-model="editDate.city">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-lg-3 control-label">State</label>
+        <div class="col-lg-9">
+          <input type="text" class="form-control" placeholder="" ng-model="editDate.state">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-lg-3 control-label">ZIP/Postal Code</label>
+        <div class="col-lg-9">
+          <input type="text" class="form-control" placeholder="" ng-model="editDate.zip">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-lg-3 control-label">Country</label>
+        <div class="col-lg-9">
+          <select class="form-control" ng-model="editDate.country">
+            <option>USA</option>
+            <option>Armenia</option>
+            <option>Spain</option>
+          </select>
+        </div>
+      </div>
     <div class="form-group">
       <label class="col-lg-3 control-label">Date</label>
       <div class="col-lg-3">
         <input type="hidden" ng-model="editDate.id">
-        <input type="text" 
-          class="form-control" 
-          datepicker-popup="mm-dd-yyyy" 
-          ng-model="editDate.date" 
-          open="opened" 
-          min="'2010-06-22'" 
-          max="'2015-06-22'" 
+        <input type="hidden" ng-model="editDate.event">
+        <input type="text"
+          class="form-control"
+          datepicker-popup="mm-dd-yyyy"
+          ng-model="editDate.start_date"
+          open="opened"
+          min="'2010-06-22'"
+          max="'2015-06-22'"
           datepicker-options="dateOptions"
           required="required"
            />
@@ -23,14 +70,54 @@
     </div>
   </div>
   <div class="form-group">
+    <label class="col-lg-3 control-label">Cost To Attend</label>
+    <div class="col-lg-2">
+      <label>
+        <input type="checkbox" ng-model="EventObj.attend_free" ng-checked="EventObj.attend_free"> FREE
+      </label>
+    </div>
+    <div class="col-lg-2">
+      <label class="control-label">Price Range</label>
+    </div>
+    <div class="col-lg-2">
+      <input type="text" class="form-control" placeholder="Low" ng-disabled="EventObj.attend_free" ng-model="EventObj.attend_low">
+    </div>
+    <div class="col-lg-2">
+      <input type="text" class="form-control" placeholder="High" ng-disabled="EventObj.attend_free" ng-model="EventObj.attend_high">
+    </div>
+    <div class="col-lg-1">
+      <input type="text" class="form-control" placeholder="USD" ng-disabled="EventObj.attend_free" ng-model="EventObj.currency">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-lg-3 control-label">Cost To Exhibit</label>
+    <div class="col-lg-2">
+      <label>
+        <input type="checkbox" ng-model="EventObj.exhibit_free" ng-checked="EventObj.exhibit_free"> FREE
+      </label>
+    </div>
+    <div class="col-lg-2">
+      <label class="control-label">Price Range</label>
+    </div>
+    <div class="col-lg-2">
+      <input type="text" class="form-control" placeholder="Low" ng-disabled="EventObj.exhibit_free" ng-model="EventObj.exhibit_low">
+    </div>
+    <div class="col-lg-2">
+      <input type="text" class="form-control" placeholder="High" ng-disabled="EventObj.exhibit_free" ng-model="EventObj.exhibit_high">
+    </div>
+    <div class="col-lg-1">
+      <input type="text" class="form-control" placeholder="USD" ng-disabled="EventObj.exhibit_free" ng-model="EventObj.currency">
+    </div>
+  </div>
+  <div class="form-group">
     <label class="col-lg-3 control-label">Feature Headline</label>
     <div class="col-lg-9">
-      <input type="text" class="form-control" ng-model="editDate.featureHeadline" required="required">
+      <input type="text" class="form-control" ng-model="editDate.feature_headline" required="required">
     </div>
   </div>
   <div class="form-group">
     <label class="col-lg-3 control-label">Feature Detail</label>
     <div class="col-lg-9">
-      <textarea class="form-control" ng-model="editDate.featureDetail" required="required"></textarea>
+      <textarea class="form-control" ng-model="editDate.feature_detail" required="required"></textarea>
     </div>
   </div>

@@ -55,7 +55,7 @@ class EventDate(TimestampedModel):
     region = models.CharField(max_length=50,null=True, blank=True)
     zipcode = models.CharField(max_length=20, null=True, blank=True)
     event = models.ForeignKey('Event', related_name='event_dates', verbose_name='Your Event')
-    author = models.ForeignKey(User, related_name='user_event_date', verbose_name='Event Author')
+    #author = models.ForeignKey(User, related_name='user_event_date', verbose_name='Event Author')
     start_date = models.DateTimeField(null=True, blank=False)
     end_date = models.DateTimeField(null=True, blank=True)
     feature_headline = models.CharField(max_length=100)

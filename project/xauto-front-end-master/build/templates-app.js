@@ -301,7 +301,7 @@ angular.module("events/event-edit.tpl.html", []).run(["$templateCache", function
     "			  <div class=\"form-group\">\n" +
     "			    <div class=\"col-lg-offset-3 col-lg-9\">\n" +
     "			      <button type=\"submit\" class=\"btn btn-success btn-lg\">Save Event!</button>\n" +
-    "			      <button type=\"button\" class=\"btn btn-danger btn-lg\">Delete Event</button>\n" +
+    "			      <button type=\"button\" class=\"btn btn-danger btn-lg\" ng-click=\"removeEvent(EventObj.id)\">Delete Event</button>\n" +
     "			    </div>\n" +
     "			  </div>\n" +
     "		</form>\n" +
@@ -317,14 +317,14 @@ angular.module("events/event-edit.tpl.html", []).run(["$templateCache", function
     "        <h4 class=\"modal-title\" ng-hide=\"editDate.id\">Add Event Date</h4>\n" +
     "        <h4 class=\"modal-title\" ng-show=\"editDate.id\">Edit Event Date</h4>\n" +
     "      </div>\n" +
-    "      <form class=\"form-horizontal\" role=\"form\" ng-submit=\"saveNewDate()\">\n" +
+    "      <form class=\"form-horizontal\" role=\"form\" ng-submit=\"saveDate()\">\n" +
     "        <div class=\"modal-body\">\n" +
     "          <ng-include src=\"'events/partial_form_date.tpl.html'\"></ng-include>\n" +
     "        </div>\n" +
     "        <div class=\"modal-footer\">\n" +
     "          <!-- <button type=\"reset\" class=\"btn btn-default\" ng-click=\"resetDate()\">Close</button> -->\n" +
     "          <button ng-hide=\"editDate.id\" type=\"submit\" class=\"btn btn-primary\" >Add Date!</button>\n" +
-    "          <button ng-show=\"editDate.id\" type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">Save</button>\n" +
+    "          <button ng-show=\"editDate.id\" type=\"sumbit\" class=\"btn btn-primary\">Save</button>\n" +
     "        </div>\n" +
     "      </form>\n" +
     "    </div><!-- /.modal-content -->\n" +
@@ -353,7 +353,7 @@ angular.module("events/events-my.tpl.html", []).run(["$templateCache", function(
     "  				<td>{{event.date_info.city}}, {{event.date_info.country}}</td>\n" +
     "  				<td><span class=\"label label-success\">{{event.srv_followersCount}} Followers</span> <span class=\"label label-info\">{{event.srv_photosCount}} Photos</span></td>\n" +
     "  				<td>\n" +
-    "            <a class=\"btn btn-primary btn-sm\" href=\"#/events/1/edit\">Edit</a> <a class=\"btn btn-danger btn-sm\">Delete</a>\n" +
+    "            <a class=\"btn btn-primary btn-sm\" href=\"#/events/{{event.id}}/edit\">Edit</a> <a class=\"btn btn-danger btn-sm\" ng-click=\"removeEvent(event.id)\">Delete</a>\n" +
     "          </td>\n" +
     "  			</tr>\n" +
     "  			\n" +
@@ -495,49 +495,9 @@ angular.module("events/partial_add_event_form.tpl.html", []).run(["$templateCach
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +
-    "    <label class=\"col-lg-3 control-label\">Venue</label>\n" +
+    "    <label class=\"col-lg-3 control-label\">xau.to/</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"EventObj.venue\">\n" +
-    "    </div>\n" +
-    "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
-    "    <label class=\"col-lg-3 control-label\">Address line 1</label>\n" +
-    "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"EventObj.addr1\">\n" +
-    "    </div>\n" +
-    "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
-    "    <label class=\"col-lg-3 control-label\">Address line 2</label>\n" +
-    "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"EventObj.addr2\">\n" +
-    "    </div>\n" +
-    "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
-    "    <label class=\"col-lg-3 control-label\">City</label>\n" +
-    "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"EventObj.city\">\n" +
-    "    </div>\n" +
-    "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
-    "    <label class=\"col-lg-3 control-label\">State</label>\n" +
-    "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"EventObj.state\">\n" +
-    "    </div>\n" +
-    "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
-    "    <label class=\"col-lg-3 control-label\">ZIP/Postal Code</label>\n" +
-    "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"EventObj.zip\">\n" +
-    "    </div>\n" +
-    "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
-    "    <label class=\"col-lg-3 control-label\">Country</label>\n" +
-    "    <div class=\"col-lg-9\">\n" +
-    "      <select class=\"form-control\" ng-model=\"EventObj.country\">\n" +
-    "        <option>USA</option>\n" +
-    "        <option>Armenia</option>\n" +
-    "        <option>Spain</option>\n" +
-    "      </select>\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"EventObj.short_link\">\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +
@@ -555,7 +515,7 @@ angular.module("events/partial_add_event_form.tpl.html", []).run(["$templateCach
     "  <div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">Photos</label>\n" +
     "    <div class=\"col-lg-4\">\n" +
-    "      <input type=\"file\" class=\"btn\">\n" +
+    "      <input type=\"file\" class=\"btn\" ng-model=\"EventObj.image\">\n" +
     "    </div>\n" +
     "    <div class=\"col-lg-4\">\n" +
     "      <strong>or</strong>\n" +
@@ -564,51 +524,7 @@ angular.module("events/partial_add_event_form.tpl.html", []).run(["$templateCach
     "  </div>\n" +
     "\n" +
     "  <div class=\"form-group\">\n" +
-    "    <label class=\"col-lg-3 control-label\">Cost To Attend</label>\n" +
-    "    <div class=\"col-lg-2\">\n" +
-    "      <label>\n" +
-    "        <input type=\"checkbox\" ng-model=\"EventObj.costAttend.free\" ng-checked=\"EventObj.costAttend.free\"> FREE\n" +
-    "      </label>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-lg-2\">\n" +
-    "      <label class=\"control-label\">Price Range</label>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-lg-2\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"Low\" ng-disabled=\"EventObj.costAttend.free\" ng-model=\"EventObj.costAttend.low\">\n" +
-    "    </div>\n" +
-    "    <div class=\"col-lg-2\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"High\" ng-disabled=\"EventObj.costAttend.free\" ng-model=\"EventObj.costAttend.high\">\n" +
-    "    </div>\n" +
-    "    <div class=\"col-lg-1\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"USD\" ng-disabled=\"EventObj.costAttend.free\" ng-model=\"EventObj.costAttend.currency\">\n" +
-    "    </div>\n" +
-    "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
-    "    <label class=\"col-lg-3 control-label\">Cost To Exhibit</label>\n" +
-    "    <div class=\"col-lg-2\">\n" +
-    "      <label>\n" +
-    "        <input type=\"checkbox\" ng-model=\"EventObj.costExhibit.free\" ng-checked=\"EventObj.costExhibit.free\"> FREE\n" +
-    "      </label>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-lg-2\">\n" +
-    "      <label class=\"control-label\">Price Range</label>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-lg-2\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"Low\" ng-disabled=\"EventObj.costExhibit.free\" ng-model=\"EventObj.costExhibit.low\">\n" +
-    "    </div>\n" +
-    "    <div class=\"col-lg-2\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"High\" ng-disabled=\"EventObj.costExhibit.free\" ng-model=\"EventObj.costExhibit.high\">\n" +
-    "    </div>\n" +
-    "    <div class=\"col-lg-1\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"USD\" ng-disabled=\"EventObj.costExhibit.free\" ng-model=\"EventObj.costExhibit.currency\">\n" +
-    "    </div>\n" +
-    "  </div>\n" +
-    "  \n" +
-    "  \n" +
-    "  \n" +
     "\n" +
-    "  <div class=\"form-group\">\n" +
-    "    \n" +
     "    <div class=\"col-lg-offset-3 col-lg-9\">\n" +
     "      <button class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#dateModal\" ng-click=\"addDate()\"><i class=\"icon-calendar\"></i> Add Date</button>\n" +
     "    </div>\n" +
@@ -619,25 +535,25 @@ angular.module("events/partial_add_event_form.tpl.html", []).run(["$templateCach
     "    <div class=\"col-lg-9\">\n" +
     "      <table class=\"table\">\n" +
     "        <!-- start date form -->\n" +
-    "        <!-- \n" +
+    "        <!--\n" +
     "        <div class=\"dates-items-container\" >\n" +
-    "          \n" +
+    "\n" +
     "        </div>\n" +
     "        -->\n" +
     "        <!-- end of date -->\n" +
     "        <tr ng-repeat=\"date in EventObj.dates\">\n" +
-    "          <td>{{date.date | date:'fullDate' }} &mdash; {{date.featureHeadline}}</td>\n" +
+    "          <td>{{date.start_date | date:'fullDate' }} &mdash; {{date.feature_headline}}</td>\n" +
     "          <td>\n" +
-    "            <button \n" +
+    "            <button\n" +
     "              class=\"btn btn-primary btn-sm\"\n" +
-    "              data-toggle=\"modal\" \n" +
+    "              data-toggle=\"modal\"\n" +
     "              data-target=\"#dateModal\"\n" +
     "              ng-click=\"setThisEditableDate(date)\"\n" +
     "              >\n" +
     "                Edit\n" +
     "            </button>\n" +
     "\n" +
-    "            <button type=\"button\" class=\"btn btn-danger btn-sm\" ng-click=\"removeDate($index)\">Delete</button>\n" +
+    "            <button type=\"button\" class=\"btn btn-danger btn-sm\" ng-click=\"removeDate($index, date.id)\">Delete</button>\n" +
     "            <!-- <ng-include src=\"'events/partial_form_date.tpl.html'\"></ng-include> -->\n" +
     "          </td>\n" +
     "        </tr>\n" +
@@ -649,8 +565,8 @@ angular.module("events/partial_add_event_form.tpl.html", []).run(["$templateCach
     "      <ng-include src=\"'events/partial_event_details_photos.tpl.html'\"></ng-include>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  \n" +
-    "  \n" +
+    "\n" +
+    "\n" +
     "");
 }]);
 
@@ -687,17 +603,64 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
 angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("events/partial_form_date.tpl.html",
     "  <div class=\"partial-form-date\">\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label class=\"col-lg-3 control-label\">Location Name</label>\n" +
+    "        <div class=\"col-lg-9\">\n" +
+    "          <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"editDate.location_name\">\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label class=\"col-lg-3 control-label\">Address line 1</label>\n" +
+    "        <div class=\"col-lg-9\">\n" +
+    "          <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"editDate.address_1\">\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label class=\"col-lg-3 control-label\">Address line 2</label>\n" +
+    "        <div class=\"col-lg-9\">\n" +
+    "          <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"editDate.address_2\">\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label class=\"col-lg-3 control-label\">City</label>\n" +
+    "        <div class=\"col-lg-9\">\n" +
+    "          <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"editDate.city\">\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label class=\"col-lg-3 control-label\">State</label>\n" +
+    "        <div class=\"col-lg-9\">\n" +
+    "          <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"editDate.state\">\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label class=\"col-lg-3 control-label\">ZIP/Postal Code</label>\n" +
+    "        <div class=\"col-lg-9\">\n" +
+    "          <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"editDate.zip\">\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label class=\"col-lg-3 control-label\">Country</label>\n" +
+    "        <div class=\"col-lg-9\">\n" +
+    "          <select class=\"form-control\" ng-model=\"editDate.country\">\n" +
+    "            <option>USA</option>\n" +
+    "            <option>Armenia</option>\n" +
+    "            <option>Spain</option>\n" +
+    "          </select>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
     "    <div class=\"form-group\">\n" +
     "      <label class=\"col-lg-3 control-label\">Date</label>\n" +
     "      <div class=\"col-lg-3\">\n" +
     "        <input type=\"hidden\" ng-model=\"editDate.id\">\n" +
-    "        <input type=\"text\" \n" +
-    "          class=\"form-control\" \n" +
-    "          datepicker-popup=\"mm-dd-yyyy\" \n" +
-    "          ng-model=\"editDate.date\" \n" +
-    "          open=\"opened\" \n" +
-    "          min=\"'2010-06-22'\" \n" +
-    "          max=\"'2015-06-22'\" \n" +
+    "        <input type=\"hidden\" ng-model=\"editDate.event\">\n" +
+    "        <input type=\"text\"\n" +
+    "          class=\"form-control\"\n" +
+    "          datepicker-popup=\"mm-dd-yyyy\"\n" +
+    "          ng-model=\"editDate.start_date\"\n" +
+    "          open=\"opened\"\n" +
+    "          min=\"'2010-06-22'\"\n" +
+    "          max=\"'2015-06-22'\"\n" +
     "          datepicker-options=\"dateOptions\"\n" +
     "          required=\"required\"\n" +
     "           />\n" +
@@ -711,15 +674,55 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Cost To Attend</label>\n" +
+    "    <div class=\"col-lg-2\">\n" +
+    "      <label>\n" +
+    "        <input type=\"checkbox\" ng-model=\"EventObj.attend_free\" ng-checked=\"EventObj.attend_free\"> FREE\n" +
+    "      </label>\n" +
+    "    </div>\n" +
+    "    <div class=\"col-lg-2\">\n" +
+    "      <label class=\"control-label\">Price Range</label>\n" +
+    "    </div>\n" +
+    "    <div class=\"col-lg-2\">\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"Low\" ng-disabled=\"EventObj.attend_free\" ng-model=\"EventObj.attend_low\">\n" +
+    "    </div>\n" +
+    "    <div class=\"col-lg-2\">\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"High\" ng-disabled=\"EventObj.attend_free\" ng-model=\"EventObj.attend_high\">\n" +
+    "    </div>\n" +
+    "    <div class=\"col-lg-1\">\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"USD\" ng-disabled=\"EventObj.attend_free\" ng-model=\"EventObj.currency\">\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Cost To Exhibit</label>\n" +
+    "    <div class=\"col-lg-2\">\n" +
+    "      <label>\n" +
+    "        <input type=\"checkbox\" ng-model=\"EventObj.exhibit_free\" ng-checked=\"EventObj.exhibit_free\"> FREE\n" +
+    "      </label>\n" +
+    "    </div>\n" +
+    "    <div class=\"col-lg-2\">\n" +
+    "      <label class=\"control-label\">Price Range</label>\n" +
+    "    </div>\n" +
+    "    <div class=\"col-lg-2\">\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"Low\" ng-disabled=\"EventObj.exhibit_free\" ng-model=\"EventObj.exhibit_low\">\n" +
+    "    </div>\n" +
+    "    <div class=\"col-lg-2\">\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"High\" ng-disabled=\"EventObj.exhibit_free\" ng-model=\"EventObj.exhibit_high\">\n" +
+    "    </div>\n" +
+    "    <div class=\"col-lg-1\">\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"USD\" ng-disabled=\"EventObj.exhibit_free\" ng-model=\"EventObj.currency\">\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">Feature Headline</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"text\" class=\"form-control\" ng-model=\"editDate.featureHeadline\" required=\"required\">\n" +
+    "      <input type=\"text\" class=\"form-control\" ng-model=\"editDate.feature_headline\" required=\"required\">\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">Feature Detail</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <textarea class=\"form-control\" ng-model=\"editDate.featureDetail\" required=\"required\"></textarea>\n" +
+    "      <textarea class=\"form-control\" ng-model=\"editDate.feature_detail\" required=\"required\"></textarea>\n" +
     "    </div>\n" +
     "  </div>");
 }]);
