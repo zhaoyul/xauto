@@ -496,8 +496,11 @@ angular.module("events/partial_add_event_form.tpl.html", []).run(["$templateCach
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">xau.to/</label>\n" +
-    "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"EventObj.short_link\">\n" +
+    "    <div class=\"col-lg-6\">\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"EventObj.short_link\" ng-keyup=\"checkShortLink($event.target.value)\">\n" +
+    "    </div>\n" +
+    "    <div class=\"col-lg-3\">\n" +
+    "        {{EventObj.short_link_available}}\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +

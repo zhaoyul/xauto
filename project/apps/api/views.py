@@ -36,7 +36,7 @@ class EventDetailsView(RetrieveAPIView):
 
 class EventViewSet(ModelViewSet):
     """
-    Returns Event details
+    Returns Event CRUD methods
     """
     serializer_class = EventModelSerializer
     model = Event
@@ -100,3 +100,16 @@ class FollowEventView(APIView):
         except:
             pass
         return Response({}, status=status.HTTP_403_FORBIDDEN)
+
+
+class CheckShortLinkView(APIView):
+    """
+    Checks database to determine availability of short link.
+    """
+    def get(self, request, *args, **kwargs):
+        search_text = self.request.GET.get('search_text', '')
+        data = {'response': 'Available'}
+        if Event.objects.filter(short_link=search_text).count():
+            data = {'response': 'Unavailable'}
+
+        return Response(data, status=status.HTTP_200_OK)

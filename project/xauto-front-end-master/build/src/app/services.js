@@ -4,8 +4,8 @@ angular.module('eventServices', ['restangular'])
 
   var EventList = {};
 
-  EventList.getEvents = function (own_events) {
-      return Restangular.all('events').customGETLIST('list', {own_events: own_events});
+  EventList.getEvents = function (params) {
+      return Restangular.all('events').customGETLIST('list', params);
   };
 
   return EventList;
@@ -40,6 +40,10 @@ angular.module('eventServices', ['restangular'])
 
   EventObj.removeEvent = function (pk) {
       return Restangular.one('events', pk).remove();
+  };
+
+  EventObj.checkShortLink = function (params) {
+      return Restangular.one('events').customGET('check-link', params);
   };
 
   return EventObj;

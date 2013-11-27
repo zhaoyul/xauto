@@ -73,21 +73,21 @@
             <a class="navbar-brand" href="#">xau.to</a>
             <h2 class="navbar-slogan hidden-xs">Auomotive Culture</h2>
             <a href="#" class="btn btn-primary btn-lg btn-navbar-add-photo" tooltip-placement="right" tooltip="+ Add Photo"><i class="xa-icon-event-details-photos-white"></i></a>
-            
+
           </div>
-          
+
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse navbar-ex1-collapse">
-            
+
             <form class="navbar-left navbar-search-form" role="search">
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Quick search">
+                <input type="text" class="form-control" placeholder="Quick search" ng-keyup="Search($event.target.value)">
               </div>
               <!-- <button type="submit" class="btn btn-default">Go</button> -->
             </form>
             <ul class="nav navbar-nav navbar-right">
               <!-- <li><a href="#">Login</a></li>
-              <li><a data-toggle="modal" href="#signupModal">Sign Up</a></li> --> 
+              <li><a data-toggle="modal" href="#signupModal">Sign Up</a></li> -->
               <!-- href="#/account/signup" -->
 
               <li class="dropdown">
@@ -143,16 +143,16 @@
     <footer id="footer">
       <!-- <div class="container">
         <div class="footer-inner">
-          
-          
+
+
 
           <p>
-            (c) 2013 B       
+            (c) 2013 B
           </p>
         </div>
       </div> -->
     </footer>
-    
+
 
     <div class="modal fade" id="signupModal">
       <div class="modal-dialog">

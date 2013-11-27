@@ -2,6 +2,7 @@
 from rest_framework import serializers
 
 from event.models import Event, EventImage, EventDate
+from multiuploader.models import MultiuploaderImage
 
 
 class EventImageSerializer(serializers.ModelSerializer):
@@ -10,6 +11,14 @@ class EventImageSerializer(serializers.ModelSerializer):
     """
     class Meta(object):
         model = EventImage
+
+
+class MultiuploaderImageSerializer(serializers.ModelSerializer):
+    """
+    A serializer for ``MultiuploaderImage``.
+    """
+    class Meta(object):
+        model = MultiuploaderImage
 
 
 class EventDateSerializer(serializers.ModelSerializer):
@@ -103,12 +112,14 @@ class EventDetailsSerializer(serializers.ModelSerializer):
     author_photo = serializers.SerializerMethodField('get_author_photo')
     srv_live = serializers.SerializerMethodField('get_srv_live')
     srv_following = serializers.SerializerMethodField('get_srv_following')
+    srv_albums = MultiuploaderImageSerializer(source='event_upload_images',
+                                              read_only=True)
 
     class Meta:
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'srv_followersCount',
             'srv_photosCount', 'photo', 'srv_futureDates', 'author_name',
-            'author_photo', 'srv_live', 'srv_following')
+            'author_photo', 'srv_live', 'srv_following', 'srv_albums')
 
     def srv_followers_count(self, obj):
         return obj.followed.count()

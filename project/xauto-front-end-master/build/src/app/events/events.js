@@ -68,7 +68,7 @@ angular.module( 'blvdx.events', [
 
 .controller( 'EventsCtrl', function EventsCtrl( $scope, titleService, EventList, EventObj ) { // TODO: must be EventObj
   titleService.setTitle( 'All events' );
-  EventList.getEvents(false).then(function (events) {
+  EventList.getEvents({}).then(function (events) {
       $scope.Events = events; // TODO: must be EventObj
   }); // TODO: must be EventObj
   $scope.search ={};
@@ -101,7 +101,12 @@ angular.module( 'blvdx.events', [
           $event.srv_following = event.srv_following;
           $event.srv_followersCount = event.srv_followersCount;
       });
+  };
 
+  $scope.Search = function(value) {
+      EventList.getEvents({search_text: value}).then(function (events) {
+          $scope.Events = events;
+      });
   };
 
 })
@@ -144,6 +149,12 @@ angular.module( 'blvdx.events', [
     'starting-day': 1
   };
 
+  $scope.checkShortLink = function(value) {
+      EventObj.checkShortLink({search_text: value}).then(function (response) {
+          $scope.EventObj.short_link_available = response.response;
+      });
+  };
+
 /*
   EventObj.getNewEvent().then(function (event) {
       $scope.EventObj = event;
@@ -182,6 +193,12 @@ angular.module( 'blvdx.events', [
     EventObj.removeEvent($pk).then(function () {
         $('.xa-icon-nav-events').click();
     });
+  };
+
+  $scope.checkShortLink = function(value) {
+      EventObj.checkShortLink({search_text: value}).then(function (response) {
+          $scope.EventObj.short_link_available = response.response;
+      });
   };
 
   // $scope.dateSubmit = function(){
@@ -261,7 +278,7 @@ angular.module( 'blvdx.events', [
 .controller( 'EventsMyCtrl', function EventsCtrl( $scope, titleService, $stateParams, EventList, EventObj ) {
   titleService.setTitle( 'My Events' );
   $scope.stateParams = $stateParams;
-  EventList.getEvents(true).then(function (events) {
+  EventList.getEvents({own_events: true}).then(function (events) {
       $scope.myEvents = events; // TODO: must be EventObj
   }); // TODO: must be EventObj
 

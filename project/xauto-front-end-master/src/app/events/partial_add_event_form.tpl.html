@@ -14,8 +14,11 @@
   </div>
   <div class="form-group">
     <label class="col-lg-3 control-label">xau.to/</label>
-    <div class="col-lg-9">
-      <input type="text" class="form-control" placeholder="" ng-model="EventObj.short_link">
+    <div class="col-lg-6">
+      <input type="text" class="form-control" placeholder="" ng-model="EventObj.short_link" ng-keyup="checkShortLink($event.target.value)">
+    </div>
+    <div class="col-lg-3">
+        {{EventObj.short_link_available}}
     </div>
   </div>
   <div class="form-group">
