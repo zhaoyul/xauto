@@ -7,8 +7,10 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 
 from event.models import Event, EventDate
-from .serializers import (EventSerializer, EventDetailsSerializer,
-    EventModelSerializer, EventImageSerializer, EventDateSerializer)
+from event.serializers import (EventSerializer, EventDetailsSerializer,
+    EventModelSerializer, EventDateSerializer)
+from account.serializers import UserProfileSerializer, UserSerializer
+from account.models import UserProfile
 
 
 class EventsListView(ListAPIView):
@@ -43,8 +45,7 @@ class EventViewSet(ModelViewSet):
 
     def pre_save(self, obj):
         if not obj.author:
-            user = self.request.user
-            obj.author = user.profile
+            obj.author = self.request.user.profile
 
 '''
 class EventEditView2(APIView):
@@ -113,3 +114,52 @@ class CheckShortLinkView(APIView):
             data = {'response': 'Unavailable'}
 
         return Response(data, status=status.HTTP_200_OK)
+
+
+class UserProfileViewSet(ModelViewSet):
+    serializer_class = UserProfileSerializer
+    model = UserProfile
+
+    def pre_save(self, obj):
+        user_data = self.request.DATA.get('user', {})
+
+        full_name = user_data.get('full_name', '').split(' ')
+        user_data['first_name'] = full_name[0]
+        if len(full_name) > 1:
+            user_data['last_name'] = ' '.join(full_name[1:])
+
+        user_serializer = UserSerializer(obj.user, data=user_data)
+
+        if user_serializer.is_valid():
+            password = user_data.get('password_1', '')
+            if password:
+                if password == user_data.get('password_2', ''):
+                    user_serializer.object.set_password(password)
+
+            user_serializer.save()
+
+
+class FollowProfileView(APIView):
+    """
+    Adding current user as follower of Profile
+    """
+    def put(self, request, profile_id, *args, **kwargs):
+        user = request.user
+        profile = UserProfile.objects.get(id=profile_id)
+        srv_following = False
+        try:
+            if user.profile.followed_profiles.filter(id=profile_id).count():
+                user.profile.followed_profiles.remove(profile)
+            else:
+                user.profile.followed_profiles.add(profile)
+                srv_following = True
+
+            data = {
+                'srv_followersCount': profile.followed.count(),
+                'srv_following': srv_following
+            }
+
+            return Response(data, status=status.HTTP_200_OK)
+        except:
+            pass
+        return Response({}, status=status.HTTP_403_FORBIDDEN)

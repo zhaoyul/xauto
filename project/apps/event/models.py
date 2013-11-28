@@ -4,7 +4,6 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
-
 # ---------------------------------------------------
 # --- Django addon                                ---
 #from livesettings.models import Setting
@@ -12,6 +11,7 @@ from sorl.thumbnail.fields import ImageField
 
 from account.models import UserProfile
 from xauto_lib.models import TimestampedModel
+from multiuploader.models import MultiuploaderImage
 
 class Currency(models.Model):
     class Meta:
@@ -43,18 +43,22 @@ class EventDate(TimestampedModel):
     Start / End Date  - Price/Cost / featured
     """
 
-    location_name = models.CharField(max_length=250, default='', null=True, blank=True)
+    location_name = models.CharField(max_length=250, default='', null=True,
+                                     blank=True)
     latitude = models.FloatField(default=0.00)
     longitude = models.FloatField(default=0.00)
-    address_1 = models.CharField(max_length=100, default='', null=True, blank=True)
-    address_2 = models.CharField(max_length=100, default='', null=True, blank=True)
+    address_1 = models.CharField(max_length=100, default='', null=True,
+                                 blank=True)
+    address_2 = models.CharField(max_length=100, default='', null=True,
+                                 blank=True)
     country = models.CharField(max_length=50,null=True, blank=True)
     country_short = models.CharField(max_length=50,null=True, blank=True)
     city = models.CharField(max_length=100,null=True, blank=True)
     state = models.CharField(max_length=50,null=True, blank=True)
     region = models.CharField(max_length=50,null=True, blank=True)
     zipcode = models.CharField(max_length=20, null=True, blank=True)
-    event = models.ForeignKey('Event', related_name='event_dates', verbose_name='Your Event')
+    event = models.ForeignKey('Event', related_name='event_dates',
+                              verbose_name='Your Event')
     #author = models.ForeignKey(User, related_name='user_event_date', verbose_name='Event Author')
     start_date = models.DateTimeField(null=True, blank=False)
     end_date = models.DateTimeField(null=True, blank=True)
@@ -63,13 +67,20 @@ class EventDate(TimestampedModel):
     currency = models.ForeignKey(Currency, null=True, blank=True ) #, default=lambda: Currency.objects.get(currency='USD', country_code='US')
     attend_free = models.BooleanField(default=False)
     exhibit_free = models.BooleanField(default=False)
-    attend_price_from = models.FloatField(default=0.0, verbose_name='Attend Price US$ (From)')    # price range from (attend)
-    attend_price_to = models.FloatField(default=0.0, verbose_name='Attend Price US$ (To)')      # price range from (attend)
-    exhibit_price_from = models.FloatField(default=0.0, verbose_name='Exhibit Price US$ (From)')   # price range from (exhibit)
-    exhibit_price_to = models.FloatField(default=0.0, verbose_name='Exhibit Price US$ (To)')     # price range from (exhibit)
+    attend_price_from = models.FloatField(default=0.0,
+        verbose_name='Attend Price US$ (From)')    # price range from (attend)
+    attend_price_to = models.FloatField(default=0.0,
+        verbose_name='Attend Price US$ (To)')      # price range from (attend)
+    exhibit_price_from = models.FloatField(default=0.0,
+        verbose_name='Exhibit Price US$ (From)')   # price range from (exhibit)
+    exhibit_price_to = models.FloatField(default=0.0,
+        verbose_name='Exhibit Price US$ (To)')     # price range from (exhibit)
+    shared = models.ManyToManyField(UserProfile, null=True, blank=True,
+                                    related_name='shared_dates')
 
     def __unicode__(self):
-        return '(%s) - %s/%s' % (self.event.title.capitalize(), self.start_date, self.end_date)
+        return '(%s) - %s/%s' % (self.event.title.capitalize(),
+                                 self.start_date, self.end_date)
 
 
 class Event(TimestampedModel):
@@ -118,18 +129,24 @@ class Event(TimestampedModel):
     title = models.CharField(max_length=255, null=True, blank=True)
     about = models.TextField()
 
-    author = models.ForeignKey(UserProfile, related_name='authored_event', null=True, blank=True)
-    #profile = models.ForeignKey(UserProfile, related_name='event_user_profile', null=True, blank=True)
-    duration = models.PositiveIntegerField(default=0, verbose_name='Duration in Days')
+    author = models.ForeignKey(UserProfile, related_name='authored_event',
+        null=True, blank=True)
 
-    status = models.CharField(max_length=15, db_index=True, choices=STATUS_CHOICES, default=STATUS_NEW)
+    duration = models.PositiveIntegerField(default=0,
+         verbose_name='Duration in Days')
+
+    status = models.CharField(max_length=15, db_index=True,
+        choices=STATUS_CHOICES, default=STATUS_NEW)
     eventSize = models.IntegerField(choices=EVENT_SIZE, default=10)  # How big is your event in Cars
     capacity = models.IntegerField(default=0)  # How big is your Capacity in people in people
-    short_link = models.CharField(max_length=50, default='')
+    short_link = models.CharField(max_length=50, default='', unique=True)
 
-    main_image = models.ForeignKey('EventImage', on_delete=models.SET_NULL, blank=True, null=True, related_name='main')
+    main_image = models.ForeignKey('EventImage', on_delete=models.SET_NULL,
+        blank=True, null=True, related_name='main')
 
-    followed = models.ManyToManyField(UserProfile, related_name='followed_events', null=True, blank=True, verbose_name='Event followed by')
+    followed = models.ManyToManyField(UserProfile,
+        related_name='followed_events', null=True, blank=True,
+        verbose_name='Event followed by')
 
     def get_future_dates(self):
         return self.event_dates.filter(
@@ -149,6 +166,9 @@ class Event(TimestampedModel):
                 end_date__gt=datetime.now()).count():
             return True
         return False
+
+    def event_upload_images(self):
+        return MultiuploaderImage.objects.filter(event_date__event_id=self.id)
 
 class EventImage(TimestampedModel):
     """

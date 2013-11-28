@@ -4,17 +4,16 @@ from sorl.thumbnail import get_thumbnail
 from django_resized.forms import ResizedImageField
 from django.contrib.auth.models import User
 
-from event.models import Event
+#from event.models import EventDate
 from account.models import UserProfile
 
 from django.conf import settings
 from xauto_lib.models import TimestampedModel
 
 try:
-    storage = settings.MULTI_IMAGES_FOLDER+'/'
+    storage = settings.MULTI_IMAGES_FOLDER + '/'
 except AttributeError:
     storage = 'multiuploader_images/'
-
 
 
 class MultiuploaderImage(TimestampedModel):
@@ -24,23 +23,30 @@ class MultiuploaderImage(TimestampedModel):
     IMAGE_TYPE = (
         ('team', 'team'),
         ('event', 'event'),
-        ('user', 'user' ))
+        ('user', 'user'))
 
-    userprofile = models.ForeignKey(UserProfile, blank=True, null=True, related_name='profile_images')
-    event = models.ForeignKey(Event, blank=True, null=True, related_name='event_upload_images')
+    userprofile = models.ForeignKey(UserProfile, blank=True, null=True,
+                                    related_name='profile_images')
+    event_date = models.ForeignKey('event.EventDate', blank=True, null=True,
+                                   related_name='event_upload_images')
     filename = models.CharField(max_length=60, blank=True, null=True)
     about = models.CharField(max_length=255, blank=True, null=True)
-    key_data = models.CharField(max_length=90, unique=True, blank=True, null=True)
+    key_data = models.CharField(max_length=90, unique=True, blank=True,
+                                null=True)
     image_type = models.CharField(max_length=10, blank=True, null=True)
     size = models.FloatField(default=0.0)
     upload_date = models.DateTimeField(auto_now_add=True)
-    application = models.CharField(choices=IMAGE_TYPE, max_length=30, default='team')
+    application = models.CharField(choices=IMAGE_TYPE, max_length=30,
+                                   default='team')
     latitude = models.FloatField(default=0.00)
     longitude = models.FloatField(default=0.00)
     is_irrelevant = models.BooleanField(default=False)
     is_inappropriate = models.BooleanField(default=False)
+    favorite_by = models.ManyToManyField(UserProfile,
+        related_name='favorite_images', null=True, blank=True,
+        verbose_name='Image favorite by')
 
-    image = ResizedImageField(max_width=800, max_height=600,  upload_to=storage,)
+    image = ResizedImageField(max_width=800, max_height=600, upload_to=storage)
     caption = models.CharField(max_length=100, blank=True)
 
     @property
@@ -71,16 +77,17 @@ class MultiuploaderImage(TimestampedModel):
             items = MultiuploaderImage.objects.filter(event=eventObj)
             if items:
                 imageRecord = items[0]
-                imgObject = get_thumbnail(imageRecord, '50x50', crop='center', quality=99)
+                imgObject = get_thumbnail(imageRecord, '50x50', crop='center',
+                                          quality=99)
                 urlImg = imgObject.url
                 htmlDiv = '<img src="%s"/>' % urlImg
                 return htmlDiv
         except:
             pass
-        return  '<img src="%s"/ width="50"  height="50">' % ('/static/images/default_pic.jpg')
+        return  '<img src="%s"/ width="50"  height="50">' % \
+            ('/static/images/default_pic.jpg')
 
     EVENT_IMAGE.allow_tags = True
-
 
 
 class MultiuploaderFiles(TimestampedModel):
@@ -92,17 +99,21 @@ class MultiuploaderFiles(TimestampedModel):
         ('team', 'team'),
         ('event', 'event'),
         ('message', 'message'),
-        ('user', 'user' ))
+        ('user', 'user'))
 
-    user = models.ForeignKey(User, blank=True, null=True, related_name='upload_files')
-    event = models.ForeignKey(Event, blank=True, null=True, related_name='event_upload_files')
+    user = models.ForeignKey(User, blank=True, null=True,
+                             related_name='upload_files')
+    event_date = models.ForeignKey('event.EventDate', blank=True, null=True,
+                                   related_name='event_upload_files')
     filename = models.CharField(max_length=60, blank=True, null=True)
     file_type = models.CharField(max_length=10, blank=True, null=True)
     path = models.CharField(max_length=255, blank=True, null=True)
-    key_data = models.CharField(max_length=90, unique=True, blank=True, null=True)
+    key_data = models.CharField(max_length=90, unique=True, blank=True,
+                                null=True)
     size = models.FloatField(default=0.0)
     upload_date = models.DateTimeField(auto_now_add=True)
-    application = models.CharField(choices=IMAGE_TYPE, max_length=30, default='team')
+    application = models.CharField(choices=IMAGE_TYPE, max_length=30,
+                                   default='team')
     caption = models.CharField(max_length=100, blank=True)
 
     def __unicode__(self):

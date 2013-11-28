@@ -70,4 +70,38 @@ angular.module('eventServices', ['restangular'])
   };
 
   return DateObj;
+}])
+
+.factory('ProfileObj', ['Restangular', function(Restangular){
+
+  var ProfileObj = {};
+
+  ProfileObj.getProfiles = function (params) {
+      return Restangular.all('profiles').getList(params);
+  };
+
+  ProfileObj.Follow = function (pk) {
+      return Restangular.one('profiles', pk).customPUT(pk, 'follow');
+  };
+
+  ProfileObj.getDetails = function (pk) {
+      return Restangular.one('profiles', pk).get();
+  };
+
+  return ProfileObj;
+}])
+
+.factory('AccountObj', ['Restangular', function(Restangular){
+
+  var AccountObj = {};
+
+  AccountObj.getAccount = function (pk) {
+      return Restangular.one('profiles', pk).get();
+  };
+
+  AccountObj.saveAccount = function (account) {
+      return Restangular.one('profiles', account.id).customPUT(account);
+  };
+
+  return AccountObj;
 }]);

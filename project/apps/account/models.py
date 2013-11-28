@@ -23,7 +23,7 @@ from xauto_lib.models import TimestampedModel
 class UserProfile(TimestampedModel):
 
     user = models.OneToOneField(User, related_name='profile')
-    name = models.CharField(max_length=255, null=True, blank=True)
+    name = models.CharField(max_length=255, unique=True, default='')
     about = models.TextField(null=True, blank=True)
 
     location_address = models.CharField(max_length=255, null=True, blank=True)
@@ -37,9 +37,13 @@ class UserProfile(TimestampedModel):
 
     main_image = ImageField(upload_to='account_images/')
     thumbnail_image = ImageField(upload_to='account_images/')
+    followed = models.ManyToManyField('account.UserProfile', null=True, blank=True,
+        related_name='followed_profiles', verbose_name='Profile followed by')
+
 
     def get_full_name(self):
-        full_name = '%s %s' % (string.capitalize(self.user.first_name), string.capitalize(self.user.last_name))
+        full_name = '%s %s' % (string.capitalize(self.user.first_name),
+                                string.capitalize(self.user.last_name))
 
         if len(full_name.lstrip()) == 0:
             return self.user.username

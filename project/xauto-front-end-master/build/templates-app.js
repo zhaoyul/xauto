@@ -10,7 +10,7 @@ angular.module("account/account-edit.tpl.html", []).run(["$templateCache", funct
     "<h1>Edit Account Info</h1>\n" +
     "<div class=\"row\">\n" +
     "	<div class=\"col-lg-8\">\n" +
-    "		<form class=\"form-horizontal\" role=\"form\">\n" +
+    "		<form class=\"form-horizontal\" role=\"form\" ng-submit=\"accountSubmit()\">\n" +
     "			<ng-include src=\"'account/partial_create_account.tpl.html'\"></ng-include>\n" +
     "\n" +
     "			  <div class=\"form-group\">\n" +
@@ -71,36 +71,75 @@ angular.module("account/partial_create_account.tpl.html", []).run(["$templateCac
     "  <div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">Display Name</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"\">\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.user.full_name\">\n" +
     "      <span class=\"help-block\">Tip: Use your real name so people can find and follow you</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">Username</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"\">\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.name\">\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">Email</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"email\" class=\"form-control\" placeholder=\"\">\n" +
+    "      <input type=\"email\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.user.email\">\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">Password</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"password\" class=\"form-control\" placeholder=\"\">\n" +
+    "      <input type=\"password\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.user.password_1\">\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +
     "    <label for=\"inputPassword1\" class=\"col-lg-3 control-label\">Confirm Password</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"password\" class=\"form-control\" placeholder=\"\">\n" +
+    "      <input type=\"password\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.user.password_2\">\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  \n" +
-    "  \n" +
+    "  <div class=\"form-group\">\n" +
+    "    <label class=\"col-lg-3 control-label\">About Account</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <textarea class=\"form-control\" ng-model=\"AccountObj.about\"></textarea>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Location Address</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.location_address\">\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\">\n" +
+    "    <label class=\"col-lg-3 control-label\">City</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.city\">\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\">\n" +
+    "    <label class=\"col-lg-3 control-label\">State</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.state\">\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\">\n" +
+    "    <label class=\"col-lg-3 control-label\">ZIP/Postal Code</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.zip\">\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Country</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <select class=\"form-control\" ng-model=\"AccountObj.country\">\n" +
+    "        <option>USA</option>\n" +
+    "        <option>Armenia</option>\n" +
+    "        <option>Spain</option>\n" +
+    "      </select>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "\n" +
     "");
 }]);
 
@@ -740,21 +779,21 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"radioModel\" btn-radio=\"'Following'\">Following</button>\n" +
     "    </div>\n" +
     "    <ul class=\"people-list\">\n" +
-    "      <li>\n" +
+    "      <li ng-repeat=\"profile in Profiles\">\n" +
     "        <div class=\"row profile-item\">\n" +
     "          <div class=\"col-xs-12 col-sm-6 col-md-4 photo-name-col\">\n" +
-    "            <a href=\"#profile/LewHamF1\"><img src=\"assets/images/profile_pic_1.jpg\" alt=\"\" class=\"user-pic\"></a>\n" +
+    "            <a href=\"#profile/{{profile.id}}\"><img src=\"/media/{{profile.main_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +
     "            <div class=\"name-wrapper\">\n" +
-    "              <strong><a href=\"#profile/LewHamF1\">Lewis Hamilton</a></strong>\n" +
-    "              <span class=\"username\"><a href=\"#profile/LewHamF1\">@LewHamF1</a></span>\n" +
+    "              <strong><a href=\"#profile/{{profile.id}}\">{{profile.full_name}}</a></strong>\n" +
+    "              <span class=\"username\"><a href=\"#profile/{{profile.id}}\">{{profile.name}}</a></span>\n" +
     "              <span class=\"location\">\n" +
-    "                <i class=\"xa-icon-location\"></i> Los Angeles, CA\n" +
+    "                <i class=\"xa-icon-location\"></i> {{profile.location_address}}\n" +
     "              </span>\n" +
     "            </div>\n" +
     "          </div>\n" +
     "          <div class=\"col-md-3 hidden-xs hidden-sm about-col\">\n" +
     "            <p>\n" +
-    "              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eleifend scelerisque porta. Duis tempor, leo at tincidunt rutrum, eros sem suscipit est.\n" +
+    "              {{profile.about}}\n" +
     "            </p>\n" +
     "          </div>\n" +
     "          <div class=\"col-xs-6 col-sm-4 col-md-3 counts-col\">\n" +
@@ -762,7 +801,7 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "              <li>\n" +
     "                <a href=\"#\">\n" +
     "                  <span class=\"count-badge\">\n" +
-    "                    <span class=\"badge\">13</span>\n" +
+    "                    <span class=\"badge\">{{profile.srv_photosCount}}</span>\n" +
     "                  </span>\n" +
     "                  <span class=\"count-title\">\n" +
     "                    Photos\n" +
@@ -772,7 +811,7 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "              <li>\n" +
     "                <a href=\"#\">\n" +
     "                  <span class=\"count-badge\">\n" +
-    "                    <span class=\"badge\">8</span>\n" +
+    "                    <span class=\"badge\">{{profile.srv_followersCount}}</span>\n" +
     "                  </span>\n" +
     "                  <span class=\"count-title\">\n" +
     "                    Followers\n" +
@@ -782,7 +821,7 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "              <li>\n" +
     "                <a href=\"#\">\n" +
     "                  <span class=\"count-badge\">\n" +
-    "                    <span class=\"badge\">174</span>\n" +
+    "                    <span class=\"badge\">{{profile.srv_followingCount}}</span>\n" +
     "                  </span>\n" +
     "                  <span class=\"count-title\">\n" +
     "                    Following\n" +
@@ -792,74 +831,18 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "            </ul>\n" +
     "          </div>\n" +
     "          <div class=\"col-xs-6 col-sm-2 col-md-2 follow-col\">\n" +
-    "            <a href=\"#\">\n" +
+    "            <a href=\"javascript:;\"\n" +
+    "              ng-click=\"Follow(profile)\"\n" +
+    "              ng-class=\"{following:profile.srv_following}\">\n" +
     "              <i class=\"xa-icon-event-details-follow\"></i>\n" +
-    "              Follow\n" +
-    "            </a>\n" +
-    "          </div>\n" +
-    "        </div>\n" +
-    "      </li>\n" +
-    "      <li>\n" +
-    "        <div class=\"row profile-item\">\n" +
-    "          <div class=\"col-xs-12 col-sm-6 col-md-4 photo-name-col\">\n" +
-    "            <a href=\"#profile/LewHamF1\"><img src=\"assets/images/profile_pic_1.jpg\" alt=\"\" class=\"user-pic\"></a>\n" +
-    "            <div class=\"name-wrapper\">\n" +
-    "              <strong><a href=\"#profile/LewHamF1\">Lewis Hamilton</a></strong>\n" +
-    "              <span class=\"username\"><a href=\"#profile/LewHamF1\">@LewHamF1</a></span>\n" +
-    "              <span class=\"location\">\n" +
-    "                <i class=\"xa-icon-location\"></i> Los Angeles, CA\n" +
-    "              </span>\n" +
-    "            </div>\n" +
-    "          </div>\n" +
-    "          <div class=\"col-md-3 hidden-xs hidden-sm about-col\">\n" +
-    "            <p>\n" +
-    "              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eleifend scelerisque porta. Duis tempor, leo at tincidunt rutrum, eros sem suscipit est.\n" +
-    "            </p>\n" +
-    "          </div>\n" +
-    "          <div class=\"col-xs-6 col-sm-4 col-md-3 counts-col\">\n" +
-    "            <ul>\n" +
-    "              <li>\n" +
-    "                <a href=\"#\">\n" +
-    "                  <span class=\"count-badge\">\n" +
-    "                    <span class=\"badge\">13</span>\n" +
-    "                  </span>\n" +
-    "                  <span class=\"count-title\">\n" +
-    "                    Photos\n" +
-    "                  </span>\n" +
-    "                </a>\n" +
-    "              </li>\n" +
-    "              <li>\n" +
-    "                <a href=\"#\">\n" +
-    "                  <span class=\"count-badge\">\n" +
-    "                    <span class=\"badge\">8</span>\n" +
-    "                  </span>\n" +
-    "                  <span class=\"count-title\">\n" +
-    "                    Followers\n" +
-    "                  </span>\n" +
-    "                </a>\n" +
-    "              </li>\n" +
-    "              <li>\n" +
-    "                <a href=\"#\">\n" +
-    "                  <span class=\"count-badge\">\n" +
-    "                    <span class=\"badge\">174</span>\n" +
-    "                  </span>\n" +
-    "                  <span class=\"count-title\">\n" +
-    "                    Following\n" +
-    "                  </span>\n" +
-    "                </a>\n" +
-    "              </li>\n" +
-    "            </ul>\n" +
-    "          </div>\n" +
-    "          <div class=\"col-xs-6 col-sm-2 col-md-2 follow-col\">\n" +
-    "            <a href=\"#\">\n" +
-    "              <i class=\"xa-icon-event-details-follow\"></i>\n" +
-    "              Follow\n" +
+    "              <span ng-hide=\"profile.srv_following\">Follow</span>\n" +
+    "              <span ng-show=\"profile.srv_following\">Following</span>\n" +
     "            </a>\n" +
     "          </div>\n" +
     "        </div>\n" +
     "      </li>\n" +
     "    </ul>\n" +
-    "    \n" +
+    "\n" +
     "  </div>\n" +
     "</div>");
 }]);
@@ -867,109 +850,112 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
 angular.module("people/profile-view.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("people/profile-view.tpl.html",
     "<div class=\"row\">\n" +
-    "	<div class=\"col-xs-12 col-sm-10 col-lg-11\">\n" +
-    "		<div class=\"row\">\n" +
-    "			<div class=\"col-xs-12\">\n" +
-    "				<div id=\"profile-view-page-head\">\n" +
-    "					<div class=\"row-wrapper\">\n" +
-    "						<div class=\"row\" id=\"profile-view-cover-wrapper\">\n" +
-    "							<div class=\"col-xs-12\" >\n" +
-    "								<div \n" +
-    "									class=\"profile-view-cover-photo\"\n" +
-    "									style=\"background-image:url('uploads/events/1/main/main_photo.jpg')\"\n" +
-    "								></div>\n" +
-    "							</div>\n" +
-    "						</div>\n" +
-    "						<div class=\"row\" id=\"profile-view-navbar\">\n" +
-    "							<div class=\"col-xs-12\">\n" +
-    "								\n" +
-    "										<div class=\"row profile-item\">\n" +
-    "										  <div class=\"col-xs-12 col-sm-6 col-md-4 photo-name-col\">\n" +
-    "										    <a href=\"#profile/LewHamF1\"><img src=\"assets/images/profile_pic_1.jpg\" alt=\"\" class=\"user-pic\"></a>\n" +
-    "										    <div class=\"name-wrapper\">\n" +
-    "										      <strong><a href=\"#profile/LewHamF1\">Lewis Hamilton</a></strong>\n" +
-    "										      <span class=\"username\"><a href=\"#profile/LewHamF1\">@LewHamF1</a></span>\n" +
-    "										      <span class=\"location\">\n" +
-    "										        <i class=\"xa-icon-location\"></i> Los Angeles, CA\n" +
-    "										      </span>\n" +
-    "										    </div>\n" +
-    "										  </div>\n" +
-    "										  <div class=\"col-md-3 hidden-xs hidden-sm about-col\">\n" +
-    "										    <p>\n" +
-    "										      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eleifend scelerisque porta. Duis tempor, leo at tincidunt rutrum, eros sem suscipit est.\n" +
-    "										    </p>\n" +
-    "										  </div>\n" +
-    "										  <div class=\"col-xs-6 col-sm-4 col-md-3 counts-col\">\n" +
-    "										    <ul>\n" +
-    "										      <li>\n" +
-    "										        <a href=\"#\">\n" +
-    "										          <span class=\"count-badge\">\n" +
-    "										            <span class=\"badge\">13</span>\n" +
-    "										          </span>\n" +
-    "										          <span class=\"count-title\">\n" +
-    "										            Photos\n" +
-    "										          </span>\n" +
-    "										        </a>\n" +
-    "										      </li>\n" +
-    "										      <li>\n" +
-    "										        <a href=\"#\">\n" +
-    "										          <span class=\"count-badge\">\n" +
-    "										            <span class=\"badge\">8</span>\n" +
-    "										          </span>\n" +
-    "										          <span class=\"count-title\">\n" +
-    "										            Followers\n" +
-    "										          </span>\n" +
-    "										        </a>\n" +
-    "										      </li>\n" +
-    "										      <li>\n" +
-    "										        <a href=\"#\">\n" +
-    "										          <span class=\"count-badge\">\n" +
-    "										            <span class=\"badge\">174</span>\n" +
-    "										          </span>\n" +
-    "										          <span class=\"count-title\">\n" +
-    "										            Following\n" +
-    "										          </span>\n" +
-    "										        </a>\n" +
-    "										      </li>\n" +
-    "										    </ul>\n" +
-    "										  </div>\n" +
-    "										  <div class=\"col-xs-6 col-sm-2 col-md-2 follow-col\">\n" +
-    "										    <a href=\"#\">\n" +
-    "										      <i class=\"xa-icon-event-details-follow\"></i>\n" +
-    "										      Follow\n" +
-    "										    </a>\n" +
-    "										  </div>\n" +
-    "										</div>\n" +
-    "									\n" +
-    "							</div>\n" +
-    "						</div>\n" +
-    "					</div>\n" +
-    "				</div>\n" +
-    "			</div>\n" +
-    "			\n" +
-    "		</div>\n" +
-    "		<div class=\"row\">\n" +
-    "			<div class=\"col-xs-12\">\n" +
-    "				<!-- <ul class=\"nav nav-tabs event-details-tabs\">\n" +
-    "					<li class=\"active\"><a data-toggle=\"tab\" data-target=\"#stream\">Live Stream</a></li>\n" +
-    "					<li><a data-toggle=\"tab\" data-target=\"#photos\">{{EventObj.srv_photosCount}} Photos</a></li>\n" +
-    "					<li><a data-toggle=\"tab\" data-target=\"#followers\">{{EventObj.srv_followersCount}} Followers</a></li>\n" +
-    "				</ul> -->\n" +
+    "    <div class=\"col-xs-12 col-sm-10 col-lg-11\">\n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-12\">\n" +
+    "                <div id=\"profile-view-page-head\">\n" +
+    "                    <div class=\"row-wrapper\">\n" +
+    "                        <div class=\"row\" id=\"profile-view-cover-wrapper\">\n" +
+    "                            <div class=\"col-xs-12\" >\n" +
+    "                                <div\n" +
+    "                                    class=\"profile-view-cover-photo\"\n" +
+    "                                    style=\"background-image:url('/media/{{ProfileObj.main_image}}')\"\n" +
+    "                                ></div>\n" +
+    "                            </div>\n" +
+    "                        </div>\n" +
+    "                        <div class=\"row\" id=\"profile-view-navbar\">\n" +
+    "                            <div class=\"col-xs-12\">\n" +
     "\n" +
-    "				<div class=\"tab-content event-details-tab-contents\">\n" +
-    "				  <div class=\"active tab-pane\" id=\"stream\">\n" +
-    "				  	<ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>\n" +
-    "				  </div>\n" +
-    "				  <div class=\"tab-pane\" id=\"photos\">\n" +
-    "				  	<ng-include src=\"'events/partial_event_details_photos.tpl.html'\"></ng-include>\n" +
-    "				  </div>\n" +
-    "				  <div class=\"tab-pane\" id=\"followers\">\n" +
-    "				  	Followers\n" +
-    "				  </div>\n" +
-    "				</div>\n" +
-    "			</div>\n" +
-    "		</div>		\n" +
-    "	</div>\n" +
+    "                                        <div class=\"row profile-item\">\n" +
+    "                                          <div class=\"col-xs-12 col-sm-6 col-md-4 photo-name-col\">\n" +
+    "                                            <a href=\"#profile/LewHamF1\"><img src=\"/media/{{ProfileObj.main_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +
+    "                                            <div class=\"name-wrapper\">\n" +
+    "                                              <strong><a href=\"#profile/LewHamF1\">{{ProfileObj.full_name}}</a></strong>\n" +
+    "                                              <span class=\"username\"><a href=\"#profile/LewHamF1\">{{ProfileObj.name}}</a></span>\n" +
+    "                                              <span class=\"location\">\n" +
+    "                                                <i class=\"xa-icon-location\"></i> {{ProfileObj.location}}\n" +
+    "                                              </span>\n" +
+    "                                            </div>\n" +
+    "                                          </div>\n" +
+    "                                          <div class=\"col-md-3 hidden-xs hidden-sm about-col\">\n" +
+    "                                            <p>\n" +
+    "                                              {{ProfileObj.about}}\n" +
+    "                                            </p>\n" +
+    "                                          </div>\n" +
+    "                                          <div class=\"col-xs-6 col-sm-4 col-md-3 counts-col\">\n" +
+    "                                            <ul>\n" +
+    "                                              <li>\n" +
+    "                                                <a href=\"#\">\n" +
+    "                                                  <span class=\"count-badge\">\n" +
+    "                                                    <span class=\"badge\">{{ProfileObj.srv_photosCount}}</span>\n" +
+    "                                                  </span>\n" +
+    "                                                  <span class=\"count-title\">\n" +
+    "                                                    Photos\n" +
+    "                                                  </span>\n" +
+    "                                                </a>\n" +
+    "                                              </li>\n" +
+    "                                              <li>\n" +
+    "                                                <a href=\"#\">\n" +
+    "                                                  <span class=\"count-badge\">\n" +
+    "                                                    <span class=\"badge\">{{ProfileObj.srv_followersCount}}</span>\n" +
+    "                                                  </span>\n" +
+    "                                                  <span class=\"count-title\">\n" +
+    "                                                    Followers\n" +
+    "                                                  </span>\n" +
+    "                                                </a>\n" +
+    "                                              </li>\n" +
+    "                                              <li>\n" +
+    "                                                <a href=\"#\">\n" +
+    "                                                  <span class=\"count-badge\">\n" +
+    "                                                    <span class=\"badge\">{{ProfileObj.srv_followingCount}}</span>\n" +
+    "                                                  </span>\n" +
+    "                                                  <span class=\"count-title\">\n" +
+    "                                                    Following\n" +
+    "                                                  </span>\n" +
+    "                                                </a>\n" +
+    "                                              </li>\n" +
+    "                                            </ul>\n" +
+    "                                          </div>\n" +
+    "                                          <div class=\"col-xs-6 col-sm-2 col-md-2 follow-col\">\n" +
+    "                                            <a href=\"javascript:;\"\n" +
+    "                                              ng-click=\"Follow(ProfileObj)\"\n" +
+    "                                              ng-class=\"{following:ProfileObj.srv_following}\">\n" +
+    "                                              <i class=\"xa-icon-event-details-follow\"></i>\n" +
+    "                                              <span ng-hide=\"ProfileObj.srv_following\">Follow</span>\n" +
+    "                                              <span ng-show=\"ProfileObj.srv_following\">Following</span>\n" +
+    "                                            </a>\n" +
+    "                                          </div>\n" +
+    "                                        </div>\n" +
+    "\n" +
+    "                            </div>\n" +
+    "                        </div>\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "\n" +
+    "        </div>\n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-12\">\n" +
+    "                <!-- <ul class=\"nav nav-tabs event-details-tabs\">\n" +
+    "                    <li class=\"active\"><a data-toggle=\"tab\" data-target=\"#stream\">Live Stream</a></li>\n" +
+    "                    <li><a data-toggle=\"tab\" data-target=\"#photos\">{{EventObj.srv_photosCount}} Photos</a></li>\n" +
+    "                    <li><a data-toggle=\"tab\" data-target=\"#followers\">{{EventObj.srv_followersCount}} Followers</a></li>\n" +
+    "                </ul> -->\n" +
+    "\n" +
+    "                <div class=\"tab-content event-details-tab-contents\">\n" +
+    "                  <div class=\"active tab-pane\" id=\"stream\">\n" +
+    "                      <ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>\n" +
+    "                  </div>\n" +
+    "                  <div class=\"tab-pane\" id=\"photos\">\n" +
+    "                      <ng-include src=\"'events/partial_event_details_photos.tpl.html'\"></ng-include>\n" +
+    "                  </div>\n" +
+    "                  <div class=\"tab-pane\" id=\"followers\">\n" +
+    "                      Followers\n" +
+    "                  </div>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
     "</div>\n" +
     "\n" +
     "");

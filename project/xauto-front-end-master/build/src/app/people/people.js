@@ -35,7 +35,7 @@ angular.module( 'blvdx.people', [
     }
   })
   .state( 'profileView', {
-    url: '/profile/:username',
+    url: '/profile/:profileId',
     views: {
       "main": {
         controller: 'ProfileViewCtrl',
@@ -48,17 +48,37 @@ angular.module( 'blvdx.people', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'PeopleCtrl', function PeopleCtrl( $scope, titleService ) {
+.controller( 'PeopleCtrl', function PeopleCtrl( $scope, titleService, ProfileObj ) {
   titleService.setTitle( 'People' );
    $scope.radioModel = 'All';
+
+  ProfileObj.getProfiles({}).then(function (profiles) {
+      $scope.Profiles = profiles;
+  });
+
+  $scope.Follow = function($profile) {
+      ProfileObj.Follow($profile.id).then(function (profile) {
+          $profile.srv_following = profile.srv_following;
+          $profile.srv_followersCount = profile.srv_followersCount;
+      });
+  };
+
 })
-.controller( 'ProfileViewCtrl', function ProfileViewCtrl( $scope, titleService, $stateParams, EventObj ) {
-  
+
+.controller( 'ProfileViewCtrl', function ProfileViewCtrl( $scope, titleService, $stateParams, ProfileObj ) {
+
   titleService.setTitle( $stateParams.username+' - Profile' );
 
-  // for example.
-  $scope.EventObj = EventObj.get({eventId:1});
-  // end of example
+  ProfileObj.getDetails($stateParams.profileId).then(function (profile) {
+      $scope.ProfileObj = profile;
+  });
+
+  $scope.Follow = function($profile) {
+      ProfileObj.Follow($profile.id).then(function (profile) {
+          $profile.srv_following = profile.srv_following;
+          $profile.srv_followersCount = profile.srv_followersCount;
+      });
+  };
 
 })
 ;

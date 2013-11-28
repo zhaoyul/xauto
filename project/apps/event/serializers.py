@@ -2,7 +2,7 @@
 from rest_framework import serializers
 
 from event.models import Event, EventImage, EventDate
-from multiuploader.models import MultiuploaderImage
+from multiuploader.serializers import MultiuploaderImageSerializer
 
 
 class EventImageSerializer(serializers.ModelSerializer):
@@ -11,14 +11,6 @@ class EventImageSerializer(serializers.ModelSerializer):
     """
     class Meta(object):
         model = EventImage
-
-
-class MultiuploaderImageSerializer(serializers.ModelSerializer):
-    """
-    A serializer for ``MultiuploaderImage``.
-    """
-    class Meta(object):
-        model = MultiuploaderImage
 
 
 class EventDateSerializer(serializers.ModelSerializer):
@@ -58,7 +50,7 @@ class EventSerializer(serializers.ModelSerializer):
         return obj.followed.count()
 
     def srv_photos_count(self, obj):
-        return obj.event_upload_images.count()
+        return obj.event_upload_images().count()
 
     def get_author_name(self, obj):
         if obj.author:
@@ -125,7 +117,7 @@ class EventDetailsSerializer(serializers.ModelSerializer):
         return obj.followed.count()
 
     def srv_photos_count(self, obj):
-        return obj.event_upload_images.count()
+        return obj.event_upload_images().count()
 
     def get_author_name(self, obj):
         if obj.author:

@@ -25,10 +25,10 @@ angular.module( 'blvdx.account', [
     }
   })
   .state( 'accountEdit', {
-    url: '/account/edit',
+    url: '/account/:accountId/edit',
     views: {
       "main": {
-        controller: 'AccountCtrl',
+        controller: 'AccountEditCtrl',
         templateUrl: 'account/account-edit.tpl.html'
       }
     }
@@ -50,9 +50,25 @@ angular.module( 'blvdx.account', [
  */
 .controller( 'AccountCtrl', function AccountCtrl( $scope, titleService ) {
   titleService.setTitle( 'Account' );
-  
+
 
 })
+
+.controller( 'AccountEditCtrl', function AccountCtrl( $scope, titleService, $stateParams, AccountObj ) {
+  titleService.setTitle( 'Edit Account' );
+
+  AccountObj.getAccount($stateParams.accountId).then(function (account) {
+      $scope.AccountObj = account;
+  });
+
+  $scope.accountSubmit = function(){
+    AccountObj.saveAccount($scope.AccountObj).then(function (account) {
+        $('.xa-icon-nav-events').click();
+    });
+  };
+
+})
+
 .controller( 'AccountMyPhotosCtrl', function AccountCtrl( $scope, titleService ) {
   titleService.setTitle( 'My Photos' );
   $scope.eventDetailPhotoAlbums = [

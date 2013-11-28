@@ -26,7 +26,7 @@ class MultiuploaderImageInline(admin.TabularInline):
     model = MultiuploaderImage
     search_fields = ["filename", "key_data", "application"]
     fields = ('filename', 'image_type', 'application', 'image', )
-    list_display = [ "my_image_thumb", "filename", "image", "application", "userprofile", "event"]
+    list_display = [ "my_image_thumb", "filename", "image", "application", "userprofile", "event_date"]
 
     def my_image_thumb(self, obj):
         if obj.image:
@@ -77,7 +77,6 @@ class EventAdmin(AdminImageMixin, admin.ModelAdmin):
 
     inlines = [
         EventDateInline,
-        MultiuploaderImageInline,
         ]
 
     fieldsets = (
@@ -150,7 +149,9 @@ class EventDateAdmin(admin.ModelAdmin):
     exhibit_price_to = models.FloatField(default=0.0, verbose_name='Exhibit Price US$ (To)')     # price range from (exhibit)
 
     """
-
+    inlines = [
+        MultiuploaderImageInline,
+        ]
     list_display = ('location_name', 'start_date', 'end_date', 'created', 'modified', 'attend_free',)
     #readonly_fields = ("send_at",)
     fields = ('event', 'location_name', 'address_1', 'address_2', 'country', 'country_short', 'city' , 'state', 'region', 'zipcode', 'latitude', 'longitude', 'start_date', 'end_date', 'feature_headline', 'feature_detail', 'currency' , 'attend_free', 'attend_price_from', 'attend_price_to', 'exhibit_free',  'exhibit_price_from', 'exhibit_price_to', )
