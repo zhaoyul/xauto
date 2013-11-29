@@ -1,20 +1,20 @@
 <div class="panel-group" id="accordion">
-  <div class="panel panel-default" ng-repeat="album in EventObj.srv_albums">
+  <div class="panel panel-default" ng-repeat="album in Albums">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#album-{{album.albumId}}">
-          {{album.dateText}} - {{album.title}}
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#album-{{album.id}}">
+          {{album.date}} - {{album.feature_headline}}
         </a>
       </h4>
     </div>
-    <div id="album-{{album.albumId}}" class="panel-collapse collapse" ng-class="{in:album.active}">
+    <div id="album-{{album.id}}" class="panel-collapse collapse in" ng-class="{in:album.active}" >
       <div class="panel-body">
         <div class="row">
           <ul class="stream-list">
-            <li class="col-xs-6 col-sm-4 col-lg-3" ng-repeat="item in album.photos">
+            <li class="col-xs-6 col-sm-4 col-lg-3" ng-repeat="photo in album.photos">
               <div class="inner">
-                <div class="stream-picture" 
-                bx-stream-photo="uploads/events/{{EventObj.id}}/albums/{{album.albumId}}/{{item}}"
+                <div class="stream-picture"
+                bx-stream-photo="/media/{{photo.image}}"
                  ></div>
               </div>
             </li>

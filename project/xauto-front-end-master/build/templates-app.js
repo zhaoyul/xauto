@@ -1,4 +1,4 @@
-angular.module('templates-app', ['account/account-edit.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
+angular.module('templates-app', ['account/account-edit.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
 
 angular.module("account/account-edit.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-edit.tpl.html",
@@ -22,6 +22,11 @@ angular.module("account/account-edit.tpl.html", []).run(["$templateCache", funct
     "	</div>\n" +
     "</div>\n" +
     "");
+}]);
+
+angular.module("account/account-my-favorite-photos.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("account/account-my-favorite-photos.tpl.html",
+    "<ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>");
 }]);
 
 angular.module("account/account-my-photos.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -186,144 +191,144 @@ angular.module("events/event-add.tpl.html", []).run(["$templateCache", function(
 angular.module("events/event-details.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("events/event-details.tpl.html",
     "<div class=\"row\">\n" +
-    "	<div class=\"col-xs-12 col-sm-12 col-lg-11\">\n" +
-    "		<div class=\"row\">\n" +
-    "			<div class=\"col-xs-12\">\n" +
-    "				<div id=\"event-details-page-head\">\n" +
-    "					<div class=\"row-wrapper\">\n" +
-    "						<div class=\"row\" id=\"event-details-cover-wrapper\">\n" +
-    "							<div class=\"col-xs-12\" >\n" +
-    "							<div\n" +
-    "								class=\"event-details-cover-photo\"\n" +
-    "								style=\"background-image:url('/media/{{ EventObj.photo }}')\"\n" +
-    "							></div>\n" +
-    "							<div class=\"event-details-overlay\">\n" +
-    "								<div class=\"event-details-header\">\n" +
-    "									<h1 class=\"pull-left\">{{EventObj.title}}</h1>\n" +
-    "									<a href=\"#\" class=\"organizer\" tooltip-placement=\"bottom\" tooltip=\"Organizer: {{EventObj.author_name}}\">\n" +
-    "										<img class=\"user-pic\" alt=\"\" ng-src=\"{{ EventObj.author_photo }}\">\n" +
-    "									</a>\n" +
-    "								</div>\n" +
-    "								<div class=\"event-details-about\" ng-init=\"eventDetailsExpanded=false\" ng-class=\"{expanded: eventDetailsExpanded}\" bx-event-detailed-text-mobile-toggle>\n" +
-    "									<a href=\"javascript:;\" class=\"btn btn-sm btn-primary visible-xs\">show description</a>\n" +
-    "									<p>\n" +
-    "										{{EventObj.about}}\n" +
-    "									</p>\n" +
-    "										<a href=\"javascript:;\" ng-click=\"eventDetailsExpanded=!eventDetailsExpanded\" class='toggle-event-details-about info-close hidden-xs'>\n" +
-    "										<i class=\"icon-remove\"></i>\n" +
-    "									</a>\n" +
-    "								</div>\n" +
-    "								<a href=\"javascript:;\" ng-show=\"!eventDetailsExpanded\" ng-click=\"eventDetailsExpanded=!eventDetailsExpanded\" class='toggle-event-details-about info-opener'>\n" +
-    "									<i class=\"icon-info-sign\"></i>\n" +
-    "								</a>\n" +
-    "							</div>\n" +
-    "							</div>\n" +
-    "						</div>\n" +
-    "						<div class=\"row\" id=\"event-details-navbar\">\n" +
-    "							<div class=\"col-xs-12 col-sm-4\">\n" +
-    "								<div class=\"schedule-dropdown\">\n" +
-    "									<div class=\"dropdown\">\n" +
-    "										<a data-toggle=\"dropdown\" href=\"javascript:;\" class=\"btn btn-schedule-dropdown\">\n" +
-    "											NEXT EVENT &amp; STREAM\n" +
-    "											<i class=\"icon-chevron-down\"></i>\n" +
-    "										</a>\n" +
-    "										<div class=\"dropdown-menu schedule-dropdown-menu\" role=\"menu\">\n" +
-    "											<ul class=\"schedule-dropdown-list\">\n" +
-    "												<li ng-repeat=\"futureDate in EventObj.srv_futureDates\">\n" +
-    "													<div class=\"row-wrapper\">\n" +
-    "														<div class=\"col-xs-12 schedule-dropdown-header\">\n" +
-    "															<span class=\"badge badge-primary badge-lg schedule-dropdown-date\">\n" +
-    "																{{futureDate.date | date: 'MMM d'}}\n" +
-    "															</span>\n" +
-    "															<span class=\"schedule-dropdown-location\">\n" +
-    "																<i class=\"xa-icon-location-md\"></i>{{futureDate.city}}, {{futureDate.state}}\n" +
-    "															</span>\n" +
-    "														</div>\n" +
-    "													</div>\n" +
-    "													<div class=\"row-wrapper schedule-title-line\">\n" +
-    "														<div class=\"col-xs-12 col-md-8\">\n" +
-    "															{{futureDate.featureHeadline}}\n" +
-    "															<span class=\"badge badge-secondary badge-md schedule-time-wrapper pull-right\">{{futureDate.startTime}} - {{futureDate.endTime}}</span>\n" +
-    "														</div>\n" +
-    "														<div class=\"col-xs-12 col-md-4 schedule-price-wrapper\">\n" +
-    "															<span class=\"pull-right\">\n" +
-    "																Price: {{futureDate.attend_low}} {{futureDate.attend_currency}}\n" +
-    "															</span>\n" +
-    "														</div>\n" +
-    "													</div>\n" +
-    "													<div class=\"row-wrapper schedule-body\">\n" +
-    "														<div class=\"col-xs-12 col-md-8 schedule-body-text\">\n" +
-    "															{{futureDate.featureDetail}}\n" +
-    "														</div>\n" +
-    "														<div class=\"col-xs-12 col-md-4\">\n" +
-    "															<span class=\"pull-right\">\n" +
-    "																<ul class=\"schedule-location-details\">\n" +
-    "																	<li class=\"head\">Location:</li>\n" +
-    "																	<li>{{futureDate.addr1}}</li>\n" +
-    "																	<li>{{futureDate.addr2}}</li>\n" +
-    "																	<li>{{futureDate.city}}, {{futureDate.state}} {{futureDate.zip}}</li>\n" +
-    "																</ul>\n" +
-    "															</span>\n" +
-    "														</div>\n" +
-    "													</div>\n" +
-    "												</li>\n" +
+    "    <div class=\"col-xs-12 col-sm-12 col-lg-11\">\n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-12\">\n" +
+    "                <div id=\"event-details-page-head\">\n" +
+    "                    <div class=\"row-wrapper\">\n" +
+    "                        <div class=\"row\" id=\"event-details-cover-wrapper\">\n" +
+    "                            <div class=\"col-xs-12\" >\n" +
+    "                            <div\n" +
+    "                                class=\"event-details-cover-photo\"\n" +
+    "                                style=\"background-image:url('/media/{{ EventObj.photo }}')\"\n" +
+    "                            ></div>\n" +
+    "                            <div class=\"event-details-overlay\">\n" +
+    "                                <div class=\"event-details-header\">\n" +
+    "                                    <h1 class=\"pull-left\">{{EventObj.title}}</h1>\n" +
+    "                                    <a href=\"#\" class=\"organizer\" tooltip-placement=\"bottom\" tooltip=\"Organizer: {{EventObj.author_name}}\">\n" +
+    "                                        <img class=\"user-pic\" alt=\"\" ng-src=\"{{ EventObj.author_photo }}\">\n" +
+    "                                    </a>\n" +
+    "                                </div>\n" +
+    "                                <div class=\"event-details-about\" ng-init=\"eventDetailsExpanded=false\" ng-class=\"{expanded: eventDetailsExpanded}\" bx-event-detailed-text-mobile-toggle>\n" +
+    "                                    <a href=\"javascript:;\" class=\"btn btn-sm btn-primary visible-xs\">show description</a>\n" +
+    "                                    <p>\n" +
+    "                                        {{EventObj.about}}\n" +
+    "                                    </p>\n" +
+    "                                        <a href=\"javascript:;\" ng-click=\"eventDetailsExpanded=!eventDetailsExpanded\" class='toggle-event-details-about info-close hidden-xs'>\n" +
+    "                                        <i class=\"icon-remove\"></i>\n" +
+    "                                    </a>\n" +
+    "                                </div>\n" +
+    "                                <a href=\"javascript:;\" ng-show=\"!eventDetailsExpanded\" ng-click=\"eventDetailsExpanded=!eventDetailsExpanded\" class='toggle-event-details-about info-opener'>\n" +
+    "                                    <i class=\"icon-info-sign\"></i>\n" +
+    "                                </a>\n" +
+    "                            </div>\n" +
+    "                            </div>\n" +
+    "                        </div>\n" +
+    "                        <div class=\"row\" id=\"event-details-navbar\">\n" +
+    "                            <div class=\"col-xs-12 col-sm-4\">\n" +
+    "                                <div class=\"schedule-dropdown\">\n" +
+    "                                    <div class=\"dropdown\">\n" +
+    "                                        <a data-toggle=\"dropdown\" href=\"javascript:;\" class=\"btn btn-schedule-dropdown\">\n" +
+    "                                            NEXT EVENT &amp; STREAM\n" +
+    "                                            <i class=\"icon-chevron-down\"></i>\n" +
+    "                                        </a>\n" +
+    "                                        <div class=\"dropdown-menu schedule-dropdown-menu\" role=\"menu\">\n" +
+    "                                            <ul class=\"schedule-dropdown-list\">\n" +
+    "                                                <li ng-repeat=\"futureDate in EventObj.srv_futureDates\">\n" +
+    "                                                    <div class=\"row-wrapper\">\n" +
+    "                                                        <div class=\"col-xs-12 schedule-dropdown-header\">\n" +
+    "                                                            <span class=\"badge badge-primary badge-lg schedule-dropdown-date\">\n" +
+    "                                                                {{futureDate.date | date: 'MMM d'}}\n" +
+    "                                                            </span>\n" +
+    "                                                            <span class=\"schedule-dropdown-location\">\n" +
+    "                                                                <i class=\"xa-icon-location-md\"></i>{{futureDate.city}}, {{futureDate.state}}\n" +
+    "                                                            </span>\n" +
+    "                                                        </div>\n" +
+    "                                                    </div>\n" +
+    "                                                    <div class=\"row-wrapper schedule-title-line\">\n" +
+    "                                                        <div class=\"col-xs-12 col-md-8\">\n" +
+    "                                                            {{futureDate.featureHeadline}}\n" +
+    "                                                            <span class=\"badge badge-secondary badge-md schedule-time-wrapper pull-right\">{{futureDate.startTime}} - {{futureDate.endTime}}</span>\n" +
+    "                                                        </div>\n" +
+    "                                                        <div class=\"col-xs-12 col-md-4 schedule-price-wrapper\">\n" +
+    "                                                            <span class=\"pull-right\">\n" +
+    "                                                                Price: {{futureDate.attend_low}} {{futureDate.attend_currency}}\n" +
+    "                                                            </span>\n" +
+    "                                                        </div>\n" +
+    "                                                    </div>\n" +
+    "                                                    <div class=\"row-wrapper schedule-body\">\n" +
+    "                                                        <div class=\"col-xs-12 col-md-8 schedule-body-text\">\n" +
+    "                                                            {{futureDate.featureDetail}}\n" +
+    "                                                        </div>\n" +
+    "                                                        <div class=\"col-xs-12 col-md-4\">\n" +
+    "                                                            <span class=\"pull-right\">\n" +
+    "                                                                <ul class=\"schedule-location-details\">\n" +
+    "                                                                    <li class=\"head\">Location:</li>\n" +
+    "                                                                    <li>{{futureDate.addr1}}</li>\n" +
+    "                                                                    <li>{{futureDate.addr2}}</li>\n" +
+    "                                                                    <li>{{futureDate.city}}, {{futureDate.state}} {{futureDate.zip}}</li>\n" +
+    "                                                                </ul>\n" +
+    "                                                            </span>\n" +
+    "                                                        </div>\n" +
+    "                                                    </div>\n" +
+    "                                                </li>\n" +
     "\n" +
-    "											</ul>\n" +
-    "											\n" +
-    "										</div>\n" +
-    "									</div>\n" +
-    "								</div>\n" +
-    "							</div>\n" +
-    "							<div class=\"col-xs-12 col-sm-8\">\n" +
-    "								<ul class=\"event-details-navbar-items pull-right\">\n" +
-    "									<li>\n" +
-    "										<a href=\"#\">\n" +
-    "											<i class=\"xa-icon-event-details-goto\"></i>\n" +
-    "											Go to\n" +
-    "										</a>\n" +
-    "									</li>\n" +
-    "									<li>\n" +
-    "										<a data-toggle=\"tab\" data-target=\"#photos\">\n" +
-    "											<i class=\"xa-icon-event-details-photos\"></i>\n" +
-    "											<div class=\"badge\">{{event.srv_photosCount}}</div> Photos\n" +
-    "										</a>\n" +
-    "									</li>\n" +
-    "									<li>\n" +
-    "										<a href=\"#\">\n" +
-    "											<i class=\"xa-icon-event-details-follow\"></i>\n" +
-    "											<div class=\"badge\">{{event.srv_followersCount}}</div> Follow\n" +
-    "										</a>\n" +
-    "									</li>\n" +
-    "								</ul>\n" +
-    "							</div>\n" +
-    "						</div>\n" +
-    "					</div>\n" +
-    "				</div>\n" +
-    "			</div>\n" +
-    "			\n" +
-    "		</div>\n" +
-    "		<div class=\"row\">\n" +
-    "			<div class=\"col-xs-12\">\n" +
-    "				<!-- <ul class=\"nav nav-tabs event-details-tabs\">\n" +
-    "					<li class=\"active\"><a data-toggle=\"tab\" data-target=\"#stream\">Live Stream</a></li>\n" +
-    "					<li><a data-toggle=\"tab\" data-target=\"#photos\">{{EventObj.srv_photosCount}} Photos</a></li>\n" +
-    "					<li><a data-toggle=\"tab\" data-target=\"#followers\">{{EventObj.srv_followersCount}} Followers</a></li>\n" +
-    "				</ul> -->\n" +
+    "                                            </ul>\n" +
     "\n" +
-    "				<div class=\"tab-content event-details-tab-contents\">\n" +
-    "				  <div class=\"active tab-pane\" id=\"stream\">\n" +
-    "				  	<ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>\n" +
-    "				  </div>\n" +
-    "				  <div class=\"tab-pane\" id=\"photos\">\n" +
-    "				  	<ng-include src=\"'events/partial_event_details_photos.tpl.html'\"></ng-include>\n" +
-    "				  </div>\n" +
-    "				  <div class=\"tab-pane\" id=\"followers\">\n" +
-    "				  	Followers\n" +
-    "				  </div>\n" +
-    "				</div>\n" +
-    "			</div>\n" +
-    "		</div>		\n" +
-    "	</div>\n" +
+    "                                        </div>\n" +
+    "                                    </div>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "                            <div class=\"col-xs-12 col-sm-8\">\n" +
+    "                                <ul class=\"event-details-navbar-items pull-right\">\n" +
+    "                                    <li>\n" +
+    "                                        <a href=\"#\">\n" +
+    "                                            <i class=\"xa-icon-event-details-goto\"></i>\n" +
+    "                                            Go to\n" +
+    "                                        </a>\n" +
+    "                                    </li>\n" +
+    "                                    <li>\n" +
+    "                                        <a data-toggle=\"tab\" data-target=\"#photos\">\n" +
+    "                                            <i class=\"xa-icon-event-details-photos\"></i>\n" +
+    "                                            <div class=\"badge\">{{event.srv_photosCount}}</div> Photos\n" +
+    "                                        </a>\n" +
+    "                                    </li>\n" +
+    "                                    <li>\n" +
+    "                                        <a href=\"#\">\n" +
+    "                                            <i class=\"xa-icon-event-details-follow\"></i>\n" +
+    "                                            <div class=\"badge\">{{event.srv_followersCount}}</div> Follow\n" +
+    "                                        </a>\n" +
+    "                                    </li>\n" +
+    "                                </ul>\n" +
+    "                            </div>\n" +
+    "                        </div>\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "\n" +
+    "        </div>\n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-12\">\n" +
+    "                <!-- <ul class=\"nav nav-tabs event-details-tabs\">\n" +
+    "                    <li class=\"active\"><a data-toggle=\"tab\" data-target=\"#stream\">Live Stream</a></li>\n" +
+    "                    <li><a data-toggle=\"tab\" data-target=\"#photos\">{{EventObj.srv_photosCount}} Photos</a></li>\n" +
+    "                    <li><a data-toggle=\"tab\" data-target=\"#followers\">{{EventObj.srv_followersCount}} Followers</a></li>\n" +
+    "                </ul> -->\n" +
+    "\n" +
+    "                <div class=\"tab-content event-details-tab-contents\">\n" +
+    "                  <div class=\"active tab-pane\" id=\"stream\">\n" +
+    "                      <ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>\n" +
+    "                  </div>\n" +
+    "                  <div class=\"tab-pane\" id=\"photos\">\n" +
+    "                      <ng-include src=\"'events/partial_event_details_photos.tpl.html'\"></ng-include>\n" +
+    "                  </div>\n" +
+    "                  <div class=\"tab-pane\" id=\"followers\">\n" +
+    "                      Followers\n" +
+    "                  </div>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
     "</div>\n" +
     "\n" +
     "");
@@ -615,22 +620,22 @@ angular.module("events/partial_add_event_form.tpl.html", []).run(["$templateCach
 angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("events/partial_event_details_photos.tpl.html",
     "<div class=\"panel-group\" id=\"accordion\">\n" +
-    "  <div class=\"panel panel-default\" ng-repeat=\"album in EventObj.srv_albums\">\n" +
+    "  <div class=\"panel panel-default\" ng-repeat=\"album in Albums\">\n" +
     "    <div class=\"panel-heading\">\n" +
     "      <h4 class=\"panel-title\">\n" +
-    "        <a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#album-{{album.albumId}}\">\n" +
-    "          {{album.dateText}} - {{album.title}}\n" +
+    "        <a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#album-{{album.id}}\">\n" +
+    "          {{album.date}} - {{album.feature_headline}}\n" +
     "        </a>\n" +
     "      </h4>\n" +
     "    </div>\n" +
-    "    <div id=\"album-{{album.albumId}}\" class=\"panel-collapse collapse\" ng-class=\"{in:album.active}\">\n" +
+    "    <div id=\"album-{{album.id}}\" class=\"panel-collapse collapse in\" ng-class=\"{in:album.active}\" >\n" +
     "      <div class=\"panel-body\">\n" +
     "        <div class=\"row\">\n" +
     "          <ul class=\"stream-list\">\n" +
-    "            <li class=\"col-xs-6 col-sm-4 col-lg-3\" ng-repeat=\"item in album.photos\">\n" +
+    "            <li class=\"col-xs-6 col-sm-4 col-lg-3\" ng-repeat=\"photo in album.photos\">\n" +
     "              <div class=\"inner\">\n" +
-    "                <div class=\"stream-picture\" \n" +
-    "                bx-stream-photo=\"uploads/events/{{EventObj.id}}/albums/{{album.albumId}}/{{item}}\"\n" +
+    "                <div class=\"stream-picture\"\n" +
+    "                bx-stream-photo=\"/media/{{photo.image}}\"\n" +
     "                 ></div>\n" +
     "              </div>\n" +
     "            </li>\n" +
@@ -964,30 +969,36 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
 angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("stream/partial_stream_list.tpl.html",
     "<div class=\"row\">\n" +
-    "	<ul class=\"stream-list\">\n" +
-    "		<li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"item in EventObj.srv_albums[0].photos\">\n" +
-    "			<div class=\"inner\">\n" +
-    "				<div class=\"stream-picture\" \n" +
-    "                bx-stream-photo=\"uploads/events/{{EventObj.id}}/albums/{{EventObj.srv_albums[0].albumId}}/{{item}}\"\n" +
+    "    <ul class=\"stream-list\">\n" +
+    "        <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"item in stream\">\n" +
+    "            <div class=\"inner\">\n" +
+    "                <div class=\"stream-picture\"\n" +
+    "                bx-stream-photo=\"/media/{{item.image}}\"\n" +
     "                 >\n" +
-    "                 	<ul class=\"stream-action-links\">\n" +
-    "						<li>\n" +
-    "							<a href=\"#\" tooltip-placement=\"left\" tooltip=\"Favorite!\"><i class=\"icon-star\"></i></a>\n" +
-    "						</li>\n" +
-    "						<li>\n" +
-    "							<a href=\"#\" tooltip-placement=\"left\" tooltip=\"Share\"><i class=\"icon-share\"></i></a>\n" +
-    "						</li>\n" +
-    "						<li>\n" +
-    "							<a href=\"#\" tooltip-placement=\"left\" tooltip=\"Report\"><i class=\"icon-flag\"></i></a>\n" +
-    "						</li>\n" +
-    "					</ul>\n" +
-    "             	</div>\n" +
-    "				<div class=\"stream-title\">\n" +
-    "					<a href=\"#\"><h1>Porsche Day</h1></a>\n" +
-    "				</div>\n" +
-    "			</div>\n" +
-    "		</li>\n" +
-    "	</ul>\n" +
+    "                     <ul class=\"stream-action-links\">\n" +
+    "                        <li>\n" +
+    "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Favorite!\"\n" +
+    "                              ng-click=\"Favorite(item.id)\">\n" +
+    "                              <i class=\"icon-star\"></i>\n" +
+    "                            </a>\n" +
+    "                        </li>\n" +
+    "                        <li>\n" +
+    "                            <a href=\"#\" tooltip-placement=\"left\" tooltip=\"Share\"><i class=\"icon-share\"></i></a>\n" +
+    "                        </li>\n" +
+    "                        <li>\n" +
+    "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Report\"\n" +
+    "                              ng-click=\"Report(item.id)\">\n" +
+    "                              <i class=\"icon-flag\"></i>\n" +
+    "                            </a>\n" +
+    "                        </li>\n" +
+    "                    </ul>\n" +
+    "                 </div>\n" +
+    "                <div class=\"stream-title\">\n" +
+    "                    <a href=\"#\"><h1>{{item.caption}}</h1></a>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "        </li>\n" +
+    "    </ul>\n" +
     "</div>");
 }]);
 

@@ -42,6 +42,15 @@ angular.module( 'blvdx.account', [
       }
     }
   })
+  .state( 'accountMyFavorites', {
+    url: '/account/MyFavorites',
+    views: {
+      "main": {
+        controller: 'AccountMyFavoritePhotosCtrl',
+        templateUrl: 'account/account-my-favorite-photos.tpl.html'
+      }
+    }
+  })
   ;
 })
 
@@ -69,24 +78,19 @@ angular.module( 'blvdx.account', [
 
 })
 
-.controller( 'AccountMyPhotosCtrl', function AccountCtrl( $scope, titleService ) {
+.controller( 'AccountMyPhotosCtrl', function AccountCtrl( $scope, titleService, AccountObj ) {
   titleService.setTitle( 'My Photos' );
-  $scope.eventDetailPhotoAlbums = [
-    {
-      id: 1,
-      title: "LA Auto Show 2013",
-      date: "21-08-2013",
-      photos: [1,2,3,4,5],
-      active: true
-    },
-    {
-      id: 2,
-      title: "BMW Day",
-      date: "18-07-2013",
-      photos: [1,2,3,4,5],
-      active: ''
-    }
-  ];
+  AccountObj.getAlbums().then(function (albums) {
+      $scope.Albums = albums;
+  });
+
+})
+
+.controller( 'AccountMyFavoritePhotosCtrl', function AccountCtrl( $scope, titleService, AccountObj ) {
+  titleService.setTitle( 'My Photos' );
+  AccountObj.getFavorites().then(function (favorites) {
+      $scope.stream = favorites;
+  });
 
 })
 

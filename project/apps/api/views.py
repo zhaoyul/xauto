@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
+
 #from django.views.decorators.cache import never_cache
+from django.db.models import Q
+
 from rest_framework.generics import (ListAPIView, RetrieveAPIView)
 from rest_framework.views import APIView
 from rest_framework import status
@@ -8,9 +12,11 @@ from rest_framework.response import Response
 
 from event.models import Event, EventDate
 from event.serializers import (EventSerializer, EventDetailsSerializer,
-    EventModelSerializer, EventDateSerializer)
+    EventModelSerializer, EventDateSerializer, AlbumSerializer)
 from account.serializers import UserProfileSerializer, UserSerializer
 from account.models import UserProfile
+from multiuploader.serializers import MultiuploaderImageSerializer
+from multiuploader.models import MultiuploaderImage
 
 
 class EventsListView(ListAPIView):
@@ -163,3 +169,80 @@ class FollowProfileView(APIView):
         except:
             pass
         return Response({}, status=status.HTTP_403_FORBIDDEN)
+
+
+class ProfileMyPhotosListView(ListAPIView):
+    """
+    Returns current user photos
+    """
+    serializer_class = AlbumSerializer
+
+    def get_queryset(self):
+        profile = self.request.user.profile
+        return EventDate.objects.filter(id__in=
+            profile.profile_images.values_list('event_date_id', flat=True))
+
+
+class ProfileFavoritesListView(ListAPIView):
+    """
+    Returns favorite images for current user
+    """
+    serializer_class = MultiuploaderImageSerializer
+
+    def get_queryset(self):
+        profile = self.request.user.profile
+
+        return MultiuploaderImage.objects.filter(favorite_by__id=profile.id)
+
+
+class StreamListView(ListAPIView):
+    """
+    Returns real-time images from Events or Profiles being followed
+    """
+    serializer_class = MultiuploaderImageSerializer
+
+    def get_queryset(self):
+        profile = self.request.user.profile
+
+        events_ids = Event.objects.filter(
+            Q(author_id__in=profile.followed.values_list('id', flat=True)) |
+            Q(followed__id=profile.id)
+        )
+        queryset = MultiuploaderImage.objects.filter(
+            Q(event_date__event_id__in=events_ids) &
+            Q(event_date__start_date__lt=datetime.now()) &
+            Q(event_date__end_date__gt=datetime.now())
+        )
+
+        return queryset
+
+
+class FavoritePictureView(APIView):
+    """
+    Adding Picture to favorites
+    """
+    def put(self, request, picture_id, *args, **kwargs):
+        user = request.user
+        picture = MultiuploaderImage.objects.get(id=picture_id)
+        try:
+            if user.profile.favorite_images.filter(id=picture_id).count():
+                user.profile.favorite_images.remove(picture)
+            else:
+                user.profile.favorite_images.add(picture)
+
+            return Response({}, status=status.HTTP_200_OK)
+        except:
+            pass
+        return Response({}, status=status.HTTP_403_FORBIDDEN)
+
+
+class ReportPictureView(APIView):
+    """
+    Flagging Picture as inappropriate
+    """
+    def put(self, request, picture_id, *args, **kwargs):
+        picture = MultiuploaderImage.objects.get(id=picture_id)
+        picture.is_inappropriate = True
+        picture.save()
+
+        return Response({}, status=status.HTTP_200_OK)

@@ -103,5 +103,32 @@ angular.module('eventServices', ['restangular'])
       return Restangular.one('profiles', account.id).customPUT(account);
   };
 
+  AccountObj.getFavorites = function () {
+      return Restangular.all('profiles').customGETLIST('favorites-list');
+  };
+
+  AccountObj.getAlbums = function () {
+      return Restangular.all('profiles').customGETLIST('pictures');
+  };
+
   return AccountObj;
+}])
+
+.factory('StreamObj', ['Restangular', function(Restangular){
+
+  var StreamObj = {};
+
+  StreamObj.getStream = function () {
+      return Restangular.all('stream').getList();
+  };
+
+  StreamObj.Favorite = function (pk) {
+      return Restangular.one('pictures', pk).customPUT(pk, 'favorite');
+  };
+
+  StreamObj.Report = function (pk) {
+      return Restangular.one('pictures', pk).customPUT(pk, 'report');
+  };
+
+  return StreamObj;
 }]);

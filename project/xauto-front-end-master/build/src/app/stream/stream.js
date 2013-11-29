@@ -38,19 +38,35 @@ angular.module( 'blvdx.stream', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'StreamCtrl', function StreamCtrl( $scope, titleService ) {
+.controller( 'StreamCtrl', function StreamCtrl( $scope, titleService, StreamObj ) {
   titleService.setTitle( 'Stream' );
-  
+
+  StreamObj.getStream().then(function (stream) {
+      $scope.stream = stream;
+  });
+
+  $scope.Favorite = function(stream_id) {
+      StreamObj.Favorite(stream_id).then(function (stream) {
+
+      });
+  };
+
+  $scope.Report = function(stream_id) {
+      StreamObj.Report(stream_id).then(function (stream) {
+
+      });
+  };
+
 })
 
 .directive('bxStreamPhoto', function() {
-  return {   
-    restrict: 'AC',    
-    link: function (scope, element, attrs) { 
-    $(element).css("background-image", "url('"+attrs.bxStreamPhoto+"')");       
-    $(element).colorbox({maxWidth:"100%",maxHeight:"100%",scalePhotos:true, photo:true, href:attrs.bxStreamPhoto});     
+  return {
+    restrict: 'AC',
+    link: function (scope, element, attrs) {
+    $(element).css("background-image", "url('"+attrs.bxStreamPhoto+"')");
+    $(element).colorbox({maxWidth:"100%",maxHeight:"100%",scalePhotos:true, photo:true, href:attrs.bxStreamPhoto});
     }
-  };  
+  };
 })
 ;
 

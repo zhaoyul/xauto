@@ -17,8 +17,19 @@ class EventDateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EventDate
-        #fields = ('id', 'location_name', 'address_1', 'address_2', 'country',
-            #'city', 'state', 'zipcode', 'event')
+
+
+class AlbumSerializer(serializers.ModelSerializer):
+    photos = MultiuploaderImageSerializer(source='event_upload_images',
+                                              read_only=True)
+    date = serializers.SerializerMethodField('get_date')
+    active = True
+
+    class Meta:
+        model = EventDate
+
+    def get_date(self, obj):
+        return obj.start_date.strftime('%B %d, %Y')
 
 
 class EventModelSerializer(serializers.ModelSerializer):
@@ -104,14 +115,13 @@ class EventDetailsSerializer(serializers.ModelSerializer):
     author_photo = serializers.SerializerMethodField('get_author_photo')
     srv_live = serializers.SerializerMethodField('get_srv_live')
     srv_following = serializers.SerializerMethodField('get_srv_following')
-    srv_albums = MultiuploaderImageSerializer(source='event_upload_images',
-                                              read_only=True)
+    albums = AlbumSerializer(source='event_dates', read_only=True)
 
     class Meta:
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'srv_followersCount',
             'srv_photosCount', 'photo', 'srv_futureDates', 'author_name',
-            'author_photo', 'srv_live', 'srv_following', 'srv_albums')
+            'author_photo', 'srv_live', 'srv_following', 'albums')
 
     def srv_followers_count(self, obj):
         return obj.followed.count()
