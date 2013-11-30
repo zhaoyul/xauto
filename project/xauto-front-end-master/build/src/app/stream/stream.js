@@ -15,7 +15,8 @@
 angular.module( 'blvdx.stream', [
   'ui.state',
   'titleService',
-  'plusOne'
+  'plusOne',
+  'resources.streams'
 ])
 
 /**
@@ -38,26 +39,26 @@ angular.module( 'blvdx.stream', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'StreamCtrl', function StreamCtrl( $scope, titleService, StreamObj ) {
+.controller( 'StreamCtrl', ['$scope', 'titleService', 'Streams', function StreamCtrl( $scope, titleService, Streams ) {
   titleService.setTitle( 'Stream' );
 
-  StreamObj.getStream().then(function (stream) {
+  Streams.getStream().then(function (stream) {
       $scope.stream = stream;
   });
 
   $scope.Favorite = function(stream_id) {
-      StreamObj.Favorite(stream_id).then(function (stream) {
+      Streams.Favorite(stream_id).then(function (stream) {
 
       });
   };
 
   $scope.Report = function(stream_id) {
-      StreamObj.Report(stream_id).then(function (stream) {
+      Streams.Report(stream_id).then(function (stream) {
 
       });
   };
 
-})
+}])
 
 .directive('bxStreamPhoto', function() {
   return {

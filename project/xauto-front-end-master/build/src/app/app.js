@@ -10,7 +10,6 @@ angular.module( 'blvdx', [
   'ui.state',
   'ui.route',
 
-  'eventServices',
   'restangular'
 ])
 
@@ -24,6 +23,8 @@ angular.module( 'blvdx', [
 
   RestangularProvider.setBaseUrl('/api');
   RestangularProvider.setRequestSuffix('/');
+
+
 }])
 
 .run( function run ( titleService ) {

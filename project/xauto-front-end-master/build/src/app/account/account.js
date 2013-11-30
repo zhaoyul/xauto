@@ -2,7 +2,8 @@
 angular.module( 'blvdx.account', [
   'ui.state',
   'titleService',
-  'plusOne'
+  'plusOne',
+  'resources.accounts'
 ])
 
 /**
@@ -63,36 +64,33 @@ angular.module( 'blvdx.account', [
 
 })
 
-.controller( 'AccountEditCtrl', function AccountCtrl( $scope, titleService, $stateParams, AccountObj ) {
+.controller( 'AccountEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Accounts', function AccountCtrl( $scope, $state, titleService, $stateParams, Accounts ) {
   titleService.setTitle( 'Edit Account' );
 
-  AccountObj.getAccount($stateParams.accountId).then(function (account) {
+  Accounts.getAccount($stateParams.accountId).then(function (account) {
       $scope.AccountObj = account;
   });
 
   $scope.accountSubmit = function(){
-    AccountObj.saveAccount($scope.AccountObj).then(function (account) {
-        $('.xa-icon-nav-events').click();
+    Accounts.saveAccount($scope.AccountObj).then(function (account) {
+        $state.transitionTo('events');
     });
   };
 
-})
+}])
 
-.controller( 'AccountMyPhotosCtrl', function AccountCtrl( $scope, titleService, AccountObj ) {
+.controller( 'AccountMyPhotosCtrl', ['$scope', 'titleService', 'Accounts', function AccountCtrl( $scope, titleService, Accounts ) {
   titleService.setTitle( 'My Photos' );
-  AccountObj.getAlbums().then(function (albums) {
+  Accounts.getAlbums().then(function (albums) {
       $scope.Albums = albums;
   });
 
-})
+}])
 
-.controller( 'AccountMyFavoritePhotosCtrl', function AccountCtrl( $scope, titleService, AccountObj ) {
+.controller( 'AccountMyFavoritePhotosCtrl', ['$scope', 'titleService', 'Accounts', function AccountCtrl( $scope, titleService, Accounts ) {
   titleService.setTitle( 'My Photos' );
-  AccountObj.getFavorites().then(function (favorites) {
+  Accounts.getFavorites().then(function (favorites) {
       $scope.stream = favorites;
   });
 
-})
-
-;
-
+}]);

@@ -397,7 +397,7 @@ angular.module("events/events-my.tpl.html", []).run(["$templateCache", function(
     "  				<td>{{event.date_info.city}}, {{event.date_info.country}}</td>\n" +
     "  				<td><span class=\"label label-success\">{{event.srv_followersCount}} Followers</span> <span class=\"label label-info\">{{event.srv_photosCount}} Photos</span></td>\n" +
     "  				<td>\n" +
-    "            <a class=\"btn btn-primary btn-sm\" href=\"#/events/{{event.id}}/edit\">Edit</a> <a class=\"btn btn-danger btn-sm\" ng-click=\"removeEvent(event.id)\">Delete</a>\n" +
+    "            <a class=\"btn btn-primary btn-sm\" href=\"#/events/{{event.id}}/edit\">Edit</a> <a class=\"btn btn-danger btn-sm\" ng-click=\"removeEvent(event)\">Delete</a>\n" +
     "          </td>\n" +
     "  			</tr>\n" +
     "  			\n" +
@@ -443,7 +443,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "\n" +
     "<div class=\"row\">\n" +
     "  <ul class=\"event-list\">\n" +
-    "    <li ng-repeat=\"event in Events | filter:search\" ng-animate=\"'animate'\" class=\"col-xs-12 col-sm-6 col-lg-4\">\n" +
+    "    <li ng-repeat=\"event in events | filter:search\" ng-animate=\"'animate'\" class=\"col-xs-12 col-sm-6 col-lg-4\">\n" +
     "      <div class=\"inner\">\n" +
     "        <div class=\"event-header\">\n" +
     "          <div class=\"row-wrapper title-line\">\n" +

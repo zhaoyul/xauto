@@ -1,77 +1,78 @@
 angular.module( 'blvdx.events', [
+  'resources.events',
   'ui.state',
   // 'placeholders',
   'ui.bootstrap',
   'titleService'
 ])
 
-
-
 .config(function config( $stateProvider ) {
-  $stateProvider
-  .state( 'events', {
-    url: '/events',
-    views: {
-      "main": {
-        controller: 'EventsCtrl',
-        templateUrl: 'events/events.tpl.html'
-      }
-    }
-  })
-  .state( 'eventAdd', {
-    url: '/events/add',
-    views: {
-      "main": {
-        controller: 'EventAddCtrl',
-        templateUrl: 'events/event-add.tpl.html'
-      }
-    }
-  })
 
-  .state( 'eventsMy', {
-    url: '/events/my',
-    views: {
-      "main": {
-        controller: 'EventsMyCtrl',
-        templateUrl: 'events/events-my.tpl.html'
-      }
-    }
-  })
-  .state( 'eventEdit', {
-    url: '/events/:eventId/edit',
-    views: {
-      "main": {
-        controller: 'EventEditCtrl',
-        templateUrl: 'events/event-edit.tpl.html'
-      }
-    }
-  })
-  .state( 'eventDetails', {
-    url: '/events/:eventId',
-    views: {
-      "main": {
-        controller: 'EventDetailsCtrl',
-        templateUrl: 'events/event-details.tpl.html'
-      }
-    }
-  })
-  .state( 'eventDetailsTabs', {
-    url: '/events/:eventId/:showTab',
-    views: {
-      "main": {
-        controller: 'EventDetailsCtrl',
-        templateUrl: 'events/event-details.tpl.html'
-      }
-    }
-  });
+   $stateProvider
+      .state( 'events', {
+        url: '/events',
+        views: {
+          "main": {
+            controller: 'EventsCtrl',
+            templateUrl: 'events/events.tpl.html'
+          }
+        }
+      })
+      .state( 'eventAdd', {
+        url: '/events/add',
+        views: {
+          "main": {
+            controller: 'EventAddCtrl',
+            templateUrl: 'events/event-add.tpl.html'
+          }
+        }
+      })
+      .state( 'eventsMy', {
+        url: '/events/my',
+        views: {
+          "main": {
+            controller: 'EventsMyCtrl',
+            templateUrl: 'events/events-my.tpl.html'
+          }
+        }
+      })
+      .state( 'eventEdit', {
+        url: '/events/:eventId/edit',
+        views: {
+          "main": {
+            controller: 'EventEditCtrl',
+            templateUrl: 'events/event-edit.tpl.html'
+          }
+        }
+      })
+      .state( 'eventDetails', {
+        url: '/events/:eventId',
+        views: {
+          "main": {
+            controller: 'EventDetailsCtrl',
+            templateUrl: 'events/event-details.tpl.html'
+          }
+        }
+      })
+      .state( 'eventDetailsTabs', {
+        url: '/events/:eventId/:showTab',
+        views: {
+          "main": {
+            controller: 'EventDetailsCtrl',
+            templateUrl: 'events/event-details.tpl.html'
+          }
+        }
+      });
 })
 
-.controller( 'EventsCtrl', function EventsCtrl( $scope, titleService, EventList, EventObj ) { // TODO: must be EventObj
+.controller( 'EventsCtrl', ['$scope', 'titleService', 'Events', function EventsCtrl( $scope, titleService, Events ) {
   titleService.setTitle( 'All events' );
-  EventList.getEvents({}).then(function (events) {
-      $scope.Events = events; // TODO: must be EventObj
-  }); // TODO: must be EventObj
-  $scope.search ={};
+
+  Events.getEvents({}).then(function (events) {
+      $scope.events = events;
+  });
+
+  $scope.search = {};
 
   $scope.changeDisplayFilter = function(type){
     if(type=="following"){
@@ -96,21 +97,21 @@ angular.module( 'blvdx.events', [
     }
   };
 
-  $scope.Follow = function($event) {
-      EventObj.Follow($event.id).then(function (event) {
-          $event.srv_following = event.srv_following;
-          $event.srv_followersCount = event.srv_followersCount;
+  $scope.Follow = function(event) {
+      Events.follow(event).then(function (data) {
+          event.srv_following = data.srv_following;
+          event.srv_followersCount = data.srv_followersCount;
       });
   };
 
   $scope.Search = function(value) {
-      EventList.getEvents({search_text: value}).then(function (events) {
-          $scope.Events = events;
+      Events.getEvents({search_text: value}).then(function (events) {
+          $scope.events = events;
       });
   };
+}])
 
-})
-.controller( 'EventAddCtrl', function EventsCtrl( $scope, titleService, EventObj ) {
+.controller( 'EventAddCtrl', ['$scope', '$state', 'titleService', 'Events', function EventsCtrl( $scope, $state, titleService, Events) {
   titleService.setTitle( 'Add New Event' );
 
   $scope.today = function() {
@@ -139,9 +140,7 @@ angular.module( 'blvdx.events', [
   $scope.toggleMin();
 
   $scope.open = function() {
-
       $scope.opened = true;
-
   };
 
   $scope.dateOptions = {
@@ -150,53 +149,46 @@ angular.module( 'blvdx.events', [
   };
 
   $scope.checkShortLink = function(value) {
-      EventObj.checkShortLink({search_text: value}).then(function (response) {
+      Events.checkShortLink({search_text: value}).then(function (response) {
           $scope.EventObj.short_link_available = response.response;
       });
   };
 
-/*
-  EventObj.getNewEvent().then(function (event) {
-      $scope.EventObj = event;
-  });
-*/
-  $scope.EventObj = EventObj;
+  $scope.EventObj = {};
+
   $scope.eventSubmit = function(){
-    $scope.EventObj.createEvent($scope.EventObj).then(function (event) {
-        $('.xa-icon-nav-events').click();
+    Events.createEvent($scope.EventObj).then(function (event) {
+        $state.transitionTo('events');
+        //$('.xa-icon-nav-events').click();
     });
   };
-  // scope.$watch("addEventSubmit", function(newValue, oldValue, srcScope) {
-  //   console.log(newValue);
-  // });
+}])
 
-
-})
-.controller( 'EventEditCtrl', function EventEditCtrl( $scope, titleService, $stateParams, EventObj, DateObj ) {
+.controller( 'EventEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', 'DateObj', function EventEditCtrl( $scope, $state, titleService, $stateParams, Events, DateObj ) {
   titleService.setTitle( 'Edit Event' );
-  //$scope.stateParams = $stateParams;
   $scope.eventId = $stateParams.eventId;
 
-  EventObj.getEvent($scope.eventId).then(function (event) {
+  Events.getEvent($scope.eventId).then(function (event) {
       $scope.EventObj = event;
   });
-  //$scope.EventObj = EventObj.getEvent($scope.eventId);
 
   $scope.eventSubmit = function(){
-    EventObj.saveEvent($scope.EventObj).then(function (event) {
-        $('.xa-icon-nav-events').click();
+    Events.saveEvent($scope.EventObj).then(function (event) {
+        $state.transitionTo('events');
+        //$('.xa-icon-nav-events').click();
     });
     //$scope.EventObj.$save();
   };
 
-  $scope.removeEvent=function($pk){
-    EventObj.removeEvent($pk).then(function () {
-        $('.xa-icon-nav-events').click();
+  $scope.removeEvent=function(event){
+    Events.removeEvent(event).then(function () {
+        $state.transitionTo('events');
+        //$('.xa-icon-nav-events').click();
     });
   };
 
   $scope.checkShortLink = function(value) {
-      EventObj.checkShortLink({search_text: value}).then(function (response) {
+      Events.checkShortLink({search_text: value}).then(function (response) {
           $scope.EventObj.short_link_available = response.response;
       });
   };
@@ -250,47 +242,41 @@ angular.module( 'blvdx.events', [
 
   $scope.showWeeks = true;
 
-
-
-
   $scope.dateOptions = {
     'year-format': "'yy'",
     'starting-day': 1
   };
   /* end of datepicker */
 
-})
-.controller( 'EventDetailsCtrl', function EventsCtrl( $scope, titleService, $stateParams, EventObj ) {
+}])
+
+.controller( 'EventDetailsCtrl', ['$scope', 'titleService', '$stateParams', 'Events', function EventsCtrl( $scope, titleService, $stateParams, Events ) {
   titleService.setTitle( 'Event Details' );
   $scope.stateParams = $stateParams;
   //$scope.EventObj = EventObj.get({eventId:$stateParams.eventId});
-  EventObj.getDetails($stateParams.eventId).then(function (event) {
+  Events.getDetails($stateParams.eventId).then(function (event) {
       $scope.EventObj = event;
   });
 
   $('.schedule-dropdown-menu').click(function(e) {
       e.stopPropagation();
   });
+}])
 
-
-  // console.log($scope.eventPhotoAlbums);
-})
-.controller( 'EventsMyCtrl', function EventsCtrl( $scope, titleService, $stateParams, EventList, EventObj ) {
+.controller( 'EventsMyCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', function EventsCtrl( $scope, $state, titleService, $stateParams, Events ) {
   titleService.setTitle( 'My Events' );
   $scope.stateParams = $stateParams;
-  EventList.getEvents({own_events: true}).then(function (events) {
+  Events.getEvents({own_events: true}).then(function (events) {
       $scope.myEvents = events; // TODO: must be EventObj
   }); // TODO: must be EventObj
 
-
-
-  $scope.removeEvent=function($pk){
-    EventObj.removeEvent($pk).then(function () {
-        $('.xa-icon-nav-events').click();
+  $scope.removeEvent=function(event){
+    Events.removeEvent(event).then(function () {
+        $state.transitionTo('events');
     });
   };
+}])
 
-})
 .directive('bxSlideSchedule', [function() {
    // attr.$observe('rpTooltip', function(value) {
    // });
@@ -327,7 +313,4 @@ angular.module( 'blvdx.events', [
   return function(scope, element, attr) {
     $("body").find('a[data-type="tab"]').tab('show');
   };
-}])
-
-;
-
+}]);

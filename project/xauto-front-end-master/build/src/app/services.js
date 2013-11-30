@@ -1,6 +1,6 @@
-angular.module('eventServices', ['restangular'])
+/*angular.module('eventServices', ['restangular'])
 
-.factory('EventList', ['Restangular', function(Restangular){
+.factory('EventListo', ['Restangular', function(Restangular){
 
   var EventList = {};
 
@@ -13,7 +13,7 @@ angular.module('eventServices', ['restangular'])
   /*return $resource('/api/events/', {}, {
 		getArray: { method: 'GET', isArray: true }
 	});*/
-}])
+/*}])
 
 .factory('EventObj', ['Restangular', function(Restangular){
   var EventObj = {};
@@ -131,4 +131,4 @@ angular.module('eventServices', ['restangular'])
   };
 
   return StreamObj;
-}]);
+}]);*/

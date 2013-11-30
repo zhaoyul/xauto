@@ -1,0 +1,62 @@
+angular.module('resources.events', ['restangular'])
+
+.factory('Events', ['Restangular', function(Restangular){
+
+  var Events = {};
+
+  Events.getEvents = function (params) {
+      return Restangular.all('events').customGETLIST('list', params);
+  };
+
+  Events.getEvent = function (pk) {
+      return Restangular.one('events', pk).get();
+  };
+
+  Events.getDetails = function (pk) {
+      return Restangular.one('events', pk).customGET('details');
+  };
+
+  Events.saveEvent = function (event) {
+      return event.put();
+  };
+
+  Events.createEvent = function (event) {
+      return Restangular.all('events').post(event);
+  };
+
+  Events.follow = function (event) {
+      return event.customPUT(event.id, 'follow');
+  };
+
+  Events.checkShortLink = function (params) {
+      return Restangular.one('events').customGET('check-link', params);
+  };
+
+  Events.removeEvent = function (event) {
+      return event.remove();
+  };
+
+  return Events;
+}])
+
+.factory('DateObj', ['Restangular', function(Restangular){
+  var DateObj = {};
+
+  DateObj.getDate = function (pk) {
+      return Restangular.one('dates', pk).get();
+  };
+
+  DateObj.saveDate = function (date) {
+      return Restangular.one('dates', date.id).customPUT(date);
+  };
+
+  DateObj.createDate = function (date) {
+      return Restangular.all('dates').customPOST(date);
+  };
+
+  DateObj.removeDate = function (pk) {
+      return Restangular.one('dates', pk).remove();
+  };
+
+  return DateObj;
+}]);
