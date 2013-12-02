@@ -40,6 +40,7 @@ class EventDetailsView(RetrieveAPIView):
     """
     serializer_class = EventDetailsSerializer
     model = Event
+    lookup_field = 'slug'
 
 
 class EventViewSet(ModelViewSet):
@@ -48,6 +49,7 @@ class EventViewSet(ModelViewSet):
     """
     serializer_class = EventModelSerializer
     model = Event
+    lookup_field = 'slug'
 
     def pre_save(self, obj):
         if not obj.author:
@@ -87,12 +89,12 @@ class FollowEventView(APIView):
     """
     Adding current user as follower of event
     """
-    def put(self, request, event_id, *args, **kwargs):
+    def put(self, request, slug, *args, **kwargs):
         user = request.user
-        event = Event.objects.get(id=event_id)
+        event = Event.objects.get(slug=slug)
         srv_following = False
         try:
-            if user.profile.followed_events.filter(id=event_id).count():
+            if user.profile.followed_events.filter(slug=slug).count():
                 user.profile.followed_events.remove(event)
             else:
                 user.profile.followed_events.add(event)
@@ -125,6 +127,7 @@ class CheckShortLinkView(APIView):
 class UserProfileViewSet(ModelViewSet):
     serializer_class = UserProfileSerializer
     model = UserProfile
+    lookup_field = 'slug'
 
     def pre_save(self, obj):
         user_data = self.request.DATA.get('user', {})
@@ -149,12 +152,12 @@ class FollowProfileView(APIView):
     """
     Adding current user as follower of Profile
     """
-    def put(self, request, profile_id, *args, **kwargs):
+    def put(self, request, slug, *args, **kwargs):
         user = request.user
-        profile = UserProfile.objects.get(id=profile_id)
+        profile = UserProfile.objects.get(slug=slug)
         srv_following = False
         try:
-            if user.profile.followed_profiles.filter(id=profile_id).count():
+            if user.profile.followed_profiles.filter(slug=slug).count():
                 user.profile.followed_profiles.remove(profile)
             else:
                 user.profile.followed_profiles.add(profile)

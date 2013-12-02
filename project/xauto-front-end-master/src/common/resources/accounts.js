@@ -4,12 +4,12 @@ angular.module('resources.accounts', ['restangular'])
 
       var Accounts = {};
 
-      Accounts.getAccount = function (pk) {
-          return Restangular.one('profiles', pk).get();
+      Accounts.getAccount = function (slug) {
+          return Restangular.one('profiles', slug).get();
       };
 
       Accounts.saveAccount = function (account) {
-          return Restangular.one('profiles', account.id).customPUT(account);
+          return Restangular.one('profiles', account.slug).customPUT(account);
       };
 
       Accounts.getFavorites = function () {

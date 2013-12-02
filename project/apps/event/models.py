@@ -2,12 +2,15 @@ from datetime import datetime
 # ---------------------------------------------------
 # --- Django base core code (system)              ---
 from django.db import models
+from django.db.models import permalink
 from django.contrib.auth.models import User
+
 
 # ---------------------------------------------------
 # --- Django addon                                ---
 #from livesettings.models import Setting
 from sorl.thumbnail.fields import ImageField
+from autoslug import AutoSlugField
 
 from account.models import UserProfile
 from xauto_lib.models import TimestampedModel
@@ -140,6 +143,8 @@ class Event(TimestampedModel):
     eventSize = models.IntegerField(choices=EVENT_SIZE, default=10)  # How big is your event in Cars
     capacity = models.IntegerField(default=0)  # How big is your Capacity in people in people
     short_link = models.CharField(max_length=50, default='', unique=True)
+    slug = AutoSlugField(populate_from='short_link',
+        slugify=lambda value: value.replace(' ','-'))
 
     main_image = models.ForeignKey('EventImage', on_delete=models.SET_NULL,
         blank=True, null=True, related_name='main')
@@ -169,6 +174,10 @@ class Event(TimestampedModel):
 
     def event_upload_images(self):
         return MultiuploaderImage.objects.filter(event_date__event_id=self.id)
+
+    @permalink
+    def get_absolute_url(self):
+        return ('view_event', None, { 'slug': self.slug })
 
 class EventImage(TimestampedModel):
     """

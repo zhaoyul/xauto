@@ -58,7 +58,7 @@ angular.module( 'blvdx.people', [
   });
 
   $scope.Follow = function($profile) {
-      Profiles.Follow($profile.id).then(function (profile) {
+      Profiles.Follow($profile.slug).then(function (profile) {
           $profile.srv_following = profile.srv_following;
           $profile.srv_followersCount = profile.srv_followersCount;
       });
@@ -71,11 +71,11 @@ angular.module( 'blvdx.people', [
   titleService.setTitle( $stateParams.username+' - Profile' );
 
   Profiles.getDetails($stateParams.profileId).then(function (profile) {
-      $scope.Profiles = profile;
+      $scope.Profile = profile;
   });
 
   $scope.Follow = function($profile) {
-      Profiles.Follow($profile.id).then(function (profile) {
+      Profiles.Follow($profile.slug).then(function (profile) {
           $profile.srv_following = profile.srv_following;
           $profile.srv_followersCount = profile.srv_followersCount;
       });

@@ -8,12 +8,12 @@ angular.module('resources.users', ['restangular'])
       return Restangular.all('profiles').getList(params);
   };
 
-  Profiles.Follow = function (pk) {
-      return Restangular.one('profiles', pk).customPUT(pk, 'follow');
+  Profiles.Follow = function (slug) {
+      return Restangular.one('profiles', slug).customPUT(slug, 'follow');
   };
 
-  Profiles.getDetails = function (pk) {
-      return Restangular.one('profiles', pk).get();
+  Profiles.getDetails = function (slug) {
+      return Restangular.one('profiles', slug).get();
   };
 
   return Profiles;

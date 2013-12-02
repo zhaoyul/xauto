@@ -13,6 +13,7 @@ import string
 # --- Django addon                                ---
 # ---------------------------------------------------
 from sorl.thumbnail.fields import ImageField
+from autoslug import AutoSlugField
 
 # ---------------------------------------------------
 # --- Xauto Data models                           ---
@@ -24,6 +25,8 @@ class UserProfile(TimestampedModel):
 
     user = models.OneToOneField(User, related_name='profile')
     name = models.CharField(max_length=255, unique=True, default='')
+    slug = AutoSlugField(populate_from='name',
+        slugify=lambda value: value.replace(' ','-'))
     about = models.TextField(null=True, blank=True)
 
     location_address = models.CharField(max_length=255, null=True, blank=True)

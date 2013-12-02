@@ -256,6 +256,7 @@ angular.module( 'blvdx.events', [
   //$scope.EventObj = EventObj.get({eventId:$stateParams.eventId});
   Events.getDetails($stateParams.eventId).then(function (event) {
       $scope.EventObj = event;
+      $scope.Albums = event.albums;
   });
 
   $('.schedule-dropdown-menu').click(function(e) {

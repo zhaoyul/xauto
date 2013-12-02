@@ -397,7 +397,7 @@ angular.module("events/events-my.tpl.html", []).run(["$templateCache", function(
     "  				<td>{{event.date_info.city}}, {{event.date_info.country}}</td>\n" +
     "  				<td><span class=\"label label-success\">{{event.srv_followersCount}} Followers</span> <span class=\"label label-info\">{{event.srv_photosCount}} Photos</span></td>\n" +
     "  				<td>\n" +
-    "            <a class=\"btn btn-primary btn-sm\" href=\"#/events/{{event.id}}/edit\">Edit</a> <a class=\"btn btn-danger btn-sm\" ng-click=\"removeEvent(event)\">Delete</a>\n" +
+    "            <a class=\"btn btn-primary btn-sm\" href=\"#/events/{{event.slug}}/edit\">Edit</a> <a class=\"btn btn-danger btn-sm\" ng-click=\"removeEvent(event)\">Delete</a>\n" +
     "          </td>\n" +
     "  			</tr>\n" +
     "  			\n" +
@@ -448,7 +448,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "        <div class=\"event-header\">\n" +
     "          <div class=\"row-wrapper title-line\">\n" +
     "            <div class=\"pull-left\">\n" +
-    "              <a href=\"#/events/{{event.id}}\"><h1>{{event.title}}</h1></a>\n" +
+    "              <a href=\"#/events/{{event.slug}}\"><h1>{{event.title}}</h1></a>\n" +
     "            </div>\n" +
     "            <div class=\"pull-right\">\n" +
     "              <a ng-show=\"event.srv_live\" href=\"#\" tooltip-placement=\"left\" tooltip=\"[Stream] Happening Now\"><i class=\"xa-icon-live-stream\"></i></a>\n" +
@@ -787,10 +787,10 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "      <li ng-repeat=\"profile in Profiles\">\n" +
     "        <div class=\"row profile-item\">\n" +
     "          <div class=\"col-xs-12 col-sm-6 col-md-4 photo-name-col\">\n" +
-    "            <a href=\"#profile/{{profile.id}}\"><img src=\"/media/{{profile.main_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +
+    "            <a href=\"#profile/{{profile.slug}}\"><img src=\"/media/{{profile.main_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +
     "            <div class=\"name-wrapper\">\n" +
-    "              <strong><a href=\"#profile/{{profile.id}}\">{{profile.full_name}}</a></strong>\n" +
-    "              <span class=\"username\"><a href=\"#profile/{{profile.id}}\">{{profile.name}}</a></span>\n" +
+    "              <strong><a href=\"#profile/{{profile.slug}}\">{{profile.full_name}}</a></strong>\n" +
+    "              <span class=\"username\"><a href=\"#profile/{{profile.slug}}\">{{profile.name}}</a></span>\n" +
     "              <span class=\"location\">\n" +
     "                <i class=\"xa-icon-location\"></i> {{profile.location_address}}\n" +
     "              </span>\n" +
@@ -864,7 +864,7 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
     "                            <div class=\"col-xs-12\" >\n" +
     "                                <div\n" +
     "                                    class=\"profile-view-cover-photo\"\n" +
-    "                                    style=\"background-image:url('/media/{{ProfileObj.main_image}}')\"\n" +
+    "                                    style=\"background-image:url('/media/{{Profile.main_image}}')\"\n" +
     "                                ></div>\n" +
     "                            </div>\n" +
     "                        </div>\n" +
@@ -873,18 +873,18 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
     "\n" +
     "                                        <div class=\"row profile-item\">\n" +
     "                                          <div class=\"col-xs-12 col-sm-6 col-md-4 photo-name-col\">\n" +
-    "                                            <a href=\"#profile/LewHamF1\"><img src=\"/media/{{ProfileObj.main_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +
+    "                                            <a href=\"#profile/LewHamF1\"><img src=\"/media/{{Profile.main_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +
     "                                            <div class=\"name-wrapper\">\n" +
-    "                                              <strong><a href=\"#profile/LewHamF1\">{{ProfileObj.full_name}}</a></strong>\n" +
-    "                                              <span class=\"username\"><a href=\"#profile/LewHamF1\">{{ProfileObj.name}}</a></span>\n" +
+    "                                              <strong><a href=\"#profile/LewHamF1\">{{Profile.full_name}}</a></strong>\n" +
+    "                                              <span class=\"username\"><a href=\"#profile/LewHamF1\">{{Profile.name}}</a></span>\n" +
     "                                              <span class=\"location\">\n" +
-    "                                                <i class=\"xa-icon-location\"></i> {{ProfileObj.location}}\n" +
+    "                                                <i class=\"xa-icon-location\"></i> {{Profile.location}}\n" +
     "                                              </span>\n" +
     "                                            </div>\n" +
     "                                          </div>\n" +
     "                                          <div class=\"col-md-3 hidden-xs hidden-sm about-col\">\n" +
     "                                            <p>\n" +
-    "                                              {{ProfileObj.about}}\n" +
+    "                                              {{Profile.about}}\n" +
     "                                            </p>\n" +
     "                                          </div>\n" +
     "                                          <div class=\"col-xs-6 col-sm-4 col-md-3 counts-col\">\n" +
@@ -892,7 +892,7 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
     "                                              <li>\n" +
     "                                                <a href=\"#\">\n" +
     "                                                  <span class=\"count-badge\">\n" +
-    "                                                    <span class=\"badge\">{{ProfileObj.srv_photosCount}}</span>\n" +
+    "                                                    <span class=\"badge\">{{Profile.srv_photosCount}}</span>\n" +
     "                                                  </span>\n" +
     "                                                  <span class=\"count-title\">\n" +
     "                                                    Photos\n" +
@@ -902,7 +902,7 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
     "                                              <li>\n" +
     "                                                <a href=\"#\">\n" +
     "                                                  <span class=\"count-badge\">\n" +
-    "                                                    <span class=\"badge\">{{ProfileObj.srv_followersCount}}</span>\n" +
+    "                                                    <span class=\"badge\">{{Profile.srv_followersCount}}</span>\n" +
     "                                                  </span>\n" +
     "                                                  <span class=\"count-title\">\n" +
     "                                                    Followers\n" +
@@ -912,7 +912,7 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
     "                                              <li>\n" +
     "                                                <a href=\"#\">\n" +
     "                                                  <span class=\"count-badge\">\n" +
-    "                                                    <span class=\"badge\">{{ProfileObj.srv_followingCount}}</span>\n" +
+    "                                                    <span class=\"badge\">{{Profile.srv_followingCount}}</span>\n" +
     "                                                  </span>\n" +
     "                                                  <span class=\"count-title\">\n" +
     "                                                    Following\n" +
@@ -923,11 +923,11 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
     "                                          </div>\n" +
     "                                          <div class=\"col-xs-6 col-sm-2 col-md-2 follow-col\">\n" +
     "                                            <a href=\"javascript:;\"\n" +
-    "                                              ng-click=\"Follow(ProfileObj)\"\n" +
-    "                                              ng-class=\"{following:ProfileObj.srv_following}\">\n" +
+    "                                              ng-click=\"Follow(Profile)\"\n" +
+    "                                              ng-class=\"{following:Profile.srv_following}\">\n" +
     "                                              <i class=\"xa-icon-event-details-follow\"></i>\n" +
-    "                                              <span ng-hide=\"ProfileObj.srv_following\">Follow</span>\n" +
-    "                                              <span ng-show=\"ProfileObj.srv_following\">Following</span>\n" +
+    "                                              <span ng-hide=\"Profile.srv_following\">Follow</span>\n" +
+    "                                              <span ng-show=\"Profile.srv_following\">Following</span>\n" +
     "                                            </a>\n" +
     "                                          </div>\n" +
     "                                        </div>\n" +

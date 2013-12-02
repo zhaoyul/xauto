@@ -8,12 +8,12 @@ angular.module('resources.events', ['restangular'])
       return Restangular.all('events').customGETLIST('list', params);
   };
 
-  Events.getEvent = function (pk) {
-      return Restangular.one('events', pk).get();
+  Events.getEvent = function (slug) {
+      return Restangular.one('events', slug).get();
   };
 
-  Events.getDetails = function (pk) {
-      return Restangular.one('events', pk).customGET('details');
+  Events.getDetails = function (slug) {
+      return Restangular.one('events', slug).customGET('details');
   };
 
   Events.saveEvent = function (event) {
@@ -25,7 +25,7 @@ angular.module('resources.events', ['restangular'])
   };
 
   Events.follow = function (event) {
-      return event.customPUT(event.id, 'follow');
+      return event.customPUT(event.slug, 'follow');
   };
 
   Events.checkShortLink = function (params) {

@@ -39,7 +39,7 @@ class EventModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'short_link',
-            'main_image', 'author', 'dates')
+            'main_image', 'author', 'dates', 'slug')
 
 class EventSerializer(serializers.ModelSerializer):
     photo = serializers.Field(source='main_image')
@@ -54,7 +54,7 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'srv_followersCount',
-            'srv_photosCount', 'photo', 'date_info', 'author_name',
+            'srv_photosCount', 'photo', 'date_info', 'author_name', 'slug',
             'author_photo', 'srv_live', 'srv_following')
 
     def srv_followers_count(self, obj):
@@ -121,7 +121,7 @@ class EventDetailsSerializer(serializers.ModelSerializer):
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'srv_followersCount',
             'srv_photosCount', 'photo', 'srv_futureDates', 'author_name',
-            'author_photo', 'srv_live', 'srv_following', 'albums')
+            'author_photo', 'srv_live', 'srv_following', 'albums', 'slug')
 
     def srv_followers_count(self, obj):
         return obj.followed.count()
