@@ -150,7 +150,7 @@ INSTALLED_APPS = [
     'xauto_lib',
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 AUTHENTICATION_BACKENDS = (
     'email_login.auth_backend.EmailBackend',

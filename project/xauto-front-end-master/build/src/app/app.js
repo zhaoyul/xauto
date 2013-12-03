@@ -46,6 +46,7 @@ angular.module( 'blvdx', [
 
     $scope.accountCreate = function(){
         Accounts.createAccount($scope.AccountObj).then(function (account) {
+            $(".modal:visible").find(".close").click();
             $state.transitionTo('events');
         });
     };
