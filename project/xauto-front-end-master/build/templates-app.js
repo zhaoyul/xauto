@@ -1,4 +1,4 @@
-angular.module('templates-app', ['account/account-edit.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
+angular.module('templates-app', ['account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'header.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
 
 angular.module("account/account-edit.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-edit.tpl.html",
@@ -24,6 +24,23 @@ angular.module("account/account-edit.tpl.html", []).run(["$templateCache", funct
     "");
 }]);
 
+angular.module("account/account-login.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("account/account-login.tpl.html",
+    "<div class=\"form-group\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Email</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <input type=\"email\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.email\">\n" +
+    "    </div>\n" +
+    "</div>\n" +
+    "<div class=\"form-group\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Password</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <input type=\"password\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.password\">\n" +
+    "    </div>\n" +
+    "</div>\n" +
+    "");
+}]);
+
 angular.module("account/account-my-favorite-photos.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-my-favorite-photos.tpl.html",
     "<ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>");
@@ -45,7 +62,7 @@ angular.module("account/account-signup.tpl.html", []).run(["$templateCache", fun
     "<h1>Create New Account</h1>\n" +
     "<div class=\"row\">\n" +
     "	<div class=\"col-lg-8\">\n" +
-    "		<form class=\"form-horizontal\" role=\"form\">\n" +
+    "		<form class=\"form-horizontal\" role=\"form\" ng-submit=\"accountCreate()\">\n" +
     "			<ng-include src=\"'account/partial_create_account.tpl.html'\"></ng-include>\n" +
     "\n" +
     "			  <div class=\"form-group\">\n" +
@@ -108,6 +125,18 @@ angular.module("account/partial_create_account.tpl.html", []).run(["$templateCac
     "    <label class=\"col-lg-3 control-label\">About Account</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
     "      <textarea class=\"form-control\" ng-model=\"AccountObj.about\"></textarea>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\">\n" +
+    "    <label class=\"col-lg-3 control-label\">User Hero Image</label>\n" +
+    "    <div class=\"col-lg-4\">\n" +
+    "      <input type=\"file\" class=\"btn\" ng-model=\"AccountObj.main_image\">\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\">\n" +
+    "    <label class=\"col-lg-3 control-label\">User Thumbnail</label>\n" +
+    "    <div class=\"col-lg-4\">\n" +
+    "      <input type=\"file\" class=\"btn\" ng-model=\"AccountObj.thumbnail_image\">\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +
@@ -345,7 +374,7 @@ angular.module("events/event-edit.tpl.html", []).run(["$templateCache", function
     "			  <div class=\"form-group\">\n" +
     "			    <div class=\"col-lg-offset-3 col-lg-9\">\n" +
     "			      <button type=\"submit\" class=\"btn btn-success btn-lg\">Save Event!</button>\n" +
-    "			      <button type=\"button\" class=\"btn btn-danger btn-lg\" ng-click=\"removeEvent(EventObj.id)\">Delete Event</button>\n" +
+    "			      <button type=\"button\" class=\"btn btn-danger btn-lg\" ng-click=\"removeEvent(EventObj.slug)\">Delete Event</button>\n" +
     "			    </div>\n" +
     "			  </div>\n" +
     "		</form>\n" +
@@ -772,6 +801,11 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "      <textarea class=\"form-control\" ng-model=\"editDate.feature_detail\" required=\"required\"></textarea>\n" +
     "    </div>\n" +
     "  </div>");
+}]);
+
+angular.module("header.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("header.tpl.html",
+    "");
 }]);
 
 angular.module("people/people.tpl.html", []).run(["$templateCache", function($templateCache) {

@@ -1,23 +1,34 @@
 # -*- coding: utf-8 -*-
+import uuid
 from datetime import datetime
+from random import randrange
+from hashlib import sha1
 
 #from django.views.decorators.cache import never_cache
 from django.db.models import Q
+from django.contrib.auth.models import User
+from django.contrib.auth import (login as auth_login, logout, authenticate)
+from django.template.loader import render_to_string
+from django.conf import settings
+from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
 
 from rest_framework.generics import (ListAPIView, RetrieveAPIView)
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
 
 from event.models import Event, EventDate
 from event.serializers import (EventSerializer, EventDetailsSerializer,
     EventModelSerializer, EventDateSerializer, AlbumSerializer)
-from account.serializers import UserProfileSerializer, UserSerializer
+from account.serializers import UserProfileSerializer, UserSerializer, NewProfileSerializer
 from account.models import UserProfile
 from multiuploader.serializers import MultiuploaderImageSerializer
 from multiuploader.models import MultiuploaderImage
 
+from django.core.mail import send_mail
 
 class EventsListView(ListAPIView):
     """
@@ -249,3 +260,155 @@ class ReportPictureView(APIView):
         picture.save()
 
         return Response({}, status=status.HTTP_200_OK)
+
+
+def make_userjson(user):
+    image_url = ""
+    if user.profile.main_image:
+        image_url = user.profile.main_image.url
+    user_data = {
+        'id': user.pk,
+        'email': user.email,
+        'firstName': user.first_name,
+        'lastName': user.last_name,
+        'fullName': user.get_full_name(),
+        'admin': user.is_superuser,
+        'main_image': image_url,
+        'slug': user.profile.slug
+    }
+    return user_data
+
+
+class LoginView(APIView):
+    """Logs user in. Returns user object
+    """
+
+    #@method_decorator(ensure_csrf_cookie)
+    def post(self, request, *args, **kwargs):
+        user_data = None
+        email = request.DATA.get('email')
+        password = request.DATA.get('password')
+        user = authenticate(email=email, password=password)
+        if user:
+            auth_login(request, user)
+            user_data = make_userjson(user)
+        data = {'user': user_data}
+        return Response(data, status=status.HTTP_200_OK)
+
+
+class CurrentUserView(APIView):
+    """Returns current user object
+    """
+    #permission_classes = (AllowAny,)
+
+    def get(self, request, *args, **kwargs):
+        user_data = None
+        user = request.user
+        if user.is_authenticated():
+            user_data = make_userjson(user)
+        data = {'user': user_data}
+        return Response(data, status=status.HTTP_200_OK)
+
+
+class LogoutView(APIView):
+    """Logs user out. Returns empty user object.
+    """
+    #permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        user_data = None
+        user = request.user
+        if user.is_authenticated():
+            logout(request)
+        data = {'user': user_data}
+        return Response(data, status=status.HTTP_204_NO_CONTENT)
+
+'''
+def activate_account(request, activation_key):
+
+    try:
+        customer = Customer.objects.get(activationtoken=activation_key)
+        customer.activationtoken = ""
+        customer.activated = True
+        customer.save()
+        return render_to_response("ovahi/activation_complete.html",
+            {}, context_instance=RequestContext(request))
+    except Customer.DoesNotExist:
+        return render_to_response("ovahi/activation_error.html",
+            {}, context_instance=RequestContext(request))
+'''
+
+class ActivateView(APIView):
+    """
+    Activates a new user.
+    """
+    def get(self, request, activation_key, *args, **kwargs):
+
+        try:
+            profile = UserProfile.objects.get(activationtoken=activation_key)
+            profile.activationtoken = ""
+            profile.user.is_active = True
+            profile.user.save()
+            profile.save()
+            return redirect('/')
+        except UserProfile.DoesNotExist:
+            return Response({'error': "Wrong token"}, status=status.HTTP_400_BAD_REQUEST)
+
+class RegistrationView(APIView):
+    """
+    Creates a new user.
+    Returns: token (auth token)   .
+    """
+
+    def post(self, request, *args, **kwargs):
+        user_data = request.DATA.get('user', {})
+        full_name = user_data.get('full_name', '').split(' ')
+        user_data['first_name'] = full_name[0]
+        if len(full_name) > 1:
+            user_data['last_name'] = ' '.join(full_name[1:])
+
+        user_serializer = UserSerializer(data=user_data)
+        profile_serializer = NewProfileSerializer(data=request.DATA)
+        if user_serializer.is_valid() and profile_serializer.is_valid():
+
+            email = user_serializer.data.get('email', None)
+
+            try:
+                User.objects.get(email=email)
+                error = {'error': 'User already exists'}
+                return Response(error, status=status.HTTP_400_BAD_REQUEST)
+            except User.DoesNotExist:
+                user_serializer.object.username = profile_serializer.object.name
+                password = user_data.get('password_1', uuid.uuid4())
+                user_serializer.object.set_password(password)
+                user_serializer.object.is_active = False
+                user_serializer.save()
+
+                profile_serializer.object.activationtoken = sha1("%sovahi%s" %
+                    (randrange(1, 1000), randrange(1, 1000))).hexdigest()
+
+                profile_serializer.object.user = user_serializer.object
+                profile_serializer.save()
+
+                activation_link = request.build_absolute_uri(
+                    reverse('activate-profile',
+                    args=(profile_serializer.object.activationtoken,))
+                )
+
+                email_body = render_to_string('emails/activation_email.html',
+                    {'user': user_serializer.object,
+                     'activation_link': activation_link}
+                )
+
+                send_mail("Welcome to Xauto", email_body,
+                    settings.DEFAULT_FROM_EMAIL, [email], fail_silently=False)
+
+                # return authentication token
+                token, created = Token.objects.get_or_create(
+                    user=user_serializer.object)
+                data = {'token': token.key}
+                return Response(data, status=status.HTTP_201_CREATED)
+
+        errors = user_serializer.errors
+        errors.update(profile_serializer.errors)
+        return Response(errors, status=status.HTTP_400_BAD_REQUEST)

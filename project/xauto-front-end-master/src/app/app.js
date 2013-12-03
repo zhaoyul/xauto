@@ -10,7 +10,8 @@ angular.module( 'blvdx', [
   'ui.state',
   'ui.route',
 
-  'restangular'
+  'restangular',
+  'security'
 ])
 
 .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'RestangularProvider',
@@ -31,13 +32,30 @@ angular.module( 'blvdx', [
   titleService.setSuffix( ' | xAu.to' );
 })
 
-.controller( 'AppCtrl', function AppCtrl ( $scope, $location ) {
-	$scope.demoStreamItems = [
-	1, 2, 3, 4, 5, 6, 7, 8
-	];
-	$scope.demoPhotoAlbumItems = [
-	1, 2, 3, 4
-	];
+.controller( 'AppCtrl', ['$scope', '$state', '$location', 'security', 'Accounts', function AppCtrl ( $scope, $state, $location, security, Accounts ) {
+  security.requestCurrentUser().then(function (user) {
+      $scope.isAuthenticated = security.isAuthenticated;
+      $scope.isAdmin = security.isAdmin;
+  });
+
+    //To Do move login modal and his submit to security module.
+    $scope.AccountObj = {};
+    $scope.accountSubmit = function(){
+        security.login($scope.AccountObj.email, $scope.AccountObj.password);
+    };
+
+    $scope.accountCreate = function(){
+        Accounts.createAccount($scope.AccountObj).then(function (account) {
+            $state.transitionTo('events');
+        });
+    };
+
+    $scope.demoStreamItems = [
+    1, 2, 3, 4, 5, 6, 7, 8
+    ];
+    $scope.demoPhotoAlbumItems = [
+    1, 2, 3, 4
+    ];
   $scope.editDate={
     // "dateText": "Sunday, 30 Apr",
     // "date": "04/30/2013",
@@ -64,7 +82,7 @@ angular.module( 'blvdx', [
   //     active: ''
   //   }
   // ];
-})
+}])
 
 .directive('bxStreamPhoto', function() {
   return {

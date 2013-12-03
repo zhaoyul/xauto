@@ -119,7 +119,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = [
-    #'theme',
+    'theme',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -134,6 +134,7 @@ INSTALLED_APPS = [
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'rest_framework',
+    'rest_framework.authtoken',
     'sorl.thumbnail',
     'pagination',
     'registration',
@@ -149,12 +150,13 @@ INSTALLED_APPS = [
     'xauto_lib',
 ]
 
-EMAIL_BACKEND = "mailer.backend.DbBackend"
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 AUTHENTICATION_BACKENDS = (
-                           'django.contrib.auth.backends.ModelBackend',
-                           #'accounts.auth_backends.EmailAuthBackend',
-                           )
+    'email_login.auth_backend.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    #'accounts.auth_backends.EmailAuthBackend',
+)
 
 #django-registration settings
 ACCOUNT_ACTIVATION_DAYS = 3

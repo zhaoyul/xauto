@@ -6,7 +6,8 @@ from rest_framework import routers
 from .views import (EventsListView, EventDetailsView, FollowEventView,
     EventViewSet, EventDateViewSet, CheckShortLinkView, UserProfileViewSet,
     FollowProfileView, StreamListView, FavoritePictureView, ReportPictureView,
-    ProfileFavoritesListView, ProfileMyPhotosListView)
+    ProfileFavoritesListView, ProfileMyPhotosListView, RegistrationView,
+    LoginView, LogoutView, CurrentUserView,ActivateView)
 
 router = routers.DefaultRouter()
 router.register(r'events', EventViewSet)
@@ -19,6 +20,11 @@ urlpatterns = patterns('',
         name='events-details'),
     url(r'^events/(?P<slug>[-\w]+)/follow/$', FollowEventView.as_view(),
         name='event-follow'),
+    url(r'^register/$', RegistrationView.as_view(), name='profiles-register'),
+    url(r'^activate/(?P<activation_key>\w+)/$', ActivateView.as_view(), name='activate-profile'),
+    url(r'^login/', LoginView.as_view(), name='api-login'),
+    url(r'^logout/', LogoutView.as_view(), name='api-logout'),
+    url(r'^current-user/', CurrentUserView.as_view(), name='api-current-user'),
     url(r'^profiles/(?P<slug>[-\w]+)/follow/$', FollowProfileView.as_view(),
         name='profile-follow'),
     url(r'^profiles/pictures/$', ProfileMyPhotosListView.as_view(),

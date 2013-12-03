@@ -12,6 +12,14 @@ angular.module('resources.accounts', ['restangular'])
           return Restangular.one('profiles', account.slug).customPUT(account);
       };
 
+      Accounts.createAccount = function (account) {
+          return Restangular.all('register').post(account);
+      };
+
+      Accounts.login = function (account) {
+          return Restangular.all('login').post(account);
+      };
+
       Accounts.getFavorites = function () {
           return Restangular.all('profiles').customGETLIST('favorites-list');
       };

@@ -17,7 +17,7 @@ angular.module('resources.events', ['restangular'])
   };
 
   Events.saveEvent = function (event) {
-      return event.put();
+      return Restangular.one('events', event.slug).customPUT(event);
   };
 
   Events.createEvent = function (event) {
@@ -25,7 +25,7 @@ angular.module('resources.events', ['restangular'])
   };
 
   Events.follow = function (event) {
-      return event.customPUT(event.slug, 'follow');
+      return Restangular.one('events', event.slug).customPUT(event.slug, 'follow');
   };
 
   Events.checkShortLink = function (params) {
@@ -33,7 +33,7 @@ angular.module('resources.events', ['restangular'])
   };
 
   Events.removeEvent = function (event) {
-      return event.remove();
+      return Restangular.one('events', event.slug).remove();
   };
 
   return Events;

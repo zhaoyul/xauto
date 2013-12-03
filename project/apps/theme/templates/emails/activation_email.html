@@ -1,0 +1,16 @@
+{% extends "emails/email_base.html" %}
+{% load i18n %}
+
+{% block email_header %}
+    <span style="font-size: 16px; color: gray;">Hello {{ user.first_name }}   {{ user.last_name }} </span>
+    <br /> <br />
+    {% blocktrans %}Welcome to <a href="{{ domain }}">{{ site_name }}</a>{% endblocktrans %}
+{% endblock %}
+
+{% block email_content %}
+    {% blocktrans with site_name=site_name|capfirst %}Thank you for joining {{ site_name }}. Click on this link or copy &amp; paste it into your browsers address bar to activate your account:{% endblocktrans %}
+    <br><br>
+    <a href="{{ activation_link }}" style="color:#0071B2; text-decoration:none; font-weight:bold;">{{ activation_link }}</a>
+    <br /><br />
+    you have {{ expiration_days }}  days to activate your account.
+{% endblock %}

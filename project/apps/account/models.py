@@ -38,10 +38,12 @@ class UserProfile(TimestampedModel):
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
 
-    main_image = ImageField(upload_to='account_images/')
-    thumbnail_image = ImageField(upload_to='account_images/')
+    main_image = ImageField(upload_to='account_images/', blank=True)
+    thumbnail_image = ImageField(upload_to='account_images/', blank=True)
     followed = models.ManyToManyField('account.UserProfile', null=True, blank=True,
         related_name='followed_profiles', verbose_name='Profile followed by')
+    activationtoken = models.CharField(max_length=255L,
+        db_column='activationToken', null=True, blank=True)
 
 
     def get_full_name(self):

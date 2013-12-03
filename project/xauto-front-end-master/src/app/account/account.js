@@ -25,6 +25,15 @@ angular.module( 'blvdx.account', [
       }
     }
   })
+  .state( 'accountLogin', {
+    url: '/account/login',
+    views: {
+      "main": {
+        controller: 'AccountLoginCtrl',
+        templateUrl: 'account/account-login.tpl.html'
+      }
+    }
+  })
   .state( 'accountEdit', {
     url: '/account/:accountId/edit',
     views: {
@@ -58,11 +67,28 @@ angular.module( 'blvdx.account', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'AccountCtrl', function AccountCtrl( $scope, titleService ) {
+.controller( 'AccountCtrl', ['$scope', '$state', 'titleService', 'Accounts', function AccountCtrl( $scope, $state, titleService, Accounts ) {
   titleService.setTitle( 'Account' );
+    $scope.AccountObj = {};
 
+    $scope.accountCreate = function(){
+        Accounts.createAccount($scope.AccountObj).then(function (account) {
+            $state.transitionTo('events');
+        });
+    };
 
-})
+}])
+.controller( 'AccountLoginCtrl', ['$scope', '$state', 'titleService', 'Accounts', function AccountCtrl( $scope, $state, titleService, Accounts ) {
+  titleService.setTitle( 'Account' );
+    $scope.AccountObj = {};
+
+    $scope.accountSubmit = function(){
+        Accounts.login($scope.AccountObj).then(function (account) {
+            $state.transitionTo('events');
+        });
+    };
+
+}])
 
 .controller( 'AccountEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Accounts', function AccountCtrl( $scope, $state, titleService, $stateParams, Accounts ) {
   titleService.setTitle( 'Edit Account' );

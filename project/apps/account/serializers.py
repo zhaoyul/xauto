@@ -17,6 +17,13 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.get_full_name()
 
 
+class NewProfileSerializer(serializers.ModelSerializer):
+    user = serializers.Field(source='user.username')
+
+    class Meta:
+        model = UserProfile
+
+
 class UserProfileSerializer(serializers.ModelSerializer):
     """
     A serializer for ``UserProfile``.
