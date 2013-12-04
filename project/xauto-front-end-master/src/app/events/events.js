@@ -78,7 +78,7 @@ angular.module( 'blvdx.events', [
       });
 }])
 
-.controller( 'EventsCtrl', ['$scope', 'titleService', 'Events', function EventsCtrl( $scope, titleService, Events ) {
+.controller( 'EventsCtrl', ['$scope', 'titleService', 'Events', 'AppScope', function EventsCtrl( $scope, titleService, Events, AppScope ) {
   titleService.setTitle( 'All events' );
 
   Events.getEvents({}).then(function (events) {
@@ -117,7 +117,8 @@ angular.module( 'blvdx.events', [
       });
   };
 
-  $scope.Search = function(value) {
+  app_scope = AppScope.getScope();
+  app_scope.Search = function(value) {
       Events.getEvents({search_text: value}).then(function (events) {
           $scope.events = events;
       });

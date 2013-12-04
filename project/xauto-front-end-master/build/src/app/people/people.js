@@ -56,7 +56,7 @@ angular.module( 'blvdx.people', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'PeopleCtrl', function PeopleCtrl( $scope, titleService, Profiles ) {
+.controller( 'PeopleCtrl', ['$scope', 'titleService', 'Profiles', 'AppScope', function PeopleCtrl( $scope, titleService, Profiles, AppScope ) {
   titleService.setTitle( 'People' );
    $scope.radioModel = 'All';
 
@@ -71,7 +71,14 @@ angular.module( 'blvdx.people', [
       });
   };
 
-})
+  app_scope = AppScope.getScope();
+  app_scope.Search = function(value) {
+      Profiles.getProfiles({search_text: value}).then(function (profiles) {
+          $scope.Profiles = profiles;
+      });
+  };
+
+}])
 
 .controller( 'ProfileViewCtrl', function ProfileViewCtrl( $scope, titleService, $stateParams, Profiles ) {
 

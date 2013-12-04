@@ -150,6 +150,14 @@ class UserProfileViewSet(ModelViewSet):
     model = UserProfile
     lookup_field = 'slug'
 
+    def get_queryset(self):
+        search_text = self.request.GET.get('search_text', '')
+        return UserProfile.objects.filter(
+            Q(name__startswith=search_text) |
+            Q(user__first_name__startswith=search_text) |
+            Q(user__last_name__startswith=search_text)
+        )
+
     def pre_save(self, obj):
         user_data = self.request.DATA.get('user', {})
 

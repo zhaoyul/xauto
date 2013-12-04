@@ -32,12 +32,12 @@ angular.module( 'blvdx', [
   titleService.setSuffix( ' | xAu.to' );
 })
 
-.controller( 'AppCtrl', ['$scope', '$state', '$location', 'security', 'Accounts', function AppCtrl ( $scope, $state, $location, security, Accounts ) {
+.controller( 'AppCtrl', ['$scope', '$state', '$location', 'security', 'Accounts', 'AppScope', function AppCtrl ( $scope, $state, $location, security, Accounts, AppScope ) {
   security.requestCurrentUser().then(function (user) {
       $scope.isAuthenticated = security.isAuthenticated;
       $scope.isAdmin = security.isAdmin;
   });
-
+    AppScope.setScope($scope);
     //To Do move login modal and his submit to security module.
     $scope.AccountObj = {};
     $scope.accountSubmit = function(){
@@ -84,6 +84,20 @@ angular.module( 'blvdx', [
   //   }
   // ];
 }])
+
+.factory('AppScope', function () {
+    var AppScope = {};
+
+    AppScope.setScope = function (scope) {
+        AppScope = scope;
+    };
+
+    AppScope.getScope = function () {
+        return AppScope;
+    };
+
+    return AppScope;
+})
 
 .directive('bxStreamPhoto', function() {
   return {
