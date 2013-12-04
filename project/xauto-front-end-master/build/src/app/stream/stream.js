@@ -16,6 +16,7 @@ angular.module( 'blvdx.stream', [
   'ui.state',
   'titleService',
   'plusOne',
+  'security.authorization',
   'resources.streams'
 ])
 
@@ -24,17 +25,20 @@ angular.module( 'blvdx.stream', [
  * will handle ensuring they are all available at run-time, but splitting it
  * this way makes each module more "self-contained".
  */
-.config(function config( $stateProvider ) {
+.config(['$stateProvider', 'securityAuthorizationProvider', function config( $stateProvider, securityAuthorizationProvider ) {
   $stateProvider.state( 'stream', {
     url: '/stream',
     views: {
       "main": {
         controller: 'StreamCtrl',
-        templateUrl: 'stream/stream.tpl.html'
+        templateUrl: 'stream/stream.tpl.html',
+        resolve:{
+          authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+        }
       }
     }
   });
-})
+}])
 
 /**
  * And of course we define a controller for our route.

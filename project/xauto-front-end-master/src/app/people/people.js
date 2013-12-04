@@ -16,6 +16,7 @@ angular.module( 'blvdx.people', [
   'ui.state',
   'titleService',
   'plusOne',
+  'security.authorization',
   'resources.users'
 ])
 
@@ -24,14 +25,17 @@ angular.module( 'blvdx.people', [
  * will handle ensuring they are all available at run-time, but splitting it
  * this way makes each module more "self-contained".
  */
-.config(function config( $stateProvider ) {
+.config(['$stateProvider', 'securityAuthorizationProvider', function config( $stateProvider, securityAuthorizationProvider) {
   $stateProvider
   .state( 'people', {
     url: '/profiles',
     views: {
       "main": {
         controller: 'PeopleCtrl',
-        templateUrl: 'people/people.tpl.html'
+        templateUrl: 'people/people.tpl.html',
+        resolve:{
+          authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+        }
       }
     }
   })
@@ -40,11 +44,14 @@ angular.module( 'blvdx.people', [
     views: {
       "main": {
         controller: 'ProfileViewCtrl',
-        templateUrl: 'people/profile-view.tpl.html'
+        templateUrl: 'people/profile-view.tpl.html',
+        resolve:{
+          authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+        }
       }
     }
   });
-})
+}])
 
 /**
  * And of course we define a controller for our route.

@@ -1,4 +1,4 @@
-angular.module('templates-app', ['account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'header.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
+angular.module('templates-app', ['account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
 
 angular.module("account/account-edit.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-edit.tpl.html",
@@ -801,11 +801,6 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "      <textarea class=\"form-control\" ng-model=\"editDate.feature_detail\" required=\"required\"></textarea>\n" +
     "    </div>\n" +
     "  </div>");
-}]);
-
-angular.module("header.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("header.tpl.html",
-    "");
 }]);
 
 angular.module("people/people.tpl.html", []).run(["$templateCache", function($templateCache) {

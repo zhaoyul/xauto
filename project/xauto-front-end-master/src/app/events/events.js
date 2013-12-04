@@ -3,10 +3,11 @@ angular.module( 'blvdx.events', [
   'ui.state',
   // 'placeholders',
   'ui.bootstrap',
+  'security.authorization',
   'titleService'
 ])
 
-.config(function config( $stateProvider ) {
+.config(['$stateProvider', 'securityAuthorizationProvider', function config( $stateProvider, securityAuthorizationProvider ) {
 
    $stateProvider
       .state( 'events', {
@@ -23,7 +24,10 @@ angular.module( 'blvdx.events', [
         views: {
           "main": {
             controller: 'EventAddCtrl',
-            templateUrl: 'events/event-add.tpl.html'
+            templateUrl: 'events/event-add.tpl.html',
+            resolve:{
+              authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+            }
           }
         }
       })
@@ -32,7 +36,10 @@ angular.module( 'blvdx.events', [
         views: {
           "main": {
             controller: 'EventsMyCtrl',
-            templateUrl: 'events/events-my.tpl.html'
+            templateUrl: 'events/events-my.tpl.html',
+            resolve:{
+              authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+            }
           }
         }
       })
@@ -41,7 +48,10 @@ angular.module( 'blvdx.events', [
         views: {
           "main": {
             controller: 'EventEditCtrl',
-            templateUrl: 'events/event-edit.tpl.html'
+            templateUrl: 'events/event-edit.tpl.html',
+            resolve:{
+              authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+            }
           }
         }
       })
@@ -50,7 +60,10 @@ angular.module( 'blvdx.events', [
         views: {
           "main": {
             controller: 'EventDetailsCtrl',
-            templateUrl: 'events/event-details.tpl.html'
+            templateUrl: 'events/event-details.tpl.html',
+            resolve:{
+              authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+            }
           }
         }
       })
@@ -63,7 +76,7 @@ angular.module( 'blvdx.events', [
           }
         }
       });
-})
+}])
 
 .controller( 'EventsCtrl', ['$scope', 'titleService', 'Events', function EventsCtrl( $scope, titleService, Events ) {
   titleService.setTitle( 'All events' );

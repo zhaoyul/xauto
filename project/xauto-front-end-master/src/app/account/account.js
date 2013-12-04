@@ -3,6 +3,7 @@ angular.module( 'blvdx.account', [
   'ui.state',
   'titleService',
   'plusOne',
+  'security.authorization',
   'resources.accounts'
 ])
 
@@ -11,7 +12,7 @@ angular.module( 'blvdx.account', [
  * will handle ensuring they are all available at run-time, but splitting it
  * this way makes each module more "self-contained".
  */
-.config(function config( $stateProvider, $urlRouterProvider ) {
+.config(['$stateProvider', '$urlRouterProvider', 'securityAuthorizationProvider', function config( $stateProvider, $urlRouterProvider, securityAuthorizationProvider ) {
 
   $urlRouterProvider.otherwise("/account/signup");
 
@@ -39,7 +40,10 @@ angular.module( 'blvdx.account', [
     views: {
       "main": {
         controller: 'AccountEditCtrl',
-        templateUrl: 'account/account-edit.tpl.html'
+        templateUrl: 'account/account-edit.tpl.html',
+        resolve:{
+          authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+        }
       }
     }
   })
@@ -48,7 +52,10 @@ angular.module( 'blvdx.account', [
     views: {
       "main": {
         controller: 'AccountMyPhotosCtrl',
-        templateUrl: 'account/account-my-photos.tpl.html'
+        templateUrl: 'account/account-my-photos.tpl.html',
+        resolve:{
+          authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+        }
       }
     }
   })
@@ -57,12 +64,15 @@ angular.module( 'blvdx.account', [
     views: {
       "main": {
         controller: 'AccountMyFavoritePhotosCtrl',
-        templateUrl: 'account/account-my-favorite-photos.tpl.html'
+        templateUrl: 'account/account-my-favorite-photos.tpl.html',
+        resolve:{
+          authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+        }
       }
     }
   })
   ;
-})
+}])
 
 /**
  * And of course we define a controller for our route.

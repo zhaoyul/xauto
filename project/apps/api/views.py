@@ -19,6 +19,7 @@ from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from event.models import Event, EventDate
 from event.serializers import (EventSerializer, EventDetailsSerializer,
@@ -34,6 +35,7 @@ class EventsListView(ListAPIView):
     """
     Returns Event list
     """
+    permission_classes = (AllowAny,)
     serializer_class = EventSerializer
 
     def get_queryset(self):
@@ -49,6 +51,7 @@ class EventDetailsView(RetrieveAPIView):
     """
     Returns Event details
     """
+    permission_classes = (IsAuthenticated,)
     serializer_class = EventDetailsSerializer
     model = Event
     lookup_field = 'slug'
@@ -58,6 +61,7 @@ class EventViewSet(ModelViewSet):
     """
     Returns Event CRUD methods
     """
+    permission_classes = (IsAuthenticated,)
     serializer_class = EventModelSerializer
     model = Event
     lookup_field = 'slug'
@@ -92,6 +96,7 @@ class EventEditView2(APIView):
 
 
 class EventDateViewSet(ModelViewSet):
+    permission_classes = (IsAuthenticated,)
     serializer_class = EventDateSerializer
     model = EventDate
 
@@ -100,6 +105,8 @@ class FollowEventView(APIView):
     """
     Adding current user as follower of event
     """
+    permission_classes = (IsAuthenticated,)
+
     def put(self, request, slug, *args, **kwargs):
         user = request.user
         event = Event.objects.get(slug=slug)
@@ -126,6 +133,8 @@ class CheckShortLinkView(APIView):
     """
     Checks database to determine availability of short link.
     """
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, *args, **kwargs):
         search_text = self.request.GET.get('search_text', '')
         data = {'response': 'Available'}
@@ -136,6 +145,7 @@ class CheckShortLinkView(APIView):
 
 
 class UserProfileViewSet(ModelViewSet):
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserProfileSerializer
     model = UserProfile
     lookup_field = 'slug'
@@ -163,6 +173,8 @@ class FollowProfileView(APIView):
     """
     Adding current user as follower of Profile
     """
+    permission_classes = (IsAuthenticated,)
+
     def put(self, request, slug, *args, **kwargs):
         user = request.user
         profile = UserProfile.objects.get(slug=slug)
@@ -189,6 +201,8 @@ class ProfileMyPhotosListView(ListAPIView):
     """
     Returns current user photos
     """
+    permission_classes = (IsAuthenticated,)
+
     serializer_class = AlbumSerializer
 
     def get_queryset(self):
@@ -201,6 +215,8 @@ class ProfileFavoritesListView(ListAPIView):
     """
     Returns favorite images for current user
     """
+    permission_classes = (IsAuthenticated,)
+
     serializer_class = MultiuploaderImageSerializer
 
     def get_queryset(self):
@@ -213,6 +229,8 @@ class StreamListView(ListAPIView):
     """
     Returns real-time images from Events or Profiles being followed
     """
+    permission_classes = (IsAuthenticated,)
+
     serializer_class = MultiuploaderImageSerializer
 
     def get_queryset(self):
@@ -235,6 +253,8 @@ class FavoritePictureView(APIView):
     """
     Adding Picture to favorites
     """
+    permission_classes = (IsAuthenticated,)
+
     def put(self, request, picture_id, *args, **kwargs):
         user = request.user
         picture = MultiuploaderImage.objects.get(id=picture_id)
@@ -254,6 +274,8 @@ class ReportPictureView(APIView):
     """
     Flagging Picture as inappropriate
     """
+    permission_classes = (IsAuthenticated,)
+
     def put(self, request, picture_id, *args, **kwargs):
         picture = MultiuploaderImage.objects.get(id=picture_id)
         picture.is_inappropriate = True
@@ -282,6 +304,7 @@ def make_userjson(user):
 class LoginView(APIView):
     """Logs user in. Returns user object
     """
+    permission_classes = (AllowAny,)
 
     #@method_decorator(ensure_csrf_cookie)
     def post(self, request, *args, **kwargs):
@@ -290,8 +313,16 @@ class LoginView(APIView):
         password = request.DATA.get('password')
         user = authenticate(email=email, password=password)
         if user:
+            print 1
+            if not user.is_active:
+                print 2
+                return Response({"message": "Account not active, you must "
+                    "activate your account by clicking the validation link in "
+                    "the confirmation email sent to you."},
+                    status=status.HTTP_403_FORBIDDEN)
             auth_login(request, user)
             user_data = make_userjson(user)
+
         data = {'user': user_data}
         return Response(data, status=status.HTTP_200_OK)
 
@@ -299,7 +330,7 @@ class LoginView(APIView):
 class CurrentUserView(APIView):
     """Returns current user object
     """
-    #permission_classes = (AllowAny,)
+    permission_classes = (AllowAny,)
 
     def get(self, request, *args, **kwargs):
         user_data = None
@@ -313,7 +344,7 @@ class CurrentUserView(APIView):
 class LogoutView(APIView):
     """Logs user out. Returns empty user object.
     """
-    #permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
         user_data = None
@@ -342,8 +373,9 @@ class ActivateView(APIView):
     """
     Activates a new user.
     """
-    def get(self, request, activation_key, *args, **kwargs):
+    permission_classes = (AllowAny,)
 
+    def get(self, request, activation_key, *args, **kwargs):
         try:
             profile = UserProfile.objects.get(activationtoken=activation_key)
             profile.activationtoken = ""
@@ -359,6 +391,7 @@ class RegistrationView(APIView):
     Creates a new user.
     Returns: token (auth token)   .
     """
+    permission_classes = (AllowAny,)
 
     def post(self, request, *args, **kwargs):
         user_data = request.DATA.get('user', {})
