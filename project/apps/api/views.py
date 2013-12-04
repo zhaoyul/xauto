@@ -24,7 +24,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from event.models import Event, EventDate
 from event.serializers import (EventSerializer, EventDetailsSerializer,
     EventModelSerializer, EventDateSerializer, AlbumSerializer)
-from account.serializers import UserProfileSerializer, UserSerializer, NewProfileSerializer
+from account.serializers import (UserProfileSerializer, UserSerializer,
+    NewProfileSerializer, EmailSerializer)
 from account.models import UserProfile
 from multiuploader.serializers import MultiuploaderImageSerializer
 from multiuploader.models import MultiuploaderImage
@@ -362,20 +363,6 @@ class LogoutView(APIView):
         data = {'user': user_data}
         return Response(data, status=status.HTTP_204_NO_CONTENT)
 
-'''
-def activate_account(request, activation_key):
-
-    try:
-        customer = Customer.objects.get(activationtoken=activation_key)
-        customer.activationtoken = ""
-        customer.activated = True
-        customer.save()
-        return render_to_response("ovahi/activation_complete.html",
-            {}, context_instance=RequestContext(request))
-    except Customer.DoesNotExist:
-        return render_to_response("ovahi/activation_error.html",
-            {}, context_instance=RequestContext(request))
-'''
 
 class ActivateView(APIView):
     """
@@ -391,6 +378,63 @@ class ActivateView(APIView):
             profile.user.save()
             profile.save()
             return redirect('/')
+        except UserProfile.DoesNotExist:
+            return Response({'error': "Wrong token"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ResetPasswordView(APIView):
+    """
+    Resets password and sends mail with link to changing password.
+    """
+    permission_classes = (AllowAny,)
+
+    def post(self, request, *args, **kwargs):
+        email_serializer = EmailSerializer(data=request.DATA)
+        if email_serializer.is_valid():
+            try:
+                email = email_serializer.data.get('email', None)
+                user = User.objects.get(email=email)
+                user.profile.activationtoken = sha1("%sovahi%s" %
+                    (randrange(1, 1000), randrange(1, 1000))).hexdigest()
+                user.profile.save()
+                reset_link = request.build_absolute_uri(
+                    reverse('change-password',
+                    args=(user.profile.activationtoken,))
+                )
+                reset_link = reset_link.replace("api/change_password", "#/account/changePassword")
+                email_body = render_to_string('emails/reset_password_email.html',
+                    {'user': user,
+                     'reset_link': reset_link}
+                )
+
+                send_mail("Reset Password", email_body,
+                    settings.DEFAULT_FROM_EMAIL, [user.email])
+
+                return redirect('/')
+            except User.DoesNotExist:
+                return Response(
+                    {'error': "User with this email address doesn't exist"},
+                    status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(email_serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST)
+
+
+class ChangePasswordView(APIView):
+    """
+    Changes password
+    """
+    permission_classes = (AllowAny,)
+
+    def put(self, request, activation_key, *args, **kwargs):
+        try:
+            profile = UserProfile.objects.get(activationtoken=activation_key)
+            profile.activationtoken = ""
+            password = request.DATA.get('password_1', uuid.uuid4())
+            profile.user.set_password(password)
+            profile.user.save()
+            profile.save()
+            return Response({}, status=status.HTTP_200_OK)
         except UserProfile.DoesNotExist:
             return Response({'error': "Wrong token"}, status=status.HTTP_400_BAD_REQUEST)
 

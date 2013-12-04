@@ -1,4 +1,33 @@
-angular.module('templates-app', ['account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
+angular.module('templates-app', ['account/account-change-pswd.tpl.html', 'account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
+
+angular.module("account/account-change-pswd.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("account/account-change-pswd.tpl.html",
+    "<h1>Change Password</h1>\n" +
+    "<div class=\"row\">\n" +
+    "    <div class=\"col-lg-8\">\n" +
+    "        <form class=\"form-horizontal\" role=\"form\" ng-submit=\"accountSubmit()\">\n" +
+    "            <div class=\"form-group\">\n" +
+    "                <label class=\"col-lg-3 control-label\">New Password</label>\n" +
+    "                <div class=\"col-lg-9\">\n" +
+    "                  <input type=\"password\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.password_1\">\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "            <div class=\"form-group\">\n" +
+    "                <label for=\"inputPassword1\" class=\"col-lg-3 control-label\">Confirm New Password</label>\n" +
+    "                <div class=\"col-lg-9\">\n" +
+    "                  <input type=\"password\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.password_2\">\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "\n" +
+    "            <div class=\"form-group\">\n" +
+    "                <div class=\"col-lg-offset-3 col-lg-9\">\n" +
+    "                  <button type=\"submit\" class=\"btn btn-primary\">Change Password</button>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "        </form>\n" +
+    "    </div>\n" +
+    "</div>");
+}]);
 
 angular.module("account/account-edit.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-edit.tpl.html",

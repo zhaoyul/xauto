@@ -20,6 +20,14 @@ angular.module('resources.accounts', ['restangular'])
           return Restangular.all('login').post(account);
       };
 
+      Accounts.changePassword = function (account, token) {
+          return Restangular.one('change_password', token).customPUT(account);
+      };
+
+      Accounts.resetPassword = function (account) {
+          return Restangular.all('reset_password').post(account);
+      };
+
       Accounts.getFavorites = function () {
           return Restangular.all('profiles').customGETLIST('favorites-list');
       };

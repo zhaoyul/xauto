@@ -33,15 +33,21 @@ angular.module( 'blvdx', [
 })
 
 .controller( 'AppCtrl', ['$scope', '$state', '$location', 'security', 'Accounts', 'AppScope', function AppCtrl ( $scope, $state, $location, security, Accounts, AppScope ) {
-  security.requestCurrentUser().then(function (user) {
-      $scope.isAuthenticated = security.isAuthenticated;
-      $scope.isAdmin = security.isAdmin;
-  });
+    security.requestCurrentUser().then(function (user) {
+        $scope.isAuthenticated = security.isAuthenticated;
+        $scope.isAdmin = security.isAdmin;
+    });
     AppScope.setScope($scope);
     //To Do move login modal and his submit to security module.
     $scope.AccountObj = {};
     $scope.accountSubmit = function(){
         security.login($scope.AccountObj.email, $scope.AccountObj.password);
+    };
+    $scope.resetPassword = function(){
+        Accounts.resetPassword($scope.AccountObj).then(function (account) {
+            $(".modal:visible").find(".close").click();
+            $state.transitionTo('events');
+        });
     };
 
     $scope.accountCreate = function(){

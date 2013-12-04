@@ -177,9 +177,36 @@
           <form class="form-horizontal" role="form" ng-submit="accountSubmit()">
             <div class="modal-body">
               <ng-include src="'account/account-login.tpl.html'"></ng-include>
+              <a data-toggle="modal" data-dismiss="modal" href="#resetPassword">Forgot your password?</a>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Log in</button>
+            </div>
+          </form>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+    <div class="modal fade" id="resetPassword">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Reset password</h4>
+          </div>
+          <form class="form-horizontal" role="form" ng-submit="resetPassword()">
+            <div class="modal-body">
+              <div class="form-group">
+                  <label class="col-lg-3 control-label">Email</label>
+                  <div class="col-lg-9">
+                    <input type="email" class="form-control" placeholder="" ng-model="AccountObj.email">
+                  </div>
+              </div>
+              <a data-toggle="modal" data-dismiss="modal" href="#loginModal">Back to login</a>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Send</button>
             </div>
           </form>
         </div><!-- /.modal-content -->

@@ -55,3 +55,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         except:
             pass
         return False
+
+
+class EmailSerializer(serializers.Serializer):
+    email = serializers.EmailField()

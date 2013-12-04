@@ -35,6 +35,15 @@ angular.module( 'blvdx.account', [
       }
     }
   })
+  .state( 'changePassword', {
+    url: '/account/changePassword/:token/',
+    views: {
+      "main": {
+        controller: 'AccountChangePaswordCtrl',
+        templateUrl: 'account/account-change-pswd.tpl.html'
+      }
+    }
+  })
   .state( 'accountEdit', {
     url: '/account/:accountId/edit',
     views: {
@@ -89,11 +98,23 @@ angular.module( 'blvdx.account', [
 
 }])
 .controller( 'AccountLoginCtrl', ['$scope', '$state', 'titleService', 'Accounts', function AccountCtrl( $scope, $state, titleService, Accounts ) {
-  titleService.setTitle( 'Account' );
+  titleService.setTitle( 'Log In' );
     $scope.AccountObj = {};
 
     $scope.accountSubmit = function(){
         Accounts.login($scope.AccountObj).then(function (account) {
+            $state.transitionTo('events');
+        });
+    };
+
+}])
+.controller( 'AccountChangePaswordCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Accounts',
+    function AccountCtrl( $scope, $state, titleService, $stateParams, Accounts ) {
+  titleService.setTitle( 'Change Password' );
+    $scope.AccountObj = {};
+
+    $scope.accountSubmit = function(){
+        Accounts.changePassword($scope.AccountObj, $stateParams.token).then(function (account) {
             $state.transitionTo('events');
         });
     };
