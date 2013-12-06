@@ -22,7 +22,7 @@ module.exports = {
   app_files: {
     js: [ 'src/**/*.js', '!src/**/*.spec.js' ],
     jsunit: [ 'src/**/*.spec.js' ],
-    
+
     coffee: [ 'src/**/*.coffee', '!src/**/*.spec.coffee' ],
     coffeeunit: [ 'src/**/*.spec.coffee' ],
 
@@ -49,7 +49,9 @@ module.exports = {
    */
   vendor_files: {
     js: [
+      'vendor/ng-file-upload/angular-file-upload-shim.min.js',
       'vendor/angular/angular.js',
+      'vendor/ng-file-upload/angular-file-upload.min.js',
       'vendor/angular-resource/angular-resource.js',
 
       'vendor/jquery/jquery.min.js',
@@ -59,12 +61,12 @@ module.exports = {
       'vendor/angular-ui-utils/modules/route/route.js',
       'vendor/lodash/dist/lodash.js',
       'vendor/restangular/dist/restangular.js',
-      
+
       'vendor/angular-animate/angular-animate.js',
-      'vendor/jquery-colorbox/jquery.colorbox-min.js'
+      'vendor/jquery-colorbox/jquery.colorbox-min.js',
     ],
     css: [
-      
+
     ]
   },
 };
