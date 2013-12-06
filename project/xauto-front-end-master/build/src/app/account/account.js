@@ -146,6 +146,7 @@ angular.module( 'blvdx.account', [
         fileObj['file'] = evt.target.result.replace("data:image/jpeg;base64,", "");
         $scope.AccountObj[field] = fileObj;
     };
+    console.log('hej');
 
     for (var i = 0; i < $files.length; i++) {
       var $file = $files[i];

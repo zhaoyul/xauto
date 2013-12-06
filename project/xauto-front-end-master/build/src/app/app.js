@@ -11,7 +11,8 @@ angular.module( 'blvdx', [
   'ui.route',
 
   'restangular',
-  'security'
+  'security',
+  'angularFileUpload'
 ])
 
 .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'RestangularProvider',
@@ -32,12 +33,14 @@ angular.module( 'blvdx', [
   titleService.setSuffix( ' | xAu.to' );
 })
 
-.controller( 'AppCtrl', ['$scope', '$state', '$location', 'security', 'Accounts', 'AppScope', function AppCtrl ( $scope, $state, $location, security, Accounts, AppScope ) {
+.controller( 'AppCtrl', ['$scope', '$state', '$location', 'security', 'Accounts', 'AppScope', '$upload',
+    function AppCtrl ( $scope, $state, $location, security, Accounts, AppScope, $upload ) {
     security.requestCurrentUser().then(function (user) {
         $scope.isAuthenticated = security.isAuthenticated;
         $scope.isAdmin = security.isAdmin;
     });
     AppScope.setScope($scope);
+
     //To Do move login modal and his submit to security module.
     $scope.AccountObj = {};
     $scope.accountSubmit = function(){
@@ -55,6 +58,22 @@ angular.module( 'blvdx', [
             $(".modal:visible").find(".close").click();
             $state.transitionTo('events');
         });
+    };
+
+    $scope.onFileSelect = function($files, field) {
+        //$files: an array of files selected, each file has name, size, and type.
+        var fileObj = {};
+        var reader = new FileReader();
+        reader.onloadend = function(evt) {
+            fileObj['file'] = evt.target.result.replace("data:image/jpeg;base64,", "");
+            $scope.AccountObj[field] = fileObj;
+        };
+
+        for (var i = 0; i < $files.length; i++) {
+          var $file = $files[i];
+          fileObj['name'] = $file.name;
+          reader.readAsDataURL($file);
+        }
     };
 
     $scope.demoStreamItems = [

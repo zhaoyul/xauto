@@ -460,6 +460,8 @@ class RegistrationView(APIView):
 
     def post(self, request, *args, **kwargs):
         user_data = request.DATA.get('user', {})
+        thumbnail_image = self.request.DATA.get('thumbnail_image_obj', {})
+        main_image = self.request.DATA.get('main_image_obj', {})
         full_name = user_data.get('full_name', '').split(' ')
         user_data['first_name'] = full_name[0]
         if len(full_name) > 1:
@@ -481,6 +483,19 @@ class RegistrationView(APIView):
                 user_serializer.object.set_password(password)
                 user_serializer.object.is_active = False
                 user_serializer.save()
+
+                if thumbnail_image:
+                    profile_serializer.object.thumbnail_image.save(
+                        thumbnail_image['name'],
+                        ContentFile(thumbnail_image['file'].decode('base64')),
+                        save=False
+                    )
+                if main_image:
+                    profile_serializer.object.main_image.save(
+                        main_image['name'],
+                        ContentFile(main_image['file'].decode('base64')),
+                        save=False
+                    )
 
                 profile_serializer.object.activationtoken = sha1("%sovahi%s" %
                     (randrange(1, 1000), randrange(1, 1000))).hexdigest()
