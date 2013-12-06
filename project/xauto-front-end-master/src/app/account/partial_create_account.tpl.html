@@ -8,8 +8,11 @@
   </div>
   <div class="form-group">
     <label class="col-lg-3 control-label">Username</label>
-    <div class="col-lg-9">
-      <input type="text" class="form-control" placeholder="" ng-model="AccountObj.name">
+    <div class="col-lg-6">
+      <input type="text" class="form-control" placeholder="" ng-model="AccountObj.name" ng-keyup="checkUsername($event.target.value)">
+    </div>
+    <div class="col-lg-3">
+        {{AccountObj.username_available}}
     </div>
   </div>
   <div class="form-group">

@@ -128,8 +128,11 @@ angular.module("account/partial_create_account.tpl.html", []).run(["$templateCac
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">Username</label>\n" +
-    "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.name\">\n" +
+    "    <div class=\"col-lg-6\">\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.name\" ng-keyup=\"checkUsername($event.target.value)\">\n" +
+    "    </div>\n" +
+    "    <div class=\"col-lg-3\">\n" +
+    "        {{AccountObj.username_available}}\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +

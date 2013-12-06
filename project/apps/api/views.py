@@ -155,6 +155,21 @@ class CheckShortLinkView(APIView):
         return Response(data, status=status.HTTP_200_OK)
 
 
+class CheckUsernameView(APIView):
+    """
+    Checks database to determine availability of username.
+    """
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        search_text = self.request.GET.get('search_text', '')
+        data = {'response': 'Available'}
+        if UserProfile.objects.filter(name=search_text).count():
+            data = {'response': 'Unavailable'}
+
+        return Response(data, status=status.HTTP_200_OK)
+
+
 class UserProfileViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserProfileSerializer

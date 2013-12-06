@@ -36,5 +36,9 @@ angular.module('resources.accounts', ['restangular'])
           return Restangular.all('profiles').customGETLIST('pictures');
       };
 
+      Accounts.checkUsername = function (params) {
+          return Restangular.one('profiles').customGET('check-username', params);
+      };
+
       return Accounts;
     }]);

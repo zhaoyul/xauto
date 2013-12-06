@@ -60,6 +60,12 @@ angular.module( 'blvdx', [
         });
     };
 
+    $scope.checkUsername = function(value) {
+      Accounts.checkUsername({search_text: value}).then(function (response) {
+          $scope.AccountObj.username_available = response.response;
+      });
+    };
+
     $scope.onFileSelect = function($files, field) {
         //$files: an array of files selected, each file has name, size, and type.
         var fileObj = {};
