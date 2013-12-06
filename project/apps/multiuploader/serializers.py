@@ -8,10 +8,15 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
     """
     A serializer for ``MultiuploaderImage``.
     """
+    image = serializers.SerializerMethodField('get_image')
     caption = serializers.SerializerMethodField('get_caption')
 
     class Meta(object):
         model = MultiuploaderImage
+
+    def get_image(self, obj):
+        if obj.image:
+            return obj.image.url
 
     def get_caption(self, obj):
         profile = self.context['view'].request.user.profile

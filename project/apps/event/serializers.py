@@ -42,7 +42,7 @@ class EventModelSerializer(serializers.ModelSerializer):
             'main_image', 'author', 'dates', 'slug')
 
 class EventSerializer(serializers.ModelSerializer):
-    photo = serializers.Field(source='main_image')
+    photo = serializers.SerializerMethodField('get_photo')
     srv_followersCount = serializers.SerializerMethodField('srv_followers_count')
     srv_photosCount = serializers.SerializerMethodField('srv_photos_count')
     date_info = serializers.SerializerMethodField('get_date_info')
@@ -56,6 +56,10 @@ class EventSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'about', 'eventSize', 'srv_followersCount',
             'srv_photosCount', 'photo', 'date_info', 'author_name', 'slug',
             'author_photo', 'srv_live', 'srv_following')
+
+    def get_photo(self, obj):
+        if obj.main_image:
+            return obj.main_image.image.url
 
     def srv_followers_count(self, obj):
         return obj.followed.count()
@@ -107,7 +111,7 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 class EventDetailsSerializer(serializers.ModelSerializer):
-    photo = serializers.Field(source='main_image')
+    photo = serializers.SerializerMethodField('get_photo')
     srv_followersCount = serializers.SerializerMethodField('srv_followers_count')
     srv_photosCount = serializers.SerializerMethodField('srv_photos_count')
     srv_futureDates = serializers.SerializerMethodField('get_future_date')
@@ -122,6 +126,10 @@ class EventDetailsSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'about', 'eventSize', 'srv_followersCount',
             'srv_photosCount', 'photo', 'srv_futureDates', 'author_name',
             'author_photo', 'srv_live', 'srv_following', 'albums', 'slug')
+
+    def get_photo(self, obj):
+        if obj.main_image:
+            return obj.main_image.image.url
 
     def srv_followers_count(self, obj):
         return obj.followed.count()

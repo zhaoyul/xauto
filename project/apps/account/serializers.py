@@ -29,6 +29,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
     A serializer for ``UserProfile``.
     """
     user = UserSerializer(source='user')
+    main_image = serializers.SerializerMethodField('get_main_image')
+    thumbnail_image = serializers.SerializerMethodField('get_thumbnail_image')
     srv_followersCount = serializers.SerializerMethodField('srv_followers_count')
     srv_followingCount = serializers.SerializerMethodField('srv_following_count')
     srv_photosCount = serializers.SerializerMethodField('srv_photos_count')
@@ -36,6 +38,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = UserProfile
+
+    def get_thumbnail_image(self, obj):
+        if obj.thumbnail_image:
+            return obj.thumbnail_image.url
+
+    def get_main_image(self, obj):
+        if obj.main_image:
+            return obj.main_image.url
 
     def srv_followers_count(self, obj):
         return obj.followed.count()

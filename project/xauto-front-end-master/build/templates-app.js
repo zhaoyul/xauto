@@ -261,7 +261,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                            <div class=\"col-xs-12\" >\n" +
     "                            <div\n" +
     "                                class=\"event-details-cover-photo\"\n" +
-    "                                style=\"background-image:url('/media/{{ EventObj.photo }}')\"\n" +
+    "                                style=\"background-image:url('{{ EventObj.photo }}')\"\n" +
     "                            ></div>\n" +
     "                            <div class=\"event-details-overlay\">\n" +
     "                                <div class=\"event-details-header\">\n" +
@@ -454,7 +454,7 @@ angular.module("events/events-my.tpl.html", []).run(["$templateCache", function(
     "  		<tbody>\n" +
     "  			<tr ng-repeat=\"event in myEvents\">	\n" +
     "  				<td class=\"name\">\n" +
-    "            <img class=\"img-rounded user-pic\" alt=\"\" ng-src=\"/media/{{event.photo}}\"> {{event.title}}</td>\n" +
+    "            <img class=\"img-rounded user-pic\" alt=\"\" ng-src=\"{{event.photo}}\"> {{event.title}}</td>\n" +
     "  				<td>{{event.date_info.city}}, {{event.date_info.country}}</td>\n" +
     "  				<td><span class=\"label label-success\">{{event.srv_followersCount}} Followers</span> <span class=\"label label-info\">{{event.srv_photosCount}} Photos</span></td>\n" +
     "  				<td>\n" +
@@ -538,7 +538,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "          </div>\n" +
     "        </div>\n" +
     "        <div class=\"event-picture-container\">\n" +
-    "          <img ng-src=\"/media/{{event.photo}}\" alt=\"\">\n" +
+    "          <img ng-src=\"{{event.photo}}\" alt=\"\">\n" +
     "        </div>\n" +
     "        <div class=\"event-text\">\n" +
     "          <p>\n" +
@@ -696,7 +696,7 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
     "            <li class=\"col-xs-6 col-sm-4 col-lg-3\" ng-repeat=\"photo in album.photos\">\n" +
     "              <div class=\"inner\">\n" +
     "                <div class=\"stream-picture\"\n" +
-    "                bx-stream-photo=\"/media/{{photo.image}}\"\n" +
+    "                bx-stream-photo=\"{{photo.image}}\"\n" +
     "                 ></div>\n" +
     "              </div>\n" +
     "            </li>\n" +
@@ -848,7 +848,7 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "      <li ng-repeat=\"profile in Profiles\">\n" +
     "        <div class=\"row profile-item\">\n" +
     "          <div class=\"col-xs-12 col-sm-6 col-md-4 photo-name-col\">\n" +
-    "            <a href=\"#profile/{{profile.slug}}\"><img src=\"/media/{{profile.main_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +
+    "            <a href=\"#profile/{{profile.slug}}\"><img ng-src=\"{{profile.thumbnail_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +
     "            <div class=\"name-wrapper\">\n" +
     "              <strong><a href=\"#profile/{{profile.slug}}\">{{profile.full_name}}</a></strong>\n" +
     "              <span class=\"username\"><a href=\"#profile/{{profile.slug}}\">{{profile.name}}</a></span>\n" +
@@ -925,7 +925,7 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
     "                            <div class=\"col-xs-12\" >\n" +
     "                                <div\n" +
     "                                    class=\"profile-view-cover-photo\"\n" +
-    "                                    style=\"background-image:url('/media/{{Profile.main_image}}')\"\n" +
+    "                                    style=\"background-image:url('{{Profile.main_image}}')\"\n" +
     "                                ></div>\n" +
     "                            </div>\n" +
     "                        </div>\n" +
@@ -934,7 +934,7 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
     "\n" +
     "                                        <div class=\"row profile-item\">\n" +
     "                                          <div class=\"col-xs-12 col-sm-6 col-md-4 photo-name-col\">\n" +
-    "                                            <a href=\"#profile/LewHamF1\"><img src=\"/media/{{Profile.main_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +
+    "                                            <a href=\"#profile/LewHamF1\"><img src=\"{{Profile.thumbnail_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +
     "                                            <div class=\"name-wrapper\">\n" +
     "                                              <strong><a href=\"#profile/LewHamF1\">{{Profile.full_name}}</a></strong>\n" +
     "                                              <span class=\"username\"><a href=\"#profile/LewHamF1\">{{Profile.name}}</a></span>\n" +
@@ -1034,7 +1034,7 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "        <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"item in stream\">\n" +
     "            <div class=\"inner\">\n" +
     "                <div class=\"stream-picture\"\n" +
-    "                bx-stream-photo=\"/media/{{item.image}}\"\n" +
+    "                bx-stream-photo=\"{{item.image}}\"\n" +
     "                 >\n" +
     "                     <ul class=\"stream-action-links\">\n" +
     "                        <li>\n" +

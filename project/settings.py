@@ -148,6 +148,7 @@ INSTALLED_APPS = [
     'account',
     'docs',
     'xauto_lib',
+    'storages',
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -157,6 +158,13 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     #'accounts.auth_backends.EmailAuthBackend',
 )
+
+#s3 settings
+#DEFAULT_FILE_STORAGE = 'storages.backends.s3.S3Storage'
+#AWS_ACCESS_KEY_ID = ''
+#AWS_SECRET_ACCESS_KEY = ''
+#AWS_STORAGE_BUCKET_NAME = ''
+
 
 #django-registration settings
 ACCOUNT_ACTIVATION_DAYS = 3
