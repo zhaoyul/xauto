@@ -39,7 +39,7 @@ angular.module("account/account-edit.tpl.html", []).run(["$templateCache", funct
     "<h1>Edit Account Info</h1>\n" +
     "<div class=\"row\">\n" +
     "	<div class=\"col-lg-8\">\n" +
-    "		<form class=\"form-horizontal\" role=\"form\" ng-submit=\"accountSubmit()\">\n" +
+    "		<form enctype=\"multipart/form-data\" class=\"form-horizontal\" role=\"form\" ng-submit=\"accountSubmit()\">\n" +
     "			<ng-include src=\"'account/partial_create_account.tpl.html'\"></ng-include>\n" +
     "\n" +
     "			  <div class=\"form-group\">\n" +
@@ -159,13 +159,13 @@ angular.module("account/partial_create_account.tpl.html", []).run(["$templateCac
     "  <div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">User Hero Image</label>\n" +
     "    <div class=\"col-lg-4\">\n" +
-    "      <input type=\"file\" class=\"btn\" ng-model=\"AccountObj.main_image\">\n" +
+    "      <input type=\"file\" class=\"btn\" ng-file-select=\"onFileSelect($files, 'main_image_obj')\" ng-model=\"AccountObj.main_image\">\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">User Thumbnail</label>\n" +
     "    <div class=\"col-lg-4\">\n" +
-    "      <input type=\"file\" class=\"btn\" ng-model=\"AccountObj.thumbnail_image\">\n" +
+    "      <input type=\"file\" class=\"btn\" ng-file-select=\"onFileSelect($files, 'thumbnail_image_obj')\" ng-model=\"AccountObj.thumbnail_image\">\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +

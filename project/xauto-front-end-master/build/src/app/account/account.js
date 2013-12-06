@@ -3,6 +3,7 @@ angular.module( 'blvdx.account', [
   'ui.state',
   'titleService',
   'plusOne',
+  'angularFileUpload',
   'security.authorization',
   'resources.accounts'
 ])
@@ -12,7 +13,8 @@ angular.module( 'blvdx.account', [
  * will handle ensuring they are all available at run-time, but splitting it
  * this way makes each module more "self-contained".
  */
-.config(['$stateProvider', '$urlRouterProvider', 'securityAuthorizationProvider', function config( $stateProvider, $urlRouterProvider, securityAuthorizationProvider ) {
+.config(['$stateProvider', '$urlRouterProvider', 'securityAuthorizationProvider',
+    function config( $stateProvider, $urlRouterProvider, securityAuthorizationProvider ) {
 
   $urlRouterProvider.otherwise("/account/signup");
 
@@ -121,17 +123,56 @@ angular.module( 'blvdx.account', [
 
 }])
 
-.controller( 'AccountEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Accounts', function AccountCtrl( $scope, $state, titleService, $stateParams, Accounts ) {
+.controller( 'AccountEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Accounts', '$upload',
+    function AccountCtrl( $scope, $state, titleService, $stateParams, Accounts, $upload ) {
   titleService.setTitle( 'Edit Account' );
 
   Accounts.getAccount($stateParams.accountId).then(function (account) {
       $scope.AccountObj = account;
   });
+  var files_to_upload = [];
 
   $scope.accountSubmit = function(){
     Accounts.saveAccount($scope.AccountObj).then(function (account) {
         $state.transitionTo('events');
     });
+  };
+
+  $scope.onFileSelect = function($files, field) {
+    //$files: an array of files selected, each file has name, size, and type.
+    var fileObj = {};
+    var reader = new FileReader();
+    reader.onloadend = function(evt) {
+        fileObj['file'] = evt.target.result.replace("data:image/jpeg;base64,", "");
+        $scope.AccountObj[field] = fileObj;
+    };
+
+    for (var i = 0; i < $files.length; i++) {
+      var $file = $files[i];
+      fileObj['name'] = $file.name;
+      reader.readAsDataURL($file);
+    }
+
+/*
+    $scope.upload = $upload.upload({
+        url: '', //upload.php script, node.js route, or servlet url
+        method: PUT,
+        // headers: {'headerKey': 'headerValue'}, withCredential: true,
+        data: {account: $scope.AccountObj},
+        file: $files[0],
+        // set file formData name for 'Content-Desposition' header. Default: 'file'
+        //fileFormDataName: myFile,
+        // customize how data is added to formData. See #40#issuecomment-28612000 for example
+        //formDataAppender: function(formData, key, val){}
+      })
+      .progress(function(evt) {
+        //console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+      })
+      .success(function(data, status, headers, config) {
+        // file is uploaded successfully
+        //console.log(data);
+      });
+*/
   };
 
 }])

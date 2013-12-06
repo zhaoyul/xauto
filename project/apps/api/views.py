@@ -12,6 +12,7 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
+from django.core.files.base import ContentFile
 
 from rest_framework.generics import (ListAPIView, RetrieveAPIView)
 from rest_framework.views import APIView
@@ -161,9 +162,21 @@ class UserProfileViewSet(ModelViewSet):
 
     def pre_save(self, obj):
         user_data = self.request.DATA.get('user', {})
+        thumbnail_image = self.request.DATA.get('thumbnail_image_obj', {})
+        main_image = self.request.DATA.get('main_image_obj', {})
 
         full_name = user_data.get('full_name', '').split(' ')
         user_data['first_name'] = full_name[0]
+
+        if thumbnail_image:
+            obj.thumbnail_image.save(thumbnail_image['name'],
+                ContentFile(thumbnail_image['file'].decode('base64')),
+                save=False)
+        if main_image:
+            obj.main_image.save(main_image['name'],
+                ContentFile(main_image['file'].decode('base64')),
+                save=False)
+
         if len(full_name) > 1:
             user_data['last_name'] = ' '.join(full_name[1:])
 
@@ -295,8 +308,8 @@ class ReportPictureView(APIView):
 
 def make_userjson(user):
     image_url = ""
-    if user.profile.main_image:
-        image_url = user.profile.main_image.url
+    if user.profile.thumbnail_image:
+        image_url = user.profile.thumbnail_image.url
     user_data = {
         'id': user.pk,
         'email': user.email,
