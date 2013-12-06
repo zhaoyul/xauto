@@ -22,7 +22,7 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from event.models import Event, EventDate
+from event.models import Event, EventDate, EventImage
 from event.serializers import (EventSerializer, EventDetailsSerializer,
     EventModelSerializer, EventDateSerializer, AlbumSerializer)
 from account.serializers import (UserProfileSerializer, UserSerializer,
@@ -71,6 +71,15 @@ class EventViewSet(ModelViewSet):
     def pre_save(self, obj):
         if not obj.author:
             obj.author = self.request.user.profile
+
+        main_image = self.request.DATA.get('main_image_obj', {})
+        if main_image:
+            imageObj = EventImage()
+            imageObj.image.save(
+                main_image['name'],
+                ContentFile(main_image['file'].decode('base64'))
+            )
+            obj.main_image = imageObj
 
 '''
 class EventEditView2(APIView):

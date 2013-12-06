@@ -36,7 +36,7 @@
   <div class="form-group">
     <label class="col-lg-3 control-label">Photos</label>
     <div class="col-lg-4">
-      <input type="file" class="btn" ng-model="EventObj.image">
+      <input type="file" class="btn" ng-file-select="onFileSelect($files, 'main_image_obj')" ng-model="EventObj.image">
     </div>
     <div class="col-lg-4">
       <strong>or</strong>

@@ -4,7 +4,8 @@ angular.module( 'blvdx.events', [
   // 'placeholders',
   'ui.bootstrap',
   'security.authorization',
-  'titleService'
+  'titleService',
+  'angularFileUpload'
 ])
 
 .config(['$stateProvider', 'securityAuthorizationProvider', function config( $stateProvider, securityAuthorizationProvider ) {
@@ -78,7 +79,8 @@ angular.module( 'blvdx.events', [
       });
 }])
 
-.controller( 'EventsCtrl', ['$scope', 'titleService', 'Events', 'AppScope', function EventsCtrl( $scope, titleService, Events, AppScope ) {
+.controller( 'EventsCtrl', ['$scope', 'titleService', 'Events', 'AppScope',
+    function EventsCtrl( $scope, titleService, Events, AppScope ) {
   titleService.setTitle( 'All events' );
 
   Events.getEvents({}).then(function (events) {
@@ -125,7 +127,8 @@ angular.module( 'blvdx.events', [
   };
 }])
 
-.controller( 'EventAddCtrl', ['$scope', '$state', 'titleService', 'Events', function EventsCtrl( $scope, $state, titleService, Events) {
+.controller( 'EventAddCtrl', ['$scope', '$state', 'titleService', 'Events', '$upload',
+    function EventsCtrl( $scope, $state, titleService, Events, $upload) {
   titleService.setTitle( 'Add New Event' );
 
   $scope.today = function() {
@@ -176,9 +179,28 @@ angular.module( 'blvdx.events', [
         //$('.xa-icon-nav-events').click();
     });
   };
+
+
+    $scope.onFileSelect = function($files, field) {
+        //$files: an array of files selected, each file has name, size, and type.
+        var fileObj = {};
+        var reader = new FileReader();
+        reader.onloadend = function(evt) {
+            fileObj['file'] = evt.target.result.replace("data:image/jpeg;base64,", "");
+            $scope.EventObj[field] = fileObj;
+        };
+
+        for (var i = 0; i < $files.length; i++) {
+          var $file = $files[i];
+          fileObj['name'] = $file.name;
+          reader.readAsDataURL($file);
+        }
+    };
+
 }])
 
-.controller( 'EventEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', 'DateObj', function EventEditCtrl( $scope, $state, titleService, $stateParams, Events, DateObj ) {
+.controller( 'EventEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', 'DateObj', '$upload',
+    function EventEditCtrl( $scope, $state, titleService, $stateParams, Events, DateObj, $upload ) {
   titleService.setTitle( 'Edit Event' );
   $scope.eventId = $stateParams.eventId;
 
@@ -234,6 +256,22 @@ angular.module( 'blvdx.events', [
     }
 
   };
+
+    $scope.onFileSelect = function($files, field) {
+        //$files: an array of files selected, each file has name, size, and type.
+        var fileObj = {};
+        var reader = new FileReader();
+        reader.onloadend = function(evt) {
+            fileObj['file'] = evt.target.result.replace("data:image/jpeg;base64,", "");
+            $scope.EventObj[field] = fileObj;
+        };
+
+        for (var i = 0; i < $files.length; i++) {
+          var $file = $files[i];
+          fileObj['name'] = $file.name;
+          reader.readAsDataURL($file);
+        }
+    };
 
   $scope.setThisEditableDate = function(date){
       DateObj.getDate(date.id).then(function (date) {

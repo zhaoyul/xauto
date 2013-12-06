@@ -620,7 +620,7 @@ angular.module("events/partial_add_event_form.tpl.html", []).run(["$templateCach
     "  <div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">Photos</label>\n" +
     "    <div class=\"col-lg-4\">\n" +
-    "      <input type=\"file\" class=\"btn\" ng-model=\"EventObj.image\">\n" +
+    "      <input type=\"file\" class=\"btn\" ng-file-select=\"onFileSelect($files, 'main_image_obj')\" ng-model=\"EventObj.image\">\n" +
     "    </div>\n" +
     "    <div class=\"col-lg-4\">\n" +
     "      <strong>or</strong>\n" +
