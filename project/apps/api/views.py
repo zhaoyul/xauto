@@ -159,7 +159,7 @@ class CheckUsernameView(APIView):
     """
     Checks database to determine availability of username.
     """
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
     def get(self, request, *args, **kwargs):
         search_text = self.request.GET.get('search_text', '')
