@@ -349,7 +349,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                                        </a>\n" +
     "                                    </li>\n" +
     "                                    <li>\n" +
-    "                                        <a data-toggle=\"tab\" data-target=\"#photos\">\n" +
+    "                                        <a data-toggle=\"modal\" data-target=\"#addPhotosModal\">\n" +
     "                                            <i class=\"xa-icon-event-details-photos\"></i>\n" +
     "                                            <div class=\"badge\">{{event.srv_photosCount}}</div> Photos\n" +
     "                                        </a>\n" +
@@ -392,7 +392,39 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "    </div>\n" +
     "</div>\n" +
     "\n" +
-    "");
+    "\n" +
+    "\n" +
+    "<div class=\"modal fade\" id=\"addPhotosModal\">\n" +
+    "  <div class=\"modal-dialog\">\n" +
+    "    <div class=\"modal-content\">\n" +
+    "      <div class=\"modal-header\">\n" +
+    "        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n" +
+    "        <h4 class=\"modal-title\">Add Photos</h4>\n" +
+    "      </div>\n" +
+    "      <form class=\"form-horizontal\" role=\"form\" ng-submit=\"savePhotos()\">\n" +
+    "        <div class=\"modal-body\">\n" +
+    "            <div class=\"form-group\">\n" +
+    "                <label class=\"col-lg-3 control-label\">Event Date</label>\n" +
+    "                <div class=\"col-lg-9\">\n" +
+    "                  <select class=\"form-control\" ng-model=\"Album.id\">\n" +
+    "                    <option ng-repeat=\"album in EventObj.albums\" value=\"{{album.id}}\">{{album.feature_headline}} - {{album.date}}</option>\n" +
+    "                  </select>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "            <div class=\"form-group\">\n" +
+    "                <label class=\"col-lg-3 control-label\">Photos</label>\n" +
+    "                <div class=\"col-lg-9\">\n" +
+    "                  <input type=\"file\" ng-file-select=\"onMultipleFilesSelect($files)\" multiple ng-model=\"Album.event_upload_images\">\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "        <div class=\"modal-footer\">\n" +
+    "          <button type=\"sumbit\" class=\"btn btn-primary\">Save</button>\n" +
+    "        </div>\n" +
+    "      </form>\n" +
+    "    </div><!-- /.modal-content -->\n" +
+    "  </div><!-- /.modal-dialog -->\n" +
+    "</div><!-- /.modal -->");
 }]);
 
 angular.module("events/event-edit.tpl.html", []).run(["$templateCache", function($templateCache) {

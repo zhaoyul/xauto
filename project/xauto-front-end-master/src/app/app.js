@@ -71,10 +71,9 @@ angular.module( 'blvdx', [
         var fileObj = {};
         var reader = new FileReader();
         reader.onloadend = function(evt) {
-            fileObj['file'] = evt.target.result.replace("data:image/jpeg;base64,", "");
+            fileObj['file'] = evt.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
             $scope.AccountObj[field] = fileObj;
         };
-
         for (var i = 0; i < $files.length; i++) {
           var $file = $files[i];
           fileObj['name'] = $file.name;

@@ -96,7 +96,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a data-toggle="tab" data-target="#photos">
+                                        <a data-toggle="modal" data-target="#addPhotosModal">
                                             <i class="xa-icon-event-details-photos"></i>
                                             <div class="badge">{{event.srv_photosCount}}</div> Photos
                                         </a>
@@ -139,3 +139,36 @@
     </div>
 </div>
 
+
+
+<div class="modal fade" id="addPhotosModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Add Photos</h4>
+      </div>
+      <form class="form-horizontal" role="form" ng-submit="savePhotos()">
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Event Date</label>
+                <div class="col-lg-9">
+                  <select class="form-control" ng-model="Album.id">
+                    <option ng-repeat="album in EventObj.albums" value="{{album.id}}">{{album.feature_headline}} - {{album.date}}</option>
+                  </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Photos</label>
+                <div class="col-lg-9">
+                  <input type="file" ng-file-select="onMultipleFilesSelect($files)" multiple ng-model="Album.event_upload_images">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="sumbit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

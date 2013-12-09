@@ -74,7 +74,6 @@ angular.module( 'blvdx', [
             fileObj['file'] = evt.target.result.replace("data:image/jpeg;base64,", "");
             $scope.AccountObj[field] = fileObj;
         };
-
         for (var i = 0; i < $files.length; i++) {
           var $file = $files[i];
           fileObj['name'] = $file.name;
@@ -128,6 +127,17 @@ angular.module( 'blvdx', [
     };
 
     return AppScope;
+})
+
+.factory('createImageObj', function ($file) {
+    var fileObj = {};
+    var reader = new FileReader();
+    reader.onloadend = function(evt) {
+        fileObj['name'] = $file.name;
+        fileObj['file'] = evt.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+    };
+    reader.readAsDataURL($file);
+    return fileObj;
 })
 
 .directive('bxStreamPhoto', function() {

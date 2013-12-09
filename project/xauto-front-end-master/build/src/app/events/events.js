@@ -302,7 +302,9 @@ angular.module( 'blvdx.events', [
 
 }])
 
-.controller( 'EventDetailsCtrl', ['$scope', 'titleService', '$stateParams', 'Events', function EventsCtrl( $scope, titleService, $stateParams, Events ) {
+.controller( 'EventDetailsCtrl', ['$scope', 'titleService', '$stateParams', 'Events', 'createImageObj',
+    function EventsCtrl( $scope, titleService, $stateParams, Events, createImageObj ) {
+
   titleService.setTitle( 'Event Details' );
   $scope.stateParams = $stateParams;
   //$scope.EventObj = EventObj.get({eventId:$stateParams.eventId});
@@ -314,6 +316,22 @@ angular.module( 'blvdx.events', [
   $('.schedule-dropdown-menu').click(function(e) {
       e.stopPropagation();
   });
+
+    $scope.Album = {photos: []};
+
+    $scope.onMultipleFilesSelect = function($files, field) {
+        //$files: an array of files selected, each file has name, size, and type.
+        for (var i = 0; i < $files.length; i++) {
+          var $file = $files[i];
+            $scope.Album.photos.push(createImageObj($file));
+        }
+
+    };
+
+  $scope.savePhotos = function(){
+   console.log($scope.Album);
+
+  };
 }])
 
 .controller( 'EventsMyCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', function EventsCtrl( $scope, $state, titleService, $stateParams, Events ) {
