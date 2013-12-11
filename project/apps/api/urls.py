@@ -8,7 +8,7 @@ from .views import (EventsListView, EventDetailsView, FollowEventView,
     FollowProfileView, StreamListView, FavoritePictureView, ReportPictureView,
     ProfileFavoritesListView, ProfileMyPhotosListView, RegistrationView,
     LoginView, LogoutView, CurrentUserView, ActivateView, ResetPasswordView,
-    ChangePasswordView, CheckUsernameView)
+    ChangePasswordView, CheckUsernameView, AlbumPhotosUploader)
 
 router = routers.DefaultRouter()
 router.register(r'events', EventViewSet)
@@ -42,6 +42,7 @@ urlpatterns = patterns('',
     url(r'^profiles/check-username/$', CheckUsernameView.as_view(),
         name='check-username'),
     url(r'^stream/$', StreamListView.as_view(), name='stream'),
+    url(r'^stream/upload/$', AlbumPhotosUploader.as_view(), name='stream-upload'),
     url(r'^pictures/(?P<picture_id>\d+)/favorite/$',
         FavoritePictureView.as_view(), name='picture-favorite'),
     url(r'^pictures/(?P<picture_id>\d+)/report/$',

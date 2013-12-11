@@ -14,7 +14,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.core.files.base import ContentFile
 
-from rest_framework.generics import (ListAPIView, RetrieveAPIView)
+from rest_framework.generics import (ListAPIView, RetrieveAPIView, CreateAPIView)
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
@@ -28,7 +28,7 @@ from event.serializers import (EventSerializer, EventDetailsSerializer,
 from account.serializers import (UserProfileSerializer, UserSerializer,
     NewProfileSerializer, EmailSerializer)
 from account.models import UserProfile
-from multiuploader.serializers import MultiuploaderImageSerializer
+from multiuploader.serializers import MultiuploaderImageSerializer, MultiuploaderImageWriter
 from multiuploader.models import MultiuploaderImage
 
 from django.core.mail import send_mail
@@ -57,6 +57,21 @@ class EventDetailsView(RetrieveAPIView):
     serializer_class = EventDetailsSerializer
     model = Event
     lookup_field = 'slug'
+
+
+class AlbumPhotosUploader(CreateAPIView):
+    model = MultiuploaderImage
+    serializer_class = MultiuploaderImageWriter
+
+    def create(self, request, *args, **kwargs):
+        return super(AlbumPhotosUploader, self).create(request, *args, **kwargs)
+
+    def pre_save(self, obj):
+        i = 0
+        for photo in self.request.DATA:
+            obj[i].userprofile = self.request.user.profile
+            obj[i].image = ContentFile(photo['file'].decode('base64'), photo['image'])
+            i += 1
 
 
 class EventViewSet(ModelViewSet):

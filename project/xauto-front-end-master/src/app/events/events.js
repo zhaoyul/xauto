@@ -315,31 +315,37 @@ angular.module( 'blvdx.events', [
       e.stopPropagation();
   });
 
-    $scope.Album = {photos: []};
+  $scope.Album = {photos: []};
 
-    createImageObj = function($file) {
-        var fileObj = {};
-        var reader = new FileReader();
-        reader.onloadend = function(evt) {
-            fileObj['name'] = $file.name;
-            fileObj['file'] = evt.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
-        };
-        reader.readAsDataURL($file);
-        return fileObj;
-    };
+  createImageObj = function($file) {
+      var fileObj = {};
+      var reader = new FileReader();
+      reader.onloadend = function(evt) {
+          fileObj['image'] = $file.name;
+          fileObj['file'] = evt.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+          console.log($scope.EventObj);
+      };
+      reader.readAsDataURL($file);
+      return fileObj;
+  };
 
-    $scope.onMultipleFilesSelect = function($files, field) {
-        //$files: an array of files selected, each file has name, size, and type.
-        for (var i = 0; i < $files.length; i++) {
-          var $file = $files[i];
-            $scope.Album.photos.push(createImageObj($file));
-        }
+  $scope.onMultipleFilesSelect = function($files, field) {
+      //$files: an array of files selected, each file has name, size, and type.
+      for (var i = 0; i < $files.length; i++) {
+        var $file = $files[i];
+          $scope.Album.photos.push(createImageObj($file));
+      }
+  };
 
-    };
+  $scope.savePhotos = function() {
+    // set album id on photos
+    for (var i = 0; i < $scope.Album.photos.length; i++) {
+      $scope.Album.photos[i]['event_date'] = $scope.Album.id;
+    }
 
-  $scope.savePhotos = function(){
-   console.log($scope.Album);
-
+    Events.uploadPhotos($scope.Album.photos).then(function(photos){
+      $(".modal:visible").find(".close").click();
+    });
   };
 }])
 

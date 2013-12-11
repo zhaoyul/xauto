@@ -36,6 +36,10 @@ angular.module('resources.events', ['restangular'])
       return Restangular.one('events', event.slug).remove();
   };
 
+  Events.uploadPhotos = function (photos) {
+    return Restangular.all('stream').customPOST(photos, 'upload');
+  };
+
   return Events;
 }])
 
