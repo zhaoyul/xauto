@@ -380,7 +380,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                  <div class=\"active tab-pane\" id=\"stream\">\n" +
     "                      <ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>\n" +
     "                  </div>\n" +
-    "                  <div class=\"tab-pane\" id=\"photos\">\n" +
+    "                  <div class=\"active tab-pane\" id=\"photos\">\n" +
     "                      <ng-include src=\"'events/partial_event_details_photos.tpl.html'\"></ng-include>\n" +
     "                  </div>\n" +
     "                  <div class=\"tab-pane\" id=\"followers\">\n" +
