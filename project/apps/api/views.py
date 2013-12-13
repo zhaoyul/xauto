@@ -14,7 +14,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.core.files.base import ContentFile
 
-from rest_framework.generics import (ListAPIView, RetrieveAPIView, CreateAPIView)
+from rest_framework.generics import (ListAPIView, RetrieveAPIView)
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
@@ -28,7 +28,7 @@ from event.serializers import (EventSerializer, EventDetailsSerializer,
 from account.serializers import (UserProfileSerializer, UserSerializer,
     NewProfileSerializer, EmailSerializer)
 from account.models import UserProfile
-from multiuploader.serializers import MultiuploaderImageSerializer, MultiuploaderImageWriter
+from multiuploader.serializers import MultiuploaderImageSerializer
 from multiuploader.models import MultiuploaderImage
 
 from django.core.mail import send_mail
@@ -59,19 +59,30 @@ class EventDetailsView(RetrieveAPIView):
     lookup_field = 'slug'
 
 
-class AlbumPhotosUploader(CreateAPIView):
-    model = MultiuploaderImage
-    serializer_class = MultiuploaderImageWriter
+class AlbumPhotosUploader(APIView):
+    """
+    Creates multiple instances of images
+    """
+    permission_classes = (IsAuthenticated,)
 
-    def create(self, request, *args, **kwargs):
-        return super(AlbumPhotosUploader, self).create(request, *args, **kwargs)
-
-    def pre_save(self, obj):
+    def post(self, request, *args, **kwargs):
+        profile = self.request.user.profile
         i = 0
-        for photo in self.request.DATA:
-            obj[i].userprofile = self.request.user.profile
-            obj[i].image = ContentFile(photo['file'].decode('base64'), photo['image'])
+        for index, photo in self.request.DATA.items():
+            imageObj = MultiuploaderImage()
+            imageObj.image.save(
+                photo['name'],
+                ContentFile(photo['file'].decode('base64')),
+                save=False
+            )
+            imageObj.userprofile = profile
+            event_date = photo.get('event_date', None)
+            if event_date:
+                imageObj.event_date = EventDate.objects.get(id=event_date)
+            imageObj.save()
             i += 1
+
+        return Response({}, status=status.HTTP_200_OK)
 
 
 class EventViewSet(ModelViewSet):

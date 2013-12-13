@@ -31,13 +31,3 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
                 return obj.userprofile.get_full_name()
 
         return ""
-
-
-class MultiuploaderImageWriter(serializers.ModelSerializer):
-    class Meta:
-        model = MultiuploaderImage
-        fields = ('userprofile', 'event_date', 'filename', 'image')
-
-    def __init__(self, *args, **kwargs):
-        kwargs['many'] = True
-        super(MultiuploaderImageWriter, self).__init__(*args, **kwargs)

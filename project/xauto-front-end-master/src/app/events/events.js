@@ -318,7 +318,7 @@ angular.module( 'blvdx.events', [
       var fileObj = {};
       var reader = new FileReader();
       reader.onloadend = function(evt) {
-          fileObj['image'] = $file.name;
+          fileObj['name'] = $file.name;
           fileObj['file'] = evt.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
           console.log($scope.EventObj);
       };
