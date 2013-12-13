@@ -53,7 +53,7 @@ class EventDetailsView(RetrieveAPIView):
     """
     Returns Event details
     """
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     serializer_class = EventDetailsSerializer
     model = Event
     lookup_field = 'slug'
@@ -186,7 +186,7 @@ class CheckUsernameView(APIView):
 
 
 class UserProfileViewSet(ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     serializer_class = UserProfileSerializer
     model = UserProfile
     lookup_field = 'slug'
@@ -290,22 +290,29 @@ class StreamListView(ListAPIView):
     """
     Returns real-time images from Events or Profiles being followed
     """
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
     serializer_class = MultiuploaderImageSerializer
 
     def get_queryset(self):
-        profile = self.request.user.profile
+        user = self.request.user
+        if user.is_active:
+            profile = user.profile
 
-        events_ids = Event.objects.filter(
-            Q(author_id__in=profile.followed.values_list('id', flat=True)) |
-            Q(followed__id=profile.id)
-        )
-        queryset = MultiuploaderImage.objects.filter(
-            Q(event_date__event_id__in=events_ids) &
-            Q(event_date__start_date__lt=datetime.now()) &
-            Q(event_date__end_date__gt=datetime.now())
-        )
+            events_ids = Event.objects.filter(
+                Q(author_id__in=profile.followed.values_list('id', flat=True)) |
+                Q(followed__id=profile.id)
+            )
+            queryset = MultiuploaderImage.objects.filter(
+                Q(event_date__event_id__in=events_ids) &
+                Q(event_date__start_date__lt=datetime.now()) &
+                Q(event_date__end_date__gt=datetime.now())
+            )
+        else:
+            queryset = MultiuploaderImage.objects.filter(
+                Q(event_date__start_date__lt=datetime.now()) &
+                Q(event_date__end_date__gt=datetime.now())
+            )
 
         return queryset
 

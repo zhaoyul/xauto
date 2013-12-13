@@ -61,10 +61,7 @@ angular.module( 'blvdx.events', [
         views: {
           "main": {
             controller: 'EventDetailsCtrl',
-            templateUrl: 'events/event-details.tpl.html',
-            resolve:{
-              authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
-            }
+            templateUrl: 'events/event-details.tpl.html'
           }
         }
       })

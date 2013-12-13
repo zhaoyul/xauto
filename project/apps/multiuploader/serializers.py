@@ -19,14 +19,16 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
             return obj.image.url
 
     def get_caption(self, obj):
-        profile = self.context['view'].request.user.profile
-        event = obj.event_date.event
+        user = self.context['view'].request.user
+        if user.is_active:
+            profile = user.profile
+            event = obj.event_date.event
 
-        if profile.followed_events.filter(id=event.id).count():
-            return event.title
+            if profile.followed_events.filter(id=event.id).count():
+                return event.title
 
-        if profile.followed_profiles.filter(id=obj.userprofile_id).count():
-            return obj.userprofile.get_full_name()
+            if profile.followed_profiles.filter(id=obj.userprofile_id).count():
+                return obj.userprofile.get_full_name()
 
         return ""
 
