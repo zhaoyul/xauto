@@ -73,7 +73,7 @@ class EventSerializer(serializers.ModelSerializer):
         return ""
 
     def get_author_photo(self, obj):
-        if obj.author:
+        if obj.author and obj.author.thumbnail_image:
             return obj.author.thumbnail_image.url
         return ""
 
@@ -143,7 +143,7 @@ class EventDetailsSerializer(serializers.ModelSerializer):
         return ""
 
     def get_author_photo(self, obj):
-        if obj.author:
+        if obj.author and obj.author.thumbnail_image:
             return obj.author.thumbnail_image.url
         return ""
 
