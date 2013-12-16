@@ -42,10 +42,21 @@ class EventsListView(ListAPIView):
 
     def get_queryset(self):
         search_text = self.request.GET.get('search_text', '')
-        queryset = Event.objects.filter(title__startswith=search_text)
+        filter_by = self.request.GET.get('filter_by', '')
         own_events = self.request.GET.get('own_events', False)
-        if own_events == 'true':
-            queryset = queryset.filter(author=self.request.user.profile)
+        user = self.request.user
+
+        queryset = Event.objects.filter(title__startswith=search_text)
+
+        if own_events == 'true' and user.is_active:
+            queryset = queryset.filter(author=user.profile)
+
+        if filter_by == 'following' and user.is_active:
+            queryset = queryset.filter(followed=user.profile)
+
+        if filter_by == 'live':
+            queryset = queryset.filter(event_dates__start_date__lt=datetime.now()).filter(
+                event_dates__end_date__gt=datetime.now()).distinct()
         return queryset
 
 
@@ -204,11 +215,22 @@ class UserProfileViewSet(ModelViewSet):
 
     def get_queryset(self):
         search_text = self.request.GET.get('search_text', '')
-        return UserProfile.objects.filter(
+        filter_by = self.request.GET.get('filter_by', '')
+        user = self.request.user
+
+        queryset = UserProfile.objects.filter(
             Q(name__startswith=search_text) |
             Q(user__first_name__startswith=search_text) |
             Q(user__last_name__startswith=search_text)
         )
+
+        if filter_by == 'following' and user.is_active:
+            queryset = queryset.filter(followed=user.profile)
+
+        if filter_by == 'followers' and user.is_active:
+            queryset = queryset.filter(followed_profiles=user.profile)
+
+        return queryset
 
     def pre_save(self, obj):
         user_data = self.request.DATA.get('user', {})

@@ -872,9 +872,9 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "<div class=\"row\">\n" +
     "  <div class=\"col-xs-12 col-md-12 col-lg-11 people-filter\">\n" +
     "  	<div class=\"btn-group\">\n" +
-    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"radioModel\" btn-radio=\"'All'\">All</button>\n" +
-    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"radioModel\" btn-radio=\"'Followers'\">Followers</button>\n" +
-    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"radioModel\" btn-radio=\"'Following'\">Following</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-click=\"changeDisplayFilter('all')\" ng-model=\"radioModel\" btn-radio=\"'All'\">All</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-click=\"changeDisplayFilter('followers')\" ng-model=\"radioModel\" btn-radio=\"'Followers'\">Followers</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-click=\"changeDisplayFilter('following')\" ng-model=\"radioModel\" btn-radio=\"'Following'\">Following</button>\n" +
     "    </div>\n" +
     "    <ul class=\"people-list\">\n" +
     "      <li ng-repeat=\"profile in Profiles\">\n" +

@@ -58,6 +58,12 @@ angular.module( 'blvdx.people', [
       $scope.Profiles = profiles;
   });
 
+  $scope.changeDisplayFilter = function(type){
+      Profiles.getProfiles({filter_by: type}).then(function (profiles) {
+          $scope.Profiles = profiles;
+      });
+  };
+
   $scope.Follow = function($profile) {
       Profiles.Follow($profile.slug).then(function (profile) {
           $profile.srv_following = profile.srv_following;

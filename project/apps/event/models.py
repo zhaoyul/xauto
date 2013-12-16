@@ -168,7 +168,7 @@ class Event(TimestampedModel):
 
     def is_live_streaming(self):
         if self.event_dates.filter(start_date__lt=datetime.now()).filter(
-                end_date__gt=datetime.now()).count():
+                end_date__gt=datetime.now()).exists():
             return True
         return False
 

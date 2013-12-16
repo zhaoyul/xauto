@@ -87,26 +87,9 @@ angular.module( 'blvdx.events', [
   $scope.search = {};
 
   $scope.changeDisplayFilter = function(type){
-    if(type=="following"){
-      if(!$scope.search.srv_following){
-        $scope.search.srv_following = "true";
-      }
-      else{
-        $scope.search.srv_following = '';
-      }
-    }
-    if(type=="live"){
-      if(!$scope.search.srv_live){
-        $scope.search.srv_live = "true";
-      }
-      else{
-        $scope.search.srv_live = '';
-      }
-    }
-    if(type=="all"){
-      $scope.search.srv_following = '';
-      $scope.search.srv_live = '';
-    }
+      Events.getEvents({filter_by: type}).then(function (events) {
+          $scope.events = events;
+      });
   };
 
   $scope.Follow = function(event) {
