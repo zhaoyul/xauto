@@ -40,24 +40,24 @@ angular.module( 'blvdx.stream', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'StreamCtrl', ['$scope', 'titleService', 'Streams', function StreamCtrl( $scope, titleService, Streams ) {
+.controller( 'StreamCtrl', ['$scope', 'titleService', 'Streams', '$rootScope', function StreamCtrl( $scope, titleService, Streams, $rootScope) {
   titleService.setTitle( 'Stream' );
+  $scope.stream = [];
 
-  Streams.getStream().then(function (stream) {
-      $scope.stream = stream;
+  $scope.Favorite = function(entry_id) {
+      Streams.send_favorite(entry_id);
+  };
+
+  $scope.Report = function(entry_id) {
+      Streams.send_report(entry_id);
+  };
+
+  $rootScope.$on("entry", function(event, data){
+    $scope.stream.push(data);
+    $scope.$apply();
   });
 
-  $scope.Favorite = function(stream_id) {
-      Streams.Favorite(stream_id).then(function (stream) {
-
-      });
-  };
-
-  $scope.Report = function(stream_id) {
-      Streams.Report(stream_id).then(function (stream) {
-
-      });
-  };
+  Streams.send_fetch_latest();
 
 }])
 

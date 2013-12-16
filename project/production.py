@@ -47,3 +47,8 @@ LOGGING = {
         }
     }
 }
+
+SOCKET_STREAMER_URL = "/photostream"
+SOCKET_STREAMER_PORT = 8444
+SOCKET_STREAMER_FULL_URL = "http://xauto.dev.milosolutions.com:%i%s" % (SOCKET_STREAMER_PORT, SOCKET_STREAMER_URL)
+

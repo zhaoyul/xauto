@@ -1,20 +1,86 @@
-angular.module('resources.streams', ['restangular'])
+angular.module('resources.streams', ['resources.configuration'])
 
-.factory('Streams', ['Restangular', function(Restangular){
+.factory('Streams', ['$rootScope', '$q', '$timeout', 'Configuration', function($rootScope, $q, $timeout, Configuration) {
+    var allowed_types = [
+        "entry"
+    ];
+    var instance = angular.module('resources.streams').instance || {};
+    instance.open_deferred = $q.defer();
 
-  var Streams = {};
+    var onmessage = function(event) {
+        var json;
+        try{
+             json = JSON.parse(event.data);
+        }catch(error){
+            console.log(error);
+            return;
+        }
 
-  Streams.getStream = function () {
-      return Restangular.all('stream').getList();
-  };
+        if(allowed_types.indexOf(json.type)>=0){
+            $rootScope.$emit(json.type, json.data);
+        }
+    };
 
-  Streams.Favorite = function (pk) {
-      return Restangular.one('pictures', pk).customPUT(pk, 'favorite');
-  };
+    var onopen = function() {
+        $rootScope.$emit('connected');
+        instance.open_deferred.resolve();
+    };
 
-  Streams.Report = function (pk) {
-      return Restangular.one('pictures', pk).customPUT(pk, 'report');
-  };
+    var onclose = function(){
+        $rootScope.$emit('disconnected');
+        instance.open_deferred.reject();
+        var reconnect = function(){
+            instance.open_deferred = $q.defer();
+            Configuration.getConfiguration().then(function(conf){
+                instance.sockjs = new SockJS(conf.photostream.url);
+                instance.sockjs.onmessage = onmessage;
+                instance.sockjs.onclose = onclose;
+                instance.sockjs.onopen = onopen;
+            });
+        };
+        $timeout(reconnect, 10000);
+    };
 
-  return Streams;
+    Configuration.getConfiguration().then(function(conf){
+        instance.sockjs = new SockJS(conf.photostream.url);
+        instance.sockjs.onmessage = onmessage;
+        instance.sockjs.onclose = onclose;
+        instance.sockjs.onopen = onopen;
+    });
+
+    instance.send = function(message){
+        instance.open_deferred.promise.then(function(){
+            instance.sockjs.send(message);
+        });
+    };
+
+    instance.send_favorite = function(entry_id){
+      var msg = {
+        type: "favorite",
+        data: {
+          "id": entry_id
+        }
+      };
+      instance.send(JSON.stringify(msg));
+    };
+
+    instance.send_report = function(entry_id){
+      var msg = {
+        type: "report",
+        data: {
+          "id": entry_id
+        }
+      };
+      instance.send(JSON.stringify(msg));
+    };
+
+    instance.send_fetch_latest = function(){
+      var msg = {
+        type: "fetch_latest"
+      };
+      instance.send(JSON.stringify(msg));
+    };
+
+    angular.module('resources.streams').instance = instance;
+    return instance;
 }]);

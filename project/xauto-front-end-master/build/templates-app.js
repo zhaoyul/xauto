@@ -1066,7 +1066,7 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "        <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"item in stream\">\n" +
     "            <div class=\"inner\">\n" +
     "                <div class=\"stream-picture\"\n" +
-    "                bx-stream-photo=\"{{item.image}}\"\n" +
+    "                bx-stream-photo=\"{{item.url}}\"\n" +
     "                 >\n" +
     "                     <ul class=\"stream-action-links\">\n" +
     "                        <li>\n" +
@@ -1092,7 +1092,8 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "            </div>\n" +
     "        </li>\n" +
     "    </ul>\n" +
-    "</div>");
+    "</div>\n" +
+    "");
 }]);
 
 angular.module("stream/stream.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -1102,5 +1103,6 @@ angular.module("stream/stream.tpl.html", []).run(["$templateCache", function($te
     "    <a href=\"#\" class=\"btn btn-danger btn-lg\"><i class=\"icon-plus-sign\"></i> Add Photo</a>\n" +
     "  </div>\n" +
     "</div> -->\n" +
-    "<ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>");
+    "<ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>\n" +
+    "");
 }]);

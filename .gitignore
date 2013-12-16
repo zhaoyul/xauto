@@ -75,6 +75,19 @@ project/static
 ####################################################
 project/settings_local.py
 
+# sphinx makefile #
+###################
+docs/Makefile
+docs/make.bat
+
+# media files #
+###############
+/project/media/multiuploader_images/*
+
+# db file #
+###########
+/django-stub.db
+
 # Specific dependencies #
 #########################
 

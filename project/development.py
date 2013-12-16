@@ -2,3 +2,8 @@
 from project.settings import *
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
+SOCKET_STREAMER_URL = "/photostream"
+SOCKET_STREAMER_PORT = 49002
+SOCKET_STREAMER_FULL_URL = "http://localhost:%i%s" % (SOCKET_STREAMER_PORT, SOCKET_STREAMER_URL)
+

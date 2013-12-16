@@ -582,3 +582,18 @@ class RegistrationView(APIView):
         errors = user_serializer.errors
         errors.update(profile_serializer.errors)
         return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ConfigurationView(APIView):
+    """
+    Returns json with configuration and urls.
+    """
+    permission_classes = (AllowAny,)
+
+    def get(self, request, *args, **kwargs):
+        config = {
+            'photostream': {
+                'url': settings.SOCKET_STREAMER_FULL_URL
+            }
+        }
+        return Response(config, status=status.HTTP_200_OK)
