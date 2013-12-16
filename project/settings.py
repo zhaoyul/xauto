@@ -149,6 +149,7 @@ INSTALLED_APPS = [
     'docs',
     'xauto_lib',
     'storages',
+    'socket_streamer',
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

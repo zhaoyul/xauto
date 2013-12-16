@@ -68,7 +68,7 @@ class AlbumPhotosUploader(APIView):
     def post(self, request, *args, **kwargs):
         profile = self.request.user.profile
         i = 0
-        for index, photo in self.request.DATA.items():
+        for index, photo in enumerate(self.request.DATA):
             imageObj = MultiuploaderImage()
             imageObj.image.save(
                 photo['name'],

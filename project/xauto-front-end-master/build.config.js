@@ -64,6 +64,7 @@ module.exports = {
 
       'vendor/angular-animate/angular-animate.js',
       'vendor/jquery-colorbox/jquery.colorbox-min.js',
+      'vendor/sockjs/sockjs.js',
     ],
     css: [
 

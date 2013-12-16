@@ -339,7 +339,6 @@ angular.module( 'blvdx.events', [
     for (var i = 0; i < $scope.Album.photos.length; i++) {
       $scope.Album.photos[i]['event_date'] = $scope.Album.id;
     }
-
     Events.uploadPhotos($scope.Album.photos).then(function(photos){
       $(".modal:visible").find(".close").click();
     });
