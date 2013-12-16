@@ -31,7 +31,10 @@ from account.models import UserProfile
 from multiuploader.serializers import MultiuploaderImageSerializer
 from multiuploader.models import MultiuploaderImage
 
-from django.core.mail import send_mail
+if "mailer" in settings.INSTALLED_APPS:
+    from mailer import send_mail, send_html_mail
+else:
+    from django.core.mail import send_mail
 
 class EventsListView(ListAPIView):
     """
@@ -496,11 +499,16 @@ class ResetPasswordView(APIView):
                 reset_link = reset_link.replace("api/change_password", "#/account/changePassword")
                 email_body = render_to_string('emails/reset_password_email.html',
                     {'user': user,
+                     'title': 'Password reset',
+                     'site_name': settings.SITE_NAME,
                      'reset_link': reset_link}
                 )
-
-                send_mail("Reset Password", email_body,
-                    settings.DEFAULT_FROM_EMAIL, [user.email])
+                if "mailer" in settings.INSTALLED_APPS:
+                    send_html_mail("Reset Password", email_body, email_body,
+                        settings.DEFAULT_FROM_EMAIL, [user.email])
+                else:
+                    send_mail("Reset Password", email_body,
+                        settings.DEFAULT_FROM_EMAIL, [user.email])
 
                 return redirect('/')
             except User.DoesNotExist:
@@ -589,11 +597,18 @@ class RegistrationView(APIView):
 
                 email_body = render_to_string('emails/activation_email.html',
                     {'user': user_serializer.object,
+                     'title': 'Registration',
+                     'site_name': settings.SITE_NAME,
+                     'domain': request.build_absolute_uri(reverse('index')),
                      'activation_link': activation_link}
                 )
 
-                send_mail("Welcome to Xauto", email_body,
-                    settings.DEFAULT_FROM_EMAIL, [email], fail_silently=False)
+                if "mailer" in settings.INSTALLED_APPS:
+                    send_html_mail("Welcome to Xauto", email_body, email_body,
+                        settings.DEFAULT_FROM_EMAIL, [email], fail_silently=False)
+                else:
+                    send_mail("Welcome to Xauto", email_body,
+                        settings.DEFAULT_FROM_EMAIL, [email], fail_silently=False)
 
                 # return authentication token
                 token, created = Token.objects.get_or_create(

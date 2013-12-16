@@ -35,6 +35,8 @@ LANGUAGE_CODE = 'en'
 
 SITE_ID = 1
 
+SITE_NAME = 'Xauto'
+
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
@@ -152,7 +154,9 @@ INSTALLED_APPS = [
     'socket_streamer',
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_BACKEND = 'django_mailer.smtp_queue.EmailBackend'
+EMAIL_BACKEND = 'mailer.backend.DbBackend'
 
 AUTHENTICATION_BACKENDS = (
     'email_login.auth_backend.EmailBackend',
