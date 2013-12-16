@@ -186,6 +186,9 @@ LOGIN_REDIRECT_URL = '/'
 DOCS_ROOT = os.path.join(os.path.dirname(__file__), '../docs/html')
 DOCS_ACCESS = 'staff'
 
+# socket streamer endpoint
+SOCKET_STREAMER_URL = "/photostream"
+SOCKET_STREAMER_PORT = 49002
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
