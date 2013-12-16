@@ -23,15 +23,16 @@ def run():
         obj_count = MultiuploaderImage.objects.count()
         if obj_count != runtime_vars["last_obj_count"]:
             runtime_vars["last_obj_count"] = obj_count
-            objs = MultiuploaderImage.objects.filter(upload_date__gt=runtime_vars["last_upload"])
-            runtime_vars.update(MultiuploaderImage.objects.aggregate(last_upload=Max('upload_date')))
-            for obj in objs:
-                print "new images sent", obj
-                msg = {
-                    "url": obj.url
-                }
-                for user in connections.PhotoStream.connected_users:
-                    user.send_message("entry", msg)
+            if not runtime_vars["last_upload"] is None:
+                objs = MultiuploaderImage.objects.filter(upload_date__gt=runtime_vars["last_upload"])
+                runtime_vars.update(MultiuploaderImage.objects.aggregate(last_upload=Max('upload_date')))
+                for obj in objs:
+                    print "new images sent", obj
+                    msg = {
+                        "url": obj.url
+                    }
+                    for user in connections.PhotoStream.connected_users:
+                        user.send_message("entry", msg)
 
     app = web.Application(handlers)
     app.listen(int(settings.SOCKET_STREAMER_PORT), "0.0.0.0")
