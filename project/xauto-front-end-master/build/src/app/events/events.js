@@ -111,38 +111,8 @@ angular.module( 'blvdx.events', [
     function EventsCtrl( $scope, $state, titleService, Events, $upload) {
   titleService.setTitle( 'Add New Event' );
 
-  $scope.today = function() {
-    $scope.dt = new Date();
-  };
-  $scope.today();
-
-  $scope.showWeeks = true;
-  $scope.toggleWeeks = function () {
-    $scope.showWeeks = ! $scope.showWeeks;
-  };
-
-  $scope.clear = function () {
-    $scope.dt = null;
-  };
-
-  // Disable weekend selection
-  $scope.disabled = function(date, mode) {
-    // return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-    return false;
-  };
-
-  $scope.toggleMin = function() {
-    $scope.minDate = ( $scope.minDate ) ? null : new Date();
-  };
-  $scope.toggleMin();
-
   $scope.open = function() {
       $scope.opened = true;
-  };
-
-  $scope.dateOptions = {
-    'year-format': "'yy'",
-    'starting-day': 1
   };
 
   $scope.checkShortLink = function(value) {
@@ -155,38 +125,41 @@ angular.module( 'blvdx.events', [
 
   $scope.eventSubmit = function(){
     Events.createEvent($scope.EventObj).then(function (event) {
-        $state.transitionTo('events');
-        //$('.xa-icon-nav-events').click();
+        $state.transitionTo('eventEdit', {"eventId": event.slug});
     });
   };
 
+  $scope.onFileSelect = function($files, field) {
+      //$files: an array of files selected, each file has name, size, and type.
+      var fileObj = {};
+      var reader = new FileReader();
+      reader.onloadend = function(evt) {
+          fileObj['file'] = evt.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+          $scope.EventObj[field] = fileObj;
+      };
 
-    $scope.onFileSelect = function($files, field) {
-        //$files: an array of files selected, each file has name, size, and type.
-        var fileObj = {};
-        var reader = new FileReader();
-        reader.onloadend = function(evt) {
-            fileObj['file'] = evt.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
-            $scope.EventObj[field] = fileObj;
-        };
-
-        for (var i = 0; i < $files.length; i++) {
-          var $file = $files[i];
-          fileObj['name'] = $file.name;
-          reader.readAsDataURL($file);
-        }
-    };
+      for (var i = 0; i < $files.length; i++) {
+        var $file = $files[i];
+        fileObj['name'] = $file.name;
+        reader.readAsDataURL($file);
+      }
+  };
 
 }])
 
-.controller( 'EventEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', 'DateObj', '$upload',
-    function EventEditCtrl( $scope, $state, titleService, $stateParams, Events, DateObj, $upload ) {
+.controller( 'EventEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', 'DateObj', '$upload', '$filter',
+    function EventEditCtrl( $scope, $state, titleService, $stateParams, Events, DateObj, $upload, $filter ) {
+
   titleService.setTitle( 'Edit Event' );
   $scope.eventId = $stateParams.eventId;
 
-  Events.getEvent($scope.eventId).then(function (event) {
-      $scope.EventObj = event;
-  });
+  $scope.reloadEvent = function(){
+    Events.getEvent($scope.eventId).then(function (event) {
+        $scope.EventObj = event;
+    });
+  };
+
+  $scope.reloadEvent();
 
   $scope.eventSubmit = function(){
     Events.saveEvent($scope.EventObj).then(function (event) {
@@ -209,28 +182,36 @@ angular.module( 'blvdx.events', [
       });
   };
 
-  // $scope.dateSubmit = function(){
-  //   $scope.EventObj.$save();
-  // };
-
   $scope.addDate = function(){
     $scope.editDate = {event: $scope.EventObj.id};
-    $scope.editDate.date = new Date();
+    $scope.editDate.start_date = new Date();
+    $scope.editDate.startTime = "11:00";
+    $scope.editDate.endTime = "16:00";
   };
 
-  $scope.saveNewDate = function(){
-    $scope.EventObj.dates.push($scope.editDate);
-  };
-  // $scope.resetDate = function(){
-
-  // };
   $scope.saveDate = function(){
+    if($scope.dateform.$invalid){
+      return;
+    }
+    var date = new Date($scope.editDate.start_date);
+    var start_time = $scope.editDate.startTime.split(":");
+    var end_time = $scope.editDate.endTime.split(":");
+    var start_date = new Date(date);
+    start_date.setHours(start_time[0]);
+    start_date.setMinutes(start_time[1]);
+    var end_date = new Date(date);
+    end_date.setHours(end_time[0]);
+    end_date.setMinutes(end_time[1]);
+    $scope.editDate.start_date = start_date;
+    $scope.editDate.end_date = end_date;
     if ($scope.editDate.id !== undefined){
         DateObj.saveDate($scope.editDate).then(function (date) {
+            $scope.reloadEvent();
             $(".modal:visible").find(".close").click();
         });
     } else {
         DateObj.createDate($scope.editDate).then(function (date) {
+            $scope.reloadEvent();
             $(".modal:visible").find(".close").click();
         });
     }
@@ -256,6 +237,8 @@ angular.module( 'blvdx.events', [
   $scope.setThisEditableDate = function(date){
       DateObj.getDate(date.id).then(function (date) {
           $scope.editDate = date;
+          $scope.editDate.startTime = $filter('date')(date.start_date, 'HH:mm');
+          $scope.editDate.endTime = $filter('date')(date.end_date, 'HH:mm');
       });
     //$scope.editDate = date;
   };
@@ -275,9 +258,14 @@ angular.module( 'blvdx.events', [
   $scope.showWeeks = true;
 
   $scope.dateOptions = {
-    'year-format': "'yy'",
+    'year-format': "'yyyy'",
     'starting-day': 1
   };
+
+  $scope.minDate = new Date();
+  $scope.maxDate = new Date();
+  $scope.maxDate.setDate($scope.maxDate.getDate()+365);
+
   /* end of datepicker */
 
 }])
@@ -303,7 +291,6 @@ angular.module( 'blvdx.events', [
       reader.onloadend = function(evt) {
           fileObj['name'] = $file.name;
           fileObj['file'] = evt.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
-          console.log($scope.EventObj);
       };
       reader.readAsDataURL($file);
       return fileObj;

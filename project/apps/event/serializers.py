@@ -96,7 +96,7 @@ class EventSerializer(serializers.ModelSerializer):
             return {
                 "date": nearest_date.start_date,
                 "startTime": nearest_date.start_date.strftime('%H:%M'),
-                "endTime": nearest_date.end_date.strftime('%H:%M'),
+                "endTime": nearest_date.end_date and nearest_date.end_date.strftime('%H:%M') or None,
                 "city": nearest_date.city,
                 "state": nearest_date.state,
                 "country": nearest_date.country,

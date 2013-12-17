@@ -38,12 +38,51 @@
     <div class="col-lg-4">
       <input type="file" class="btn" ng-file-select="onFileSelect($files, 'main_image_obj')" ng-model="EventObj.image">
     </div>
+    <div class="col-lg-4">
+      <strong>or</strong>
+      <button class="btn btn-primary">Select from Event Photos</button>
+    </div>
   </div>
 
+  <div class="form-group">
+
+    <div class="col-lg-offset-3 col-lg-9">
+      <button class="btn btn-primary" data-toggle="modal" data-target="#dateModal" ng-click="addDate()"><i class="icon-calendar"></i> Add Date</button>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-lg-3 control-label">Scheduled Dates</label>
+    <div class="col-lg-9">
+      <table class="table">
+        <!-- start date form -->
+        <!--
+        <div class="dates-items-container" >
+
+        </div>
+        -->
+        <!-- end of date -->
+        <tr ng-repeat="date in EventObj.dates">
+          <td>{{date.start_date | date:'fullDate' }} &mdash; {{date.feature_headline}}</td>
+          <td>
+            <button
+              class="btn btn-primary btn-sm"
+              data-toggle="modal"
+              data-target="#dateModal"
+              ng-click="setThisEditableDate(date)"
+              >
+                Edit
+            </button>
+
+            <button type="button" class="btn btn-danger btn-sm" ng-click="removeDate($index, date.id)">Delete</button>
+            <!-- <ng-include src="'events/partial_form_date.tpl.html'"></ng-include> -->
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
   <div class="form-group">
     <div class="col-lg-offset-3 col-lg-9">
       <ng-include src="'events/partial_event_details_photos.tpl.html'"></ng-include>
     </div>
   </div>
-
-

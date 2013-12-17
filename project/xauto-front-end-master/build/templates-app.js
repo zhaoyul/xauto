@@ -1,4 +1,4 @@
-angular.module('templates-app', ['account/account-change-pswd.tpl.html', 'account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
+angular.module('templates-app', ['account/account-change-pswd.tpl.html', 'account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_edit_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
 
 angular.module("account/account-change-pswd.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-change-pswd.tpl.html",
@@ -214,7 +214,7 @@ angular.module("events/event-add.tpl.html", []).run(["$templateCache", function(
     "<h1>Add Event</h1>\n" +
     "<div class=\"row\">\n" +
     "	<div class=\"col-lg-10\">\n" +
-    "		<form class=\"form-horizontal event-add-form\" role=\"form\" ng-submit=\"eventSubmit()\">\n" +
+    "		<form name=\"form\" class=\"form-horizontal event-add-form\" role=\"form\" ng-submit=\"eventSubmit()\" novalidate>\n" +
     "			<ng-include src=\"'events/partial_add_event_form.tpl.html'\"></ng-include>\n" +
     "\n" +
     "			  <div class=\"form-group\">\n" +
@@ -235,18 +235,19 @@ angular.module("events/event-add.tpl.html", []).run(["$templateCache", function(
     "        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n" +
     "        <h4 class=\"modal-title\">Add Event Date</h4>\n" +
     "      </div>\n" +
-    "      <form class=\"form-horizontal\" role=\"form\">\n" +
+    "      <form name=\"dateform\" class=\"form-horizontal\" role=\"form\" ng-submit=\"saveDate()\" novalidate>\n" +
     "        <div class=\"modal-body\">\n" +
     "          <ng-include src=\"'events/partial_form_date.tpl.html'\"></ng-include>\n" +
     "        </div>\n" +
     "        <div class=\"modal-footer\">\n" +
     "          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n" +
-    "          <button type=\"button\" class=\"btn btn-primary\">Add Date!</button>\n" +
+    "          <button type=\"submit\" class=\"btn btn-primary\">Add Date!</button>\n" +
     "        </div>\n" +
     "      </form>\n" +
     "    </div><!-- /.modal-content -->\n" +
     "  </div><!-- /.modal-dialog -->\n" +
-    "</div><!-- /.modal -->");
+    "</div><!-- /.modal -->\n" +
+    "");
 }]);
 
 angular.module("events/event-details.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -432,8 +433,8 @@ angular.module("events/event-edit.tpl.html", []).run(["$templateCache", function
     "<h1>Edit Event</h1>\n" +
     "<div class=\"row\">\n" +
     "	<div class=\"col-lg-10\">\n" +
-    "		<form class=\"form-horizontal event-add-form\" role=\"form\" ng-submit=\"eventSubmit()\">\n" +
-    "			<ng-include src=\"'events/partial_add_event_form.tpl.html'\"></ng-include>\n" +
+    "		<form name=\"form\" class=\"form-horizontal event-add-form\" role=\"form\" ng-submit=\"eventSubmit()\" novalidate>\n" +
+    "			<ng-include src=\"'events/partial_edit_event_form.tpl.html'\"></ng-include>\n" +
     "\n" +
     "			  <div class=\"form-group\">\n" +
     "			    <div class=\"col-lg-offset-3 col-lg-9\">\n" +
@@ -454,7 +455,7 @@ angular.module("events/event-edit.tpl.html", []).run(["$templateCache", function
     "        <h4 class=\"modal-title\" ng-hide=\"editDate.id\">Add Event Date</h4>\n" +
     "        <h4 class=\"modal-title\" ng-show=\"editDate.id\">Edit Event Date</h4>\n" +
     "      </div>\n" +
-    "      <form class=\"form-horizontal\" role=\"form\" ng-submit=\"saveDate()\">\n" +
+    "      <form name=\"dateform\" class=\"form-horizontal\" role=\"form\" ng-submit=\"saveDate()\" novalidate>\n" +
     "        <div class=\"modal-body\">\n" +
     "          <ng-include src=\"'events/partial_form_date.tpl.html'\"></ng-include>\n" +
     "        </div>\n" +
@@ -466,7 +467,8 @@ angular.module("events/event-edit.tpl.html", []).run(["$templateCache", function
     "      </form>\n" +
     "    </div><!-- /.modal-content -->\n" +
     "  </div><!-- /.modal-dialog -->\n" +
-    "</div><!-- /.modal -->");
+    "</div><!-- /.modal -->\n" +
+    "");
 }]);
 
 angular.module("events/events-my.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -657,6 +659,60 @@ angular.module("events/partial_add_event_form.tpl.html", []).run(["$templateCach
     "    <div class=\"col-lg-4\">\n" +
     "      <input type=\"file\" class=\"btn\" ng-file-select=\"onFileSelect($files, 'main_image_obj')\" ng-model=\"EventObj.image\">\n" +
     "    </div>\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div class=\"form-group\">\n" +
+    "    <div class=\"col-lg-offset-3 col-lg-9\">\n" +
+    "      <ng-include src=\"'events/partial_event_details_photos.tpl.html'\"></ng-include>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "\n" +
+    "\n" +
+    "");
+}]);
+
+angular.module("events/partial_edit_event_form.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("events/partial_edit_event_form.tpl.html",
+    "\n" +
+    "  <div class=\"form-group\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Event Title</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"EventObj.title\">\n" +
+    "      <!-- <span class=\"help-block\">Tip: Use your real name so people can find and follow you</span> -->\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\">\n" +
+    "    <label class=\"col-lg-3 control-label\">About Event</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <textarea class=\"form-control\" ng-model=\"EventObj.about\"></textarea>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\">\n" +
+    "    <label class=\"col-lg-3 control-label\">xau.to/</label>\n" +
+    "    <div class=\"col-lg-6\">\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"EventObj.short_link\" ng-keyup=\"checkShortLink($event.target.value)\">\n" +
+    "    </div>\n" +
+    "    <div class=\"col-lg-3\">\n" +
+    "        {{EventObj.short_link_available}}\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\">\n" +
+    "    <label class=\"col-lg-3 control-label\">How Big is You Event?</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <div class=\"btn-group\">\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"'10'\">10 Cars</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"'25'\">25 Cars</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"'50'\">50 Cars</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"'100'\">100 Cars</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"'150'\">150+ Cars</button>\n" +
+    "    </div>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Photos</label>\n" +
+    "    <div class=\"col-lg-4\">\n" +
+    "      <input type=\"file\" class=\"btn\" ng-file-select=\"onFileSelect($files, 'main_image_obj')\" ng-model=\"EventObj.image\">\n" +
+    "    </div>\n" +
     "    <div class=\"col-lg-4\">\n" +
     "      <strong>or</strong>\n" +
     "      <button class=\"btn btn-primary\">Select from Event Photos</button>\n" +
@@ -705,8 +761,6 @@ angular.module("events/partial_add_event_form.tpl.html", []).run(["$templateCach
     "      <ng-include src=\"'events/partial_event_details_photos.tpl.html'\"></ng-include>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "\n" +
-    "\n" +
     "");
 }]);
 
@@ -789,27 +843,44 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "          </select>\n" +
     "        </div>\n" +
     "      </div>\n" +
-    "    <div class=\"form-group\">\n" +
+    "    <div class=\"form-group\" ng-class=\"{'has-error': dateform.start_date.$invalid}\">\n" +
     "      <label class=\"col-lg-3 control-label\">Date</label>\n" +
     "      <div class=\"col-lg-3\">\n" +
     "        <input type=\"hidden\" ng-model=\"editDate.id\">\n" +
     "        <input type=\"hidden\" ng-model=\"editDate.event\">\n" +
     "        <input type=\"text\"\n" +
+    "          name=\"start_date\"\n" +
     "          class=\"form-control\"\n" +
-    "          datepicker-popup=\"mm-dd-yyyy\"\n" +
+    "          datepicker-popup=\"MM-dd-yyyy\"\n" +
     "          ng-model=\"editDate.start_date\"\n" +
     "          open=\"opened\"\n" +
-    "          min=\"'2010-06-22'\"\n" +
-    "          max=\"'2015-06-22'\"\n" +
+    "          min=\"'{{minDate | date:'MM-dd-yyyy'}}'\"\n" +
+    "          max=\"'{{maxDate | date:'MM-dd-yyyy'}}'\"\n" +
     "          datepicker-options=\"dateOptions\"\n" +
     "          required=\"required\"\n" +
     "           />\n" +
     "      </div>\n" +
-    "      <div class=\"col-lg-3\">\n" +
-    "        <input type=\"text\" class=\"form-control\" placeholder=\"Start Time\" ng-model=\"editDate.startTime\" required=\"required\">\n" +
+    "      <div class=\"col-lg-3\" ng-class=\"{'has-error': dateform.start_time.$invalid}\">\n" +
+    "        <input\n" +
+    "        name=\"start_time\"\n" +
+    "        type=\"text\"\n" +
+    "        class=\"form-control\"\n" +
+    "        placeholder=\"Start Time\"\n" +
+    "        ng-model=\"editDate.startTime\"\n" +
+    "        required=\"required\"\n" +
+    "        ng-pattern=\"/^(10|11|12|[0-9]):[0-5][0-9]$/\"\n" +
+    "        >\n" +
     "      </div>\n" +
-    "      <div class=\"col-lg-3\">\n" +
-    "        <input type=\"text\" class=\"form-control\" placeholder=\"End Time\" ng-model=\"editDate.endTime\" required=\"required\">\n" +
+    "      <div class=\"col-lg-3\" ng-class=\"{'has-error': dateform.end_time.$invalid}\">\n" +
+    "        <input\n" +
+    "        name=\"end_time\"\n" +
+    "        type=\"text\"\n" +
+    "        class=\"form-control\"\n" +
+    "        placeholder=\"End Time\"\n" +
+    "        ng-model=\"editDate.endTime\"\n" +
+    "        required=\"required\"\n" +
+    "        ng-pattern=\"/^(10|11|12|[0-9]):[0-5][0-9]$/\"\n" +
+    "         >\n" +
     "      </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
@@ -853,18 +924,19 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "      <input type=\"text\" class=\"form-control\" placeholder=\"USD\" ng-disabled=\"EventObj.exhibit_free\" ng-model=\"EventObj.currency\">\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': dateform.feature_headline.$invalid}\">\n" +
     "    <label class=\"col-lg-3 control-label\">Feature Headline</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"text\" class=\"form-control\" ng-model=\"editDate.feature_headline\" required=\"required\">\n" +
+    "      <input name=\"feature_headline\" type=\"text\" class=\"form-control\" ng-model=\"editDate.feature_headline\" required=\"required\">\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': dateform.feature_detail.$invalid}\">\n" +
     "    <label class=\"col-lg-3 control-label\">Feature Detail</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <textarea class=\"form-control\" ng-model=\"editDate.feature_detail\" required=\"required\"></textarea>\n" +
+    "      <textarea name=\"feature_detail\" class=\"form-control\" ng-model=\"editDate.feature_detail\" required=\"required\"></textarea>\n" +
     "    </div>\n" +
-    "  </div>");
+    "  </div>\n" +
+    "");
 }]);
 
 angular.module("people/people.tpl.html", []).run(["$templateCache", function($templateCache) {

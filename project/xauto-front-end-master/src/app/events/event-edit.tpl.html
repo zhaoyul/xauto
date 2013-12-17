@@ -1,8 +1,8 @@
 <h1>Edit Event</h1>
 <div class="row">
 	<div class="col-lg-10">
-		<form class="form-horizontal event-add-form" role="form" ng-submit="eventSubmit()">
-			<ng-include src="'events/partial_add_event_form.tpl.html'"></ng-include>
+		<form name="form" class="form-horizontal event-add-form" role="form" ng-submit="eventSubmit()" novalidate>
+			<ng-include src="'events/partial_edit_event_form.tpl.html'"></ng-include>
 
 			  <div class="form-group">
 			    <div class="col-lg-offset-3 col-lg-9">
@@ -23,7 +23,7 @@
         <h4 class="modal-title" ng-hide="editDate.id">Add Event Date</h4>
         <h4 class="modal-title" ng-show="editDate.id">Edit Event Date</h4>
       </div>
-      <form class="form-horizontal" role="form" ng-submit="saveDate()">
+      <form name="dateform" class="form-horizontal" role="form" ng-submit="saveDate()" novalidate>
         <div class="modal-body">
           <ng-include src="'events/partial_form_date.tpl.html'"></ng-include>
         </div>
