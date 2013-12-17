@@ -126,6 +126,8 @@ angular.module( 'blvdx.events', [
   $scope.eventSubmit = function(){
     Events.createEvent($scope.EventObj).then(function (event) {
         $state.transitionTo('eventEdit', {"eventId": event.slug});
+    }, function(error){
+      $scope.errors = error.data;
     });
   };
 
@@ -190,29 +192,50 @@ angular.module( 'blvdx.events', [
   };
 
   $scope.saveDate = function(){
-    if($scope.dateform.$invalid){
+    var has_errors = false;
+    $scope.errors = {};
+    if($scope.editDate.startTime === undefined){
+      $scope.errors.start_time = ["Start time is required"];
+      has_errors = true;
+    }
+    if($scope.editDate.endTime === undefined){
+      $scope.errors.end_time = ["End time is required"];
+      has_errors = true;
+    }
+    if(has_errors === false){
+      // no errors so far?
+      var date = new Date($scope.editDate.start_date);
+      var start_time = $scope.editDate.startTime.split(":");
+      var end_time = $scope.editDate.endTime.split(":");
+      var start_date = new Date(date);
+      start_date.setHours(start_time[0]);
+      start_date.setMinutes(start_time[1]);
+      var end_date = new Date(date);
+      end_date.setHours(end_time[0]);
+      end_date.setMinutes(end_time[1]);
+      $scope.editDate.start_date = start_date;
+      $scope.editDate.end_date = end_date;
+      if(start_date.getTime() > end_date.getTime()){
+        $scope.errors.end_time = ["Event must ends after it begins"];
+        has_errors = true;
+      }
+    }
+    if(has_errors){
       return;
     }
-    var date = new Date($scope.editDate.start_date);
-    var start_time = $scope.editDate.startTime.split(":");
-    var end_time = $scope.editDate.endTime.split(":");
-    var start_date = new Date(date);
-    start_date.setHours(start_time[0]);
-    start_date.setMinutes(start_time[1]);
-    var end_date = new Date(date);
-    end_date.setHours(end_time[0]);
-    end_date.setMinutes(end_time[1]);
-    $scope.editDate.start_date = start_date;
-    $scope.editDate.end_date = end_date;
     if ($scope.editDate.id !== undefined){
         DateObj.saveDate($scope.editDate).then(function (date) {
             $scope.reloadEvent();
             $(".modal:visible").find(".close").click();
+        }, function(error){
+          $scope.errors = error.data;
         });
     } else {
         DateObj.createDate($scope.editDate).then(function (date) {
             $scope.reloadEvent();
             $(".modal:visible").find(".close").click();
+        }, function(error){
+          $scope.errors = error.data;
         });
     }
 
@@ -273,11 +296,13 @@ angular.module( 'blvdx.events', [
 .controller( 'EventDetailsCtrl', ['$scope', 'titleService', '$stateParams', 'Events', function EventsCtrl( $scope, titleService, $stateParams, Events ) {
   titleService.setTitle( 'Event Details' );
   $scope.stateParams = $stateParams;
-  //$scope.EventObj = EventObj.get({eventId:$stateParams.eventId});
-  Events.getDetails($stateParams.eventId).then(function (event) {
-      $scope.EventObj = event;
-      $scope.Albums = event.albums;
-  });
+
+  $scope.reloadEvent = function(){
+    Events.getDetails($stateParams.eventId).then(function (event) {
+        $scope.EventObj = event;
+        $scope.Albums = event.albums;
+    });
+  };
 
   $('.schedule-dropdown-menu').click(function(e) {
       e.stopPropagation();
@@ -305,14 +330,21 @@ angular.module( 'blvdx.events', [
   };
 
   $scope.savePhotos = function() {
-    // set album id on photos
+    if($scope.form.$invalid){
+      return;
+    }
     for (var i = 0; i < $scope.Album.photos.length; i++) {
       $scope.Album.photos[i]['event_date'] = $scope.Album.id;
     }
     Events.uploadPhotos($scope.Album.photos).then(function(photos){
+      $scope.reloadEvent();
       $(".modal:visible").find(".close").click();
+    }, function(error){
+      $scope.errors = error.data;
     });
   };
+
+  $scope.reloadEvent();
 }])
 
 .controller( 'EventsMyCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', function EventsCtrl( $scope, $state, titleService, $stateParams, Events ) {

@@ -148,21 +148,23 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">Add Photos</h4>
       </div>
-      <form class="form-horizontal" role="form" ng-submit="savePhotos()">
+      <form class="form-horizontal" role="form" ng-submit="savePhotos()" novalidate name="form">
         <div class="modal-body">
-            <div class="form-group">
+            <div class="form-group" ng-class="{'has-error': form.albumid.$invalid || errors.id}">
                 <label class="col-lg-3 control-label">Event Date</label>
                 <div class="col-lg-9">
-                  <select class="form-control" ng-model="Album.id">
+                  <select class="form-control" ng-model="Album.id" name="albumid" required>
                     <option ng-repeat="album in EventObj.albums" value="{{album.id}}">{{album.feature_headline}} - {{album.date}}</option>
                   </select>
+                  <span class="help-block" ng-show="errors.id" ng-repeat="error in errors.id">{{error}}</span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" ng-class="{'has-error': form.event_upload_images.$invalid || errors.event_upload_images}">
                 <label class="col-lg-3 control-label">Photos</label>
                 <div class="col-lg-9">
-                  <input type="file" ng-file-select="onMultipleFilesSelect($files)" multiple ng-model="Album.event_upload_images">
+                  <input name="event_upload_images" type="file" ng-file-select="onMultipleFilesSelect($files)" multiple ng-model="Album.event_upload_images">
                 </div>
+                <span class="help-block" ng-show="errors.event_upload_images" ng-repeat="error in errors.event_upload_images">{{error}}</span>
             </div>
         </div>
         <div class="modal-footer">

@@ -55,7 +55,14 @@
           </div>
           <div class="row-wrapper price-location">
             <div class="pull-left">
-              <a href="#" class="price" tooltip-placement="right" tooltip="Price for attendance">{{event.date_info.attend_low}} {{event.date_info.attend_currency}}</a>
+              <a href="#" class="price" tooltip-placement="right" tooltip="Price for attendance">
+                <span ng-show="event.date_info.attend_low">
+                  {{event.date_info.attend_low}} {{event.date_info.attend_currency}}
+                </span>
+                <span ng-hide="event.date_info.attend_low">
+                  Free!
+                </span>
+              </a>
             </div>
             <div class="pull-right">
               <span class="event-location">
