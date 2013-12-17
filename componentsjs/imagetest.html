@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html ng-app="imagetest">
+<head>
+    <title>geotest</title>
+
+    <script type="text/javascript" src="libs/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="libs/angular.min.js"></script>
+
+
+
+    <script>
+        // image capture usage::
+        var app = angular.module("imagetest" , []);
+
+        function ImgCtrl ($scope , $imagecapture) {
+
+
+
+        }
+
+    </script>
+    <script type="text/javascript" src="parts/geolocation.js"></script>
+
+</head>
+<body>
+
+
+<div ng-controller="ImgCtrl">
+    Aviable : {{aviable}} <br/>
+    Error : {{error}} <br/>
+    Complete : {{complete}} <br/><br/>
+
+    Location : {{location}}
+</div>
+
+</body>
+</html>

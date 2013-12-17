@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html ng-app="geolocationtest">
+<head>
+    <title>geotest</title>
+
+    <script type="text/javascript" src="libs/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="libs/angular.min.js"></script>
+
+
+
+    <script>
+        // geolocation usage::
+        var app = angular.module("geolocationtest" , []);
+        function GeoCtrl ($scope , $geolocation) {
+            $scope.check = function(){
+                $scope.aviable = $geolocation.aviable;
+                $scope.error = $geolocation.error;
+                $scope.complete = $geolocation.complete;
+                if($geolocation.position){
+                    $scope.timestamp = $geolocation.timestamp;
+                    $scope.location = $geolocation.position.latitude + " : " + $geolocation.position.longitude;
+                }
+            }
+
+
+            $scope.$on(GeolocationEvent.COMPLETE , function (nge){
+                $scope.check();
+                $scope.$apply();// async call z poza angulara potrzebuje apply, inaczej nie zrobi update'u parametrow
+            })
+            $scope.$on(GeolocationEvent.UPDATE , function (nge){
+                $scope.check();
+                $scope.$apply();
+            })
+            $scope.$on(GeolocationEvent.ERROR , function(nge){
+                $scope.check();
+                $scope.$apply();
+            })
+
+            $scope.single = function(){
+                $geolocation.stopInterval();
+                $geolocation.start();
+            }
+            $scope.continous = function(){
+                if($geolocation.watch == null){
+                    $geolocation.startInterval(5000);
+                } else {
+                    $geolocation.stopInterval();
+                }
+            }
+
+            $scope.check();
+
+
+        }
+
+    </script>
+    <script type="text/javascript" src="parts/geolocation.js"></script>
+
+</head>
+<body>
+
+
+    <div ng-controller="GeoCtrl">
+
+        <button ng-click="single()">Single test</button>
+        <button ng-click="continous()">Continous</button><br/><br/>
+        Aviable : {{aviable}} <br/>
+        Error : {{error}} <br/>
+        Complete : {{complete}} <br/><br/>
+        Timestamp: {{timestamp}}<br/>
+        Location : {{location}}
+    </div>
+
+</body>
+</html>
