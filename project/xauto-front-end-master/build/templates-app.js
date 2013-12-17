@@ -868,7 +868,7 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "        placeholder=\"Start Time\"\n" +
     "        ng-model=\"editDate.startTime\"\n" +
     "        required=\"required\"\n" +
-    "        ng-pattern=\"/^(10|11|12|[0-9]):[0-5][0-9]$/\"\n" +
+    "        ng-pattern=\"/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/\"\n" +
     "        >\n" +
     "      </div>\n" +
     "      <div class=\"col-lg-3\" ng-class=\"{'has-error': dateform.end_time.$invalid}\">\n" +
@@ -879,7 +879,7 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "        placeholder=\"End Time\"\n" +
     "        ng-model=\"editDate.endTime\"\n" +
     "        required=\"required\"\n" +
-    "        ng-pattern=\"/^(10|11|12|[0-9]):[0-5][0-9]$/\"\n" +
+    "        ng-pattern=\"/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/\"\n" +
     "         >\n" +
     "      </div>\n" +
     "    </div>\n" +
