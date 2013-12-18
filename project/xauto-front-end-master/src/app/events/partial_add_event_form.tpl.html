@@ -1,27 +1,29 @@
 
-  <div class="form-group">
+  <div class="form-group" ng-class="{'has-error': form.title.$invalid || errors.title}">
     <label class="col-lg-3 control-label">Event Title</label>
     <div class="col-lg-9">
-      <input type="text" class="form-control" placeholder="" ng-model="EventObj.title">
-      <!-- <span class="help-block">Tip: Use your real name so people can find and follow you</span> -->
+      <input type="text" class="form-control" placeholder="" ng-model="EventObj.title" name="title">
+      <span class="help-block" ng-show="errors.title" ng-repeat="error in errors.title">{{error}}</span>
     </div>
   </div>
-  <div class="form-group">
+  <div class="form-group" ng-class="{'has-error': form.about.$invalid || errors.about}">
     <label class="col-lg-3 control-label">About Event</label>
     <div class="col-lg-9">
-      <textarea class="form-control" ng-model="EventObj.about"></textarea>
+      <textarea class="form-control" ng-model="EventObj.about" name="about"></textarea>
+      <span class="help-block" ng-show="errors.about" ng-repeat="error in errors.about">{{error}}</span>
     </div>
   </div>
-  <div class="form-group">
+  <div class="form-group" ng-class="{'has-error': form.short_link.$invalid || errors.short_link}">
     <label class="col-lg-3 control-label">xau.to/</label>
     <div class="col-lg-6">
-      <input type="text" class="form-control" placeholder="" ng-model="EventObj.short_link" ng-keyup="checkShortLink($event.target.value)">
+      <input type="text" class="form-control" placeholder="" ng-model="EventObj.short_link" ng-keyup="checkShortLink($event.target.value)" name="short_link">
+      <span class="help-block" ng-show="errors.short_link" ng-repeat="error in errors.short_link">{{error}}</span>
     </div>
     <div class="col-lg-3">
         {{EventObj.short_link_available}}
     </div>
   </div>
-  <div class="form-group">
+  <div class="form-group" ng-class="{'has-error': form.eventSize.$invalid || errors.eventSize}">
     <label class="col-lg-3 control-label">How Big is You Event?</label>
     <div class="col-lg-9">
       <div class="btn-group">
@@ -30,57 +32,18 @@
         <button type="button" class="btn btn-primary" ng-model="EventObj.eventSize" btn-radio="'50'">50 Cars</button>
         <button type="button" class="btn btn-primary" ng-model="EventObj.eventSize" btn-radio="'100'">100 Cars</button>
         <button type="button" class="btn btn-primary" ng-model="EventObj.eventSize" btn-radio="'150'">150+ Cars</button>
-    </div>
+      </div>
+      <span class="help-block" ng-show="errors.eventSize" ng-repeat="error in errors.eventSize">{{error}}</span>
     </div>
   </div>
-  <div class="form-group">
+  <div class="form-group" ng-class="{'has-error': form.image.$invalid || errors.image}">
     <label class="col-lg-3 control-label">Photos</label>
     <div class="col-lg-4">
-      <input type="file" class="btn" ng-file-select="onFileSelect($files, 'main_image_obj')" ng-model="EventObj.image">
-    </div>
-    <div class="col-lg-4">
-      <strong>or</strong>
-      <button class="btn btn-primary">Select from Event Photos</button>
+      <input type="file" class="btn" ng-file-select="onFileSelect($files, 'main_image_obj')" ng-model="EventObj.image" name="image">
+      <span class="help-block" ng-show="errors.image" ng-repeat="error in errors.image">{{error}}</span>
     </div>
   </div>
 
-  <div class="form-group">
-
-    <div class="col-lg-offset-3 col-lg-9">
-      <button class="btn btn-primary" data-toggle="modal" data-target="#dateModal" ng-click="addDate()"><i class="icon-calendar"></i> Add Date</button>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-lg-3 control-label">Scheduled Dates</label>
-    <div class="col-lg-9">
-      <table class="table">
-        <!-- start date form -->
-        <!--
-        <div class="dates-items-container" >
-
-        </div>
-        -->
-        <!-- end of date -->
-        <tr ng-repeat="date in EventObj.dates">
-          <td>{{date.start_date | date:'fullDate' }} &mdash; {{date.feature_headline}}</td>
-          <td>
-            <button
-              class="btn btn-primary btn-sm"
-              data-toggle="modal"
-              data-target="#dateModal"
-              ng-click="setThisEditableDate(date)"
-              >
-                Edit
-            </button>
-
-            <button type="button" class="btn btn-danger btn-sm" ng-click="removeDate($index, date.id)">Delete</button>
-            <!-- <ng-include src="'events/partial_form_date.tpl.html'"></ng-include> -->
-          </td>
-        </tr>
-      </table>
-    </div>
-  </div>
   <div class="form-group">
     <div class="col-lg-offset-3 col-lg-9">
       <ng-include src="'events/partial_event_details_photos.tpl.html'"></ng-include>

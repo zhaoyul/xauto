@@ -1,71 +1,98 @@
   <div class="partial-form-date">
-      <div class="form-group">
+      <div class="form-group" ng-class="{'has-error': form.location_name.$invalid || errors.location_name}">
         <label class="col-lg-3 control-label">Location Name</label>
         <div class="col-lg-9">
-          <input type="text" class="form-control" placeholder="" ng-model="editDate.location_name">
+          <input type="text" class="form-control" placeholder="" ng-model="editDate.location_name" name="location_name">
+          <span class="help-block" ng-show="errors.location_name" ng-repeat="error in errors.location_name">{{error}}</span>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-class="{'has-error': form.address_1.$invalid || errors.address_1}">
         <label class="col-lg-3 control-label">Address line 1</label>
         <div class="col-lg-9">
-          <input type="text" class="form-control" placeholder="" ng-model="editDate.address_1">
+          <input type="text" class="form-control" placeholder="" ng-model="editDate.address_1" name="address_1">
+          <span class="help-block" ng-show="errors.address_1" ng-repeat="error in errors.address_1">{{error}}</span>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-class="{'has-error': form.address_2.$invalid || errors.address_2}">
         <label class="col-lg-3 control-label">Address line 2</label>
         <div class="col-lg-9">
-          <input type="text" class="form-control" placeholder="" ng-model="editDate.address_2">
+          <input type="text" class="form-control" placeholder="" ng-model="editDate.address_2" name="address_2">
+          <span class="help-block" ng-show="errors.address_2" ng-repeat="error in errors.address_2">{{error}}</span>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-class="{'has-error': form.city.$invalid || errors.city}">
         <label class="col-lg-3 control-label">City</label>
         <div class="col-lg-9">
-          <input type="text" class="form-control" placeholder="" ng-model="editDate.city">
+          <input type="text" class="form-control" placeholder="" ng-model="editDate.city" name="city">
+          <span class="help-block" ng-show="errors.city" ng-repeat="error in errors.city">{{error}}</span>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-class="{'has-error': form.state.$invalid || errors.state}">
         <label class="col-lg-3 control-label">State</label>
         <div class="col-lg-9">
-          <input type="text" class="form-control" placeholder="" ng-model="editDate.state">
+          <input type="text" class="form-control" placeholder="" ng-model="editDate.state" name="state">
+          <span class="help-block" ng-show="errors.state" ng-repeat="error in errors.state">{{error}}</span>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-class="{'has-error': form.zip.$invalid || errors.zip}">
         <label class="col-lg-3 control-label">ZIP/Postal Code</label>
         <div class="col-lg-9">
-          <input type="text" class="form-control" placeholder="" ng-model="editDate.zip">
+          <input type="text" class="form-control" placeholder="" ng-model="editDate.zip" name="zip">
+          <span class="help-block" ng-show="errors.zip" ng-repeat="error in errors.zip">{{error}}</span>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-class="{'has-error': form.country.$invalid || errors.country}">
         <label class="col-lg-3 control-label">Country</label>
         <div class="col-lg-9">
-          <select class="form-control" ng-model="editDate.country">
+          <select class="form-control" ng-model="editDate.country" name="country">
             <option>USA</option>
             <option>Armenia</option>
             <option>Spain</option>
           </select>
+          <span class="help-block" ng-show="errors.country" ng-repeat="error in errors.country">{{error}}</span>
         </div>
       </div>
-    <div class="form-group">
+    <div class="form-group" ng-class="{'has-error': dateform.start_date.$invalid || errors.start_date}">
       <label class="col-lg-3 control-label">Date</label>
       <div class="col-lg-3">
         <input type="hidden" ng-model="editDate.id">
         <input type="hidden" ng-model="editDate.event">
         <input type="text"
+          name="start_date"
           class="form-control"
-          datepicker-popup="mm-dd-yyyy"
+          datepicker-popup="MM-dd-yyyy"
           ng-model="editDate.start_date"
           open="opened"
-          min="'2010-06-22'"
-          max="'2015-06-22'"
+          min="'{{minDate | date:'MM-dd-yyyy'}}'"
+          max="'{{maxDate | date:'MM-dd-yyyy'}}'"
           datepicker-options="dateOptions"
           required="required"
            />
+        <span class="help-block" ng-show="errors.start_date" ng-repeat="error in errors.start_date">{{error}}</span>
       </div>
-      <div class="col-lg-3">
-        <input type="text" class="form-control" placeholder="Start Time" ng-model="editDate.startTime" required="required">
+      <div class="col-lg-3" ng-class="{'has-error': dateform.start_time.$invalid || errors.start_time || errors.start_date}">
+        <input
+        name="start_time"
+        type="text"
+        class="form-control"
+        placeholder="Start Time"
+        ng-model="editDate.startTime"
+        required="required"
+        ng-pattern="/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/"
+        >
+        <span class="help-block" ng-show="errors.start_time" ng-repeat="error in errors.start_time">{{error}}</span>
       </div>
-      <div class="col-lg-3">
-        <input type="text" class="form-control" placeholder="End Time" ng-model="editDate.endTime" required="required">
+      <div class="col-lg-3" ng-class="{'has-error': dateform.end_time.$invalid|| errors.end_time || errors.end_date}">
+        <input
+        name="end_time"
+        type="text"
+        class="form-control"
+        placeholder="End Time"
+        ng-model="editDate.endTime"
+        required="required"
+        ng-pattern="/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/"
+         >
+        <span class="help-block" ng-show="errors.end_time" ng-repeat="error in errors.end_time">{{error}}</span>
       </div>
     </div>
   </div>
@@ -109,15 +136,17 @@
       <input type="text" class="form-control" placeholder="USD" ng-disabled="EventObj.exhibit_free" ng-model="EventObj.currency">
     </div>
   </div>
-  <div class="form-group">
+  <div class="form-group" ng-class="{'has-error': dateform.feature_headline.$invalid}">
     <label class="col-lg-3 control-label">Feature Headline</label>
     <div class="col-lg-9">
-      <input type="text" class="form-control" ng-model="editDate.feature_headline" required="required">
+      <input name="feature_headline" type="text" class="form-control" ng-model="editDate.feature_headline" required="required">
+      <span class="help-block" ng-show="errors.feature_headline" ng-repeat="error in errors.feature_headline">{{error}}</span>
     </div>
   </div>
-  <div class="form-group">
+  <div class="form-group" ng-class="{'has-error': dateform.feature_detail.$invalid}">
     <label class="col-lg-3 control-label">Feature Detail</label>
     <div class="col-lg-9">
-      <textarea class="form-control" ng-model="editDate.feature_detail" required="required"></textarea>
+      <textarea name="feature_detail" class="form-control" ng-model="editDate.feature_detail" required="required"></textarea>
+      <span class="help-block" ng-show="errors.feature_detail" ng-repeat="error in errors.feature_detail">{{error}}</span>
     </div>
   </div>
