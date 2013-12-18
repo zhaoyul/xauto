@@ -81,6 +81,16 @@ angular.module('resources.streams', ['resources.configuration'])
       instance.send(JSON.stringify(msg));
     };
 
+    instance.send_subscribe = function(subscriptions){
+      var msg = {
+        type: "subscribe",
+        data: {
+            subscriptions: subscriptions
+        }
+      };
+      instance.send(JSON.stringify(msg));
+    };
+
     angular.module('resources.streams').instance = instance;
     return instance;
 }]);

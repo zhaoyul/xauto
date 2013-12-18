@@ -17,6 +17,7 @@ angular.module( 'blvdx.stream', [
   'titleService',
   'plusOne',
   'security.authorization',
+  'security.service',
   'resources.streams'
 ])
 
@@ -40,7 +41,7 @@ angular.module( 'blvdx.stream', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'StreamCtrl', ['$scope', 'titleService', 'Streams', '$rootScope', function StreamCtrl( $scope, titleService, Streams, $rootScope) {
+.controller( 'StreamCtrl', ['$scope', 'titleService', 'Streams', '$rootScope', 'security', function StreamCtrl( $scope, titleService, Streams, $rootScope, security) {
   titleService.setTitle( 'Stream' );
   $scope.stream = [];
 
@@ -57,7 +58,10 @@ angular.module( 'blvdx.stream', [
     $scope.$apply();
   });
 
-  Streams.send_fetch_latest();
+  security.requestCurrentUser().then(function(user){
+    Streams.send_subscribe(user.following);
+    Streams.send_fetch_latest();
+  });
 
 }])
 

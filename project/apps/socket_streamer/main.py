@@ -27,12 +27,8 @@ def run():
                 objs = MultiuploaderImage.objects.filter(upload_date__gt=runtime_vars["last_upload"])
                 runtime_vars.update(MultiuploaderImage.objects.aggregate(last_upload=Max('upload_date')))
                 for obj in objs:
-                    print "new images sent", obj
-                    msg = {
-                        "url": obj.url
-                    }
                     for user in connections.PhotoStream.connected_users:
-                        user.send_message("entry", msg)
+                        user.notify_new_entry(obj)
 
     app = web.Application(handlers)
     app.listen(int(settings.SOCKET_STREAMER_PORT), "0.0.0.0")

@@ -402,7 +402,11 @@ def make_userjson(user):
         'fullName': user.get_full_name(),
         'admin': user.is_superuser,
         'main_image': image_url,
-        'slug': user.profile.slug
+        'slug': user.profile.slug,
+        'following': {
+            'profiles': [x.slug for x in user.profile.followed_profiles.all()],
+            'events': [x.slug for x in user.profile.followed_events.all()],
+        }
     }
     return user_data
 
