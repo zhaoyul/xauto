@@ -55,6 +55,16 @@
             <h2 class="navbar-slogan hidden-xs">Automotive Culture</h2>
             <a href="#" class="btn btn-primary btn-lg btn-navbar-add-photo" tooltip-placement="right" tooltip="+ Add Photo"><i class="xa-icon-event-details-photos-white"></i></a>
 
+            <div ng-controller="GeoCtrl" class="hidden">
+                <input data-ng-init="continous()" type="hidden" name="location" value="{{location}}"/>
+                <button ng-click="single()">Single test</button>
+                <button data-click="continous()">Continous</button><br/><br/>
+                Aviable : {{aviable}} <br/>
+                Error : {{error}} <br/>
+                Complete : {{complete}} <br/><br/>
+                Timestamp: {{timestamp}}<br/>
+                Location : {{location}}
+            </div>
           </div>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
