@@ -40,6 +40,10 @@ angular.module('resources.events', ['restangular'])
     return Restangular.all('stream').customPOST(photos, 'upload');
   };
 
+  Events.uploadCoordinatedPhoto = function (photo) {
+    return Restangular.all('pictures').customPOST(photo, 'upload');
+  };
+
   return Events;
 }])
 

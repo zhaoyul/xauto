@@ -339,6 +339,7 @@ angular.module( 'blvdx.events', [
     Events.uploadPhotos($scope.Album.photos).then(function(photos){
       $scope.reloadEvent();
       $(".modal:visible").find(".close").click();
+      $scope.Album = {photos: []};
     }, function(error){
       $scope.errors = error.data;
     });
