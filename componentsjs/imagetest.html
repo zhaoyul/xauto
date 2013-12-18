@@ -13,24 +13,45 @@
         var app = angular.module("imagetest" , []);
 
         function ImgCtrl ($scope , $imagecapture) {
-
-
-
+            console.log("img ctrl")
+            $scope.init = function(){
+                console.log("init click");
+                $imagecapture.start($("#canvas")[0],$("#video")[0]);
+            }
+            $scope.capture = function(){
+                var result = $imagecapture.captureImage();
+                console.log(result);
+                $("#img")[0].src = result.data;
+            }
         }
+        /*
+        $(function () {
+        $("#video").bind("loadedmetadata", function () {
+            var width = this.videoWidth;
+            var height = this.videoHeight;
+            console.log("loadedmetadata:" , width,height);
+
+        });
+        });*/
 
     </script>
-    <script type="text/javascript" src="parts/geolocation.js"></script>
+    <script type="text/javascript" src="parts/imgcapture.js"></script>
 
 </head>
-<body>
+<body style="background-color: #f1f1f1">
+<!--
+ style="width: 640px;height: 480px;"
 
+
+-->
+<video id="video" ></video>
+<canvas id="canvas" style="display:none;" ></canvas>
 
 <div ng-controller="ImgCtrl">
-    Aviable : {{aviable}} <br/>
-    Error : {{error}} <br/>
-    Complete : {{complete}} <br/><br/>
+    <button ng-click="init()">start cam</button>
+    <button ng-click="capture()">capture</button>
 
-    Location : {{location}}
+    <image id="img" style="width: 640px;height:480px;"/>
 </div>
 
 </body>
