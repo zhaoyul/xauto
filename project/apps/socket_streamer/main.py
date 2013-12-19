@@ -32,7 +32,7 @@ def run():
 
     app = web.Application(handlers)
     app.listen(int(settings.SOCKET_STREAMER_PORT), "0.0.0.0")
-    ioloop.PeriodicCallback(db_periodic_check, 5000).start()
+    ioloop.PeriodicCallback(db_periodic_check, 1000).start()
     autoreload.start(ioloop.IOLoop.instance())
     print "socket streamer is (re)started"
     try:

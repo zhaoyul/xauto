@@ -1,6 +1,6 @@
-angular.module('resources.streams', ['resources.configuration'])
+angular.module('resources.streams', ['resources.configuration', 'restangular'])
 
-.factory('Streams', ['$rootScope', '$q', '$timeout', 'Configuration', function($rootScope, $q, $timeout, Configuration) {
+.factory('Streams', ['$rootScope', '$q', '$timeout', 'Configuration', 'Restangular', function($rootScope, $q, $timeout, Configuration, Restangular) {
     var allowed_types = [
         "entry"
     ];
@@ -55,23 +55,26 @@ angular.module('resources.streams', ['resources.configuration'])
     };
 
     instance.send_favorite = function(entry_id){
-      var msg = {
-        type: "favorite",
-        data: {
-          "id": entry_id
-        }
-      };
-      instance.send(JSON.stringify(msg));
+      // var msg = {
+      //   type: "favorite",
+      //   data: {
+      //     "id": entry_id
+      //   }
+      // };
+      // instance.send(JSON.stringify(msg));
+      return Restangular.one('pictures', entry_id).customPUT(entry_id, 'favorite');
     };
 
     instance.send_report = function(entry_id){
-      var msg = {
-        type: "report",
-        data: {
-          "id": entry_id
-        }
-      };
-      instance.send(JSON.stringify(msg));
+      // var msg = {
+      //   type: "report",
+      //   data: {
+      //     "id": entry_id
+      //   }
+      // };
+      // instance.send(JSON.stringify(msg));
+      return Restangular.one('pictures', entry_id).customPUT(entry_id, 'report');
+
     };
 
     instance.send_fetch_latest = function(){

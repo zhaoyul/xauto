@@ -117,17 +117,17 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <!-- <ul class="nav nav-tabs event-details-tabs">
-                    <li class="active"><a data-toggle="tab" data-target="#stream">Live Stream</a></li>
-                    <li><a data-toggle="tab" data-target="#photos">{{EventObj.srv_photosCount}} Photos</a></li>
-                    <li><a data-toggle="tab" data-target="#followers">{{EventObj.srv_followersCount}} Followers</a></li>
-                </ul> -->
+                <ul class="nav nav-tabs event-details-tabs">
+                    <li ng-class="{'active': EventObj.srv_live}"><a data-toggle="tab" data-target="#stream" ng-show="EventObj.srv_live">Live Stream</a></li>
+                    <li ng-class="{'active': !EventObj.srv_live}"><a data-toggle="tab" data-target="#photos" ng-hide="EventObj.srv_live">{{EventObj.srv_photosCount}} Photos</a></li>
+                    <!-- <li><a data-toggle="tab" data-target="#followers">{{EventObj.srv_followersCount}} Followers</a></li>-->
+                </ul>
 
                 <div class="tab-content event-details-tab-contents">
-                  <div class="active tab-pane" id="stream">
+                  <div class="tab-pane" id="stream" ng-class="{'active': EventObj.srv_live}">
                       <ng-include src="'stream/partial_stream_list.tpl.html'"></ng-include>
                   </div>
-                  <div class="active tab-pane" id="photos">
+                  <div class="tab-pane" id="photos" ng-class="{'active': !EventObj.srv_live}">
                       <ng-include src="'events/partial_event_details_photos.tpl.html'"></ng-include>
                   </div>
                   <div class="tab-pane" id="followers">

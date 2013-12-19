@@ -350,17 +350,17 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "        </div>\n" +
     "        <div class=\"row\">\n" +
     "            <div class=\"col-xs-12\">\n" +
-    "                <!-- <ul class=\"nav nav-tabs event-details-tabs\">\n" +
-    "                    <li class=\"active\"><a data-toggle=\"tab\" data-target=\"#stream\">Live Stream</a></li>\n" +
-    "                    <li><a data-toggle=\"tab\" data-target=\"#photos\">{{EventObj.srv_photosCount}} Photos</a></li>\n" +
-    "                    <li><a data-toggle=\"tab\" data-target=\"#followers\">{{EventObj.srv_followersCount}} Followers</a></li>\n" +
-    "                </ul> -->\n" +
+    "                <ul class=\"nav nav-tabs event-details-tabs\">\n" +
+    "                    <li ng-class=\"{'active': EventObj.srv_live}\"><a data-toggle=\"tab\" data-target=\"#stream\" ng-show=\"EventObj.srv_live\">Live Stream</a></li>\n" +
+    "                    <li ng-class=\"{'active': !EventObj.srv_live}\"><a data-toggle=\"tab\" data-target=\"#photos\" ng-hide=\"EventObj.srv_live\">{{EventObj.srv_photosCount}} Photos</a></li>\n" +
+    "                    <!-- <li><a data-toggle=\"tab\" data-target=\"#followers\">{{EventObj.srv_followersCount}} Followers</a></li>-->\n" +
+    "                </ul>\n" +
     "\n" +
     "                <div class=\"tab-content event-details-tab-contents\">\n" +
-    "                  <div class=\"active tab-pane\" id=\"stream\">\n" +
+    "                  <div class=\"tab-pane\" id=\"stream\" ng-class=\"{'active': EventObj.srv_live}\">\n" +
     "                      <ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>\n" +
     "                  </div>\n" +
-    "                  <div class=\"active tab-pane\" id=\"photos\">\n" +
+    "                  <div class=\"tab-pane\" id=\"photos\" ng-class=\"{'active': !EventObj.srv_live}\">\n" +
     "                      <ng-include src=\"'events/partial_event_details_photos.tpl.html'\"></ng-include>\n" +
     "                  </div>\n" +
     "                  <div class=\"tab-pane\" id=\"followers\">\n" +
