@@ -23,40 +23,50 @@ var ImageCaptureMode = (function () {
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
 // ----------------------->
+//@MateuszSzefer swój upload pliku zrobiłes przez <input >
+window["URL"] = window["URL"] || window["webkitURL"] || window["mozURL"] || window["msURL"];
+
 var app;
 app.factory("$imagecapture", function ($rootScope) {
     var imgcap = {
         video: null,
         stream: null,
-        canvas: null,
+        canvas: document.createElement("canvas"),
         canCapture: false,
-        start: function (canv, vid) {
-            imgcap.canvas = canv;
+        start: function (vid) {
+            //imgcap.canvas = canv;
             imgcap.video = vid;
 
             vid.addEventListener("loadedmetadata", function () {
-                console.log("meta:", this.videoWidth, this.videoHeight);
-                (imgcap.canvas).width = this.videoWidth;
-                (imgcap.canvas).height = this.videoHeight;
+                console.log("meta:", this, this.videoWidth, this.videoHeight);
+                (imgcap.canvas).width = this.videoWidth || 320;
+                (imgcap.canvas).height = this.videoHeight || 240;
                 imgcap.canCapture = true;
                 $rootScope.$broadcast(ImageCaptureEvent.READY);
             });
-
+            console.log(navigator["getUserMedia"], navigator["webkitGetUserMedia"], navigator["mozGetUserMedia"], navigator["msGetUserMedia"]);
             (navigator["getUserMedia"] || navigator["webkitGetUserMedia"] || navigator["mozGetUserMedia"] || navigator["msGetUserMedia"]).apply(navigator, [
                 { video: true },
                 function (stream) {
-                    //console.log(stream);
-                    this.video.src = window["URL"].createObjectURL(stream);
                     imgcap.stream = stream;
+                    console.log("on stream::", arguments);
+                    console.log("moz src:", imgcap.video["mozSrcObject"]);
+                    if (imgcap.stream["mozSrcObject"] !== undefined) {
+                        imgcap.stream["mozSrcObject"] = stream;
+                    } else {
+                        imgcap.video.src = window["URL"].createObjectURL(stream);
+                    }
+                    imgcap.video.play();
                 },
                 function (result) {
-                    //console.log(result);
+                    console.log("error:", result);
+                    $rootScope.$broadcast(ImageCaptureEvent.ERROR);
                 }
             ]);
         },
         captureImage: function (mode) {
             if (imgcap.canCapture) {
-                this.canvas.getContext('2d').drawImage(imgcap.video, 0, 0, 640, 480);
+                this.canvas.getContext('2d').drawImage(imgcap.video, 0, 0, this.canvas.width, this.canvas.height);
 
                 // "image/webp" works in Chrome.
                 // Other browsers will fall back to image/png.

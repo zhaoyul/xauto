@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="imagetest">
 <head>
-    <title>geotest</title>
+    <title>imgtest</title>
 
     <script type="text/javascript" src="libs/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="libs/angular.min.js"></script>
@@ -16,7 +16,7 @@
             console.log("img ctrl")
             $scope.init = function(){
                 console.log("init click");
-                $imagecapture.start($("#canvas")[0],$("#video")[0]);
+                $imagecapture.start($("#video")[0]);//$("#canvas")[0]
             }
             $scope.capture = function(){
                 var result = $imagecapture.captureImage();
@@ -24,34 +24,53 @@
                 $("#img")[0].src = result.data;
             }
         }
-        /*
-        $(function () {
-        $("#video").bind("loadedmetadata", function () {
-            var width = this.videoWidth;
-            var height = this.videoHeight;
-            console.log("loadedmetadata:" , width,height);
 
+        $(function(){
+            $('#overlaybtn').on('click', function () {
+                $('#inputbtn').click();
+            })
         });
-        });*/
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#preview')
+                            .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
     </script>
     <script type="text/javascript" src="js/imgcapture.js"></script>
 
 </head>
-<body style="background-color: #f1f1f1">
+<body style="background-color: #c1c1c1">
 <!--
- style="width: 640px;height: 480px;"
-
-
--->
-<video id="video" ></video>
+style="width: 640px;height: 480px;"
+<input type="file" accept="image/*;capture=camera"/>
 <canvas id="canvas" style="display:none;" ></canvas>
+<input  type="file" name="pic" accept="image/*">
+-->
+<video id="video" style="width: 320px;height: 240px;" width="400" height="300" ></video>
+
 
 <div ng-controller="ImgCtrl">
+
+
+
     <button ng-click="init()">start cam</button>
     <button ng-click="capture()">capture</button>
 
-    <image id="img" style="width: 640px;height:480px;"/>
+    <image id="img" style="width: 640px;height:480px;position: fixed;top:0px;right:0px"/>
+</div>
+<div>
+    another way by load ::
+    <a href="" id="overlaybtn">Init pic capture</a>
+    <input id="inputbtn" style="display:none" type="file" accept="image/*" capture onchange="readURL(this)" />
+    <img id="preview" />
 </div>
 
 </body>
