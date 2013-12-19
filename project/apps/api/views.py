@@ -123,30 +123,6 @@ class EventViewSet(ModelViewSet):
             )
             obj.main_image = imageObj
 
-'''
-class EventEditView2(APIView):
-    serializer_class = EventModelSerializer
-    model = Event
-
-    def post(self, request, *args, **kwargs):
-        event = EventModelSerializer(data=request.DATA)
-        event_image = EventImageSerializer(data=request.DATA,
-                                           files=request.FILES)
-        print "???"
-        print request.FILES
-        if event.is_valid() and event_image.is_valid():
-            event_image_object = event_image.save(force_insert=True)
-            user = self.request.user
-            event.object.author = user.profile
-            event.object.main_image = event_image_object
-            event.save(force_insert=True)
-            return Response(event.data, status=status.HTTP_201_CREATED)
-
-        errors = event.errors
-        errors.update(event_image.errors)
-        return Response(errors, status=status.HTTP_400_BAD_REQUEST)
-'''
-
 
 class EventDateViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated,)
@@ -419,9 +395,7 @@ class LoginView(APIView):
         password = request.DATA.get('password')
         user = authenticate(email=email, password=password)
         if user:
-            print 1
             if not user.is_active:
-                print 2
                 return Response({"message": "Account not active, you must "
                     "activate your account by clicking the validation link in "
                     "the confirmation email sent to you."},
@@ -650,7 +624,7 @@ class CoordinatedPhotoUploader(APIView):
     """
     permission_classes = (IsAuthenticated,)
 
-    def haversine_distance(origin, destination):
+    def haversine_distance(self, origin, destination):
         lat1, lon1 = origin
         lat2, lon2 = destination
         radius = 6372.797
@@ -663,7 +637,7 @@ class CoordinatedPhotoUploader(APIView):
         d = radius * c
         return d
 
-    def findEventFromCoords(long=0, lat=0, radius=50):
+    def findEventFromCoords(self, long=0, lat=0, radius=50):
         """
             Find first matching event for given coordinates (long, lat) within radius (in km)
         """

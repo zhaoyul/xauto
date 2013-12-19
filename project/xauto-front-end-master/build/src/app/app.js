@@ -117,14 +117,17 @@ angular.module( 'blvdx', [
 }])
 
 
-.controller( 'GeoCtrl', ['$scope', '$geolocation', function GeoCtrl ( $scope, $geolocation ) {
+.controller( 'ImgCtrl', ['$scope', '$geolocation', 'Events',
+        function ImgCtrl ( $scope, $geolocation, Events ) {
+    //geolocation section
     $scope.check = function(){
         $scope.aviable = $geolocation.aviable;
         $scope.error = $geolocation.error;
         $scope.complete = $geolocation.complete;
         if($geolocation.position){
             $scope.timestamp = $geolocation.timestamp;
-            $scope.location = $geolocation.position.latitude + " : " + $geolocation.position.longitude;
+            $scope.latitude = $geolocation.position.latitude;
+            $scope.longitude = $geolocation.position.longitude;
         }
     };
     $scope.$on(GeolocationEvent.COMPLETE , function (nge){
@@ -151,9 +154,32 @@ angular.module( 'blvdx', [
         }
     };
     $scope.check();
+    //camera section
+    $scope.initFileLoad = function () {
+        $('#inputbtn').click();
+    };
+    $scope.readURL = function (input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            var longitude = "0";
+            var latitude = "0";
+            if ($scope.longitude !== undefined && $scope.latitude !== undefined) {
+                longitude = $scope.longitude;
+                latitude = $scope.latitude;
+            }
+            var coords = {long: longitude, lat: latitude};
+            reader.onload = function (e) {
+                var photo = {
+                    coords: coords,
+                    file: e.target.result
+                };
+                Events.uploadCoordinatedPhoto(photo);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    };
 }])
-
-
 
 .factory('AppScope', function () {
     var AppScope = {};
@@ -191,13 +217,11 @@ angular.module( 'blvdx', [
             if (typeof timeout === "undefined") { timeout = 15000; }
             if (navigator && navigator.geolocation) {
                 gloc.watch = navigator.geolocation.watchPosition(function (result) {
-                    console.log(result);
                     gloc.position = result.coords;
                     gloc.complete = true;
                     gloc.timestamp = result.timestamp;
                     $rootScope.$broadcast(GeolocationEvent.UPDATE, new GeolocationEvent(true, "received"), gloc.position);
                 }, function (result) {
-                    console.log(result);
                     if (result.code == 3 && gloc.position != null) {
                         return;
                     }
@@ -226,7 +250,6 @@ angular.module( 'blvdx', [
                     gloc.abort(false);
                     gloc.position = result.coords;
                     gloc.complete = true;
-                    console.log(result);
                     gloc.timestamp = result.timestamp;
                     $rootScope.$broadcast(GeolocationEvent.COMPLETE, new GeolocationEvent(true, "complete"), gloc.position);
                 }, function (result) {

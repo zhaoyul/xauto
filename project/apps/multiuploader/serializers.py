@@ -50,8 +50,8 @@ class Base64ImageField(serializers.Serializer):
 
 
 class CoordinateSerializer(serializers.Serializer):
-    long = serializers.FloatField()
-    lat = serializers.FloatField()
+    long = serializers.FloatField(required=False)
+    lat = serializers.FloatField(required=False)
 
 
 class CoordinatedPhotoSerializer(serializers.Serializer):
