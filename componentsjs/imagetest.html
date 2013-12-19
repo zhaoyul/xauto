@@ -26,11 +26,16 @@
         }
 
         $(function(){
-            $('#overlaybtn').on('click', function () {
-                $('#inputbtn').click();
-            })
+            $('#overlaybtn').on('click',initFileLoad );
+            $('#overlaybtn').on('touchstart',initFileLoad );
         });
+        function initFileLoad () {
+            console.log("on click A");
+            $('#inputbtn').click();
+
+        }
         function readURL(input) {
+            console.log("read url start");
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
 
@@ -64,12 +69,15 @@ style="width: 640px;height: 480px;"
     <button ng-click="init()">start cam</button>
     <button ng-click="capture()">capture</button>
 
-    <image id="img" style="width: 640px;height:480px;position: fixed;top:0px;right:0px"/>
+    <image id="img" style="width: 640px;height:480px;position: fixed;top:0px;right:0px;z-index: -1"/>
 </div>
 <div>
+    <!--
+
+    -->
     another way by load ::
     <a href="" id="overlaybtn">Init pic capture</a>
-    <input id="inputbtn" style="display:none" type="file" accept="image/*" capture onchange="readURL(this)" />
+    <input id="inputbtn" style="opacity: 0;" type="file" accept="image/*" onchange="readURL(this)" capture="camera"  />
     <img id="preview" />
 </div>
 
