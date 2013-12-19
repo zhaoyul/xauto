@@ -263,6 +263,9 @@ angular.module( 'blvdx.events', [
           $scope.editDate.startTime = $filter('date')(date.start_date, 'HH:mm');
           $scope.editDate.endTime = $filter('date')(date.end_date, 'HH:mm');
       });
+      DateObj.getOptions(date.id).then(function(options){
+          $scope.editDateOptions = options.actions.PUT;
+      });
     //$scope.editDate = date;
   };
 
@@ -293,14 +296,27 @@ angular.module( 'blvdx.events', [
 
 }])
 
-.controller( 'EventDetailsCtrl', ['$scope', 'titleService', '$stateParams', 'Events', function EventsCtrl( $scope, titleService, $stateParams, Events ) {
+.controller( 'EventDetailsCtrl', ['$scope', 'titleService', '$stateParams', 'Events', 'Streams', '$rootScope', function EventsCtrl( $scope, titleService, $stateParams, Events, Streams, $rootScope) {
   titleService.setTitle( 'Event Details' );
   $scope.stateParams = $stateParams;
+  $scope.stream = [];
+
+  $rootScope.$on("entry", function(event, data){
+    console.log("got entry");
+    $scope.stream.unshift(data);
+    $scope.$apply();
+  });
 
   $scope.reloadEvent = function(){
     Events.getDetails($stateParams.eventId).then(function (event) {
         $scope.EventObj = event;
         $scope.Albums = event.albums;
+        var subscription = {
+          'profiles': [],
+          'events': [event.slug]
+        };
+        Streams.send_subscribe(subscription);
+        Streams.send_fetch_latest();
     });
   };
 
@@ -337,7 +353,6 @@ angular.module( 'blvdx.events', [
       $scope.Album.photos[i]['event_date'] = $scope.Album.id;
     }
     Events.uploadPhotos($scope.Album.photos).then(function(photos){
-      $scope.reloadEvent();
       $(".modal:visible").find(".close").click();
       $scope.Album = {photos: []};
     }, function(error){

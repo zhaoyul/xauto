@@ -27,16 +27,12 @@ def run():
                 objs = MultiuploaderImage.objects.filter(upload_date__gt=runtime_vars["last_upload"])
                 runtime_vars.update(MultiuploaderImage.objects.aggregate(last_upload=Max('upload_date')))
                 for obj in objs:
-                    print "new images sent", obj
-                    msg = {
-                        "url": obj.url
-                    }
                     for user in connections.PhotoStream.connected_users:
-                        user.send_message("entry", msg)
+                        user.notify_new_entry(obj)
 
     app = web.Application(handlers)
     app.listen(int(settings.SOCKET_STREAMER_PORT), "0.0.0.0")
-    ioloop.PeriodicCallback(db_periodic_check, 5000).start()
+    ioloop.PeriodicCallback(db_periodic_check, 1000).start()
     autoreload.start(ioloop.IOLoop.instance())
     print "socket streamer is (re)started"
     try:

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
 
-from event.models import Event, EventImage, EventDate
+from event.models import Event, EventImage, EventDate, Currency
 from multiuploader.serializers import MultiuploaderImageSerializer
 
 
@@ -14,9 +14,17 @@ class EventImageSerializer(serializers.ModelSerializer):
 
 
 class EventDateSerializer(serializers.ModelSerializer):
+    currency = serializers.ChoiceField(choices=[(x.id, x.currency) for x in Currency.objects.all()], source="currency.id")
 
     class Meta:
         model = EventDate
+
+    def restore_object(self, attrs, instance=None):
+        if "currency.id" in attrs and attrs['currency.id']:
+            attrs["currency"] = Currency.objects.get(pk=attrs["currency.id"])
+            del attrs["currency.id"]
+        return super(EventDateSerializer, self).restore_object(attrs, instance)
+
 
 
 class AlbumSerializer(serializers.ModelSerializer):

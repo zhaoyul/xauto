@@ -40,7 +40,7 @@ angular.module( 'blvdx.stream', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'StreamCtrl', ['$scope', 'titleService', 'Streams', '$rootScope', function StreamCtrl( $scope, titleService, Streams, $rootScope) {
+.controller( 'StreamCtrl', ['$scope', 'titleService', 'Streams', '$rootScope', '$http', function StreamCtrl( $scope, titleService, Streams, $rootScope, $http) {
   titleService.setTitle( 'Stream' );
   $scope.stream = [];
 
@@ -53,12 +53,15 @@ angular.module( 'blvdx.stream', [
   };
 
   $rootScope.$on("entry", function(event, data){
-    $scope.stream.push(data);
+    $scope.stream.unshift(data);
     $scope.$apply();
   });
 
-  Streams.send_fetch_latest();
-
+  // always reqest latest user data
+  $http.get('/api/current-user/').then(function(response) {
+    Streams.send_subscribe(response.data.user.following);
+    Streams.send_fetch_latest();
+  });
 }])
 
 .directive('bxStreamPhoto', function() {
