@@ -263,6 +263,9 @@ angular.module( 'blvdx.events', [
           $scope.editDate.startTime = $filter('date')(date.start_date, 'HH:mm');
           $scope.editDate.endTime = $filter('date')(date.end_date, 'HH:mm');
       });
+      DateObj.getOptions(date.id).then(function(options){
+          $scope.editDateOptions = options.actions.PUT;
+      });
     //$scope.editDate = date;
   };
 

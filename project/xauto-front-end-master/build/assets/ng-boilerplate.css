@@ -8656,6 +8656,11 @@ ul.event-details-actions > li > a.btn i {
   line-height: 1.5em;
 }
 
+.free-label {
+  padding-right: 7px;
+  margin: 0 -24px;
+}
+
 table.events-list-table {
   table-layout: fixed;
   /* 

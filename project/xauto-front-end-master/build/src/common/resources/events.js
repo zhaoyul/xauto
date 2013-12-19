@@ -66,5 +66,9 @@ angular.module('resources.events', ['restangular'])
       return Restangular.one('dates', pk).remove();
   };
 
+  DateObj.getOptions = function(pk) {
+      return Restangular.one('dates', pk).options();
+  };
+
   return DateObj;
 }]);

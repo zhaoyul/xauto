@@ -844,6 +844,20 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "          <span class=\"help-block\" ng-show=\"errors.country\" ng-repeat=\"error in errors.country\">{{error}}</span>\n" +
     "        </div>\n" +
     "      </div>\n" +
+    "      <div class=\"form-group\" ng-class=\"{'has-error': form.longitude.$invalid || errors.longitude}\">\n" +
+    "        <label class=\"col-lg-3 control-label\">Longitude</label>\n" +
+    "        <div class=\"col-lg-9\">\n" +
+    "          <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"editDate.longitude\" name=\"longitude\">\n" +
+    "          <span class=\"help-block\" ng-show=\"errors.longitude\" ng-repeat=\"error in errors.longitude\">{{error}}</span>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "      <div class=\"form-group\" ng-class=\"{'has-error': form.latitude.$invalid || errors.latitude}\">\n" +
+    "        <label class=\"col-lg-3 control-label\">Latitude</label>\n" +
+    "        <div class=\"col-lg-9\">\n" +
+    "          <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"editDate.latitude\" name=\"latitude\">\n" +
+    "          <span class=\"help-block\" ng-show=\"errors.latitude\" ng-repeat=\"error in errors.latitude\">{{error}}</span>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
     "    <div class=\"form-group\" ng-class=\"{'has-error': dateform.start_date.$invalid || errors.start_date}\">\n" +
     "      <label class=\"col-lg-3 control-label\">Date</label>\n" +
     "      <div class=\"col-lg-3\">\n" +
@@ -890,42 +904,32 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">Cost To Attend</label>\n" +
+    "    <label class=\"col-lg-2 control-label free-label\">\n" +
+    "      <input type=\"checkbox\" ng-model=\"editDate.attend_free\"> FREE\n" +
+    "    </label>\n" +
+    "    <label class=\"control-label col-lg-2\">Price Range</label>\n" +
     "    <div class=\"col-lg-2\">\n" +
-    "      <label>\n" +
-    "        <input type=\"checkbox\" ng-model=\"EventObj.attend_free\" ng-checked=\"EventObj.attend_free\"> FREE\n" +
-    "      </label>\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"Low\" ng-disabled=\"editDate.attend_free\" ng-model=\"editDate.attend_price_from\">\n" +
     "    </div>\n" +
     "    <div class=\"col-lg-2\">\n" +
-    "      <label class=\"control-label\">Price Range</label>\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"High\" ng-disabled=\"editDate.attend_free\" ng-model=\"editDate.attend_price_to\">\n" +
     "    </div>\n" +
-    "    <div class=\"col-lg-2\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"Low\" ng-disabled=\"EventObj.attend_free\" ng-model=\"EventObj.attend_low\">\n" +
-    "    </div>\n" +
-    "    <div class=\"col-lg-2\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"High\" ng-disabled=\"EventObj.attend_free\" ng-model=\"EventObj.attend_high\">\n" +
-    "    </div>\n" +
-    "    <div class=\"col-lg-1\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"USD\" ng-disabled=\"EventObj.attend_free\" ng-model=\"EventObj.currency\">\n" +
+    "    <div class=\"col-lg-2\" ng-class=\"{'has-error': dateform.currency.$invalid|| errors.currency}\">\n" +
+    "      <select required name=\"currency\" class=\"form-control\" ng-model=\"editDate.currency\" ng-options=\"x.value as x.display_name for x in editDateOptions.currency.choices\">\n" +
+    "      </select>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">Cost To Exhibit</label>\n" +
+    "    <label class=\"col-lg-2 control-label free-label\">\n" +
+    "      <input type=\"checkbox\" ng-model=\"editDate.exhibit_free\"> FREE\n" +
+    "    </label>\n" +
+    "    <label class=\"control-label col-lg-2\">Price Range</label>\n" +
     "    <div class=\"col-lg-2\">\n" +
-    "      <label>\n" +
-    "        <input type=\"checkbox\" ng-model=\"EventObj.exhibit_free\" ng-checked=\"EventObj.exhibit_free\"> FREE\n" +
-    "      </label>\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"Low\" ng-disabled=\"editDate.exhibit_free\" ng-model=\"editDate.exhibit_price_from\">\n" +
     "    </div>\n" +
     "    <div class=\"col-lg-2\">\n" +
-    "      <label class=\"control-label\">Price Range</label>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-lg-2\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"Low\" ng-disabled=\"EventObj.exhibit_free\" ng-model=\"EventObj.exhibit_low\">\n" +
-    "    </div>\n" +
-    "    <div class=\"col-lg-2\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"High\" ng-disabled=\"EventObj.exhibit_free\" ng-model=\"EventObj.exhibit_high\">\n" +
-    "    </div>\n" +
-    "    <div class=\"col-lg-1\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"USD\" ng-disabled=\"EventObj.exhibit_free\" ng-model=\"EventObj.currency\">\n" +
+    "      <input type=\"text\" class=\"form-control\" placeholder=\"High\" ng-disabled=\"editDate.exhibit_free\" ng-model=\"editDate.exhibit_price_to\">\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group\" ng-class=\"{'has-error': dateform.feature_headline.$invalid}\">\n" +

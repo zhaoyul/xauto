@@ -67,7 +67,7 @@ class EventDate(TimestampedModel):
     end_date = models.DateTimeField(null=True, blank=True)
     feature_headline = models.CharField(max_length=100)
     feature_detail = models.TextField()
-    currency = models.ForeignKey(Currency, null=True, blank=True ) #, default=lambda: Currency.objects.get(currency='USD', country_code='US')
+    currency = models.ForeignKey(Currency, null=True, blank=True)
     attend_free = models.BooleanField(default=False)
     exhibit_free = models.BooleanField(default=False)
     attend_price_from = models.FloatField(default=0.0,

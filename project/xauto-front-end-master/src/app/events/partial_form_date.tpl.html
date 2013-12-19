@@ -52,6 +52,20 @@
           <span class="help-block" ng-show="errors.country" ng-repeat="error in errors.country">{{error}}</span>
         </div>
       </div>
+      <div class="form-group" ng-class="{'has-error': form.longitude.$invalid || errors.longitude}">
+        <label class="col-lg-3 control-label">Longitude</label>
+        <div class="col-lg-9">
+          <input type="text" class="form-control" placeholder="" ng-model="editDate.longitude" name="longitude">
+          <span class="help-block" ng-show="errors.longitude" ng-repeat="error in errors.longitude">{{error}}</span>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{'has-error': form.latitude.$invalid || errors.latitude}">
+        <label class="col-lg-3 control-label">Latitude</label>
+        <div class="col-lg-9">
+          <input type="text" class="form-control" placeholder="" ng-model="editDate.latitude" name="latitude">
+          <span class="help-block" ng-show="errors.latitude" ng-repeat="error in errors.latitude">{{error}}</span>
+        </div>
+      </div>
     <div class="form-group" ng-class="{'has-error': dateform.start_date.$invalid || errors.start_date}">
       <label class="col-lg-3 control-label">Date</label>
       <div class="col-lg-3">
@@ -98,42 +112,32 @@
   </div>
   <div class="form-group">
     <label class="col-lg-3 control-label">Cost To Attend</label>
+    <label class="col-lg-2 control-label free-label">
+      <input type="checkbox" ng-model="editDate.attend_free"> FREE
+    </label>
+    <label class="control-label col-lg-2">Price Range</label>
     <div class="col-lg-2">
-      <label>
-        <input type="checkbox" ng-model="EventObj.attend_free" ng-checked="EventObj.attend_free"> FREE
-      </label>
+      <input type="text" class="form-control" placeholder="Low" ng-disabled="editDate.attend_free" ng-model="editDate.attend_price_from">
     </div>
     <div class="col-lg-2">
-      <label class="control-label">Price Range</label>
+      <input type="text" class="form-control" placeholder="High" ng-disabled="editDate.attend_free" ng-model="editDate.attend_price_to">
     </div>
-    <div class="col-lg-2">
-      <input type="text" class="form-control" placeholder="Low" ng-disabled="EventObj.attend_free" ng-model="EventObj.attend_low">
-    </div>
-    <div class="col-lg-2">
-      <input type="text" class="form-control" placeholder="High" ng-disabled="EventObj.attend_free" ng-model="EventObj.attend_high">
-    </div>
-    <div class="col-lg-1">
-      <input type="text" class="form-control" placeholder="USD" ng-disabled="EventObj.attend_free" ng-model="EventObj.currency">
+    <div class="col-lg-2" ng-class="{'has-error': dateform.currency.$invalid|| errors.currency}">
+      <select required name="currency" class="form-control" ng-model="editDate.currency" ng-options="x.value as x.display_name for x in editDateOptions.currency.choices">
+      </select>
     </div>
   </div>
   <div class="form-group">
     <label class="col-lg-3 control-label">Cost To Exhibit</label>
+    <label class="col-lg-2 control-label free-label">
+      <input type="checkbox" ng-model="editDate.exhibit_free"> FREE
+    </label>
+    <label class="control-label col-lg-2">Price Range</label>
     <div class="col-lg-2">
-      <label>
-        <input type="checkbox" ng-model="EventObj.exhibit_free" ng-checked="EventObj.exhibit_free"> FREE
-      </label>
+      <input type="text" class="form-control" placeholder="Low" ng-disabled="editDate.exhibit_free" ng-model="editDate.exhibit_price_from">
     </div>
     <div class="col-lg-2">
-      <label class="control-label">Price Range</label>
-    </div>
-    <div class="col-lg-2">
-      <input type="text" class="form-control" placeholder="Low" ng-disabled="EventObj.exhibit_free" ng-model="EventObj.exhibit_low">
-    </div>
-    <div class="col-lg-2">
-      <input type="text" class="form-control" placeholder="High" ng-disabled="EventObj.exhibit_free" ng-model="EventObj.exhibit_high">
-    </div>
-    <div class="col-lg-1">
-      <input type="text" class="form-control" placeholder="USD" ng-disabled="EventObj.exhibit_free" ng-model="EventObj.currency">
+      <input type="text" class="form-control" placeholder="High" ng-disabled="editDate.exhibit_free" ng-model="editDate.exhibit_price_to">
     </div>
   </div>
   <div class="form-group" ng-class="{'has-error': dateform.feature_headline.$invalid}">

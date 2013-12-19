@@ -17,7 +17,6 @@ angular.module( 'blvdx.stream', [
   'titleService',
   'plusOne',
   'security.authorization',
-  'security.service',
   'resources.streams'
 ])
 
@@ -41,7 +40,7 @@ angular.module( 'blvdx.stream', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'StreamCtrl', ['$scope', 'titleService', 'Streams', '$rootScope', 'security', function StreamCtrl( $scope, titleService, Streams, $rootScope, security) {
+.controller( 'StreamCtrl', ['$scope', 'titleService', 'Streams', '$rootScope', '$http', function StreamCtrl( $scope, titleService, Streams, $rootScope, $http) {
   titleService.setTitle( 'Stream' );
   $scope.stream = [];
 
@@ -54,15 +53,15 @@ angular.module( 'blvdx.stream', [
   };
 
   $rootScope.$on("entry", function(event, data){
-    $scope.stream.push(data);
+    $scope.stream.unshift(data);
     $scope.$apply();
   });
 
-  security.requestCurrentUser().then(function(user){
-    Streams.send_subscribe(user.following);
+  // always reqest latest user data
+  $http.get('/api/current-user/').then(function(response) {
+    Streams.send_subscribe(response.data.user.following);
     Streams.send_fetch_latest();
   });
-
 }])
 
 .directive('bxStreamPhoto', function() {
