@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import uuid
+import math
 from datetime import datetime
 from random import randrange
 from hashlib import sha1
@@ -28,7 +29,8 @@ from event.serializers import (EventSerializer, EventDetailsSerializer,
 from account.serializers import (UserProfileSerializer, UserSerializer,
     NewProfileSerializer, EmailSerializer)
 from account.models import UserProfile
-from multiuploader.serializers import MultiuploaderImageSerializer
+from multiuploader.serializers import (MultiuploaderImageSerializer,
+    CoordinatedPhotoSerializer)
 from multiuploader.models import MultiuploaderImage
 
 if "mailer" in settings.INSTALLED_APPS:
@@ -634,3 +636,64 @@ class ConfigurationView(APIView):
             }
         }
         return Response(config, status=status.HTTP_200_OK)
+
+
+class CoordinatedPhotoUploader(APIView):
+    """
+    Creates image and assigns it to the closest event
+
+    var data = {};
+    data['coords'] = {"long": 2.12, "lat": -3.53};
+    data['file'] = "data:image/jpg|;base64,........"
+    Events.uploadCoordinatedPhoto(data);
+
+    """
+    permission_classes = (IsAuthenticated,)
+
+    def haversine_distance(origin, destination):
+        lat1, lon1 = origin
+        lat2, lon2 = destination
+        radius = 6372.797
+
+        dlat = math.radians(lat2 - lat1)
+        dlon = math.radians(lon2 - lon1)
+        a = math.sin(dlat / 2) * math.sin(dlat / 2) + math.cos(math.radians(lat1)) \
+            * math.cos(math.radians(lat2)) * math.sin(dlon / 2) * math.sin(dlon / 2)
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+        d = radius * c
+        return d
+
+    def findEventFromCoords(long=0, lat=0, radius=50):
+        """
+            Find first matching event for given coordinates (long, lat) within radius (in km)
+        """
+        now = datetime.now()
+        match = None
+        for event_date in EventDate.objects.filter(start_date__lt=now, end_date__gt=now):
+            distance = self.haversine_distance((lat, long), (event_date.latitude, event_date.longitude))
+            if distance < radius:
+                match = event_date
+                break
+        return match
+
+    def post(self, request, *args, **kwargs):
+        profile = self.request.user.profile
+        serializer = CoordinatedPhotoSerializer(data=request.DATA)
+        if serializer.is_valid():
+            imageObj = MultiuploaderImage()
+            imageObj.image.save(
+                serializer.object["file"].name,
+                serializer.object["file"],
+                save=False
+            )
+            imageObj.userprofile = profile
+            if "coords" in serializer.object:
+                long = serializer.object["coords"]["long"]
+                lat = serializer.object["coords"]["lat"]
+                imageObj.event_date = self.findEventFromCoords(long, lat)
+                imageObj.longitude = long
+                imageObj.latitude = lat
+            imageObj.save()
+            return Response({}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

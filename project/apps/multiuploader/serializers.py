@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+import uuid
+
 from rest_framework import serializers
+from django.core.files.base import ContentFile
 
 from multiuploader.models import MultiuploaderImage
 
@@ -31,3 +34,29 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
                 return obj.userprofile.get_full_name()
 
         return ""
+
+
+class Base64ImageField(serializers.Serializer):
+    def from_native(self, data, files):
+        if data.startswith('data:image'):
+
+            format, imgstr = data.split(';base64,')
+            ext = format.split('/')[-1]
+
+            data = ContentFile(imgstr.decode('base64'), name='%s.%s' % (str(uuid.uuid4()), ext))
+            return data
+        else:
+            raise serializers.ValidationError("File is not an image")
+
+
+class CoordinateSerializer(serializers.Serializer):
+    long = serializers.FloatField()
+    lat = serializers.FloatField()
+
+
+class CoordinatedPhotoSerializer(serializers.Serializer):
+    """
+    Serializer for single MultiuploaderImage with coordinates
+    """
+    file = Base64ImageField()
+    coords = CoordinateSerializer(required=False)
