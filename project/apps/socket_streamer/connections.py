@@ -92,7 +92,7 @@ class PhotoStream(DispatchableConnection):
         offset = parse_datetime(offset)
         user_photos = Q(userprofile__slug__in=self.subscriptions["profiles"])
         event_photos = Q(event_date__event__slug__in=self.subscriptions["events"])
-        older = Q(upload_date__lte=offset)
+        older = Q(upload_date__lt=offset)
 
         objs = MultiuploaderImage.objects.filter((user_photos | event_photos) & older).order_by('-upload_date')[:count]
         for obj in objs:
