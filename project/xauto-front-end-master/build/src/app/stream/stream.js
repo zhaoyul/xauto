@@ -89,23 +89,6 @@ angular.module( 'blvdx.stream', [
     $(element).colorbox({maxWidth:"100%",maxHeight:"100%",scalePhotos:true, photo:true, href:attrs.bxStreamPhoto});
     }
   };
-})
-
-.directive('scrollWatch', function(){
-  return {
-    restrict: 'C',
-    transclude: true,
-    template: "<ul ng-transclude></ul>",
-    replace: true,
-    link: function(scope, elem, attrs){
-      $(window).scroll(function(){
-        var s = $(window).scrollTop() / ($(document).height()-$(window).height());
-        if(s>0.99){
-          scope.fetchMore();
-        }
-        return false;
-      });
-    }
-  };
 });
+
 

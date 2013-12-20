@@ -300,8 +300,27 @@ angular.module( 'blvdx', [
     }
   };
 })
-//
 
+.directive('scrollWatch', function(){
+  return {
+    restrict: 'C',
+    transclude: true,
+    template: "<ul ng-transclude></ul>",
+    replace: true,
+    scope: {
+      'whenBottom': '='
+    },
+    link: function(scope, elem, attrs){
+      $(window).scroll(function(){
+        var s = $(window).scrollTop() / ($(document).height()-$(window).height());
+        if(s>0.99){
+          scope.whenBottom();
+        }
+        return false;
+      });
+    }
+  };
+})
 ;
 var GeolocationEvent = (function () {
     function GeolocationEvent(success, message, position) {

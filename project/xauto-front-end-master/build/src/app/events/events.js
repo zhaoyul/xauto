@@ -309,6 +309,11 @@ angular.module( 'blvdx.events', [
     $scope.$apply();
   });
 
+  $rootScope.$on("append_entry", function(event, data){
+    $scope.stream.push(data);
+    $scope.$apply();
+  });
+
   $scope.reloadEvent = function(){
     Events.getDetails($stateParams.eventId).then(function (event) {
         $scope.EventObj = event;
@@ -320,6 +325,17 @@ angular.module( 'blvdx.events', [
         Streams.send_subscribe(subscription);
         Streams.send_fetch_latest();
     });
+  };
+
+  $scope.fetchMore = function(){
+    var offset;
+    if($scope.stream.length > 0){
+      offset = $scope.stream[$scope.stream.length-1].timestamp;
+    }
+    else{
+      offset = (new Date()).toISOString();
+    }
+    Streams.send_fetch_more(offset);
   };
 
   $('.schedule-dropdown-menu').click(function(e) {
