@@ -40,7 +40,7 @@ class PhotoStream(DispatchableConnection):
         msg = {
             "image": entry.url,
             "id": entry.id,
-            "timestamp": entry.upload_date.strftime("%Y-%m-%dT%H:%M:%S%z"),
+            "timestamp": entry.upload_date.strftime("%Y-%m-%dT%H:%M:%S.%f%z"),
             "caption": " ".join(caption_text)
         }
         return msg
