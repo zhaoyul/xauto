@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import utc
 
 import datetime
 
@@ -17,7 +18,7 @@ class TimestampedModel(models.Model):
         """
         On save, update timestamps
         """
-        now = datetime.datetime.now()
+        now = datetime.datetime.utcnow().replace(tzinfo=utc)
         if not self.id:
             self.created = now
         self.modified = now
