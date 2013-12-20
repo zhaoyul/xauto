@@ -70,7 +70,7 @@ class PhotoStream(DispatchableConnection):
         if entry.event_date and entry.event_date.event.slug in self.subscriptions["events"]:
             passing = True
         if passing:
-            self.send_message("entry", self.entry_serializer(entry))
+            self.send_message("prepend_entry", self.entry_serializer(entry))
 
     def on_fetch_latest(self, count=16):
         """
