@@ -189,8 +189,8 @@ angular.module( 'blvdx.events', [
     $scope.editDate.start_date = new Date();
     $scope.editDate.startTime = "11:00";
     $scope.editDate.endTime = "16:00";
-    DateObj.getOptions(date.id).then(function(options){
-        $scope.editDateOptions = options.actions.PUT;
+    DateObj.getOptions(null).then(function(options){
+        $scope.editDateOptions = options.actions.POST;
     });
   };
 
