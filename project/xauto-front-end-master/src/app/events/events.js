@@ -301,8 +301,7 @@ angular.module( 'blvdx.events', [
   $scope.stateParams = $stateParams;
   $scope.stream = [];
 
-  $rootScope.$on("entry", function(event, data){
-    console.log("got entry");
+  $rootScope.$on("prepend_entry", function(event, data){
     $scope.stream.unshift(data);
     $scope.$apply();
   });

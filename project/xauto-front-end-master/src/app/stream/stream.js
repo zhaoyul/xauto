@@ -52,8 +52,13 @@ angular.module( 'blvdx.stream', [
       Streams.send_report(entry_id);
   };
 
-  $rootScope.$on("entry", function(event, data){
+  $rootScope.$on("prepend_entry", function(event, data){
     $scope.stream.unshift(data);
+    $scope.$apply();
+  });
+
+  $rootScope.$on("append_entry", function(event, data){
+    $scope.stream.push(data);
     $scope.$apply();
   });
 
@@ -62,6 +67,18 @@ angular.module( 'blvdx.stream', [
     Streams.send_subscribe(response.data.user.following);
     Streams.send_fetch_latest();
   });
+
+  $scope.fetchMore = function(){
+    var offset;
+    if($scope.stream.length > 0){
+      offset = $scope.stream[$scope.stream.length-1].timestamp;
+    }
+    else{
+      offset = (new Date()).toISOString();
+    }
+    Streams.send_fetch_more(offset);
+  };
+
 }])
 
 .directive('bxStreamPhoto', function() {
@@ -73,5 +90,22 @@ angular.module( 'blvdx.stream', [
     }
   };
 })
-;
+
+.directive('scrollWatch', function(){
+  return {
+    restrict: 'C',
+    transclude: true,
+    template: "<ul ng-transclude></ul>",
+    replace: true,
+    link: function(scope, elem, attrs){
+      $(window).scroll(function(){
+        var s = $(window).scrollTop() / ($(document).height()-$(window).height());
+        if(s>0.99){
+          scope.fetchMore();
+        }
+        return false;
+      });
+    }
+  };
+});
 

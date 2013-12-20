@@ -3,6 +3,9 @@ import logging
 from interface import DispatchableConnection
 from multiuploader.models import MultiuploaderImage
 from datetime import timedelta, datetime
+from django.db.models import Q
+from django.utils.dateparse import parse_datetime
+from django.utils.timezone import utc
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -56,29 +59,42 @@ class PhotoStream(DispatchableConnection):
             }
             self.send_message("entry", msg)
 
-    def on_fetch_latest(self):
+    def on_fetch_latest(self, count=16):
         """
-            fetches latest photos from subscribed events or users
+            fetches ``count`` latest photos from subscribed events or users
         """
-        now = datetime.now()
+        now = datetime.utcnow().replace(tzinfo=utc)
 
-        # send latest followed users photos
-        objs = MultiuploaderImage.objects.filter(userprofile__slug__in=self.subscriptions["profiles"])
+        user_photos = Q(userprofile__slug__in=self.subscriptions["profiles"])
+        event_photos = Q(event_date__event__slug__in=self.subscriptions["events"])
+
+        objs = MultiuploaderImage.objects.filter(user_photos | event_photos).order_by('-upload_date')[:count]
         for obj in objs:
             msg = {
                 "url": obj.url,
-                "id": obj.id
+                "id": obj.id,
+                "timestamp": obj.upload_date.strftime("%Y-%m-%dT%H:%M:%S%z")
             }
-            self.send_message("entry", msg)
+            self.send_message("append_entry", msg)
 
-        # send latest photos in followed events
-        objs = MultiuploaderImage.objects.filter(upload_date__gt=now-timedelta(days=1), event_date__event__slug__in=self.subscriptions["events"])
+    def on_fetch_more(self, offset, count=4):
+        """
+            fetches ``count`` more photos older than ``offset`` iso-timestamp
+        """
+        offset = parse_datetime(offset)
+        user_photos = Q(userprofile__slug__in=self.subscriptions["profiles"])
+        event_photos = Q(event_date__event__slug__in=self.subscriptions["events"])
+        older = Q(upload_date__lte=offset)
+
+        objs = MultiuploaderImage.objects.filter((user_photos | event_photos) & older).order_by('-upload_date')[:count]
         for obj in objs:
             msg = {
                 "url": obj.url,
-                "id": obj.id
+                "id": obj.id,
+                "timestamp": obj.upload_date.strftime("%Y-%m-%dT%H:%M:%S%z")
             }
-            self.send_message("entry", msg)
+            self.send_message("append_entry", msg)
+
 
     def on_favorite(self, id):
         """

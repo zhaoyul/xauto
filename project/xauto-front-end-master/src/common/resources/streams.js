@@ -2,7 +2,8 @@ angular.module('resources.streams', ['resources.configuration', 'restangular'])
 
 .factory('Streams', ['$rootScope', '$q', '$timeout', 'Configuration', 'Restangular', function($rootScope, $q, $timeout, Configuration, Restangular) {
     var allowed_types = [
-        "entry"
+        "prepend_entry",
+        "append_entry"
     ];
     var instance = angular.module('resources.streams').instance || {};
     instance.open_deferred = $q.defer();
@@ -80,6 +81,16 @@ angular.module('resources.streams', ['resources.configuration', 'restangular'])
     instance.send_fetch_latest = function(){
       var msg = {
         type: "fetch_latest"
+      };
+      instance.send(JSON.stringify(msg));
+    };
+
+    instance.send_fetch_more = function(offset){
+      var msg = {
+        type: "fetch_more",
+        data: {
+          'offset': offset
+        }
       };
       instance.send(JSON.stringify(msg));
     };

@@ -283,16 +283,6 @@ angular.module( 'blvdx', [
     return gloc;
 })
 
-.directive('bxStreamPhoto', function() {
-  return {
-    link: function (scope, element, attrs) {
-      attrs.$observe('bxStreamPhoto',function(){
-        $(element).css("background-image", "url('"+attrs.bxStreamPhoto+"')");
-        $(element).colorbox({maxWidth:"100%",maxHeight:"100%",scalePhotos:true, photo:true, href:attrs.bxStreamPhoto});
-      });
-    }
-  };
-})
 .directive('deleteParent', function() {
   return {
     restrict: 'AC',
