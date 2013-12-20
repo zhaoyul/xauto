@@ -28,6 +28,23 @@ class PhotoStream(DispatchableConnection):
         }
         self.send(json.dumps(msg))
 
+    def entry_serializer(self, entry):
+        """
+            makes json from MultiuploaderImage
+        """
+        caption_text = []
+        caption_text.append(entry.upload_date.strftime("%d %b %H:%M"))
+        if entry.event_date:
+            caption_text.append("@ %s" %entry.event_date.event.title)
+        caption_text.append("by %s" % entry.userprofile.get_full_name())
+        msg = {
+            "image": entry.url,
+            "id": entry.id,
+            "timestamp": entry.upload_date.strftime("%Y-%m-%dT%H:%M:%S%z"),
+            "caption": " ".join(caption_text)
+        }
+        return msg
+
     def on_close(self):
         if self in PhotoStream.connected_users:
             PhotoStream.connected_users.remove(self)
@@ -53,11 +70,7 @@ class PhotoStream(DispatchableConnection):
         if entry.event_date and entry.event_date.event.slug in self.subscriptions["events"]:
             passing = True
         if passing:
-            msg = {
-                "url": entry.url,
-                "id": entry.id
-            }
-            self.send_message("entry", msg)
+            self.send_message("entry", self.entry_serializer(entry))
 
     def on_fetch_latest(self, count=16):
         """
@@ -70,12 +83,7 @@ class PhotoStream(DispatchableConnection):
 
         objs = MultiuploaderImage.objects.filter(user_photos | event_photos).order_by('-upload_date')[:count]
         for obj in objs:
-            msg = {
-                "url": obj.url,
-                "id": obj.id,
-                "timestamp": obj.upload_date.strftime("%Y-%m-%dT%H:%M:%S%z")
-            }
-            self.send_message("append_entry", msg)
+            self.send_message("append_entry", self.entry_serializer(obj))
 
     def on_fetch_more(self, offset, count=4):
         """
@@ -88,12 +96,7 @@ class PhotoStream(DispatchableConnection):
 
         objs = MultiuploaderImage.objects.filter((user_photos | event_photos) & older).order_by('-upload_date')[:count]
         for obj in objs:
-            msg = {
-                "url": obj.url,
-                "id": obj.id,
-                "timestamp": obj.upload_date.strftime("%Y-%m-%dT%H:%M:%S%z")
-            }
-            self.send_message("append_entry", msg)
+            self.send_message("append_entry", self.entry_serializer(obj))
 
 
     def on_favorite(self, id):

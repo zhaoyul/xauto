@@ -1148,7 +1148,7 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "        <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"item in stream\">\n" +
     "            <div class=\"inner\">\n" +
     "                <div class=\"stream-picture\"\n" +
-    "                bx-stream-photo=\"{{item.url}}\"\n" +
+    "                bx-stream-photo=\"{{item.image}}\"\n" +
     "                 >\n" +
     "                     <ul class=\"stream-action-links\">\n" +
     "                        <li>\n" +
