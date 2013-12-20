@@ -43,6 +43,7 @@ angular.module( 'blvdx.stream', [
 .controller( 'StreamCtrl', ['$scope', 'titleService', 'Streams', '$rootScope', '$http', function StreamCtrl( $scope, titleService, Streams, $rootScope, $http) {
   titleService.setTitle( 'Stream' );
   $scope.stream = [];
+  $scope.is_fetching = false;
 
   $scope.Favorite = function(entry_id) {
       Streams.send_favorite(entry_id);
@@ -62,6 +63,11 @@ angular.module( 'blvdx.stream', [
     $scope.$apply();
   });
 
+  $rootScope.$on("fetch_end", function(event, data){
+    $scope.is_fetching = false;
+    $scope.$apply();
+  });
+
   // always reqest latest user data
   $http.get('/api/current-user/').then(function(response) {
     Streams.send_subscribe(response.data.user.following);
@@ -69,6 +75,10 @@ angular.module( 'blvdx.stream', [
   });
 
   $scope.fetchMore = function(){
+    if($scope.is_fetching) {
+      return;
+    }
+    $scope.is_fetching = true;
     var offset;
     if($scope.stream.length > 0){
       offset = $scope.stream[$scope.stream.length-1].timestamp;

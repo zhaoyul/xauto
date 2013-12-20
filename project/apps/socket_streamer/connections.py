@@ -97,6 +97,7 @@ class PhotoStream(DispatchableConnection):
         objs = MultiuploaderImage.objects.filter((user_photos | event_photos) & older).order_by('-upload_date')[:count]
         for obj in objs:
             self.send_message("append_entry", self.entry_serializer(obj))
+        self.send_message("fetch_end", None)
 
 
     def on_favorite(self, id):

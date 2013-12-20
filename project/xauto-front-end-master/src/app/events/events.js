@@ -303,6 +303,7 @@ angular.module( 'blvdx.events', [
   titleService.setTitle( 'Event Details' );
   $scope.stateParams = $stateParams;
   $scope.stream = [];
+  $scope.is_fetching = false;
 
   $rootScope.$on("prepend_entry", function(event, data){
     $scope.stream.unshift(data);
@@ -311,6 +312,11 @@ angular.module( 'blvdx.events', [
 
   $rootScope.$on("append_entry", function(event, data){
     $scope.stream.push(data);
+    $scope.$apply();
+  });
+
+  $rootScope.$on("fetch_end", function(event, data){
+    $scope.is_fetching = false;
     $scope.$apply();
   });
 
@@ -328,6 +334,10 @@ angular.module( 'blvdx.events', [
   };
 
   $scope.fetchMore = function(){
+    if($scope.is_fetching){
+      return;
+    }
+    $scope.is_fetching = true;
     var offset;
     if($scope.stream.length > 0){
       offset = $scope.stream[$scope.stream.length-1].timestamp;

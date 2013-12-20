@@ -3,7 +3,8 @@ angular.module('resources.streams', ['resources.configuration', 'restangular'])
 .factory('Streams', ['$rootScope', '$q', '$timeout', 'Configuration', 'Restangular', function($rootScope, $q, $timeout, Configuration, Restangular) {
     var allowed_types = [
         "prepend_entry",
-        "append_entry"
+        "append_entry",
+        "fetch_end"
     ];
     var instance = angular.module('resources.streams').instance || {};
     instance.open_deferred = $q.defer();

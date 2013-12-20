@@ -126,6 +126,7 @@
                 <div class="tab-content event-details-tab-contents">
                   <div class="tab-pane" id="stream" ng-class="{'active': EventObj.srv_live}">
                       <ng-include src="'stream/partial_stream_list.tpl.html'"></ng-include>
+                      <div ng-show="is_fetching">Loading older entries...</div>
                   </div>
                   <div class="tab-pane" id="photos" ng-class="{'active': !EventObj.srv_live}">
                       <ng-include src="'events/partial_event_details_photos.tpl.html'"></ng-include>

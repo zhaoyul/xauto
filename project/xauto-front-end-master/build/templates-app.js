@@ -359,6 +359,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                <div class=\"tab-content event-details-tab-contents\">\n" +
     "                  <div class=\"tab-pane\" id=\"stream\" ng-class=\"{'active': EventObj.srv_live}\">\n" +
     "                      <ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>\n" +
+    "                      <div ng-show=\"is_fetching\">Loading older entries...</div>\n" +
     "                  </div>\n" +
     "                  <div class=\"tab-pane\" id=\"photos\" ng-class=\"{'active': !EventObj.srv_live}\">\n" +
     "                      <ng-include src=\"'events/partial_event_details_photos.tpl.html'\"></ng-include>\n" +
@@ -1186,5 +1187,6 @@ angular.module("stream/stream.tpl.html", []).run(["$templateCache", function($te
     "  </div>\n" +
     "</div> -->\n" +
     "<ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>\n" +
+    "<div ng-show=\"is_fetching\">Loading older entries...</div>\n" +
     "");
 }]);
