@@ -1145,7 +1145,7 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
 angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("stream/partial_stream_list.tpl.html",
     "<div class=\"row\">\n" +
-    "    <ul class=\"stream-list scroll-watch\" when-bottom=\"fetchMore\">\n" +
+    "    <ul class=\"stream-list scroll-watch\">\n" +
     "        <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"item in stream\">\n" +
     "            <div class=\"inner\">\n" +
     "                <div class=\"stream-picture\"\n" +

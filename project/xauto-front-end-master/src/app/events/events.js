@@ -299,25 +299,29 @@ angular.module( 'blvdx.events', [
 
 }])
 
-.controller( 'EventDetailsCtrl', ['$scope', 'titleService', '$stateParams', 'Events', 'Streams', '$rootScope', function EventsCtrl( $scope, titleService, $stateParams, Events, Streams, $rootScope) {
+.controller( 'EventDetailsCtrl', ['$scope', 'titleService', '$stateParams', 'Events', 'Streams', function EventsCtrl( $scope, titleService, $stateParams, Events, Streams) {
   titleService.setTitle( 'Event Details' );
   $scope.stateParams = $stateParams;
   $scope.stream = [];
   $scope.is_fetching = false;
 
-  $rootScope.$on("prepend_entry", function(event, data){
+  $scope.$on("prepend_entry", function(event, data){
     $scope.stream.unshift(data);
     $scope.$apply();
   });
 
-  $rootScope.$on("append_entry", function(event, data){
+  $scope.$on("append_entry", function(event, data){
     $scope.stream.push(data);
     $scope.$apply();
   });
 
-  $rootScope.$on("fetch_end", function(event, data){
+  $scope.$on("fetch_end", function(event, data){
     $scope.is_fetching = false;
     $scope.$apply();
+  });
+
+  $scope.$on("scrolledBottom", function(){
+    $scope.fetchMore();
   });
 
   $scope.reloadEvent = function(){

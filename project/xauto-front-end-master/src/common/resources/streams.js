@@ -19,17 +19,17 @@ angular.module('resources.streams', ['resources.configuration', 'restangular'])
         }
 
         if(allowed_types.indexOf(json.type)>=0){
-            $rootScope.$emit(json.type, json.data);
+            $rootScope.$broadcast(json.type, json.data);
         }
     };
 
     var onopen = function() {
-        $rootScope.$emit('connected');
+        $rootScope.$broadcast('connected');
         instance.open_deferred.resolve();
     };
 
     var onclose = function(){
-        $rootScope.$emit('disconnected');
+        $rootScope.$broadcast('disconnected');
         instance.open_deferred.reject();
         var reconnect = function(){
             instance.open_deferred = $q.defer();

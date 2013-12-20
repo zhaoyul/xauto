@@ -40,10 +40,11 @@ angular.module( 'blvdx.stream', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'StreamCtrl', ['$scope', 'titleService', 'Streams', '$rootScope', '$http', function StreamCtrl( $scope, titleService, Streams, $rootScope, $http) {
+.controller( 'StreamCtrl', ['$scope', 'titleService', 'Streams', '$http', function StreamCtrl( $scope, titleService, Streams, $http) {
   titleService.setTitle( 'Stream' );
   $scope.stream = [];
   $scope.is_fetching = false;
+  console.log($scope);
 
   $scope.Favorite = function(entry_id) {
       Streams.send_favorite(entry_id);
@@ -53,19 +54,23 @@ angular.module( 'blvdx.stream', [
       Streams.send_report(entry_id);
   };
 
-  $rootScope.$on("prepend_entry", function(event, data){
+  $scope.$on("prepend_entry", function(event, data){
     $scope.stream.unshift(data);
     $scope.$apply();
   });
 
-  $rootScope.$on("append_entry", function(event, data){
+  $scope.$on("append_entry", function(event, data){
     $scope.stream.push(data);
     $scope.$apply();
   });
 
-  $rootScope.$on("fetch_end", function(event, data){
+  $scope.$on("fetch_end", function(event, data){
     $scope.is_fetching = false;
     $scope.$apply();
+  });
+
+  $scope.$on("scrolledBottom", function(){
+    $scope.fetchMore();
   });
 
   // always reqest latest user data
