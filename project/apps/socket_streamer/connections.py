@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.utils.dateparse import parse_datetime
 from django.utils.timezone import utc
 from django.conf import settings
-from importlib import import_module
+from djang.utils.importlib import import_module
 SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from django.contrib.auth import get_user_model
 User = get_user_model()
