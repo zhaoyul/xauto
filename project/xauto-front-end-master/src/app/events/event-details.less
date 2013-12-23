@@ -107,7 +107,7 @@ div#event-details-navbar{
 						text-transform: uppercase;
 						font-weight: bold;
 					}
-					
+
 				}
 			}
 		}
@@ -123,6 +123,7 @@ div#event-details-navbar{
 				margin: 0 15px;
 			}
 			&>a{
+				width: 80px;
 				cursor: pointer;
 				position: relative;
 				display: inline-block;
@@ -158,10 +159,10 @@ div.event-details-cover-photo{
     height: 290px;
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: cover; 
-    @media (max-width:767px) { 
+    background-size: cover;
+    @media (max-width:767px) {
 		padding-bottom: 70% ; /* % of width, defines aspect ratio*/
-	} 
+	}
 }
 a.toggle-event-details-about.info-opener{
 	position: absolute;
@@ -201,7 +202,7 @@ div.event-details-about{
     &.expanded{
     	top:0;
     }
-    @media (max-width:767px) { 
+    @media (max-width:767px) {
     	width: 100% !important;
     	background:transparent;
 
@@ -216,8 +217,8 @@ div.event-details-about{
 		line-height: 20px;
 		font-size: 14px;
 		color: #79797f;
-		padding:25px; 
-		@media (max-width:767px) { 
+		padding:25px;
+		@media (max-width:767px) {
     		display: none;
 	    }
 	}
@@ -229,17 +230,17 @@ div.event-details-about{
 			border-radius:4px 0 0 0;
 		}
 	}
-	
+
 }
 div.event-details-header{
 	.clearfix;
 	position: relative;
 	float: left;
 	width: 60%;
-	padding:10px 60px 10px 15px;	
+	padding:10px 60px 10px 15px;
 	margin: 20px 0 0 20px;
 	background: rgba(255,255,255,0.9);
-	@media (max-width:767px) { 
+	@media (max-width:767px) {
 		padding:0 60px 10px 10px !important;
 		background:transparent;
 		margin: 0;
@@ -254,7 +255,7 @@ div.event-details-header{
 		margin:0;
 		display: inline-block;
 		vertical-align: middle;
-        @media (max-width:767px) { 
+        @media (max-width:767px) {
 			padding:10px 0;
 		}
 	}
@@ -281,9 +282,9 @@ div.event-details-overlay{
 
 
 	&:hover{
-		
+
 	}
-	@media (max-width:767px) { 
+	@media (max-width:767px) {
 		position: relative;
 		padding: 0;
 		opacity: 1;
@@ -338,24 +339,24 @@ ul.event-details-actions{
 			&.event-creator{
 				border-radius:5px;
 				overflow: hidden;
-				
+
 				width: 82px;
 				height: 82px;
 			}
 			&.btn{
 				// background: #2567b2;
 				text-align: center;
-				
+
 				width: 82px;
 				height: 82px;
 				font-size: 12px;
 				line-height: 12px;
 				color: #fff;
-				
+
 				padding:20px 0 0 0;
-				
+
 				border:0;
-				
+
 				i{
 					font-size: 20px;
 					text-align: center;
@@ -363,12 +364,12 @@ ul.event-details-actions{
 					width: 100%;
 					margin-bottom: 5px;
 				}
-				
+
 			}
-			@media (max-width:767px) { 
+			@media (max-width:767px) {
 				margin-right: 10px;
 				float: left;
-				
+
 			}
 		}
 	}

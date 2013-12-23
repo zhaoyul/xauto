@@ -6,6 +6,11 @@ from datetime import timedelta, datetime
 from django.db.models import Q
 from django.utils.dateparse import parse_datetime
 from django.utils.timezone import utc
+from django.conf import settings
+from importlib import import_module
+SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -41,7 +46,9 @@ class PhotoStream(DispatchableConnection):
             "image": entry.url,
             "id": entry.id,
             "timestamp": entry.upload_date.strftime("%Y-%m-%dT%H:%M:%S.%f%z"),
-            "caption": " ".join(caption_text)
+            "caption": " ".join(caption_text),
+            "favorited": entry.favorite_by.filter(user=self.user).count() != 0,
+            "reported": entry.is_irrelevant or entry.is_inappropriate
         }
         return msg
 
@@ -51,6 +58,18 @@ class PhotoStream(DispatchableConnection):
 
     def on_open(self, info):
         PhotoStream.connected_users.add(self)
+        if "sessionid" in info.cookies:
+            sessionid = info.cookies["sessionid"].value
+            session = SessionStore(session_key=sessionid)
+        else:
+            session = None
+
+        if session and "_auth_user_id" in session:
+            user = User.objects.get(pk=session["_auth_user_id"])
+        else:
+            user = None
+        self.user = user
+
 
     def on_subscribe(self, subscriptions):
         """

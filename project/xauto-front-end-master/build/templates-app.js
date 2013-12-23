@@ -72,7 +72,8 @@ angular.module("account/account-login.tpl.html", []).run(["$templateCache", func
 
 angular.module("account/account-my-favorite-photos.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-my-favorite-photos.tpl.html",
-    "<ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>");
+    "<ng-include src=\"'stream/partial_stream_list.tpl.html'\" class=\"stream-action-favorite-hidden stream-action-report-hidden\"></ng-include>\n" +
+    "");
 }]);
 
 angular.module("account/account-my-photos.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -335,9 +336,14 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                                        </a>\n" +
     "                                    </li>\n" +
     "                                    <li>\n" +
-    "                                        <a href=\"#\">\n" +
-    "                                            <i class=\"xa-icon-event-details-follow\"></i>\n" +
-    "                                            <div class=\"badge\">{{event.srv_followersCount}}</div> Follow\n" +
+    "                                        <a href=\"javascript:;\" ng-click=\"Follow()\" class=\"btn-follow\"\n" +
+    "                                            ng-class=\"{following:EventObj.srv_following}\">\n" +
+    "                                            <i ng-class=\"{\n" +
+    "                                                'xa-icon-event-details-follow': !EventObj.srv_following,\n" +
+    "                                                'xa-icon-event-details-following': EventObj.srv_following\n" +
+    "                                                }\"></i>\n" +
+    "                                            <div ng-hide=\"EventObj.srv_following\">Follow</div>\n" +
+    "                                            <div ng-show=\"EventObj.srv_following\">Following</div>\n" +
     "                                        </a>\n" +
     "                                    </li>\n" +
     "                                </ul>\n" +
@@ -1148,24 +1154,33 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "    <ul class=\"stream-list scroll-watch\">\n" +
     "        <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"item in stream\">\n" +
     "            <div class=\"inner\">\n" +
-    "                <div class=\"stream-picture\"\n" +
-    "                bx-stream-photo=\"{{item.image}}\"\n" +
-    "                 >\n" +
+    "                <div class=\"stream-picture\">\n" +
+    "                     <div bx-stream-photo=\"{{item.image}}\" class=\"inner\"></div>\n" +
     "                     <ul class=\"stream-action-links\">\n" +
-    "                        <li>\n" +
+    "                        <li ng-hide=\"item.favorited\" class=\"action-favorite\">\n" +
     "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Favorite!\"\n" +
-    "                              ng-click=\"Favorite(item.id)\">\n" +
+    "                              ng-click=\"Favorite(item)\">\n" +
     "                              <i class=\"icon-star\"></i>\n" +
     "                            </a>\n" +
     "                        </li>\n" +
-    "                        <li>\n" +
+    "                        <li ng-show=\"item.favorited\" class=\"action-favorite\">\n" +
+    "                          <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Favorited\">\n" +
+    "                            <i class=\"icon-star icon-highlight\"></i>\n" +
+    "                          </a>\n" +
+    "                        </li>\n" +
+    "                        <li class=\"action-share\">\n" +
     "                            <a href=\"#\" tooltip-placement=\"left\" tooltip=\"Share\"><i class=\"icon-share\"></i></a>\n" +
     "                        </li>\n" +
-    "                        <li>\n" +
+    "                        <li ng-hide=\"item.reported\" class=\"action-report\">\n" +
     "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Report\"\n" +
-    "                              ng-click=\"Report(item.id)\">\n" +
+    "                              ng-click=\"Report(item)\">\n" +
     "                              <i class=\"icon-flag\"></i>\n" +
     "                            </a>\n" +
+    "                        </li>\n" +
+    "                        <li ng-show=\"item.reported\" class=\"action-report\">\n" +
+    "                          <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Reported\">\n" +
+    "                           <i class=\"icon-flag icon-highlight-red\"></i>\n" +
+    "                          </a>\n" +
     "                        </li>\n" +
     "                    </ul>\n" +
     "                 </div>\n" +

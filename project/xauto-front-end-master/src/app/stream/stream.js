@@ -45,13 +45,14 @@ angular.module( 'blvdx.stream', [
   $scope.stream = [];
   $scope.is_fetching = false;
   console.log($scope);
-
-  $scope.Favorite = function(entry_id) {
-      Streams.send_favorite(entry_id);
+  $scope.Favorite = function(entry) {
+      Streams.send_favorite(entry.id);
+      entry.favorited = true;
   };
 
-  $scope.Report = function(entry_id) {
-      Streams.send_report(entry_id);
+  $scope.Report = function(entry) {
+      Streams.send_report(entry.id);
+      entry.reported = true;
   };
 
   $scope.$on("prepend_entry", function(event, data){

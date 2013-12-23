@@ -102,9 +102,14 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
-                                            <i class="xa-icon-event-details-follow"></i>
-                                            <div class="badge">{{event.srv_followersCount}}</div> Follow
+                                        <a href="javascript:;" ng-click="Follow()" class="btn-follow"
+                                            ng-class="{following:EventObj.srv_following}">
+                                            <i ng-class="{
+                                                'xa-icon-event-details-follow': !EventObj.srv_following,
+                                                'xa-icon-event-details-following': EventObj.srv_following
+                                                }"></i>
+                                            <div ng-hide="EventObj.srv_following">Follow</div>
+                                            <div ng-show="EventObj.srv_following">Following</div>
                                         </a>
                                     </li>
                                 </ul>

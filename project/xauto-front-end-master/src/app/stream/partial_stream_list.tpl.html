@@ -2,24 +2,33 @@
     <ul class="stream-list scroll-watch">
         <li class="col-xs-12 col-sm-4 col-lg-3" ng-repeat="item in stream">
             <div class="inner">
-                <div class="stream-picture"
-                bx-stream-photo="{{item.image}}"
-                 >
+                <div class="stream-picture">
+                     <div bx-stream-photo="{{item.image}}" class="inner"></div>
                      <ul class="stream-action-links">
-                        <li>
+                        <li ng-hide="item.favorited" class="action-favorite">
                             <a href="javascript:;" tooltip-placement="left" tooltip="Favorite!"
-                              ng-click="Favorite(item.id)">
+                              ng-click="Favorite(item)">
                               <i class="icon-star"></i>
                             </a>
                         </li>
-                        <li>
+                        <li ng-show="item.favorited" class="action-favorite">
+                          <a href="javascript:;" tooltip-placement="left" tooltip="Favorited">
+                            <i class="icon-star icon-highlight"></i>
+                          </a>
+                        </li>
+                        <li class="action-share">
                             <a href="#" tooltip-placement="left" tooltip="Share"><i class="icon-share"></i></a>
                         </li>
-                        <li>
+                        <li ng-hide="item.reported" class="action-report">
                             <a href="javascript:;" tooltip-placement="left" tooltip="Report"
-                              ng-click="Report(item.id)">
+                              ng-click="Report(item)">
                               <i class="icon-flag"></i>
                             </a>
+                        </li>
+                        <li ng-show="item.reported" class="action-report">
+                          <a href="javascript:;" tooltip-placement="left" tooltip="Reported">
+                           <i class="icon-flag icon-highlight-red"></i>
+                          </a>
                         </li>
                     </ul>
                  </div>

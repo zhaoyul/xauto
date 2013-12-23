@@ -392,6 +392,13 @@ angular.module( 'blvdx.events', [
     });
   };
 
+  $scope.Follow = function() {
+      Events.follow($scope.EventObj).then(function (data) {
+          $scope.EventObj.srv_following = data.srv_following;
+          $scope.EventObj.srv_followersCount = data.srv_followersCount;
+      });
+  };
+
   $scope.reloadEvent();
 }])
 
