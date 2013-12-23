@@ -193,9 +193,8 @@ angular.module( 'blvdx.account', [
 }])
 
 .controller( 'AccountMyFavoritePhotosCtrl', ['$scope', 'titleService', 'Accounts', function AccountCtrl( $scope, titleService, Accounts ) {
-  titleService.setTitle( 'My Photos' );
+  titleService.setTitle( 'My Favorite Photos' );
   Accounts.getFavorites().then(function (favorites) {
-    console.log(favorites);
       $scope.stream = favorites;
   });
 

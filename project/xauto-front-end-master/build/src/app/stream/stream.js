@@ -53,6 +53,11 @@ angular.module( 'blvdx.stream', [
 .controller( 'StreamListCtrl', ['$scope', 'titleService', 'Streams', function StreamCtrl( $scope, titleService, Streams) {
   titleService.setTitle( 'Stream' );
   $scope.stream = [];
+  $scope.$watch("$parent.stream", function(){
+    if($scope.$parent.stream !== undefined && $scope.$parent.stream !== null){
+      $scope.stream = $scope.$parent.stream;
+    }
+  });
   $scope.is_fetching = false;
 
   $scope.Favorite = function(entry) {
