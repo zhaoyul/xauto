@@ -104,10 +104,12 @@ class PhotoStream(DispatchableConnection):
         for obj in objs:
             self.send_message("append_entry", self.entry_serializer(obj))
 
-    def on_fetch_more(self, offset, count=4):
+    def on_fetch_more(self, offset=None, count=4):
         """
             fetches ``count`` more photos older than ``offset`` iso-timestamp
         """
+        if not offset:
+            return
         offset = parse_datetime(offset)
         user_photos = Q(userprofile__slug__in=self.subscriptions["profiles"])
         event_photos = Q(event_date__event__slug__in=self.subscriptions["events"])
