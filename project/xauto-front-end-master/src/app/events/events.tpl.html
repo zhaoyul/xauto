@@ -65,7 +65,7 @@
               </a>
             </div>
             <div class="pull-right">
-              <span class="event-location">
+              <span class="event-location" ng-show="event.date_info.city">
                 <a href="#">{{event.date_info.city}}, {{event.date_info.state}}</a>
                 <i class="xa-icon-location"></i>
               </span>
@@ -73,7 +73,9 @@
           </div>
         </div>
         <div class="event-picture-container">
-          <img ng-src="{{event.photo}}" alt="">
+          <a href="#/events/{{event.slug}}">
+            <img ng-src="{{event.photo}}" alt="">
+          </a>
         </div>
         <div class="event-text">
           <p>
@@ -82,17 +84,15 @@
         </div>
         <div class="event-footer">
           <div class="pull-left">
-            <a href="#" tooltip-placement="right" tooltip="Organizer: {{event.author_name}}">
+            <a href="#/profile/{{event.author_slug}}" tooltip-placement="right" tooltip="Organizer: {{event.author_name}}">
               <img class="img-rounded user-pic" ng-src="{{ event.author_photo }}" alt="">
             </a>
           </div>
           <div class="pull-right follow-btn-container">
-            <a href="javascript:;" tooltip-placement="left" tooltip="View Photos">
-              <span class="photo-count">
-                <i class="xa-icon-camera"></i>
-                 {{event.srv_photosCount}}
-              </span>
-            </a>
+            <span class="photo-count">
+              <i class="xa-icon-camera"></i>
+               {{event.srv_photosCount}}
+            </span>
             <a href="javascript:;" class="btn btn-default btn-follow"
               ng-click="Follow(event)"
               ng-class="{following:event.srv_following}">

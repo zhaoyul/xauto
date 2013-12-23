@@ -42,9 +42,19 @@ angular.module( 'blvdx.stream', [
  */
 .controller( 'StreamCtrl', ['$scope', 'titleService', 'Streams', '$http', function StreamCtrl( $scope, titleService, Streams, $http) {
   titleService.setTitle( 'Stream' );
+
+  // always reqest latest user data
+  $http.get('/api/current-user/').then(function(response) {
+    Streams.send_subscribe(response.data.user.following);
+    Streams.send_fetch_latest();
+  });
+}])
+
+.controller( 'StreamListCtrl', ['$scope', 'titleService', 'Streams', function StreamCtrl( $scope, titleService, Streams) {
+  titleService.setTitle( 'Stream' );
   $scope.stream = [];
   $scope.is_fetching = false;
-  console.log($scope);
+
   $scope.Favorite = function(entry) {
       Streams.send_favorite(entry.id);
       entry.favorited = true;
@@ -74,12 +84,6 @@ angular.module( 'blvdx.stream', [
     $scope.fetchMore();
   });
 
-  // always reqest latest user data
-  $http.get('/api/current-user/').then(function(response) {
-    Streams.send_subscribe(response.data.user.following);
-    Streams.send_fetch_latest();
-  });
-
   $scope.fetchMore = function(){
     if($scope.is_fetching) {
       return;
@@ -96,6 +100,7 @@ angular.module( 'blvdx.stream', [
   };
 
 }])
+
 
 .directive('bxStreamPhoto', function() {
   return {

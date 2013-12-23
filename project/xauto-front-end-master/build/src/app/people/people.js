@@ -17,7 +17,8 @@ angular.module( 'blvdx.people', [
   'titleService',
   'plusOne',
   'security.authorization',
-  'resources.users'
+  'resources.users',
+  'resources.streams'
 ])
 
 /**
@@ -80,12 +81,18 @@ angular.module( 'blvdx.people', [
 
 }])
 
-.controller( 'ProfileViewCtrl', function ProfileViewCtrl( $scope, titleService, $stateParams, Profiles ) {
+.controller( 'ProfileViewCtrl', ['$scope', 'titleService', '$stateParams', 'Profiles', 'Streams', function ProfileViewCtrl( $scope, titleService, $stateParams, Profiles, Streams) {
 
   titleService.setTitle( $stateParams.username+' - Profile' );
 
   Profiles.getDetails($stateParams.profileId).then(function (profile) {
       $scope.Profile = profile;
+      var subscription = {
+        'profiles': [profile.slug],
+        'events': []
+      };
+      Streams.send_subscribe(subscription);
+      Streams.send_fetch_latest();
   });
 
   $scope.Follow = function($profile) {
@@ -95,6 +102,6 @@ angular.module( 'blvdx.people', [
       });
   };
 
-})
+}])
 ;
 

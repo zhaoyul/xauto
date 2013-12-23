@@ -56,6 +56,7 @@ class EventSerializer(serializers.ModelSerializer):
     date_info = serializers.SerializerMethodField('get_date_info')
     author_name = serializers.SerializerMethodField('get_author_name')
     author_photo = serializers.SerializerMethodField('get_author_photo')
+    author_slug = serializers.SerializerMethodField('get_author_slug')
     srv_live = serializers.SerializerMethodField('get_srv_live')
     srv_following = serializers.SerializerMethodField('get_srv_following')
 
@@ -63,7 +64,7 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'srv_followersCount',
             'srv_photosCount', 'photo', 'date_info', 'author_name', 'slug',
-            'author_photo', 'srv_live', 'srv_following')
+            'author_photo', 'author_slug', 'srv_live', 'srv_following')
 
     def get_photo(self, obj):
         if obj.main_image:
@@ -78,6 +79,11 @@ class EventSerializer(serializers.ModelSerializer):
     def get_author_name(self, obj):
         if obj.author:
             return obj.author.get_full_name()
+        return ""
+
+    def get_author_slug(self, obj):
+        if obj.author:
+            return obj.author.slug
         return ""
 
     def get_author_photo(self, obj):

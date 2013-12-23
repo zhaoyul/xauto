@@ -302,27 +302,6 @@ angular.module( 'blvdx.events', [
 .controller( 'EventDetailsCtrl', ['$scope', 'titleService', '$stateParams', 'Events', 'Streams', function EventsCtrl( $scope, titleService, $stateParams, Events, Streams) {
   titleService.setTitle( 'Event Details' );
   $scope.stateParams = $stateParams;
-  $scope.stream = [];
-  $scope.is_fetching = false;
-
-  $scope.$on("prepend_entry", function(event, data){
-    $scope.stream.unshift(data);
-    $scope.$apply();
-  });
-
-  $scope.$on("append_entry", function(event, data){
-    $scope.stream.push(data);
-    $scope.$apply();
-  });
-
-  $scope.$on("fetch_end", function(event, data){
-    $scope.is_fetching = false;
-    $scope.$apply();
-  });
-
-  $scope.$on("scrolledBottom", function(){
-    $scope.fetchMore();
-  });
 
   $scope.reloadEvent = function(){
     Events.getDetails($stateParams.eventId).then(function (event) {
@@ -335,21 +314,6 @@ angular.module( 'blvdx.events', [
         Streams.send_subscribe(subscription);
         Streams.send_fetch_latest();
     });
-  };
-
-  $scope.fetchMore = function(){
-    if($scope.is_fetching){
-      return;
-    }
-    $scope.is_fetching = true;
-    var offset;
-    if($scope.stream.length > 0){
-      offset = $scope.stream[$scope.stream.length-1].timestamp;
-    }
-    else{
-      offset = (new Date()).toISOString();
-    }
-    Streams.send_fetch_more(offset);
   };
 
   $('.schedule-dropdown-menu').click(function(e) {

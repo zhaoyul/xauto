@@ -560,7 +560,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "              </a>\n" +
     "            </div>\n" +
     "            <div class=\"pull-right\">\n" +
-    "              <span class=\"event-location\">\n" +
+    "              <span class=\"event-location\" ng-show=\"event.date_info.city\">\n" +
     "                <a href=\"#\">{{event.date_info.city}}, {{event.date_info.state}}</a>\n" +
     "                <i class=\"xa-icon-location\"></i>\n" +
     "              </span>\n" +
@@ -568,7 +568,9 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "          </div>\n" +
     "        </div>\n" +
     "        <div class=\"event-picture-container\">\n" +
-    "          <img ng-src=\"{{event.photo}}\" alt=\"\">\n" +
+    "          <a href=\"#/events/{{event.slug}}\">\n" +
+    "            <img ng-src=\"{{event.photo}}\" alt=\"\">\n" +
+    "          </a>\n" +
     "        </div>\n" +
     "        <div class=\"event-text\">\n" +
     "          <p>\n" +
@@ -577,17 +579,15 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "        </div>\n" +
     "        <div class=\"event-footer\">\n" +
     "          <div class=\"pull-left\">\n" +
-    "            <a href=\"#\" tooltip-placement=\"right\" tooltip=\"Organizer: {{event.author_name}}\">\n" +
+    "            <a href=\"#/profile/{{event.author_slug}}\" tooltip-placement=\"right\" tooltip=\"Organizer: {{event.author_name}}\">\n" +
     "              <img class=\"img-rounded user-pic\" ng-src=\"{{ event.author_photo }}\" alt=\"\">\n" +
     "            </a>\n" +
     "          </div>\n" +
     "          <div class=\"pull-right follow-btn-container\">\n" +
-    "            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"View Photos\">\n" +
-    "              <span class=\"photo-count\">\n" +
-    "                <i class=\"xa-icon-camera\"></i>\n" +
-    "                 {{event.srv_photosCount}}\n" +
-    "              </span>\n" +
-    "            </a>\n" +
+    "            <span class=\"photo-count\">\n" +
+    "              <i class=\"xa-icon-camera\"></i>\n" +
+    "               {{event.srv_photosCount}}\n" +
+    "            </span>\n" +
     "            <a href=\"javascript:;\" class=\"btn btn-default btn-follow\"\n" +
     "              ng-click=\"Follow(event)\"\n" +
     "              ng-class=\"{following:event.srv_following}\">\n" +
@@ -986,34 +986,28 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "          <div class=\"col-xs-6 col-sm-4 col-md-3 counts-col\">\n" +
     "            <ul>\n" +
     "              <li>\n" +
-    "                <a href=\"#\">\n" +
-    "                  <span class=\"count-badge\">\n" +
-    "                    <span class=\"badge\">{{profile.srv_photosCount}}</span>\n" +
-    "                  </span>\n" +
-    "                  <span class=\"count-title\">\n" +
-    "                    Photos\n" +
-    "                  </span>\n" +
-    "                </a>\n" +
+    "                <span class=\"count-badge\">\n" +
+    "                  <span class=\"badge\">{{profile.srv_photosCount}}</span>\n" +
+    "                </span>\n" +
+    "                <span class=\"count-title\">\n" +
+    "                  Photos\n" +
+    "                </span>\n" +
     "              </li>\n" +
     "              <li>\n" +
-    "                <a href=\"#\">\n" +
-    "                  <span class=\"count-badge\">\n" +
-    "                    <span class=\"badge\">{{profile.srv_followersCount}}</span>\n" +
-    "                  </span>\n" +
-    "                  <span class=\"count-title\">\n" +
-    "                    Followers\n" +
-    "                  </span>\n" +
-    "                </a>\n" +
+    "                <span class=\"count-badge\">\n" +
+    "                  <span class=\"badge\">{{profile.srv_followersCount}}</span>\n" +
+    "                </span>\n" +
+    "                <span class=\"count-title\">\n" +
+    "                  Followers\n" +
+    "                </span>\n" +
     "              </li>\n" +
     "              <li>\n" +
-    "                <a href=\"#\">\n" +
-    "                  <span class=\"count-badge\">\n" +
-    "                    <span class=\"badge\">{{profile.srv_followingCount}}</span>\n" +
-    "                  </span>\n" +
-    "                  <span class=\"count-title\">\n" +
-    "                    Following\n" +
-    "                  </span>\n" +
-    "                </a>\n" +
+    "                <span class=\"count-badge\">\n" +
+    "                  <span class=\"badge\">{{profile.srv_followingCount}}</span>\n" +
+    "                </span>\n" +
+    "                <span class=\"count-title\">\n" +
+    "                  Following\n" +
+    "                </span>\n" +
     "              </li>\n" +
     "            </ul>\n" +
     "          </div>\n" +
@@ -1031,7 +1025,8 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "    </ul>\n" +
     "\n" +
     "  </div>\n" +
-    "</div>");
+    "</div>\n" +
+    "");
 }]);
 
 angular.module("people/profile-view.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -1072,34 +1067,28 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
     "                                          <div class=\"col-xs-6 col-sm-4 col-md-3 counts-col\">\n" +
     "                                            <ul>\n" +
     "                                              <li>\n" +
-    "                                                <a href=\"#\">\n" +
-    "                                                  <span class=\"count-badge\">\n" +
-    "                                                    <span class=\"badge\">{{Profile.srv_photosCount}}</span>\n" +
-    "                                                  </span>\n" +
-    "                                                  <span class=\"count-title\">\n" +
-    "                                                    Photos\n" +
-    "                                                  </span>\n" +
-    "                                                </a>\n" +
+    "                                                <span class=\"count-badge\">\n" +
+    "                                                  <span class=\"badge\">{{Profile.srv_photosCount}}</span>\n" +
+    "                                                </span>\n" +
+    "                                                <span class=\"count-title\">\n" +
+    "                                                  Photos\n" +
+    "                                                </span>\n" +
     "                                              </li>\n" +
     "                                              <li>\n" +
-    "                                                <a href=\"#\">\n" +
-    "                                                  <span class=\"count-badge\">\n" +
-    "                                                    <span class=\"badge\">{{Profile.srv_followersCount}}</span>\n" +
-    "                                                  </span>\n" +
-    "                                                  <span class=\"count-title\">\n" +
-    "                                                    Followers\n" +
-    "                                                  </span>\n" +
-    "                                                </a>\n" +
+    "                                                <span class=\"count-badge\">\n" +
+    "                                                  <span class=\"badge\">{{Profile.srv_followersCount}}</span>\n" +
+    "                                                </span>\n" +
+    "                                                <span class=\"count-title\">\n" +
+    "                                                  Followers\n" +
+    "                                                </span>\n" +
     "                                              </li>\n" +
     "                                              <li>\n" +
-    "                                                <a href=\"#\">\n" +
-    "                                                  <span class=\"count-badge\">\n" +
-    "                                                    <span class=\"badge\">{{Profile.srv_followingCount}}</span>\n" +
-    "                                                  </span>\n" +
-    "                                                  <span class=\"count-title\">\n" +
-    "                                                    Following\n" +
-    "                                                  </span>\n" +
-    "                                                </a>\n" +
+    "                                                <span class=\"count-badge\">\n" +
+    "                                                  <span class=\"badge\">{{Profile.srv_followingCount}}</span>\n" +
+    "                                                </span>\n" +
+    "                                                <span class=\"count-title\">\n" +
+    "                                                  Following\n" +
+    "                                                </span>\n" +
     "                                              </li>\n" +
     "                                            </ul>\n" +
     "                                          </div>\n" +
@@ -1151,7 +1140,7 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
 angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("stream/partial_stream_list.tpl.html",
     "<div class=\"row\">\n" +
-    "    <ul class=\"stream-list scroll-watch\">\n" +
+    "    <ul class=\"stream-list\" ng-controller=\"StreamListCtrl\">\n" +
     "        <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"item in stream\">\n" +
     "            <div class=\"inner\">\n" +
     "                <div class=\"stream-picture\">\n" +
@@ -1191,6 +1180,7 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "        </li>\n" +
     "    </ul>\n" +
     "</div>\n" +
+    "<div ng-show=\"is_fetching\">Loading older entries...</div>\n" +
     "");
 }]);
 
@@ -1202,6 +1192,5 @@ angular.module("stream/stream.tpl.html", []).run(["$templateCache", function($te
     "  </div>\n" +
     "</div> -->\n" +
     "<ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>\n" +
-    "<div ng-show=\"is_fetching\">Loading older entries...</div>\n" +
     "");
 }]);
