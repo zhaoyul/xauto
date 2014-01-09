@@ -6,6 +6,7 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = (
     ('Jakub Wisniowski', 'jwisniowski@milosolutions.com'),
     ('Mateusz Szefer', 'mszefer@milosolutions.com'),
+    ('Maciej Zuk', 'mzuk@milosolutions.com'),
 )
 
 DATABASES = {
