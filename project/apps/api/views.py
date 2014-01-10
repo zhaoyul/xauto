@@ -27,7 +27,7 @@ from event.models import Event, EventDate, EventImage
 from event.serializers import (EventSerializer, EventDetailsSerializer,
     EventModelSerializer, EventDateSerializer, AlbumSerializer)
 from account.serializers import (UserProfileSerializer, UserSerializer,
-    NewProfileSerializer, EmailSerializer, UserSignupSerializer)
+    NewProfileSerializer, EmailSerializer)
 from account.models import UserProfile
 from multiuploader.serializers import (MultiuploaderImageSerializer,
     CoordinatedPhotoSerializer)
@@ -535,10 +535,16 @@ class RegistrationView(APIView):
         if len(full_name) > 1:
             user_data['last_name'] = ' '.join(full_name[1:])
 
-        user_serializer = UserSignupSerializer(data=user_data)
+        pw1 = user_data.get('password_1', '1')
+        pw2 = user_data.get('password_2', '2')
+        if pw1 != pw2:
+            error = {'password_1': ['Passwords does not match']}
+            error['password_2'] = ['']
+            return Response(error, status=status.HTTP_400_BAD_REQUEST)
+
+        user_serializer = UserSerializer(data=user_data)
         profile_serializer = NewProfileSerializer(data=request.DATA)
         if user_serializer.is_valid() and profile_serializer.is_valid():
-
             email = user_serializer.data.get('email', None)
 
             try:
@@ -547,8 +553,7 @@ class RegistrationView(APIView):
                 return Response(error, status=status.HTTP_400_BAD_REQUEST)
             except User.DoesNotExist:
                 user_serializer.object.username = profile_serializer.object.name
-                password = user_data.get('password_1', uuid.uuid4())
-                user_serializer.object.set_password(password)
+                user_serializer.object.set_password(pw1)
                 user_serializer.object.is_active = False
                 user_serializer.save()
 

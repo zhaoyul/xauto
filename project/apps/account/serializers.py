@@ -6,21 +6,6 @@ from rest_framework import serializers
 from account.models import UserProfile
 
 
-class UserSignupSerializer(serializers.ModelSerializer):
-    password_1 = serializers.CharField(max_length=255, required=True)
-    password_2 = serializers.CharField(max_length=255, required=True)
-    email = serializers.EmailField(required=True)
-
-    class Meta:
-        model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'password_1', 'password_2')
-
-    def validate_password_1(self, attrs, source):
-        if attrs['password_1'] != attrs['password_2']:
-            raise serializers.ValidationError("Passwords does not match")
-        return attrs
-
-
 class UserSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField('get_full_name')
 
