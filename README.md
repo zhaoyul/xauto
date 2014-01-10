@@ -15,6 +15,13 @@ Installation:
 5. start django application using:
    bin/django runserver
 
+6. In server environment also add those lines to cron in order to send mails:
+
+        * *  * * * (/home/miloweb/www/xauto.dev.milosolutions.com/bin/django send_mail >> /home/miloweb/www/xauto.dev.milosolutions.com/cron_mailer.out 2>&1)
+
+        0,20,40 *  * * * (/home/miloweb/www/xauto.dev.milosolutions.com/bin/django retry_deferred >> /home/miloweb/www/xauto.dev.milosolutions.com/cron_mailer.out 2>&1)
+
+    just use correct paths.
 
 Explanation:
 1. Project uses buildout to perform installation (http://buildout.org)
