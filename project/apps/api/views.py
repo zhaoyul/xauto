@@ -583,7 +583,6 @@ class RegistrationView(APIView):
                      'domain': request.build_absolute_uri(reverse('index')),
                      'activation_link': activation_link}
                 )
-
                 if "mailer" in settings.INSTALLED_APPS:
                     send_html_mail("Welcome to Xauto", email_body, email_body,
                         settings.DEFAULT_FROM_EMAIL, [email], fail_silently=False)
