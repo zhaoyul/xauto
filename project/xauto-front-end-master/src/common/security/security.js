@@ -65,9 +65,12 @@ angular.module('security.service', [
       var request = $http.post('/api/login/', {email: email, password: password});
       return request.then(function(response) {
         service.currentUser = response.data.user;
+        $("#login_invalid").hide();
         if ( service.isAuthenticated() ) {
           $(".modal:visible").find(".close").click();
           //closeLoginDialog(true);
+        }else{
+          $("#login_invalid").show();
         }
       });
     },

@@ -17,7 +17,9 @@ angular.module( 'blvdx.stream', [
   'titleService',
   'plusOne',
   'security.authorization',
-  'resources.streams'
+  'resources.streams',
+  'resources.events',
+  'resources.users'
 ])
 
 /**
@@ -40,13 +42,37 @@ angular.module( 'blvdx.stream', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'StreamCtrl', ['$scope', 'titleService', 'Streams', '$http', function StreamCtrl( $scope, titleService, Streams, $http) {
+.controller( 'StreamCtrl', ['$scope', 'titleService', 'Streams', '$http', 'Events', '$q', 'Profiles', function StreamCtrl( $scope, titleService, Streams, $http, Events, $q, Profiles) {
   titleService.setTitle( 'Stream' );
 
   // always reqest latest user data
   $http.get('/api/current-user/').then(function(response) {
-    Streams.send_subscribe(response.data.user.following);
-    Streams.send_fetch_latest();
+    if(response.data.user !== null) {
+      Streams.send_subscribe(response.data.user.following);
+      Streams.send_fetch_latest();
+    } else{
+      var following = {};
+      var eventsLoaded = $q.defer();
+      var usersLoaded = $q.defer();
+      Events.getEvents({}).then(function (events) {
+        following['events'] = [];
+        angular.forEach(events, function(ev){
+          following['events'].push(ev.slug);
+        });
+        eventsLoaded.resolve();
+      });
+      Profiles.getProfiles({}).then(function (profiles) {
+        following['profiles'] = [];
+        angular.forEach(profiles, function(profile){
+          following['profiles'].push(profile.slug);
+        });
+        usersLoaded.resolve();
+      });
+      $q.all([eventsLoaded.promise, usersLoaded.promise]).then(function(){
+        Streams.send_subscribe(following);
+        Streams.send_fetch_latest();
+      });
+    }
   });
 }])
 

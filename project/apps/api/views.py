@@ -27,7 +27,7 @@ from event.models import Event, EventDate, EventImage
 from event.serializers import (EventSerializer, EventDetailsSerializer,
     EventModelSerializer, EventDateSerializer, AlbumSerializer)
 from account.serializers import (UserProfileSerializer, UserSerializer,
-    NewProfileSerializer, EmailSerializer)
+    NewProfileSerializer, EmailSerializer, UserSignupSerializer)
 from account.models import UserProfile
 from multiuploader.serializers import (MultiuploaderImageSerializer,
     CoordinatedPhotoSerializer)
@@ -493,7 +493,7 @@ class ResetPasswordView(APIView):
                 return redirect('/')
             except User.DoesNotExist:
                 return Response(
-                    {'error': "User with this email address doesn't exist"},
+                    {'email': ["User with this email address doesn't exist"]},
                     status=status.HTTP_400_BAD_REQUEST)
 
         return Response(email_serializer.errors,
@@ -535,7 +535,7 @@ class RegistrationView(APIView):
         if len(full_name) > 1:
             user_data['last_name'] = ' '.join(full_name[1:])
 
-        user_serializer = UserSerializer(data=user_data)
+        user_serializer = UserSignupSerializer(data=user_data)
         profile_serializer = NewProfileSerializer(data=request.DATA)
         if user_serializer.is_valid() and profile_serializer.is_valid():
 
@@ -543,7 +543,7 @@ class RegistrationView(APIView):
 
             try:
                 User.objects.get(email=email)
-                error = {'error': 'User already exists'}
+                error = {'email': ['User with given email already exists']}
                 return Response(error, status=status.HTTP_400_BAD_REQUEST)
             except User.DoesNotExist:
                 user_serializer.object.username = profile_serializer.object.name
@@ -593,8 +593,7 @@ class RegistrationView(APIView):
                 # return authentication token
                 token, created = Token.objects.get_or_create(
                     user=user_serializer.object)
-                data = {'token': token.key}
-                return Response(data, status=status.HTTP_201_CREATED)
+                return Response(None, status=status.HTTP_201_CREATED)
 
         errors = user_serializer.errors
         errors.update(profile_serializer.errors)

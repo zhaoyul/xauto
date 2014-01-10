@@ -58,13 +58,13 @@ angular.module("account/account-login.tpl.html", []).run(["$templateCache", func
     "<div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">Email</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"email\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.email\">\n" +
+    "      <input type=\"email\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.email\" required>\n" +
     "    </div>\n" +
     "</div>\n" +
     "<div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">Password</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"password\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.password\">\n" +
+    "      <input type=\"password\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.password\" required>\n" +
     "    </div>\n" +
     "</div>\n" +
     "");
@@ -92,7 +92,7 @@ angular.module("account/account-signup.tpl.html", []).run(["$templateCache", fun
     "<h1>Create New Account</h1>\n" +
     "<div class=\"row\">\n" +
     "	<div class=\"col-lg-8\">\n" +
-    "		<form class=\"form-horizontal\" role=\"form\" ng-submit=\"accountCreate()\">\n" +
+    "		<form class=\"form-horizontal\" role=\"form\" ng-submit=\"accountCreate()\" name=\"form\">\n" +
     "			<ng-include src=\"'account/partial_create_account.tpl.html'\"></ng-include>\n" +
     "\n" +
     "			  <div class=\"form-group\">\n" +
@@ -120,90 +120,103 @@ angular.module("account/account.tpl.html", []).run(["$templateCache", function($
 angular.module("account/partial_create_account.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/partial_create_account.tpl.html",
     "\n" +
-    "  <div class=\"form-group\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.full_name.$invalid || errors.full_name}\">\n" +
     "    <label class=\"col-lg-3 control-label\">Display Name</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.user.full_name\">\n" +
+    "      <input name=\"full_name\" type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.user.full_name\">\n" +
     "      <span class=\"help-block\">Tip: Use your real name so people can find and follow you</span>\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.full_name\" ng-repeat=\"error in errors.full_name\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.name.$invalid || errors.name || AccountObj.username_available == 'Unavailable'}\">\n" +
     "    <label class=\"col-lg-3 control-label\">Username</label>\n" +
     "    <div class=\"col-lg-6\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.name\" ng-keyup=\"checkUsername($event.target.value)\">\n" +
+    "      <input name=\"name\" ng-keyup=\"checkUsername($event.target.value)\" type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.name\" ng-keyup=\"checkUsername($event.target.value)\" ng-maxlenght=\"255\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.name\" ng-repeat=\"error in errors.name\">{{error}}</span>\n" +
     "    </div>\n" +
     "    <div class=\"col-lg-3\">\n" +
     "        {{AccountObj.username_available}}\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.email.$invalid || errors.email}\">\n" +
     "    <label class=\"col-lg-3 control-label\">Email</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"email\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.user.email\">\n" +
+    "      <input name=\"email\" type=\"email\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.user.email\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.email\" ng-repeat=\"error in errors.email\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.password_1.$invalid || errors.password_1}\">\n" +
     "    <label class=\"col-lg-3 control-label\">Password</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"password\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.user.password_1\">\n" +
+    "      <input name=\"password_1\" type=\"password\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.user.password_1\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.password_1\" ng-repeat=\"error in errors.password_1\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.password_2.$invalid || errors.password_2}\">\n" +
     "    <label for=\"inputPassword1\" class=\"col-lg-3 control-label\">Confirm Password</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"password\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.user.password_2\">\n" +
+    "      <input name=\"password_2\" type=\"password\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.user.password_2\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.password_2\" ng-repeat=\"error in errors.password_2\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.about.$invalid || errors.about}\">\n" +
     "    <label class=\"col-lg-3 control-label\">About Account</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <textarea class=\"form-control\" ng-model=\"AccountObj.about\"></textarea>\n" +
+    "      <textarea name=\"about\" class=\"form-control\" ng-model=\"AccountObj.about\"></textarea>\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.about\" ng-repeat=\"error in errors.about\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.main_image.$invalid || errors.main_image}\">\n" +
     "    <label class=\"col-lg-3 control-label\">User Hero Image</label>\n" +
     "    <div class=\"col-lg-4\">\n" +
-    "      <input type=\"file\" class=\"btn\" ng-file-select=\"onFileSelect($files, 'main_image_obj')\" ng-model=\"AccountObj.main_image\">\n" +
+    "      <input name=\"main_image\" type=\"file\" class=\"btn\" ng-file-select=\"onFileSelect($files, 'main_image_obj')\" ng-model=\"AccountObj.main_image\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.main_image\" ng-repeat=\"error in errors.main_image\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.thumbnail_image.$invalid || errors.thumbnail_image}\">\n" +
     "    <label class=\"col-lg-3 control-label\">User Thumbnail</label>\n" +
     "    <div class=\"col-lg-4\">\n" +
-    "      <input type=\"file\" class=\"btn\" ng-file-select=\"onFileSelect($files, 'thumbnail_image_obj')\" ng-model=\"AccountObj.thumbnail_image\">\n" +
+    "      <input name=\"thumbnail_image\" type=\"file\" class=\"btn\" ng-file-select=\"onFileSelect($files, 'thumbnail_image_obj')\" ng-model=\"AccountObj.thumbnail_image\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.thumbnail_image\" ng-repeat=\"error in errors.thumbnail_image\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.location_address.$invalid || errors.location_address}\">\n" +
     "    <label class=\"col-lg-3 control-label\">Location Address</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.location_address\">\n" +
+    "      <input name=\"location_address\" type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.location_address\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.location_address\" ng-repeat=\"error in errors.location_address\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.city.$invalid || errors.city}\">\n" +
     "    <label class=\"col-lg-3 control-label\">City</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.city\">\n" +
+    "      <input name=\"city\" type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.city\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.city\" ng-repeat=\"error in errors.city\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.state.$invalid || errors.state}\">\n" +
     "    <label class=\"col-lg-3 control-label\">State</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.state\">\n" +
+    "      <input name=\"state\" type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.state\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.state\" ng-repeat=\"error in errors.state\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.zip.$invalid || errors.zip}\">\n" +
     "    <label class=\"col-lg-3 control-label\">ZIP/Postal Code</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.zip\">\n" +
+    "      <input name=\"zip\" type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.zip\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.zip\" ng-repeat=\"error in errors.zip\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.county.$invalid || errors.county}\">\n" +
     "    <label class=\"col-lg-3 control-label\">Country</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <select class=\"form-control\" ng-model=\"AccountObj.country\">\n" +
+    "      <select name=\"country\" class=\"form-control\" ng-model=\"AccountObj.country\">\n" +
     "        <option>USA</option>\n" +
     "        <option>Armenia</option>\n" +
     "        <option>Spain</option>\n" +
     "      </select>\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.country\" ng-repeat=\"error in errors.country\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
@@ -780,11 +793,9 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
     "      <div class=\"panel-body\">\n" +
     "        <div class=\"row\">\n" +
     "          <ul class=\"stream-list\">\n" +
-    "            <li class=\"col-xs-6 col-sm-4 col-lg-3\" ng-repeat=\"photo in album.photos\">\n" +
-    "              <div class=\"inner\">\n" +
-    "                <div class=\"stream-picture\"\n" +
-    "                bx-stream-photo=\"{{photo.image}}\"\n" +
-    "                 ></div>\n" +
+    "            <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"photo in album.photos\">\n" +
+    "              <div class=\"stream-picture\">\n" +
+    "                 <div bx-stream-photo=\"{{photo.image}}\" class=\"inner\"></div>\n" +
     "              </div>\n" +
     "            </li>\n" +
     "          </ul>\n" +
@@ -792,7 +803,8 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
     "      </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "</div>");
+    "</div>\n" +
+    "");
 }]);
 
 angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -1050,10 +1062,10 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
     "\n" +
     "                                        <div class=\"row profile-item\">\n" +
     "                                          <div class=\"col-xs-12 col-sm-6 col-md-4 photo-name-col\">\n" +
-    "                                            <a href=\"#profile/LewHamF1\"><img src=\"{{Profile.thumbnail_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +
+    "                                            <a href=\"#profile/{{Profile.slug}}\"><img src=\"{{Profile.thumbnail_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +
     "                                            <div class=\"name-wrapper\">\n" +
-    "                                              <strong><a href=\"#profile/LewHamF1\">{{Profile.full_name}}</a></strong>\n" +
-    "                                              <span class=\"username\"><a href=\"#profile/LewHamF1\">{{Profile.name}}</a></span>\n" +
+    "                                              <strong><a href=\"#profile/{{Profile.slug}}\">{{Profile.full_name}}</a></strong>\n" +
+    "                                              <span class=\"username\"><a href=\"#profile/{{Profile.slug}}\">{{Profile.name}}</a></span>\n" +
     "                                              <span class=\"location\">\n" +
     "                                                <i class=\"xa-icon-location\"></i> {{Profile.location}}\n" +
     "                                              </span>\n" +

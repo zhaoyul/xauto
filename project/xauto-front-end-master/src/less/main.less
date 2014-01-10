@@ -39,9 +39,9 @@
   transition: @options !important;
   -webkit-backface-visibility: hidden;
 }
-// end of mixins 
-body { 
-	padding-top: 70px; 
+// end of mixins
+body {
+	padding-top: 70px;
 	position: relative;
 	background: @xauto-background-color !important;
 }
@@ -98,12 +98,12 @@ h1,h2,h3,h4{
 	font-size: 14px;
 	color: @gray-text;
 	text-transform: uppercase;
-	-webkit-box-shadow:  0px 0px 5px 1px #88b900;    
+	-webkit-box-shadow:  0px 0px 5px 1px #88b900;
     box-shadow:  0px 0px 5px 1px #88b900;
     white-space: normal;
     text-align: left;
     &:hover{
-        -webkit-box-shadow:  0px 0px 7px 1px #88b900;    
+        -webkit-box-shadow:  0px 0px 7px 1px #88b900;
        	box-shadow:  0px 0px 7px 1px #88b900;
     }
     i{
@@ -118,14 +118,14 @@ h1,h2,h3,h4{
 nav.navbar{
 	height: auto;
 	margin-bottom: 15px;
-	
+
 	&.navbar-xauto{
 		background: #fff;
 		-webkit-box-shadow:  0px 0px 5px 0px rgba(0, 0, 0, 0.4);
         box-shadow:  0px 0px 5px 0px rgba(0, 0, 0, 0.4);
 	}
 	.profile-dropdown{
-		
+
 		padding: 9px 10px;
 		.navbar-profile-pic{
 			width: 32px;
@@ -144,7 +144,7 @@ nav.navbar{
 		height: 34px;
 		text-align: center;
 		text-indent: -9999px;
-		background: url("img/xauto-logo-navbar.png") no-repeat 0 0; 	
+		background: url("img/xauto-logo-navbar.png") no-repeat 0 0;
 	}
 	h2.navbar-slogan{
 		float: left;
@@ -156,7 +156,7 @@ nav.navbar{
 		padding:0;
 		bottom:0;
 		text-indent: -9999px;
-		background: url("img/xauto-slogan-navbar.png") no-repeat 0 0; 		
+		background: url("img/xauto-slogan-navbar.png") no-repeat 0 0;
 	}
 	.navbar-form{
 		width: inherit;
@@ -222,7 +222,7 @@ div#main-navigation-tabs-wrapper{
 				font-size: 18px;
 				line-height: 30px;
 				text-align: center;
-				
+
 			}
 			&:hover{
 				&>a{
@@ -235,15 +235,15 @@ div#main-navigation-tabs-wrapper{
 					color: #2567b2;
 					background:#f7f7f8;
 					i.xa-icon-nav-events{
-						background-position: 0 -110px;	
+						background-position: 0 -110px;
 					}
 					i.xa-icon-nav-profiles{
-						background-position: -40px -110px;	
+						background-position: -40px -110px;
 					}
 					i.xa-icon-nav-stream{
-						background-position: -80px -110px;		
+						background-position: -80px -110px;
 					}
-				}	
+				}
 			}
 		}
 	}
@@ -276,32 +276,32 @@ div#main-container-wrapper{
 	td:before {
 		display: none;
 	}
-	/* 
+	/*
 	Max width before this PARTICULAR table gets nasty
 	This query will take effect for any screen smaller than 760px
 	and also iPads specifically.
 	*/
 	@media  only screen and (max-width: 760px),
 	(min-device-width: 768px) and (max-device-width: 1024px)  {
-	
+
 		/* Force table to not be like tables anymore */
-		&, thead, tbody, th, td, tr { 
-			display: block; 
+		&, thead, tbody, th, td, tr {
+			display: block;
 		}
-		
+
 		/* Hide table headers (but not display: none;, for accessibility) */
-		thead tr { 
+		thead tr {
 			display: none;
 		}
-		
+
 		tr { border: 1px solid #ccc; }
 		tbody{
-			td { 
+			td {
 				/* Behave  like a "row" */
 				border: none;
-				border-bottom: 1px solid #eee; 
+				border-bottom: 1px solid #eee;
 				position: relative;
-				padding-left: 30%; 
+				padding-left: 30%;
 				line-height: 30px !important;
 				&.name{
 					line-height: 40px;
@@ -312,22 +312,22 @@ div#main-container-wrapper{
 				}
 			}
 		}
-		td:before { 
+		td:before {
 			display: block;
 			/* Now like a table header */
 			position: absolute;
 			/* Top/left values mimic padding */
 			top: 6px;
 			left: 6px;
-			width: 45%; 
-			padding-right: 10px; 
+			width: 45%;
+			padding-right: 10px;
 			white-space: nowrap;
 		}
-		
+
 		/*
 		Label the data
 		*/
-	
+
 	}
 }
 @media (max-width: @screen-xs-max) {
@@ -379,7 +379,7 @@ div#main-container-wrapper{
 			width: @navbar-header-lg-width !important;
 		}
 	}
-	
+
 }
 @media (min-width: @screen-md) and (max-width: @screen-md-max) {
 	body{
@@ -405,6 +405,9 @@ div#main-container-wrapper{
 	}
 }
 
+#login_invalid {
+	display: none;
+}
 
 /* end of main less */
 

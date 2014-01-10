@@ -7499,7 +7499,7 @@ div#main-container-wrapper div.main-search-bar .search-by-label {
 
 .responsive-table {
   table-layout: fixed;
-  /* 
+  /*
 	Max width before this PARTICULAR table gets nasty
 	This query will take effect for any screen smaller than 760px
 	and also iPads specifically.
@@ -7623,6 +7623,10 @@ div#main-container-wrapper div.main-search-bar .search-by-label {
     display: inline-block;
     width: 350px !important;
   }
+}
+
+#login_invalid {
+  display: none;
 }
 
 /* end of main less */
@@ -8672,7 +8676,7 @@ ul.event-details-actions > li > a.btn i {
 
 table.events-list-table {
   table-layout: fixed;
-  /* 
+  /*
 	Max width before this PARTICULAR table gets nasty
 	This query will take effect for any screen smaller than 760px
 	and also iPads specifically.

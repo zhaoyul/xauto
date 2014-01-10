@@ -44,6 +44,9 @@ angular.module( 'blvdx', [
 
     //To Do move login modal and his submit to security module.
     $scope.AccountObj = {};
+    $scope.$watch('AccountObj', function(){
+        $scope.errors = {};
+    }, true);
     $scope.accountSubmit = function(){
         security.login($scope.AccountObj.email, $scope.AccountObj.password);
     };
@@ -51,6 +54,8 @@ angular.module( 'blvdx', [
         Accounts.resetPassword($scope.AccountObj).then(function (account) {
             $(".modal:visible").find(".close").click();
             $state.transitionTo('events');
+        }, function(error){
+            $scope.errors = error.data;
         });
     };
 
@@ -58,6 +63,8 @@ angular.module( 'blvdx', [
         Accounts.createAccount($scope.AccountObj).then(function (account) {
             $(".modal:visible").find(".close").click();
             $state.transitionTo('events');
+        }, function(error){
+            $scope.errors = error.data;
         });
     };
 
@@ -132,15 +139,21 @@ angular.module( 'blvdx', [
     };
     $scope.$on(GeolocationEvent.COMPLETE , function (nge){
         $scope.check();
-        $scope.$apply();// async call z poza angulara potrzebuje apply, inaczej nie zrobi update'u parametrow
+        if(!$scope.$$phase){
+            $scope.$apply();// async call z poza angulara potrzebuje apply, inaczej nie zrobi update'u parametrow
+        }
     });
     $scope.$on(GeolocationEvent.UPDATE , function (nge){
         $scope.check();
-        $scope.$apply();
+        if(!$scope.$$phase){
+            $scope.$apply();// async call z poza angulara potrzebuje apply, inaczej nie zrobi update'u parametrow
+        }
     });
     $scope.$on(GeolocationEvent.ERROR , function(nge){
         $scope.check();
-        $scope.$apply();
+        if(!$scope.$$phase){
+            $scope.$apply();// async call z poza angulara potrzebuje apply, inaczej nie zrobi update'u parametrow
+        }
     });
     $scope.single = function(){
         $geolocation.stopInterval();
