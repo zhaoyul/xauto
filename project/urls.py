@@ -4,6 +4,8 @@ from django.conf import settings
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from django.views.generic import RedirectView
+
 admin.autodiscover()
 
 js_info_dict = {
@@ -28,4 +30,8 @@ if settings.DEBUG:
         url(r'^$', 'django.contrib.staticfiles.views.serve', {'path': '/index.html'}, name="index"),
         (r'^media/(?P<path>.*)$', 'django.views.static.serve',
          {'document_root': settings.MEDIA_ROOT}),
+    )
+else:
+    urlpatterns += patterns('',
+        url(r'^$', RedirectView.as_view(url='/'), name="index"),
     )

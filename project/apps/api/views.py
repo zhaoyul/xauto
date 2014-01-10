@@ -518,6 +518,7 @@ class ChangePasswordView(APIView):
         except UserProfile.DoesNotExist:
             return Response({'error': "Wrong token"}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class RegistrationView(APIView):
     """
     Creates a new user.
