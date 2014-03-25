@@ -51,7 +51,10 @@ class EventsListView(ListAPIView):
         own_events = self.request.GET.get('own_events', False)
         user = self.request.user
 
-        queryset = Event.objects.filter(title__startswith=search_text)
+        if len(search_text)>=3:
+            queryset = Event.objects.filter((Q(title__startswith=search_text) | Q(event_dates__city__startswith=search_text) | Q(event_dates__state__startswith=search_text)))
+        else:
+            queryset = Event.objects.all()
 
         if own_events == 'true' and user.is_active:
             queryset = queryset.filter(author=user.profile)
@@ -165,7 +168,7 @@ class CheckShortLinkView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
-        search_text = self.request.GET.get('search_text', '')
+        search_text = self.request.GET.get('search_text', '').lower()
         data = {'response': 'Available'}
         if Event.objects.filter(short_link=search_text).count():
             data = {'response': 'Unavailable'}
@@ -327,7 +330,6 @@ class StreamListView(ListAPIView):
                 Q(event_date__start_date__lt=datetime.now()) &
                 Q(event_date__end_date__gt=datetime.now())
             )
-
         return queryset
 
 

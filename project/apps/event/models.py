@@ -4,7 +4,7 @@ from datetime import datetime
 from django.db import models
 from django.db.models import permalink
 from django.contrib.auth.models import User
-
+from django.core.exceptions import ValidationError
 
 # ---------------------------------------------------
 # --- Django addon                                ---
@@ -129,6 +129,8 @@ class Event(TimestampedModel):
 
     STATUS_COMPLETED_EVENT = [STATUS_COMPLETE, ]
 
+
+
     title = models.CharField(max_length=255, null=True, blank=True)
     about = models.TextField()
 
@@ -142,7 +144,15 @@ class Event(TimestampedModel):
         choices=STATUS_CHOICES, default=STATUS_NEW)
     eventSize = models.IntegerField(choices=EVENT_SIZE, default=10)  # How big is your event in Cars
     capacity = models.IntegerField(default=0)  # How big is your Capacity in people in people
-    short_link = models.CharField(max_length=50, default='', unique=True)
+
+    # Short link must be validated for case-insensitive unique
+    def validate_shortlink(value):
+        if Event.objects.filter(short_link=value.lower()).count():
+            raise ValidationError(u'%s is already used shortlink' % value)
+
+    short_link = models.CharField(max_length=50, default='', unique=True, validators=[validate_shortlink])
+
+
     slug = AutoSlugField(populate_from='short_link',
         slugify=lambda value: value.replace(' ','-'))
 
@@ -152,6 +162,8 @@ class Event(TimestampedModel):
     followed = models.ManyToManyField(UserProfile,
         related_name='followed_events', null=True, blank=True,
         verbose_name='Event followed by')
+
+
 
     def get_future_dates(self):
         return self.event_dates.filter(
