@@ -117,7 +117,7 @@ class EventAdmin(AdminImageMixin, admin.ModelAdmin):
 class CurrencyAdmin(admin.ModelAdmin):
     list_display = ('country', 'currency',)
     search_fields = ['country', 'currency']
-    readonly_fields = ['country']
+    #readonly_fields = ['country']
     ordering = ('country',)
 
 

@@ -33,7 +33,8 @@
                     </ul>
                  </div>
                 <div class="stream-title">
-                    <a href="#/profile/{{item.userprofile.slug}}"><h1>by {{item.userprofile.name}}</h1></a>
+                    <a href="#{{item.userslug}}" ng-class="{'hidden':!EventObj && Profile}"><h1>{{item.caption_by}}</h1></a>
+                    <a href="#{{item.eventslug}}" ng-class="{'hidden':!Profile && EventObj}"><h1>{{item.caption_ev}}</h1></a>
                 </div>
             </div>
         </li>

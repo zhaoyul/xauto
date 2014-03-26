@@ -38,17 +38,25 @@ class PhotoStream(DispatchableConnection):
             makes json from MultiuploaderImage
         """
         caption_text = []
-        caption_text.append(entry.upload_date.strftime("%d %b %H:%M"))
+        caption_ev = ""
+        eventslug = ""
+
         if entry.event_date:
             caption_text.append("@ %s" %entry.event_date.event.title)
+            caption_ev = "@ %s" %entry.event_date.event.title
+            eventslug = "/events/" + entry.event_date.event.slug
         caption_text.append("by %s" % entry.userprofile.get_full_name())
         msg = {
             "image": entry.url,
             "id": entry.id,
             "timestamp": entry.upload_date.strftime("%Y-%m-%dT%H:%M:%S.%f%z"),
-            "caption": " ".join(caption_text),
+            "caption_both": " ".join(caption_text),
+            "caption_by": "by %s" % entry.userprofile.get_full_name(),
+            "caption_ev": caption_ev,
+            "userslug": "/profile/" + entry.userprofile.slug,
+            "eventslug": eventslug,
             "favorited": entry.favorite_by.filter(user=self.user).count() != 0,
-            "reported": entry.is_irrelevant or entry.is_inappropriate
+            "reported": entry.is_irrelevant or entry.is_inappropriate,
         }
         return msg
 

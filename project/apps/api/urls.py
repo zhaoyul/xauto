@@ -9,7 +9,7 @@ from .views import (EventsListView, EventDetailsView, FollowEventView,
     ProfileFavoritesListView, ProfileMyPhotosListView, RegistrationView,
     LoginView, LogoutView, CurrentUserView, ActivateView, ResetPasswordView,
     ChangePasswordView, CheckUsernameView, AlbumPhotosUploader,
-    ConfigurationView, CoordinatedPhotoUploader)
+    ConfigurationView, CoordinatedPhotoUploader, EventDatePhotoManageView)
 
 router = routers.DefaultRouter()
 router.register(r'events', EventViewSet)
@@ -19,6 +19,10 @@ router.register(r'profiles', UserProfileViewSet)
 urlpatterns = patterns('',
     url(r'^configuration/$', ConfigurationView.as_view(), name='configuration'),
     url(r'^events/list/$', EventsListView.as_view(), name='events-list'),
+
+    url(r'^eventdates/(?P<id>\d+)/photosmanage/$', EventDatePhotoManageView.as_view(),
+        name='date-photosmanage'),
+
     url(r'^events/(?P<slug>[-\w]+)/details/$', EventDetailsView.as_view(),
         name='events-details'),
     url(r'^events/(?P<slug>[-\w]+)/follow/$', FollowEventView.as_view(),

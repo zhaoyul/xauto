@@ -65,6 +65,8 @@
         <tr ng-repeat="date in EventObj.dates">
           <td>{{date.start_date | date:'fullDate' }} &mdash; {{date.feature_headline}}</td>
           <td>
+            <a href="#/eventdates/{{date.id}}/photosmanage" class="btn btn-primary btn-sm">Manage photos</a>
+
             <button
               class="btn btn-primary btn-sm"
               data-toggle="modal"

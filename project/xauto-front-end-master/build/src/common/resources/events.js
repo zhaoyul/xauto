@@ -8,6 +8,10 @@ angular.module('resources.events', ['restangular'])
       return Restangular.all('events').customGETLIST('list', params);
   };
 
+  Events.getEventDatePhotoManage = function (id) {
+      return Restangular.one('eventdates',id).customGET('photosmanage');
+  };
+
   Events.getEvent = function (slug) {
       return Restangular.one('events', slug).get();
   };

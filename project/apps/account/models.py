@@ -32,6 +32,7 @@ class UserProfile(TimestampedModel):
     location_address = models.CharField(max_length=255, null=True, blank=True)
     ip_location = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
+    state = models.CharField(max_length=50,null=True, blank=True)
     country = models.CharField(max_length=30, null=True, blank=True)
     zipcode = models.CharField(max_length=10, null=True, blank=True)
     region = models.CharField(max_length=50, null=True, blank=True)

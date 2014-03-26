@@ -23,6 +23,14 @@ Installation:
 
     just use correct paths.
 
+
+7. Start photo streamer using:
+   bin/django runstreamer
+
+
+   Also you must see readme about frontend (important) - /project/xauto-front-end-master/README.md
+
+
 Explanation:
 1. Project uses buildout to perform installation (http://buildout.org)
 2. Base buildout configuration (modules/dependencies used, project's settings file name) is defined in buildout.cfg

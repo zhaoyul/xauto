@@ -51,7 +51,7 @@ class EventsListView(ListAPIView):
         own_events = self.request.GET.get('own_events', False)
         user = self.request.user
 
-        if len(search_text)>=3:
+        if len(search_text)>=1:
             queryset = Event.objects.filter((Q(title__startswith=search_text) | Q(event_dates__city__startswith=search_text) | Q(event_dates__state__startswith=search_text)))
         else:
             queryset = Event.objects.all()
@@ -133,6 +133,23 @@ class EventDateViewSet(ModelViewSet):
     model = EventDate
 
 
+
+
+class EventDatePhotoManageView(APIView):
+    """
+    Manage photo for event date
+    """
+    permission_classes = (IsAuthenticated,)
+
+
+    def get(self, request, id, *args, **kwargs):
+        print 5
+        data = {}
+        DateObj = EventDate.objects.get(id=id)
+        data["DateObjTitle"] = DateObj.start_date.strftime("%Y-%m-%d %H:%M:%S") + " - " + DateObj.end_date.strftime("%Y-%m-%d %H:%M:%S")
+        data["DateObjImgs"] = MultiuploaderImage.objects.filter(event_date=DateObj).values()
+        return Response(data, status=status.HTTP_200_OK)
+
 class FollowEventView(APIView):
     """
     Adding current user as follower of event
@@ -202,11 +219,17 @@ class UserProfileViewSet(ModelViewSet):
         filter_by = self.request.GET.get('filter_by', '')
         user = self.request.user
 
-        queryset = UserProfile.objects.filter(
-            Q(name__startswith=search_text) |
-            Q(user__first_name__startswith=search_text) |
-            Q(user__last_name__startswith=search_text)
-        )
+
+        if len(search_text)>=1:
+            queryset = UserProfile.objects.filter(
+                Q(name__startswith=search_text) |
+                Q(user__first_name__startswith=search_text) |
+                Q(user__last_name__startswith=search_text) |
+                Q(city__startswith=search_text) |
+                Q(state__startswith=search_text)
+            )
+        else:
+            queryset = UserProfile.objects.all()
 
         if filter_by == 'following' and user.is_active:
             queryset = queryset.filter(followed=user.profile)

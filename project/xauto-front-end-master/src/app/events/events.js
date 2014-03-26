@@ -20,6 +20,18 @@ angular.module( 'blvdx.events', [
           }
         }
       })
+      .state( 'eventDatesPhotosmanage', {
+        url: '/eventdates/:dateId/photosmanage',
+        views: {
+          "main": {
+            controller: 'eventDatesPhotosmanageCtrl',
+            templateUrl: 'events/date-photosmanage.tpl.html',
+            resolve:{
+              authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+            }
+          }
+        }
+      })
       .state( 'eventAdd', {
         url: '/events/add',
         views: {
@@ -75,6 +87,22 @@ angular.module( 'blvdx.events', [
         }
       });
 }])
+
+
+
+
+
+.controller( 'eventDatesPhotosmanageCtrl', ['$scope', 'titleService', '$stateParams', 'Events', 'AppScope',
+    function eventDatesPhotosmanageCtrl( $scope, titleService, $stateParams, Events, AppScope ) {
+        titleService.setTitle( 'Edit date photos' );
+
+      Events.getEventDatePhotoManage($stateParams.dateId).then(function (data) {
+          $scope.DateObj = data;
+      });
+
+
+}])
+
 
 .controller( 'EventsCtrl', ['$scope', 'titleService', 'Events', 'AppScope',
     function EventsCtrl( $scope, titleService, Events, AppScope ) {
