@@ -1,4 +1,4 @@
-angular.module('templates-app', ['account/account-change-pswd.tpl.html', 'account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_edit_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
+angular.module('templates-app', ['account/account-change-pswd.tpl.html', 'account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'events/date-photosmanage.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_edit_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
 
 angular.module("account/account-change-pswd.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-change-pswd.tpl.html",
@@ -220,6 +220,29 @@ angular.module("account/partial_create_account.tpl.html", []).run(["$templateCac
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
+    "");
+}]);
+
+angular.module("events/date-photosmanage.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("events/date-photosmanage.tpl.html",
+    "<div class=\"row\">\n" +
+    "    <div class=\"col-xs-12 col-sm-12 col-lg-11\">\n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-12\">\n" +
+    "                <div >\n" +
+    "                     <h1 class=\"pull-left\">Manage photos for date  {{DateObj.DateObjTitle}}</h1>\n" +
+    "                     <div class=\"allimgsdel\">\n" +
+    "                         <div class=\"oneimg\" ng-repeat=\"img in DateObj.DateObjImgs\" >\n" +
+    "                             <img src=\"/media/{{img.image}}\">\n" +
+    "                         </div>\n" +
+    "                     </div>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "\n" +
+    "        </div>\n" +
+    "\n" +
+    "    </div>\n" +
+    "</div>\n" +
     "");
 }]);
 
@@ -754,6 +777,8 @@ angular.module("events/partial_edit_event_form.tpl.html", []).run(["$templateCac
     "        <tr ng-repeat=\"date in EventObj.dates\">\n" +
     "          <td>{{date.start_date | date:'fullDate' }} &mdash; {{date.feature_headline}}</td>\n" +
     "          <td>\n" +
+    "            <a href=\"#/eventdates/{{date.id}}/photosmanage\" class=\"btn btn-primary btn-sm\">Manage photos</a>\n" +
+    "\n" +
     "            <button\n" +
     "              class=\"btn btn-primary btn-sm\"\n" +
     "              data-toggle=\"modal\"\n" +
@@ -1186,7 +1211,8 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "                    </ul>\n" +
     "                 </div>\n" +
     "                <div class=\"stream-title\">\n" +
-    "                    <a href=\"#\"><h1>{{item.caption}}</h1></a>\n" +
+    "                    <a href=\"#{{item.userslug}}\" ng-class=\"{'hidden':!EventObj && Profile}\"><h1>{{item.caption_by}}</h1></a>\n" +
+    "                    <a href=\"#{{item.eventslug}}\" ng-class=\"{'hidden':!Profile && EventObj}\"><h1>{{item.caption_ev}}</h1></a>\n" +
     "                </div>\n" +
     "            </div>\n" +
     "        </li>\n" +
