@@ -195,7 +195,7 @@ class Event(TimestampedModel):
         try:
             imgObject = get_thumbnail(root + self.main_image.url, str(size)+'x'+str(size2), crop='center', quality=99)
         except:
-            return ""
+            return root + self.main_image.url
         urlImg = imgObject.url
         return urlImg
 
