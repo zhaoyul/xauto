@@ -12,7 +12,7 @@ from django.core.exceptions import ValidationError
 from sorl.thumbnail.fields import ImageField
 from autoslug import AutoSlugField
 from sorl.thumbnail import get_thumbnail
-from project import settings
+from django.conf import settings
 
 
 from account.models import UserProfile
