@@ -15,7 +15,7 @@ import string
 from sorl.thumbnail.fields import ImageField
 from autoslug import AutoSlugField
 from sorl.thumbnail import get_thumbnail
-from project import settings
+from django.conf import settings
 
 # ---------------------------------------------------
 # --- Xauto Data models                           ---
@@ -65,7 +65,7 @@ class UserProfile(TimestampedModel):
             try:
                 imgObject = get_thumbnail(root + self.thumbnail_image.url, str(size)+'x'+str(size2), crop='center', quality=99)
             except:
-                return ""
+                return root + self.thumbnail_image.url
             urlImg = imgObject.url
             return urlImg
 
