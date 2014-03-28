@@ -9,7 +9,8 @@ from .views import (EventsListView, EventDetailsView, FollowEventView,
     ProfileFavoritesListView, ProfileMyPhotosListView, RegistrationView,
     LoginView, LogoutView, CurrentUserView, ActivateView, ResetPasswordView,
     ChangePasswordView, CheckUsernameView, AlbumPhotosUploader,
-    ConfigurationView, CoordinatedPhotoUploader, EventDatePhotoManageView)
+    ConfigurationView, CoordinatedPhotoUploader, EventDatePhotoManageView, DeletePictureView, ProfileMyOtherPhotosListView, ProfileMyDatesByEventsListView,
+    ProfileMyOutDatesView)
 
 router = routers.DefaultRouter()
 router.register(r'events', EventViewSet)
@@ -39,8 +40,14 @@ urlpatterns = patterns('',
     url(r'^current-user/$', CurrentUserView.as_view(), name='api-current-user'),
     url(r'^profiles/(?P<slug>[-\w]+)/follow/$', FollowProfileView.as_view(),
         name='profile-follow'),
+    url(r'^profiles/datesbyevents/$', ProfileMyDatesByEventsListView.as_view(),
+        name='profile-datesbyevents'),
+    url(r'^profiles/outdates/$', ProfileMyOutDatesView.as_view(),
+        name='profile-outdates'),
     url(r'^profiles/pictures/$', ProfileMyPhotosListView.as_view(),
         name='profile-pictures'),
+    url(r'^profiles/otherpictures/$', ProfileMyOtherPhotosListView.as_view(),
+        name='profile-otherpictures'),
     url(r'^profiles/favorites-list/$', ProfileFavoritesListView.as_view(),
         name='profile-favorites'),
     url(r'^events/check-link/$', CheckShortLinkView.as_view(),
@@ -55,5 +62,7 @@ urlpatterns = patterns('',
         FavoritePictureView.as_view(), name='picture-favorite'),
     url(r'^pictures/(?P<picture_id>\d+)/report/$',
         ReportPictureView.as_view(), name='picture-report'),
+    url(r'^pictures/(?P<picture_id>\d+)/delete/$',
+        DeletePictureView.as_view(), name='picture-delete'),
     url(r'^', include(router.urls)),
 )

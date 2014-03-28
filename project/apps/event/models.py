@@ -11,6 +11,9 @@ from django.core.exceptions import ValidationError
 #from livesettings.models import Setting
 from sorl.thumbnail.fields import ImageField
 from autoslug import AutoSlugField
+from sorl.thumbnail import get_thumbnail
+from project import settings
+
 
 from account.models import UserProfile
 from xauto_lib.models import TimestampedModel
@@ -145,12 +148,8 @@ class Event(TimestampedModel):
     eventSize = models.IntegerField(choices=EVENT_SIZE, default=10)  # How big is your event in Cars
     capacity = models.IntegerField(default=0)  # How big is your Capacity in people in people
 
-    # Short link must be validated for case-insensitive unique
-    def validate_shortlink(value):
-        if Event.objects.filter(short_link=value.lower()).count():
-            raise ValidationError(u'%s is already used shortlink' % value)
 
-    short_link = models.CharField(max_length=50, default='', unique=True, validators=[validate_shortlink])
+    short_link = models.CharField(max_length=50, default='', unique=True)
 
 
     slug = AutoSlugField(populate_from='short_link',
@@ -163,7 +162,11 @@ class Event(TimestampedModel):
         related_name='followed_events', null=True, blank=True,
         verbose_name='Event followed by')
 
-
+    # Short link must be validated for case-insensitive unique
+    def clean(self):
+        self.short_link = self.short_link.lower()
+        if Event.objects.filter(short_link=self.short_link).exclude(id=self.id).count():
+            raise ValidationError(u'%s is already used shortlink' % self.short_link)
 
     def get_future_dates(self):
         return self.event_dates.filter(
@@ -186,6 +189,15 @@ class Event(TimestampedModel):
 
     def event_upload_images(self):
         return MultiuploaderImage.objects.filter(event_date__event_id=self.id)
+
+    def thumb_url(self, size, size2):
+        root =  "/".join(settings.MEDIA_ROOT.split('/')[0:-1])
+        try:
+            imgObject = get_thumbnail(root + self.main_image.url, str(size)+'x'+str(size2), crop='center', quality=99)
+        except:
+            return ""
+        urlImg = imgObject.url
+        return urlImg
 
     @permalink
     def get_absolute_url(self):

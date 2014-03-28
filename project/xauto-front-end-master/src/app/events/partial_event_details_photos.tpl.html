@@ -11,9 +11,17 @@
       <div class="panel-body">
         <div class="row">
           <ul class="stream-list">
-            <li class="col-xs-12 col-sm-4 col-lg-3" ng-repeat="photo in album.photos">
+            <li class="col-xs-12 col-sm-4 col-lg-3" ng-repeat="photo in album.photos" ng-hide="photo.hide">
               <div class="stream-picture">
                  <div bx-stream-photo="{{photo.image}}" class="inner"></div>
+                  <ul class="stream-action-links">
+                        <li class="action-delete" ng-show="false">
+                            <a href="javascript:;" tooltip-placement="left" tooltip="Delete"
+                              ng-click="Delete(photo)">
+                              <i class="icon-remove"></i>
+                            </a>
+                        </li>
+                    </ul>
               </div>
             </li>
           </ul>

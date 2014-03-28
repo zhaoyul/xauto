@@ -46,7 +46,7 @@ class MultiuploaderImage(TimestampedModel):
         related_name='favorite_images', null=True, blank=True,
         verbose_name='Image favorite by')
 
-    image = ResizedImageField(max_width=800, max_height=600, upload_to=storage)
+    image = ResizedImageField(max_width=1600, max_height=1200, upload_to=storage)
     caption = models.CharField(max_length=100, blank=True)
 
     @property

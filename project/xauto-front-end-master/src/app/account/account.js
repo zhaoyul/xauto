@@ -186,15 +186,24 @@ angular.module( 'blvdx.account', [
 
 .controller( 'AccountMyPhotosCtrl', ['$scope', 'titleService', 'Accounts', function AccountCtrl( $scope, titleService, Accounts ) {
   titleService.setTitle( 'My Photos' );
+  Accounts.getOutdates().then(function (data) {
+      $scope.Outdates = data;
+  });
+  Accounts.getDatesbyevents().then(function (data) {
+      $scope.Datesbyevents = data;
+  });
   Accounts.getAlbums().then(function (albums) {
       $scope.Albums = albums;
   });
-
+  Accounts.getOtherPhotos().then(function (photos) {
+      $scope.stream = photos;
+  });
 }])
 
 .controller( 'AccountMyFavoritePhotosCtrl', ['$scope', 'titleService', 'Accounts', function AccountCtrl( $scope, titleService, Accounts ) {
   titleService.setTitle( 'My Favorite Photos' );
   Accounts.getFavorites().then(function (favorites) {
+      $scope.isfavor = true;
       $scope.stream = favorites;
   });
 

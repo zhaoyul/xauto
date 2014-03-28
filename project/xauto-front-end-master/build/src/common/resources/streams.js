@@ -56,7 +56,7 @@ angular.module('resources.streams', ['resources.configuration', 'restangular'])
         });
     };
 
-    instance.send_favorite = function(entry_id){
+    instance.send_favorite = function(entry_id,type){
       // var msg = {
       //   type: "favorite",
       //   data: {
@@ -77,6 +77,10 @@ angular.module('resources.streams', ['resources.configuration', 'restangular'])
       // instance.send(JSON.stringify(msg));
       return Restangular.one('pictures', entry_id).customPUT(entry_id, 'report');
 
+    };
+
+    instance.send_delete = function(entry_id){
+        return Restangular.one('pictures', entry_id).customPUT(entry_id, 'delete');
     };
 
     instance.send_fetch_latest = function(){

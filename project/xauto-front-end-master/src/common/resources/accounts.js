@@ -32,8 +32,21 @@ angular.module('resources.accounts', ['restangular'])
           return Restangular.all('profiles').customGETLIST('favorites-list');
       };
 
+
+      Accounts.getDatesbyevents = function () {
+            return Restangular.all('profiles').customGETLIST('datesbyevents');
+      };
+
+      Accounts.getOutdates = function () {
+            return Restangular.all('profiles').customGETLIST('outdates');
+      };
+
       Accounts.getAlbums = function () {
           return Restangular.all('profiles').customGETLIST('pictures');
+      };
+
+      Accounts.getOtherPhotos = function () {
+          return Restangular.all('profiles').customGETLIST('otherpictures');
       };
 
       Accounts.checkUsername = function (params) {

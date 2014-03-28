@@ -1,18 +1,23 @@
+<div><h1 >Manage photos for date  {{DateObj.DateObjTitle}}</h1></div>
+<br/>
+<div class="clear"></div>
 <div class="row">
-    <div class="col-xs-12 col-sm-12 col-lg-11">
-        <div class="row">
-            <div class="col-xs-12">
-                <div >
-                     <h1 class="pull-left">Manage photos for date  {{DateObj.DateObjTitle}}</h1>
-                     <div class="allimgsdel">
-                         <div class="oneimg" ng-repeat="img in DateObj.DateObjImgs" >
-                             <img src="/media/{{img.image}}">
-                         </div>
-                     </div>
-                </div>
+    <ul class="stream-list" ng-controller="StreamListCtrl">
+        <li class="col-xs-12 col-sm-4 col-lg-3" ng-repeat="item in DateObj.DateObjImgs" ng-hide="item.hide">
+            <div class="inner">
+                <div class="stream-picture">
+                     <div bx-stream-photo="{{item.image}}" class="inner"></div>
+                     <ul class="stream-action-links">
+                        <li class="action-delete">
+                            <a href="javascript:;" tooltip-placement="left" tooltip="Delete"
+                              ng-click="Delete(item)">
+                              <i class="icon-remove"></i>
+                            </a>
+                        </li>
+                    </ul>
+                 </div>
             </div>
-
-        </div>
-
-    </div>
+        </li>
+    </ul>
 </div>
+<div ng-show="is_fetching">Loading older entries...</div>

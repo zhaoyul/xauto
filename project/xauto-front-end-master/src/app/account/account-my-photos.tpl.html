@@ -1,2 +1,67 @@
 <h1>My Photos</h1>
-<ng-include src="'events/partial_event_details_photos.tpl.html'"></ng-include>
+<div class="deletephotos">
+    <div ng-repeat="event in Datesbyevents" ng-show="event.dates">
+        <div class="panel panel-default">
+            <div class="panel-heading" ng-show="stream">
+              <h4 class="panel-title">
+                  {{event.title}}
+              </h4>
+             </div>
+             <div class="panel-body">
+                <div ng-repeat="dt in event.dates">
+                     <a href="">{{dt.start_date | date: 'MMM d'}} - {{dt.end_date | date: 'MMM d'}}</a>
+                </div>
+             </div>
+         </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" ng-show="stream">
+          <h4 class="panel-title">
+              Out of events
+          </h4>
+         </div>
+         <div class="panel-body">
+            <div ng-repeat="dt in Outdates">
+                 <a href="">{{dt | date: 'MMM d'}}</a>
+            </div>
+         </div>
+     </div>
+</div>
+
+
+
+<!---
+<div class="deletephotos">
+    <ng-include src="'events/partial_event_details_photos.tpl.html'"></ng-include>
+
+            <div class="panel panel-default">
+            <div class="panel-heading" ng-show="stream">
+              <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#">
+                  Out of albums
+                </a>
+              </h4>
+            </div>
+
+            <div class="row">
+                <ul class="stream-list" ng-controller="StreamListCtrl">
+                    <li class="col-xs-12 col-sm-4 col-lg-3" ng-repeat="item in stream" ng-hide="item.hide">
+                        <div class="inner">
+                            <div class="stream-picture">
+                                 <div bx-stream-photo="{{item.image}}" class="inner"></div>
+                                 <ul class="stream-action-links">
+                                    <li class="action-delete">
+                                        <a href="javascript:;" tooltip-placement="left" tooltip="Delete"
+                                          ng-click="Delete(item)">
+                                          <i class="icon-remove"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                             </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+     </div>
+</div>--->

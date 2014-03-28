@@ -86,9 +86,22 @@ angular.module( 'blvdx.stream', [
   });
   $scope.is_fetching = false;
 
-  $scope.Favorite = function(entry) {
-      Streams.send_favorite(entry.id);
-      entry.favorited = true;
+  $scope.Favorite = function(entry,type) {
+      if(!type){
+            type = 1;
+      }
+      Streams.send_favorite(entry.id,type);
+      if(type == 2){
+            entry.favorited = false;
+      }else{
+            entry.favorited = true;
+      }
+
+  };
+
+  $scope.Delete = function(entry) {
+        Streams.send_delete(entry.id);
+        entry.hide = true;
   };
 
   $scope.Report = function(entry) {

@@ -103,7 +103,7 @@ class AlbumPhotosUploader(APIView):
 
         return Response({}, status=status.HTTP_200_OK)
 
-
+from django.core.exceptions import ValidationError
 class EventViewSet(ModelViewSet):
     """
     Returns Event CRUD methods
@@ -114,12 +114,15 @@ class EventViewSet(ModelViewSet):
     lookup_field = 'slug'
 
     def pre_save(self, obj):
+
         if not obj.author:
             obj.author = self.request.user.profile
 
         main_image = self.request.DATA.get('main_image_obj', {})
         if main_image:
             imageObj = EventImage()
+            if "data:" in main_image['file']:
+                main_image['file'] = str(main_image['file']).split(",")[-1]
             imageObj.image.save(
                 main_image['name'],
                 ContentFile(main_image['file'].decode('base64'))
@@ -134,6 +137,22 @@ class EventDateViewSet(ModelViewSet):
 
 
 
+class DeletePictureView(APIView):
+    """
+    Delete photo for event date (of my event,or my photo)
+    """
+    permission_classes = (IsAuthenticated,)
+
+    def put(self, request, picture_id, *args, **kwargs):
+        user = request.user
+        picture = MultiuploaderImage.objects.get(id=picture_id)
+        if picture.event_date:
+            event = picture.event_date.event
+            if event.author.user == user:
+                picture.delete()
+
+        return Response({}, status=status.HTTP_200_OK)
+
 
 class EventDatePhotoManageView(APIView):
     """
@@ -143,11 +162,13 @@ class EventDatePhotoManageView(APIView):
 
 
     def get(self, request, id, *args, **kwargs):
-        print 5
         data = {}
         DateObj = EventDate.objects.get(id=id)
-        data["DateObjTitle"] = DateObj.start_date.strftime("%Y-%m-%d %H:%M:%S") + " - " + DateObj.end_date.strftime("%Y-%m-%d %H:%M:%S")
-        data["DateObjImgs"] = MultiuploaderImage.objects.filter(event_date=DateObj).values()
+        data["DateObjTitle"] = DateObj.start_date.strftime('%B %d, %Y') + " - " + DateObj.end_date.strftime('%B %d, %Y')
+        data["DateObjImgs"] = []
+        imgs = MultiuploaderImage.objects.filter(event_date=DateObj)
+        for img in imgs:
+            data["DateObjImgs"].append({"id":img.id,"image":img.image.url})
         return Response(data, status=status.HTTP_200_OK)
 
 class FollowEventView(APIView):
@@ -298,6 +319,40 @@ class FollowProfileView(APIView):
         return Response({}, status=status.HTTP_403_FORBIDDEN)
 
 
+
+class ProfileMyDatesByEventsListView(APIView):
+    """
+    Returns current user dates grouped by events
+    """
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        profile = self.request.user.profile
+        evs = Event.objects.filter(author=profile)
+        data = []
+        for e in evs:
+            data.append({"title":e.title,"dates":EventDate.objects.filter(event=e).values()})
+        return Response(data, status=status.HTTP_200_OK)
+
+
+class ProfileMyOutDatesView(APIView):
+    """
+    Returns current user dates grouped by events
+    """
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        profile = self.request.user.profile
+        objs = MultiuploaderImage.objects.filter(event_date=None,userprofile=profile)
+        data=[]
+        dates=[]
+        for o in objs:
+            dt = o.upload_date.strftime('%d-%m-%Y')
+            if dt not in dates:
+                dates.append(dt)
+                data.append(o.upload_date)
+        return Response(data, status=status.HTTP_200_OK)
+
 class ProfileMyPhotosListView(ListAPIView):
     """
     Returns current user photos
@@ -310,6 +365,22 @@ class ProfileMyPhotosListView(ListAPIView):
         profile = self.request.user.profile
         return EventDate.objects.filter(id__in=
             profile.profile_images.values_list('event_date_id', flat=True))
+
+
+
+class ProfileMyOtherPhotosListView(APIView):
+    """
+    Returns current user photos which out of albums
+    """
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        profile = self.request.user.profile
+        objs_list = []
+        objs = MultiuploaderImage.objects.filter(event_date=None,userprofile=profile)
+        for o in objs:
+            objs_list.append({"id":o.id,"image":o.image.url})
+        return Response(objs_list, status=status.HTTP_200_OK)
 
 
 class ProfileFavoritesListView(ListAPIView):
@@ -394,7 +465,7 @@ class ReportPictureView(APIView):
 def make_userjson(user):
     image_url = ""
     if user.profile.thumbnail_image:
-        image_url = user.profile.thumbnail_image.url
+        image_url = user.profile.get_main_image(32,21)
     user_data = {
         'id': user.pk,
         'email': user.email,

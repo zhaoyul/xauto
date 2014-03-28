@@ -14,6 +14,8 @@ import string
 # ---------------------------------------------------
 from sorl.thumbnail.fields import ImageField
 from autoslug import AutoSlugField
+from sorl.thumbnail import get_thumbnail
+from project import settings
 
 # ---------------------------------------------------
 # --- Xauto Data models                           ---
@@ -56,3 +58,23 @@ class UserProfile(TimestampedModel):
 
         return full_name
     full_name = property(get_full_name)
+
+    def get_thumbnail(self,size,size2):
+        if self.thumbnail_image:
+            root =  "/".join(settings.MEDIA_ROOT.split('/')[0:-1])
+            try:
+                imgObject = get_thumbnail(root + self.thumbnail_image.url, str(size)+'x'+str(size2), crop='center', quality=99)
+            except:
+                return ""
+            urlImg = imgObject.url
+            return urlImg
+
+    def get_main_image(self,size,size2):
+        if self.main_image:
+            root =  "/".join(settings.MEDIA_ROOT.split('/')[0:-1])
+            try:
+                imgObject = get_thumbnail(root + self.main_image.url, str(size)+'x'+str(size2), crop='center', quality=99)
+            except:
+                return ""
+            urlImg = imgObject.url
+            return urlImg

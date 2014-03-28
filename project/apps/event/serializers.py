@@ -44,6 +44,7 @@ class EventModelSerializer(serializers.ModelSerializer):
 
     dates = EventDateSerializer(source='event_dates', read_only=True)
 
+
     class Meta:
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'short_link',
@@ -68,7 +69,7 @@ class EventSerializer(serializers.ModelSerializer):
 
     def get_photo(self, obj):
         if obj.main_image:
-            return obj.main_image.image.url
+            return obj.thumb_url(560,400)
 
     def srv_followers_count(self, obj):
         return obj.followed.count()
@@ -88,7 +89,7 @@ class EventSerializer(serializers.ModelSerializer):
 
     def get_author_photo(self, obj):
         if obj.author and obj.author.thumbnail_image:
-            return obj.author.thumbnail_image.url
+            return obj.author.get_thumbnail(80,77)
         return ""
 
     def get_srv_live(self, obj):
@@ -143,7 +144,7 @@ class EventDetailsSerializer(serializers.ModelSerializer):
 
     def get_photo(self, obj):
         if obj.main_image:
-            return obj.main_image.image.url
+            return obj.thumb_url(1500,290)
 
     def srv_followers_count(self, obj):
         return obj.followed.count()
@@ -158,7 +159,7 @@ class EventDetailsSerializer(serializers.ModelSerializer):
 
     def get_author_photo(self, obj):
         if obj.author and obj.author.thumbnail_image:
-            return obj.author.thumbnail_image.url
+            return obj.author.get_thumbnail(50,48)
         return ""
 
     def get_srv_live(self, obj):

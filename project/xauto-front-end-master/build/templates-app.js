@@ -72,14 +72,79 @@ angular.module("account/account-login.tpl.html", []).run(["$templateCache", func
 
 angular.module("account/account-my-favorite-photos.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-my-favorite-photos.tpl.html",
-    "<ng-include src=\"'stream/partial_stream_list.tpl.html'\" class=\"stream-action-favorite-hidden stream-action-report-hidden\"></ng-include>\n" +
+    "<ng-include src=\"'stream/partial_stream_list.tpl.html'\" class=\"stream-action-report-hidden\"></ng-include>\n" +
     "");
 }]);
 
 angular.module("account/account-my-photos.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-my-photos.tpl.html",
     "<h1>My Photos</h1>\n" +
-    "<ng-include src=\"'events/partial_event_details_photos.tpl.html'\"></ng-include>");
+    "<div class=\"deletephotos\">\n" +
+    "    <div ng-repeat=\"event in Datesbyevents\" ng-show=\"event.dates\">\n" +
+    "        <div class=\"panel panel-default\">\n" +
+    "            <div class=\"panel-heading\" ng-show=\"stream\">\n" +
+    "              <h4 class=\"panel-title\">\n" +
+    "                  {{event.title}}\n" +
+    "              </h4>\n" +
+    "             </div>\n" +
+    "             <div class=\"panel-body\">\n" +
+    "                <div ng-repeat=\"dt in event.dates\">\n" +
+    "                     <a href=\"\">{{dt.start_date | date: 'MMM d'}} - {{dt.end_date | date: 'MMM d'}}</a>\n" +
+    "                </div>\n" +
+    "             </div>\n" +
+    "         </div>\n" +
+    "    </div>\n" +
+    "    <div class=\"panel panel-default\">\n" +
+    "        <div class=\"panel-heading\" ng-show=\"stream\">\n" +
+    "          <h4 class=\"panel-title\">\n" +
+    "              Out of events\n" +
+    "          </h4>\n" +
+    "         </div>\n" +
+    "         <div class=\"panel-body\">\n" +
+    "            <div ng-repeat=\"dt in Outdates\">\n" +
+    "                 <a href=\"\">{{dt | date: 'MMM d'}}</a>\n" +
+    "            </div>\n" +
+    "         </div>\n" +
+    "     </div>\n" +
+    "</div>\n" +
+    "\n" +
+    "\n" +
+    "\n" +
+    "<!---\n" +
+    "<div class=\"deletephotos\">\n" +
+    "    <ng-include src=\"'events/partial_event_details_photos.tpl.html'\"></ng-include>\n" +
+    "\n" +
+    "            <div class=\"panel panel-default\">\n" +
+    "            <div class=\"panel-heading\" ng-show=\"stream\">\n" +
+    "              <h4 class=\"panel-title\">\n" +
+    "                <a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#\">\n" +
+    "                  Out of albums\n" +
+    "                </a>\n" +
+    "              </h4>\n" +
+    "            </div>\n" +
+    "\n" +
+    "            <div class=\"row\">\n" +
+    "                <ul class=\"stream-list\" ng-controller=\"StreamListCtrl\">\n" +
+    "                    <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"item in stream\" ng-hide=\"item.hide\">\n" +
+    "                        <div class=\"inner\">\n" +
+    "                            <div class=\"stream-picture\">\n" +
+    "                                 <div bx-stream-photo=\"{{item.image}}\" class=\"inner\"></div>\n" +
+    "                                 <ul class=\"stream-action-links\">\n" +
+    "                                    <li class=\"action-delete\">\n" +
+    "                                        <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Delete\"\n" +
+    "                                          ng-click=\"Delete(item)\">\n" +
+    "                                          <i class=\"icon-remove\"></i>\n" +
+    "                                        </a>\n" +
+    "                                    </li>\n" +
+    "                                </ul>\n" +
+    "                             </div>\n" +
+    "                        </div>\n" +
+    "                    </li>\n" +
+    "                </ul>\n" +
+    "            </div>\n" +
+    "\n" +
+    "     </div>\n" +
+    "</div>--->");
 }]);
 
 angular.module("account/account-signup.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -225,24 +290,29 @@ angular.module("account/partial_create_account.tpl.html", []).run(["$templateCac
 
 angular.module("events/date-photosmanage.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("events/date-photosmanage.tpl.html",
+    "<div><h1 >Manage photos for date  {{DateObj.DateObjTitle}}</h1></div>\n" +
+    "<br/>\n" +
+    "<div class=\"clear\"></div>\n" +
     "<div class=\"row\">\n" +
-    "    <div class=\"col-xs-12 col-sm-12 col-lg-11\">\n" +
-    "        <div class=\"row\">\n" +
-    "            <div class=\"col-xs-12\">\n" +
-    "                <div >\n" +
-    "                     <h1 class=\"pull-left\">Manage photos for date  {{DateObj.DateObjTitle}}</h1>\n" +
-    "                     <div class=\"allimgsdel\">\n" +
-    "                         <div class=\"oneimg\" ng-repeat=\"img in DateObj.DateObjImgs\" >\n" +
-    "                             <img src=\"/media/{{img.image}}\">\n" +
-    "                         </div>\n" +
-    "                     </div>\n" +
-    "                </div>\n" +
+    "    <ul class=\"stream-list\" ng-controller=\"StreamListCtrl\">\n" +
+    "        <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"item in DateObj.DateObjImgs\" ng-hide=\"item.hide\">\n" +
+    "            <div class=\"inner\">\n" +
+    "                <div class=\"stream-picture\">\n" +
+    "                     <div bx-stream-photo=\"{{item.image}}\" class=\"inner\"></div>\n" +
+    "                     <ul class=\"stream-action-links\">\n" +
+    "                        <li class=\"action-delete\">\n" +
+    "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Delete\"\n" +
+    "                              ng-click=\"Delete(item)\">\n" +
+    "                              <i class=\"icon-remove\"></i>\n" +
+    "                            </a>\n" +
+    "                        </li>\n" +
+    "                    </ul>\n" +
+    "                 </div>\n" +
     "            </div>\n" +
-    "\n" +
-    "        </div>\n" +
-    "\n" +
-    "    </div>\n" +
+    "        </li>\n" +
+    "    </ul>\n" +
     "</div>\n" +
+    "<div ng-show=\"is_fetching\">Loading older entries...</div>\n" +
     "");
 }]);
 
@@ -818,9 +888,17 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
     "      <div class=\"panel-body\">\n" +
     "        <div class=\"row\">\n" +
     "          <ul class=\"stream-list\">\n" +
-    "            <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"photo in album.photos\">\n" +
+    "            <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"photo in album.photos\" ng-hide=\"photo.hide\">\n" +
     "              <div class=\"stream-picture\">\n" +
     "                 <div bx-stream-photo=\"{{photo.image}}\" class=\"inner\"></div>\n" +
+    "                  <ul class=\"stream-action-links\">\n" +
+    "                        <li class=\"action-delete\" ng-show=\"false\">\n" +
+    "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Delete\"\n" +
+    "                              ng-click=\"Delete(photo)\">\n" +
+    "                              <i class=\"icon-remove\"></i>\n" +
+    "                            </a>\n" +
+    "                        </li>\n" +
+    "                    </ul>\n" +
     "              </div>\n" +
     "            </li>\n" +
     "          </ul>\n" +
@@ -1190,7 +1268,7 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "                            </a>\n" +
     "                        </li>\n" +
     "                        <li ng-show=\"item.favorited\" class=\"action-favorite\">\n" +
-    "                          <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Favorited\">\n" +
+    "                          <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Favorited\" ng-click=\"Favorite(item,2)\">\n" +
     "                            <i class=\"icon-star icon-highlight\"></i>\n" +
     "                          </a>\n" +
     "                        </li>\n" +
@@ -1211,8 +1289,8 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "                    </ul>\n" +
     "                 </div>\n" +
     "                <div class=\"stream-title\">\n" +
-    "                    <a href=\"#{{item.userslug}}\" ng-class=\"{'hidden':!EventObj && Profile}\"><h1>{{item.caption_by}}</h1></a>\n" +
-    "                    <a href=\"#{{item.eventslug}}\" ng-class=\"{'hidden':!Profile && EventObj}\"><h1>{{item.caption_ev}}</h1></a>\n" +
+    "                    <a href=\"#{{item.userslug}}\" ng-class=\"{'hidden':!EventObj && Profile && !isfavor}\"><h1>{{item.caption_by}}</h1></a>\n" +
+    "                    <a href=\"#{{item.eventslug}}\" ng-class=\"{'hidden':!Profile && EventObj && !isfavor}\"><h1>{{item.caption_ev}}</h1></a>\n" +
     "                </div>\n" +
     "            </div>\n" +
     "        </li>\n" +
