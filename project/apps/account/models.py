@@ -64,7 +64,7 @@ class UserProfile(TimestampedModel):
             try:
                 imgObject = get_thumbnail(self.thumbnail_image.url, str(size)+'x'+str(size2), crop='center', quality=99)
             except:
-                return ""
+                return root + self.thumbnail_image.url
             urlImg = imgObject.url
             return urlImg
 
