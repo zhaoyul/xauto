@@ -3,7 +3,7 @@
       <li ng-hide="isAuthenticated()"><a data-toggle="modal" href="#loginModal">Log In</a></li>
       <li class="dropdown" ng-show="isAuthenticated()">
         <a href="#" class="dropdown-toggle profile-dropdown" data-toggle="dropdown">
-          <img src="{{currentUser.main_image}}" alt="" class="img-rounded navbar-profile-pic"> {{currentUser.firstName}} {{currentUser.lastName}} <b class="caret"></b>
+          <img src="{{currentUser.thumbnail_image}}" alt="" class="img-rounded navbar-profile-pic"> {{currentUser.firstName}} {{currentUser.lastName}} <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
           <li ng-show="isAuthenticated()"><a href="#events/my">My Events</a></li>

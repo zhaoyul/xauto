@@ -464,8 +464,11 @@ class ReportPictureView(APIView):
 
 def make_userjson(user):
     image_url = ""
+    image_url2 = ""
     if user.profile.thumbnail_image:
         image_url = user.profile.get_main_image(32,21)
+    if user.profile.main_image:
+        image_url2 = user.profile.get_thumbnail(32,21)
     user_data = {
         'id': user.pk,
         'email': user.email,
@@ -474,6 +477,7 @@ def make_userjson(user):
         'fullName': user.get_full_name(),
         'admin': user.is_superuser,
         'main_image': image_url,
+        'thumbnail_image': image_url2,
         'slug': user.profile.slug,
         'following': {
             'profiles': [x.slug for x in user.profile.followed_profiles.all()],
@@ -650,7 +654,7 @@ class RegistrationView(APIView):
             except User.DoesNotExist:
                 user_serializer.object.username = profile_serializer.object.name
                 user_serializer.object.set_password(pw1)
-                user_serializer.object.is_active = False
+                user_serializer.object.is_active = True
                 user_serializer.save()
 
                 if thumbnail_image:
@@ -672,7 +676,8 @@ class RegistrationView(APIView):
                 profile_serializer.object.user = user_serializer.object
                 profile_serializer.save()
 
-                activation_link = request.build_absolute_uri(
+                #activation (old)
+                '''activation_link = request.build_absolute_uri(
                     reverse('activate-profile',
                     args=(profile_serializer.object.activationtoken,))
                 )
@@ -693,7 +698,13 @@ class RegistrationView(APIView):
 
                 # return authentication token
                 token, created = Token.objects.get_or_create(
-                    user=user_serializer.object)
+                    user=user_serializer.object)'''
+
+                #auth new user
+
+                user = authenticate(email=user_serializer.object.email, password=pw1)
+                auth_login(request, user)
+
                 return Response(None, status=status.HTTP_201_CREATED)
 
         errors = user_serializer.errors

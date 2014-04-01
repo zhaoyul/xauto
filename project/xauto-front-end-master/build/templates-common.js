@@ -41,7 +41,7 @@ angular.module("security/login/toolbar.tpl.html", []).run(["$templateCache", fun
     "      <li ng-hide=\"isAuthenticated()\"><a data-toggle=\"modal\" href=\"#loginModal\">Log In</a></li>\n" +
     "      <li class=\"dropdown\" ng-show=\"isAuthenticated()\">\n" +
     "        <a href=\"#\" class=\"dropdown-toggle profile-dropdown\" data-toggle=\"dropdown\">\n" +
-    "          <img src=\"{{currentUser.main_image}}\" alt=\"\" class=\"img-rounded navbar-profile-pic\"> {{currentUser.firstName}} {{currentUser.lastName}} <b class=\"caret\"></b>\n" +
+    "          <img src=\"{{currentUser.thumbnail_image}}\" alt=\"\" class=\"img-rounded navbar-profile-pic\"> {{currentUser.firstName}} {{currentUser.lastName}} <b class=\"caret\"></b>\n" +
     "        </a>\n" +
     "        <ul class=\"dropdown-menu\">\n" +
     "          <li ng-show=\"isAuthenticated()\"><a href=\"#events/my\">My Events</a></li>\n" +

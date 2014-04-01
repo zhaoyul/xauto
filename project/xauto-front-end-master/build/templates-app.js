@@ -1,4 +1,4 @@
-angular.module('templates-app', ['account/account-change-pswd.tpl.html', 'account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'events/date-photosmanage.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_edit_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
+angular.module('templates-app', ['account/account-change-pswd.tpl.html', 'account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'account/partial_edit_account.tpl.html', 'events/date-photosmanage.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_edit_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
 
 angular.module("account/account-change-pswd.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-change-pswd.tpl.html",
@@ -40,7 +40,7 @@ angular.module("account/account-edit.tpl.html", []).run(["$templateCache", funct
     "<div class=\"row\">\n" +
     "	<div class=\"col-lg-8\">\n" +
     "		<form enctype=\"multipart/form-data\" class=\"form-horizontal\" role=\"form\" ng-submit=\"accountSubmit()\">\n" +
-    "			<ng-include src=\"'account/partial_create_account.tpl.html'\"></ng-include>\n" +
+    "			<ng-include src=\"'account/partial_edit_account.tpl.html'\"></ng-include>\n" +
     "\n" +
     "			  <div class=\"form-group\">\n" +
     "			    <div class=\"col-lg-offset-3 col-lg-9\">\n" +
@@ -224,6 +224,52 @@ angular.module("account/partial_create_account.tpl.html", []).run(["$templateCac
     "      <span class=\"help-block\" ng-show=\"errors.password_2\" ng-repeat=\"error in errors.password_2\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
+    "\n" +
+    "");
+}]);
+
+angular.module("account/partial_edit_account.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("account/partial_edit_account.tpl.html",
+    "\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.full_name.$invalid || errors.full_name}\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Display Name</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <input name=\"full_name\" type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.user.full_name\">\n" +
+    "      <span class=\"help-block\">Tip: Use your real name so people can find and follow you</span>\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.full_name\" ng-repeat=\"error in errors.full_name\">{{error}}</span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.name.$invalid || errors.name || AccountObj.username_available == 'Unavailable'}\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Username</label>\n" +
+    "    <div class=\"col-lg-6\">\n" +
+    "      <input name=\"name\" ng-keyup=\"checkUsername($event.target.value)\" type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.name\" ng-keyup=\"checkUsername($event.target.value)\" ng-maxlenght=\"255\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.name\" ng-repeat=\"error in errors.name\">{{error}}</span>\n" +
+    "    </div>\n" +
+    "    <div class=\"col-lg-3\">\n" +
+    "        {{AccountObj.username_available}}\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.email.$invalid || errors.email}\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Email</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <input name=\"email\" type=\"email\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.user.email\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.email\" ng-repeat=\"error in errors.email\">{{error}}</span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.password_1.$invalid || errors.password_1}\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Password</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <input name=\"password_1\" type=\"password\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.user.password_1\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.password_1\" ng-repeat=\"error in errors.password_1\">{{error}}</span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.password_2.$invalid || errors.password_2}\">\n" +
+    "    <label for=\"inputPassword1\" class=\"col-lg-3 control-label\">Confirm Password</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <input name=\"password_2\" type=\"password\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.user.password_2\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.password_2\" ng-repeat=\"error in errors.password_2\">{{error}}</span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
     "  <div class=\"form-group\" ng-class=\"{'has-error': form.about.$invalid || errors.about}\">\n" +
     "    <label class=\"col-lg-3 control-label\">About Account</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
@@ -346,10 +392,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                    <div class=\"row-wrapper\">\n" +
     "                        <div class=\"row\" id=\"event-details-cover-wrapper\">\n" +
     "                            <div class=\"col-xs-12\" >\n" +
-    "                            <div\n" +
-    "                                class=\"event-details-cover-photo\"\n" +
-    "                                style=\"background-image:url('{{ EventObj.photo }}')\"\n" +
-    "                            ></div>\n" +
+    "                            <div class=\"event-details-cover-photo\" ng-style=\"{'background-image': 'url(' + EventObj.photo + ')'}\"></div>\n" +
     "                            <div class=\"event-details-overlay\">\n" +
     "                                <div class=\"event-details-header\">\n" +
     "                                    <h1 class=\"pull-left\">{{EventObj.title}}</h1>\n" +

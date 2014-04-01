@@ -12,7 +12,7 @@ from django.core.exceptions import ValidationError
 from sorl.thumbnail.fields import ImageField
 from autoslug import AutoSlugField
 from sorl.thumbnail import get_thumbnail
-from project import settings
+from django.conf import settings
 
 
 from account.models import UserProfile
@@ -191,11 +191,10 @@ class Event(TimestampedModel):
         return MultiuploaderImage.objects.filter(event_date__event_id=self.id)
 
     def thumb_url(self, size, size2):
-        root =  "/".join(settings.MEDIA_ROOT.split('/')[0:-1])
         try:
-            imgObject = get_thumbnail(root + self.main_image.url, str(size)+'x'+str(size2), crop='center', quality=99)
+            imgObject = get_thumbnail(self.main_image.url, str(size)+'x'+str(size2), crop='center', quality=99)
         except:
-            return root + self.main_image.url
+            return self.main_image.url
         urlImg = imgObject.url
         return urlImg
 

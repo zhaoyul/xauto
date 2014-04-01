@@ -28,7 +28,8 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
 
     def get_caption(self, obj):
         user = self.context['view'].request.user
-        if user.is_active:
+
+        if user.is_active and hasattr(user,"profile"):
             profile = user.profile
             if obj.event_date:
                 event = obj.event_date.event
@@ -58,9 +59,11 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
 
     def get_favorited(self, obj):
         user = self.context['view'].request.user
-        fav = obj.favorite_by.filter(user=user).count() != 0
-        return fav
-
+        if user.is_active:
+            fav = obj.favorite_by.filter(user=user).count() != 0
+            return fav
+        else:
+            return False
 
 
 

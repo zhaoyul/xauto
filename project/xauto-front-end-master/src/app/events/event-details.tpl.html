@@ -6,10 +6,7 @@
                     <div class="row-wrapper">
                         <div class="row" id="event-details-cover-wrapper">
                             <div class="col-xs-12" >
-                            <div
-                                class="event-details-cover-photo"
-                                style="background-image:url('{{ EventObj.photo }}')"
-                            ></div>
+                            <div class="event-details-cover-photo" ng-style="{'background-image': 'url(' + EventObj.photo + ')'}"></div>
                             <div class="event-details-overlay">
                                 <div class="event-details-header">
                                     <h1 class="pull-left">{{EventObj.title}}</h1>

@@ -12,7 +12,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'django-stub.db',                      # Or path to database file if using sqlite3.
+        'NAME': '/home/alex90/PycharmProjects/xauto/django-stub.db',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -165,10 +165,13 @@ AUTHENTICATION_BACKENDS = (
 )
 
 #s3 settings
-#DEFAULT_FILE_STORAGE = 'storages.backends.s3.S3Storage'
-#AWS_ACCESS_KEY_ID = ''
-#AWS_SECRET_ACCESS_KEY = ''
-#AWS_STORAGE_BUCKET_NAME = ''
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+AWS_ACCESS_KEY_ID = 'AKIAINTHBRGXXWEPYAXQ'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'xauto'
+
+
+
 
 
 #django-registration settings
