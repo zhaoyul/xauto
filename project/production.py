@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from project.settings import *
+from S3 import CallingFormat
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
@@ -22,6 +23,15 @@ DATABASES = {
 
 STATIC_ROOT = '/var/www/xauto.dev.milosolutions.com/static'
 MEDIA_ROOT = '/var/www/xauto.dev.milosolutions.com/media'
+
+# AWS Storage setttings
+DEFAULT_FILE_STORAGE = 'project.s3utils.MediaRootS3BotoStorage'
+AWS_ACCESS_KEY_ID = 'AKIAINTHBRGXXWEPYAXQ'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'xauto'
+AWS_CALLING_FORMAT = CallingFormat.SUBDOMAIN
+
+MEDIA_URL = 'http://xauto.s3.amazonaws.com/media/'
 
 ALLOWED_HOSTS = ['xauto.dev.milosolutions.com', 'www.xauto.dev.milosolutions.com']
 
