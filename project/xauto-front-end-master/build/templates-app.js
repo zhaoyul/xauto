@@ -1,4 +1,4 @@
-angular.module('templates-app', ['account/account-change-pswd.tpl.html', 'account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'account/partial_edit_account.tpl.html', 'events/date-photosmanage.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_edit_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
+angular.module('templates-app', ['account/account-change-pswd.tpl.html', 'account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos-by-date.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'account/partial_edit_account.tpl.html', 'events/date-photosmanage.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_edit_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
 
 angular.module("account/account-change-pswd.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-change-pswd.tpl.html",
@@ -76,25 +76,53 @@ angular.module("account/account-my-favorite-photos.tpl.html", []).run(["$templat
     "");
 }]);
 
+angular.module("account/account-my-photos-by-date.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("account/account-my-photos-by-date.tpl.html",
+    "<h1>My Photos by date</h1>\n" +
+    "<div class=\"deletephotos\">\n" +
+    "    <div class=\"panel-collapse collapse in\"  >\n" +
+    "      <div class=\"panel-body\">\n" +
+    "        <div class=\"row\">\n" +
+    "          <ul class=\"stream-list\">\n" +
+    "            <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"photo in photos\" ng-hide=\"photo.hide\">\n" +
+    "              <div class=\"stream-picture\">\n" +
+    "                 <div bx-stream-photo=\"{{photo.image}}\" class=\"inner\"></div>\n" +
+    "                  <ul class=\"stream-action-links\">\n" +
+    "                        <li class=\"action-delete\" >\n" +
+    "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Delete\"\n" +
+    "                              ng-click=\"Delete(photo)\">\n" +
+    "                              <i class=\"icon-remove\"></i>\n" +
+    "                            </a>\n" +
+    "                        </li>\n" +
+    "                    </ul>\n" +
+    "              </div>\n" +
+    "            </li>\n" +
+    "          </ul>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "</div>");
+}]);
+
 angular.module("account/account-my-photos.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-my-photos.tpl.html",
     "<h1>My Photos</h1>\n" +
     "<div class=\"deletephotos\">\n" +
     "    <div ng-repeat=\"event in Datesbyevents\" ng-show=\"event.dates\">\n" +
     "        <div class=\"panel panel-default\">\n" +
-    "            <div class=\"panel-heading\" ng-show=\"stream\">\n" +
+    "            <div class=\"panel-heading\">\n" +
     "              <h4 class=\"panel-title\">\n" +
     "                  {{event.title}}\n" +
     "              </h4>\n" +
     "             </div>\n" +
     "             <div class=\"panel-body\">\n" +
     "                <div ng-repeat=\"dt in event.dates\">\n" +
-    "                     <a href=\"\">{{dt.start_date | date: 'MMM d'}} - {{dt.end_date | date: 'MMM d'}}</a>\n" +
+    "                     <a href=\"#/account/mydatephotos/{{dt.id}}/\">{{dt.start_date | date: 'MMM d'}} - {{dt.end_date | date: 'MMM d'}}</a>\n" +
     "                </div>\n" +
     "             </div>\n" +
     "         </div>\n" +
     "    </div>\n" +
-    "    <div class=\"panel panel-default\">\n" +
+    "    <div class=\"panel panel-default\" ng-show=\"Outdates\">\n" +
     "        <div class=\"panel-heading\" ng-show=\"stream\">\n" +
     "          <h4 class=\"panel-title\">\n" +
     "              Out of events\n" +
@@ -102,49 +130,11 @@ angular.module("account/account-my-photos.tpl.html", []).run(["$templateCache", 
     "         </div>\n" +
     "         <div class=\"panel-body\">\n" +
     "            <div ng-repeat=\"dt in Outdates\">\n" +
-    "                 <a href=\"\">{{dt | date: 'MMM d'}}</a>\n" +
+    "                 <a href=\"#/account/mydatephotosoutalbums/{{dt | date: 'd-M-y'}}/\">{{dt | date: 'MMM d'}}</a>\n" +
     "            </div>\n" +
     "         </div>\n" +
     "     </div>\n" +
-    "</div>\n" +
-    "\n" +
-    "\n" +
-    "\n" +
-    "<!---\n" +
-    "<div class=\"deletephotos\">\n" +
-    "    <ng-include src=\"'events/partial_event_details_photos.tpl.html'\"></ng-include>\n" +
-    "\n" +
-    "            <div class=\"panel panel-default\">\n" +
-    "            <div class=\"panel-heading\" ng-show=\"stream\">\n" +
-    "              <h4 class=\"panel-title\">\n" +
-    "                <a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#\">\n" +
-    "                  Out of albums\n" +
-    "                </a>\n" +
-    "              </h4>\n" +
-    "            </div>\n" +
-    "\n" +
-    "            <div class=\"row\">\n" +
-    "                <ul class=\"stream-list\" ng-controller=\"StreamListCtrl\">\n" +
-    "                    <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"item in stream\" ng-hide=\"item.hide\">\n" +
-    "                        <div class=\"inner\">\n" +
-    "                            <div class=\"stream-picture\">\n" +
-    "                                 <div bx-stream-photo=\"{{item.image}}\" class=\"inner\"></div>\n" +
-    "                                 <ul class=\"stream-action-links\">\n" +
-    "                                    <li class=\"action-delete\">\n" +
-    "                                        <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Delete\"\n" +
-    "                                          ng-click=\"Delete(item)\">\n" +
-    "                                          <i class=\"icon-remove\"></i>\n" +
-    "                                        </a>\n" +
-    "                                    </li>\n" +
-    "                                </ul>\n" +
-    "                             </div>\n" +
-    "                        </div>\n" +
-    "                    </li>\n" +
-    "                </ul>\n" +
-    "            </div>\n" +
-    "\n" +
-    "     </div>\n" +
-    "</div>--->");
+    "</div>");
 }]);
 
 angular.module("account/account-signup.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -598,8 +588,9 @@ angular.module("events/event-edit.tpl.html", []).run(["$templateCache", function
     "          <ng-include src=\"'events/partial_form_date.tpl.html'\"></ng-include>\n" +
     "        </div>\n" +
     "        <div class=\"modal-footer\">\n" +
+    "          <button ng-hide=\"editDate.id\" type=\"button\" class=\"btn btn-info pull-left\" ng-click=\"copyLastDate()\">Copy Last Date</button>\n" +
     "          <!-- <button type=\"reset\" class=\"btn btn-default\" ng-click=\"resetDate()\">Close</button> -->\n" +
-    "          <button ng-hide=\"editDate.id\" type=\"submit\" class=\"btn btn-primary\" >Add Date!</button>\n" +
+    "          <button ng-hide=\"editDate.id\" type=\"submit\" class=\"btn btn-primary\">Add Date!</button>\n" +
     "          <button ng-show=\"editDate.id\" type=\"sumbit\" class=\"btn btn-primary\">Save</button>\n" +
     "        </div>\n" +
     "      </form>\n" +

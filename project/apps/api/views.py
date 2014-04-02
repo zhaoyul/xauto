@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import uuid
 import math
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from random import randrange
 from hashlib import sha1
 
@@ -134,6 +134,24 @@ class EventDateViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = EventDateSerializer
     model = EventDate
+
+
+
+class LastDateView(ListAPIView):
+    """
+    Copy last date button
+    """
+    permission_classes = (IsAuthenticated,)
+    serializer_class = EventDateSerializer
+    model = EventDate
+
+    def get_queryset(self):
+        user = self.request.user
+        id = self.request.GET.get("id")
+        ev = Event.objects.get(id=id,author__user=user)
+
+        queryset = EventDate.objects.filter(event=ev).order_by("-end_date").order_by("-id")
+        return queryset
 
 
 
@@ -353,19 +371,42 @@ class ProfileMyOutDatesView(APIView):
                 data.append(o.upload_date)
         return Response(data, status=status.HTTP_200_OK)
 
+
 class ProfileMyPhotosListView(ListAPIView):
     """
     Returns current user photos
     """
     permission_classes = (IsAuthenticated,)
-
-    serializer_class = AlbumSerializer
+    serializer_class = MultiuploaderImageSerializer
 
     def get_queryset(self):
         profile = self.request.user.profile
-        return EventDate.objects.filter(id__in=
-            profile.profile_images.values_list('event_date_id', flat=True))
 
+        id = self.request.GET.get("dateid","")
+        dt = self.request.GET.get("dt","")
+
+        if id:
+            dt = EventDate.objects.get(id=id,event__author=profile)
+            return MultiuploaderImage.objects.filter(event_date=dt)
+
+        if dt:
+            upload_date = datetime.strptime(dt, '%d-%m-%Y')
+            upload_date2 = upload_date + timedelta(days=1)
+            return MultiuploaderImage.objects.filter(upload_date__gt=upload_date,upload_date__lt=upload_date2)
+
+
+
+class ProfileDeletePhotoView(APIView):
+    """
+    Delete photo
+    """
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        profile = self.request.user.profile
+        id = request.GET.get('id')
+        MultiuploaderImage.objects.filter(id=id,userprofile=profile).delete()
+        return Response({}, status=status.HTTP_200_OK)
 
 
 class ProfileMyOtherPhotosListView(APIView):

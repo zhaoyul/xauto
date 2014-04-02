@@ -222,6 +222,22 @@ angular.module( 'blvdx.events', [
     });
   };
 
+
+  $scope.copyLastDate = function(){
+
+    DateObj.getLastDate($scope.EventObj.id).then(function (date) {
+          date = date[0];
+          delete date.id;
+          $scope.editDate = date;
+          $scope.editDate.startTime = $filter('date')(date.start_date, 'HH:mm');
+          $scope.editDate.endTime = $filter('date')(date.end_date, 'HH:mm');
+     });
+
+
+
+  };
+
+
   $scope.saveDate = function(){
     var has_errors = false;
     $scope.errors = {};
