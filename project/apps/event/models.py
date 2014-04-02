@@ -192,7 +192,7 @@ class Event(TimestampedModel):
 
     def thumb_url(self, size, size2):
         try:
-            imgObject = get_thumbnail(self.main_image.url, str(size)+'x'+str(size2), crop='center', quality=99)
+            imgObject = get_thumbnail(self.main_image, str(size)+'x'+str(size2), crop='center', quality=99)
         except:
             return self.main_image.url
         urlImg = imgObject.url
