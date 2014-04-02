@@ -31,7 +31,7 @@ AWS_SECRET_ACCESS_KEY = 'w0Cy46WdSJICk75XyBhKmdLOmL+Fj8gOze6jd2I9'
 AWS_STORAGE_BUCKET_NAME = 'xauto'
 AWS_CALLING_FORMAT = CallingFormat.SUBDOMAIN
 
-MEDIA_URL = 'http://{}.s3.amazonaws.com/media/'.format(AWS_STORAGE_BUCKET_NAME)
+MEDIA_URL = 'http://xauto.s3.amazonaws.com/media/'
 
 ALLOWED_HOSTS = ['xauto.dev.milosolutions.com', 'www.xauto.dev.milosolutions.com']
 
