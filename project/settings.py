@@ -173,7 +173,6 @@ AWS_STORAGE_BUCKET_NAME = 'xauto'
 
 
 
-
 #django-registration settings
 ACCOUNT_ACTIVATION_DAYS = 3
 LOGIN_REDIRECT_URL = '/'
