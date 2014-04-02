@@ -28,8 +28,9 @@
           <ng-include src="'events/partial_form_date.tpl.html'"></ng-include>
         </div>
         <div class="modal-footer">
+          <button ng-hide="editDate.id" type="button" class="btn btn-info pull-left" ng-click="copyLastDate()">Copy Last Date</button>
           <!-- <button type="reset" class="btn btn-default" ng-click="resetDate()">Close</button> -->
-          <button ng-hide="editDate.id" type="submit" class="btn btn-primary" >Add Date!</button>
+          <button ng-hide="editDate.id" type="submit" class="btn btn-primary">Add Date!</button>
           <button ng-show="editDate.id" type="sumbit" class="btn btn-primary">Save</button>
         </div>
       </form>

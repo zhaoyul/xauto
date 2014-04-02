@@ -70,6 +70,34 @@ angular.module( 'blvdx.account', [
       }
     }
   })
+
+  .state( 'accountMyDatePhotos', {
+    url: '/account/mydatephotos/:id/',
+    views: {
+      "main": {
+        controller: 'AccountMyDatePhotosCtrl',
+        templateUrl: 'account/account-my-photos-by-date.tpl.html',
+        resolve:{
+          authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+        }
+      }
+    }
+  })
+
+  .state( 'accountMyDatePhotosOutOfAlboms', {
+    url: '/account/mydatephotosoutalbums/:dt/',
+    views: {
+      "main": {
+        controller: 'AccountMyDatePhotosOutOfAlbomsCtrl',
+        templateUrl: 'account/account-my-photos-by-date.tpl.html',
+        resolve:{
+          authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+        }
+      }
+    }
+  })
+
+
   .state( 'accountMyFavorites', {
     url: '/account/MyFavorites',
     views: {
@@ -183,6 +211,39 @@ angular.module( 'blvdx.account', [
   };
 
 }])
+
+
+.controller( 'AccountMyDatePhotosCtrl', ['$scope', 'titleService', 'Accounts', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, $stateParams ) {
+  titleService.setTitle( 'My Photos' );
+
+  Accounts.getDatePhotos($stateParams.id).then(function (photos) {
+      $scope.photos = photos;
+  });
+
+  $scope.Delete = function(obj) {
+      Accounts.getDeletePhoto(obj.id);
+      obj.hide = true;
+  };
+
+
+}])
+
+.controller( 'AccountMyDatePhotosOutOfAlbomsCtrl', ['$scope', 'titleService', 'Accounts', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, $stateParams ) {
+  titleService.setTitle( 'My Photos' );
+
+  Accounts.getDateOutOfAlbomsPhotos($stateParams.dt).then(function (photos) {
+      $scope.photos = photos;
+  });
+
+  $scope.Delete = function(obj) {
+      Accounts.getDeletePhoto(obj.id);
+      obj.hide = true;
+  };
+
+
+}])
+
+
 
 .controller( 'AccountMyPhotosCtrl', ['$scope', 'titleService', 'Accounts', function AccountCtrl( $scope, titleService, Accounts ) {
   titleService.setTitle( 'My Photos' );

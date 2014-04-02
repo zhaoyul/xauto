@@ -10,7 +10,7 @@ from .views import (EventsListView, EventDetailsView, FollowEventView,
     LoginView, LogoutView, CurrentUserView, ActivateView, ResetPasswordView,
     ChangePasswordView, CheckUsernameView, AlbumPhotosUploader,
     ConfigurationView, CoordinatedPhotoUploader, EventDatePhotoManageView, DeletePictureView, ProfileMyOtherPhotosListView, ProfileMyDatesByEventsListView,
-    ProfileMyOutDatesView)
+    ProfileMyOutDatesView, LastDateView, ProfileDeletePhotoView)
 
 router = routers.DefaultRouter()
 router.register(r'events', EventViewSet)
@@ -20,6 +20,9 @@ router.register(r'profiles', UserProfileViewSet)
 urlpatterns = patterns('',
     url(r'^configuration/$', ConfigurationView.as_view(), name='configuration'),
     url(r'^events/list/$', EventsListView.as_view(), name='events-list'),
+
+    url(r'^lastdate/$',LastDateView.as_view(),
+        name='date-photosmanage'),
 
     url(r'^eventdates/(?P<id>\d+)/photosmanage/$', EventDatePhotoManageView.as_view(),
         name='date-photosmanage'),
@@ -45,6 +48,8 @@ urlpatterns = patterns('',
     url(r'^profiles/outdates/$', ProfileMyOutDatesView.as_view(),
         name='profile-outdates'),
     url(r'^profiles/pictures/$', ProfileMyPhotosListView.as_view(),
+        name='profile-pictures'),
+    url(r'^profiles/delpicture/$', ProfileDeletePhotoView.as_view(),
         name='profile-pictures'),
     url(r'^profiles/otherpictures/$', ProfileMyOtherPhotosListView.as_view(),
         name='profile-otherpictures'),

@@ -58,6 +58,10 @@ angular.module('resources.events', ['restangular'])
       return Restangular.one('dates', pk).get();
   };
 
+  DateObj.getLastDate = function (eventId) {
+      return Restangular.one('lastdate').customGET("",{id:eventId});
+  };
+
   DateObj.saveDate = function (date) {
       return Restangular.one('dates', date.id).customPUT(date);
   };
