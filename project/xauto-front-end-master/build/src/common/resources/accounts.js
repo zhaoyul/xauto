@@ -32,6 +32,9 @@ angular.module('resources.accounts', ['restangular'])
           return Restangular.all('profiles').customGETLIST('favorites-list');
       };
 
+      Accounts.getAllTimezones = function () {
+          return Restangular.all('profiles').customGETLIST('alltimezones');
+      };
 
       Accounts.getDatesbyevents = function () {
             return Restangular.all('profiles').customGETLIST('datesbyevents');

@@ -42,7 +42,7 @@ angular.module( 'blvdx.stream', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'StreamCtrl', ['$scope', 'titleService', 'Streams', '$http', 'Events', '$q', 'Profiles', function StreamCtrl( $scope, titleService, Streams, $http, Events, $q, Profiles) {
+.controller( 'StreamCtrl', ['$scope', '$state', 'titleService', 'Streams', '$http', 'Events', '$q', 'Profiles', function StreamCtrl( $scope, $state, titleService, Streams, $http, Events, $q, Profiles) {
   titleService.setTitle( 'Stream' );
 
   // always reqest latest user data
@@ -50,7 +50,11 @@ angular.module( 'blvdx.stream', [
     if(response.data.user !== null) {
       Streams.send_subscribe(response.data.user.following);
       Streams.send_fetch_latest();
+
     } else{
+
+      $(".navbar-nav a").eq(1).click();
+
       var following = {};
       var eventsLoaded = $q.defer();
       var usersLoaded = $q.defer();
@@ -76,7 +80,7 @@ angular.module( 'blvdx.stream', [
   });
 }])
 
-.controller( 'StreamListCtrl', ['$scope', 'titleService', 'Streams', function StreamCtrl( $scope, titleService, Streams) {
+.controller( 'StreamListCtrl', ['$scope', 'titleService', 'Streams', '$http', function StreamCtrl( $scope, titleService, Streams, $http) {
   titleService.setTitle( 'Stream' );
   $scope.stream = [];
   $scope.$watch("$parent.stream", function(){
@@ -87,15 +91,22 @@ angular.module( 'blvdx.stream', [
   $scope.is_fetching = false;
 
   $scope.Favorite = function(entry,type) {
-      if(!type){
-            type = 1;
-      }
-      Streams.send_favorite(entry.id,type);
-      if(type == 2){
-            entry.favorited = false;
-      }else{
-            entry.favorited = true;
-      }
+
+        $http.get('/api/current-user/').then(function(response) {
+            if(response.data.user == null) {
+                 $(".navbar-nav a").eq(1).click();
+            }else{
+                     if(!type){
+                            type = 1;
+                      }
+                      Streams.send_favorite(entry.id,type);
+                      if(type == 2){
+                            entry.favorited = false;
+                      }else{
+                            entry.favorited = true;
+                      }
+                 }
+        });
 
   };
 
@@ -105,8 +116,15 @@ angular.module( 'blvdx.stream', [
   };
 
   $scope.Report = function(entry) {
-      Streams.send_report(entry.id);
-      entry.reported = true;
+         $http.get('/api/current-user/').then(function(response) {
+            if(response.data.user == null) {
+                 $(".navbar-nav a").eq(1).click();
+            }else{
+                     Streams.send_report(entry.id);
+                     entry.reported = true;
+                 }
+        });
+
   };
 
   $scope.$on("prepend_entry", function(event, data){

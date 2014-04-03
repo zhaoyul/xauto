@@ -2,7 +2,7 @@
   <div class="panel panel-default" ng-repeat="album in Albums">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#album-{{album.id}}">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#album-{{album.id}}" onClick="return false">
           {{album.date}} - {{album.feature_headline}}
         </a>
       </h4>

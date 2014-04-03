@@ -267,6 +267,13 @@ angular.module("account/partial_edit_account.tpl.html", []).run(["$templateCache
     "      <span class=\"help-block\" ng-show=\"errors.about\" ng-repeat=\"error in errors.about\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
+    "   <div class=\"form-group\" ng-class=\"{'has-error': form.website.$invalid || errors.website}\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Website</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <input name=\"website\" type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.website\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.website\" ng-repeat=\"error in errors.website\">{{error}}</span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
     "  <div class=\"form-group\" ng-class=\"{'has-error': form.main_image.$invalid || errors.main_image}\">\n" +
     "    <label class=\"col-lg-3 control-label\">User Hero Image</label>\n" +
     "    <div class=\"col-lg-4\">\n" +
@@ -320,7 +327,15 @@ angular.module("account/partial_edit_account.tpl.html", []).run(["$templateCache
     "      <span class=\"help-block\" ng-show=\"errors.country\" ng-repeat=\"error in errors.country\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.timezone.$invalid || errors.timezone}\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Timezone</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <select name=\"timezone\" class=\"form-control\" ng-model=\"AccountObj.timezone\">\n" +
+    "         <option ng-repeat=\"tm in timezones\">{{tm}}</option>\n" +
+    "      </select>\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.country\" ng-repeat=\"error in errors.timezone\">{{error}}</span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
     "");
 }]);
 
@@ -469,10 +484,11 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                                        </a>\n" +
     "                                    </li>\n" +
     "                                    <li>\n" +
-    "                                        <a data-toggle=\"modal\" data-target=\"#addPhotosModal\">\n" +
+    "                                        <a data-toggle=\"modal\" data-target=\"#addPhotosModal\" id=\"uploadphotolink\">\n" +
     "                                            <i class=\"xa-icon-event-details-photos\"></i>\n" +
     "                                            <div class=\"badge\">{{event.srv_photosCount}}</div> Photos\n" +
     "                                        </a>\n" +
+    "\n" +
     "                                    </li>\n" +
     "                                    <li>\n" +
     "                                        <a href=\"javascript:;\" ng-click=\"Follow()\" class=\"btn-follow\"\n" +
@@ -617,7 +633,7 @@ angular.module("events/events-my.tpl.html", []).run(["$templateCache", function(
     "  		<tbody>\n" +
     "  			<tr ng-repeat=\"event in myEvents\">	\n" +
     "  				<td class=\"name\">\n" +
-    "            <img class=\"img-rounded user-pic\" alt=\"\" ng-src=\"{{event.photo}}\"> {{event.title}}</td>\n" +
+    "            <img class=\"img-rounded user-pic\" alt=\"\" ng-src=\"{{event.photo_small}}\">{{event.title}}</td>\n" +
     "  				<td>{{event.date_info.city}}, {{event.date_info.country}}</td>\n" +
     "  				<td><span class=\"label label-success\">{{event.srv_followersCount}} Followers</span> <span class=\"label label-info\">{{event.srv_photosCount}} Photos</span></td>\n" +
     "  				<td>\n" +
@@ -685,7 +701,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "              </a>\n" +
     "            </div>\n" +
     "            <div class=\"pull-right\">\n" +
-    "              <strong>{{event.date_info.featureHeadline}}</strong>\n" +
+    "              <strong>&nbsp;{{event.date_info.featureHeadline}}</strong>\n" +
     "            </div>\n" +
     "          </div>\n" +
     "          <div class=\"row-wrapper price-location\">\n" +
@@ -913,7 +929,7 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
     "  <div class=\"panel panel-default\" ng-repeat=\"album in Albums\">\n" +
     "    <div class=\"panel-heading\">\n" +
     "      <h4 class=\"panel-title\">\n" +
-    "        <a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#album-{{album.id}}\">\n" +
+    "        <a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#album-{{album.id}}\" onClick=\"return false\">\n" +
     "          {{album.date}} - {{album.feature_headline}}\n" +
     "        </a>\n" +
     "      </h4>\n" +
