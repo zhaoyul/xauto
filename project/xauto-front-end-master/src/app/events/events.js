@@ -104,8 +104,8 @@ angular.module( 'blvdx.events', [
 }])
 
 
-.controller( 'EventsCtrl', ['$scope', 'titleService', 'Events', 'AppScope',
-    function EventsCtrl( $scope, titleService, Events, AppScope ) {
+.controller( 'EventsCtrl', ['$scope', 'titleService', 'Events', '$http',  'AppScope',
+    function EventsCtrl( $scope, titleService, Events, $http, AppScope ) {
   titleService.setTitle( 'All events' );
 
   Events.getEvents({}).then(function (events) {
@@ -121,10 +121,18 @@ angular.module( 'blvdx.events', [
   };
 
   $scope.Follow = function(event) {
+
+    $http.get('/api/current-user/').then(function(response) {
+    if(response.data.user !== null) {
       Events.follow(event).then(function (data) {
           event.srv_following = data.srv_following;
           event.srv_followersCount = data.srv_followersCount;
       });
+    }else{
+          $(".navbar-nav a").eq(1).click();
+      }
+    });
+
   };
 
   app_scope = AppScope.getScope();
@@ -343,7 +351,7 @@ angular.module( 'blvdx.events', [
 
 }])
 
-.controller( 'EventDetailsCtrl', ['$scope', 'titleService', '$stateParams', 'Events', 'Streams', function EventsCtrl( $scope, titleService, $stateParams, Events, Streams) {
+.controller( 'EventDetailsCtrl', ['$scope', 'titleService', '$stateParams', 'Events', '$http', 'Streams', function EventsCtrl( $scope, titleService, $stateParams, Events, $http, Streams) {
   titleService.setTitle( 'Event Details' );
   $scope.stateParams = $stateParams;
 
@@ -365,6 +373,12 @@ angular.module( 'blvdx.events', [
   });
 
   $scope.Album = {photos: []};
+
+  $http.get('/api/current-user/').then(function(response) {
+    if(response.data.user == null) {
+         //$("#uploadphotolink").hide();
+      }
+    });
 
   createImageObj = function($file) {
       var fileObj = {};
@@ -401,10 +415,16 @@ angular.module( 'blvdx.events', [
   };
 
   $scope.Follow = function() {
-      Events.follow($scope.EventObj).then(function (data) {
-          $scope.EventObj.srv_following = data.srv_following;
-          $scope.EventObj.srv_followersCount = data.srv_followersCount;
-      });
+    $http.get('/api/current-user/').then(function(response) {
+    if(response.data.user == null) {
+         $(".navbar-nav a").eq(1).click();
+    }else{
+         Events.follow($scope.EventObj).then(function (data) {
+                  $scope.EventObj.srv_following = data.srv_following;
+                  $scope.EventObj.srv_followersCount = data.srv_followersCount;
+           });
+         }
+    });
   };
 
   $scope.reloadEvent();

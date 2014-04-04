@@ -14,6 +14,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.core.files.base import ContentFile
+import pytz
 
 from rest_framework.generics import (ListAPIView, RetrieveAPIView)
 from rest_framework.views import APIView
@@ -65,6 +66,7 @@ class EventsListView(ListAPIView):
         if filter_by == 'live':
             queryset = queryset.filter(event_dates__start_date__lt=datetime.now()).filter(
                 event_dates__end_date__gt=datetime.now()).distinct()
+
         return queryset
 
 
@@ -77,6 +79,14 @@ class EventDetailsView(RetrieveAPIView):
     model = Event
     lookup_field = 'slug'
 
+
+
+class ProfileAllTimezonesListView(APIView):
+    """
+    Creates multiple instances of images
+    """
+    def get(self, request, *args, **kwargs):
+        return Response(pytz.common_timezones, status=status.HTTP_200_OK)
 
 class AlbumPhotosUploader(APIView):
     """

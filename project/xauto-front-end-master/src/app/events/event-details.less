@@ -122,6 +122,9 @@ div#event-details-navbar{
 			@media (max-width: @screen-xs-max) {
 				margin: 0 15px;
 			}
+			@media (max-width:320px) {
+				margin: 0 4px !important;
+			}
 			&>a{
 				width: 80px;
 				cursor: pointer;
@@ -175,6 +178,9 @@ a.toggle-event-details-about.info-opener{
 	color: #fff;
 	text-decoration: none;
 	z-index: 80;
+	@media (max-width:767px) {
+		display:none;
+	}
 }
 a.toggle-event-details-about.info-close{
 	position: absolute;

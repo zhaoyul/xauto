@@ -8318,6 +8318,12 @@ div#event-details-navbar ul.event-details-navbar-items > li {
   }
 }
 
+@media (max-width: 320px) {
+  div#event-details-navbar ul.event-details-navbar-items > li {
+    margin: 0 4px !important;
+  }
+}
+
 div#event-details-navbar ul.event-details-navbar-items > li > a {
   position: relative;
   display: inline-block;
@@ -8378,6 +8384,12 @@ a.toggle-event-details-about.info-opener {
   font-size: 30px;
   color: #fff;
   text-decoration: none;
+}
+
+@media (max-width: 767px) {
+  a.toggle-event-details-about.info-opener {
+    display: none;
+  }
 }
 
 a.toggle-event-details-about.info-close {

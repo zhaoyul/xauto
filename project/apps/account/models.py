@@ -40,6 +40,9 @@ class UserProfile(TimestampedModel):
     region = models.CharField(max_length=50, null=True, blank=True)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
+    timezone = models.CharField(max_length=30, null=True, blank=True)
+    website = models.CharField(max_length=100, null=True, blank=True)
+
 
     main_image = ImageField(upload_to='account_images/', blank=True)
     thumbnail_image = ImageField(upload_to='account_images/', blank=True)

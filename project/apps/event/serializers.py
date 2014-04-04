@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
+import pytz
+from django.utils.timezone import localtime
 
 from event.models import Event, EventImage, EventDate, Currency
 from multiuploader.serializers import MultiuploaderImageSerializer
@@ -27,6 +29,7 @@ class EventDateSerializer(serializers.ModelSerializer):
 
 
 
+
 class AlbumSerializer(serializers.ModelSerializer):
     photos = MultiuploaderImageSerializer(source='event_upload_images',
                                               read_only=True)
@@ -37,7 +40,12 @@ class AlbumSerializer(serializers.ModelSerializer):
         model = EventDate
 
     def get_date(self, obj):
-        return obj.start_date.strftime('%B %d, %Y')
+        #print obj.start_date
+        #obj.start_date = localtime(obj.start_date, timezone=pytz.timezone("Europe/Moscow"))
+        #
+        #TO DO: return date depends on account setting timezone
+        #
+        return obj.start_date.strftime('%B %d, %Y %H:%M:%S')
 
 
 class EventModelSerializer(serializers.ModelSerializer):
@@ -52,6 +60,7 @@ class EventModelSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     photo = serializers.SerializerMethodField('get_photo')
+    photo_small = serializers.SerializerMethodField('get_photo_small')
     srv_followersCount = serializers.SerializerMethodField('srv_followers_count')
     srv_photosCount = serializers.SerializerMethodField('srv_photos_count')
     date_info = serializers.SerializerMethodField('get_date_info')
@@ -64,12 +73,16 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'srv_followersCount',
-            'srv_photosCount', 'photo', 'date_info', 'author_name', 'slug',
+            'srv_photosCount', 'photo', 'photo_small', 'date_info', 'author_name', 'slug',
             'author_photo', 'author_slug', 'srv_live', 'srv_following')
 
     def get_photo(self, obj):
         if obj.main_image:
             return obj.thumb_url(560,400)
+
+    def get_photo_small(self, obj):
+        if obj.main_image:
+            return obj.thumb_url(50,36)
 
     def srv_followers_count(self, obj):
         return obj.followed.count()

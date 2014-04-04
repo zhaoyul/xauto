@@ -32,6 +32,9 @@ angular.module('resources.accounts', ['restangular'])
           return Restangular.all('profiles').customGETLIST('favorites-list');
       };
 
+      Accounts.getAllTimezones = function () {
+          return Restangular.all('profiles').customGETLIST('alltimezones');
+      };
 
       Accounts.getDatesbyevents = function () {
             return Restangular.all('profiles').customGETLIST('datesbyevents');
@@ -47,6 +50,19 @@ angular.module('resources.accounts', ['restangular'])
 
       Accounts.getOtherPhotos = function () {
           return Restangular.all('profiles').customGETLIST('otherpictures');
+      };
+
+      Accounts.getDatePhotos = function (id) {
+          return Restangular.all('profiles').customGETLIST('pictures',{dateid:id});
+      };
+
+      Accounts.getDateOutOfAlbomsPhotos = function (dt) {
+          return Restangular.all('profiles').customGETLIST('pictures',{dt:dt});
+      };
+
+
+      Accounts.getDeletePhoto = function (id) {
+          return Restangular.all('profiles').customGETLIST('delpicture',{id:id});
       };
 
       Accounts.checkUsername = function (params) {
