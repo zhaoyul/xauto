@@ -7803,6 +7803,11 @@ div#profile-view-navbar {
   padding: 20px;
 }
 
+.counts-col .badge,
+.counts-col .badge:empty {
+  display: inline-block !important;
+}
+
 .page-title-container .event-listing-filter {
   margin-top: 5px;
   font-size: 14px;
@@ -8314,13 +8319,19 @@ div#event-details-navbar ul.event-details-navbar-items > li {
 
 @media (max-width: 767px) {
   div#event-details-navbar ul.event-details-navbar-items > li {
-    margin: 0 15px;
+    margin: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  div#event-details-navbar ul.event-details-navbar-items > li {
+    margin: 0 8px !important;
   }
 }
 
 @media (max-width: 320px) {
   div#event-details-navbar ul.event-details-navbar-items > li {
-    margin: 0 4px !important;
+    margin: 0 2px !important;
   }
 }
 

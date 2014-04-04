@@ -591,7 +591,7 @@ angular.module("events/event-edit.tpl.html", []).run(["$templateCache", function
     "</div>\n" +
     "\n" +
     "\n" +
-    "<div class=\"modal fade\" id=\"dateModal\">\n" +
+    "<div class=\"modal fade\" id=\"dateModal\" data-backdrop=\"static\">\n" +
     "  <div class=\"modal-dialog\">\n" +
     "    <div class=\"modal-content\">\n" +
     "      <div class=\"modal-header\">\n" +
@@ -688,7 +688,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "        <div class=\"event-header\">\n" +
     "          <div class=\"row-wrapper title-line\">\n" +
     "            <div class=\"pull-left\">\n" +
-    "              <a href=\"#/events/{{event.slug}}\"><h1>{{event.title}}</h1></a>\n" +
+    "              <a href=\"#/events/{{event.slug}}\"><h1>{{event.title}}</h1></a><span ng-hide=\"event.title\">&nbsp;</span>\n" +
     "            </div>\n" +
     "            <div class=\"pull-right\">\n" +
     "              <a ng-show=\"event.srv_live\" href=\"#\" tooltip-placement=\"left\" tooltip=\"[Stream] Happening Now\"><i class=\"xa-icon-live-stream\"></i></a>\n" +

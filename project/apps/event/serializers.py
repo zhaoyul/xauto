@@ -5,6 +5,7 @@ from django.utils.timezone import localtime
 
 from event.models import Event, EventImage, EventDate, Currency
 from multiuploader.serializers import MultiuploaderImageSerializer
+from django.conf import settings
 
 
 class EventImageSerializer(serializers.ModelSerializer):
@@ -40,11 +41,11 @@ class AlbumSerializer(serializers.ModelSerializer):
         model = EventDate
 
     def get_date(self, obj):
-        #print obj.start_date
-        #obj.start_date = localtime(obj.start_date, timezone=pytz.timezone("Europe/Moscow"))
-        #
-        #TO DO: return date depends on account setting timezone
-        #
+        view = self.context['view']
+        try:
+            obj.start_date = localtime(obj.start_date, timezone=pytz.timezone(view.request.user.profile.timezone))
+        except:
+            obj.start_date = localtime(obj.start_date, timezone=pytz.timezone(settings.TIME_ZONE))
         return obj.start_date.strftime('%B %d, %Y %H:%M:%S')
 
 
