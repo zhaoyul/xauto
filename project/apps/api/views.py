@@ -53,7 +53,7 @@ class EventsListView(ListAPIView):
         user = self.request.user
 
         if len(search_text)>=1:
-            queryset = Event.objects.filter((Q(title__startswith=search_text) | Q(event_dates__city__startswith=search_text) | Q(event_dates__state__startswith=search_text)))
+            queryset = Event.objects.filter((Q(title__contains=search_text) | Q(event_dates__city__contains=search_text) | Q(event_dates__state__contains=search_text))).distinct()
         else:
             queryset = Event.objects.all()
 
@@ -271,12 +271,12 @@ class UserProfileViewSet(ModelViewSet):
 
         if len(search_text)>=1:
             queryset = UserProfile.objects.filter(
-                Q(name__startswith=search_text) |
-                Q(user__first_name__startswith=search_text) |
-                Q(user__last_name__startswith=search_text) |
-                Q(city__startswith=search_text) |
-                Q(state__startswith=search_text)
-            )
+                Q(name__contains=search_text) |
+                Q(user__first_name__contains=search_text) |
+                Q(user__last_name__contains=search_text) |
+                Q(city__contains=search_text) |
+                Q(state__contains=search_text)
+            ).distinct()
         else:
             queryset = UserProfile.objects.all()
 
