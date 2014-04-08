@@ -214,7 +214,85 @@ angular.module("account/partial_create_account.tpl.html", []).run(["$templateCac
     "      <span class=\"help-block\" ng-show=\"errors.password_2\" ng-repeat=\"error in errors.password_2\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "\n" +
+    "  <div class=\"additional\">\n" +
+    "      <div class=\"additional_label\">Additional:</div>\n" +
+    "      <div class=\"form-group\" ng-class=\"{'has-error': form.about.$invalid || errors.about}\">\n" +
+    "    <label class=\"col-lg-3 control-label\">About Account</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <textarea name=\"about\" class=\"form-control\" ng-model=\"AccountObj.about\"></textarea>\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.about\" ng-repeat=\"error in errors.about\">{{error}}</span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "   <div class=\"form-group\" ng-class=\"{'has-error': form.website.$invalid || errors.website}\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Website</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <input name=\"website\" type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.website\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.website\" ng-repeat=\"error in errors.website\">{{error}}</span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.main_image.$invalid || errors.main_image}\">\n" +
+    "    <label class=\"col-lg-3 control-label\">User Hero Image</label>\n" +
+    "    <div class=\"col-lg-4\">\n" +
+    "      <input name=\"main_image\" type=\"file\" class=\"btn\" ng-file-select=\"onFileSelect($files, 'main_image_obj')\" ng-model=\"AccountObj.main_image\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.main_image\" ng-repeat=\"error in errors.main_image\">{{error}}</span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.thumbnail_image.$invalid || errors.thumbnail_image}\">\n" +
+    "    <label class=\"col-lg-3 control-label\">User Thumbnail</label>\n" +
+    "    <div class=\"col-lg-4\">\n" +
+    "      <input name=\"thumbnail_image\" type=\"file\" class=\"btn\" ng-file-select=\"onFileSelect($files, 'thumbnail_image_obj')\" ng-model=\"AccountObj.thumbnail_image\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.thumbnail_image\" ng-repeat=\"error in errors.thumbnail_image\">{{error}}</span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.location_address.$invalid || errors.location_address}\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Location Address</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <input name=\"location_address\" type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.location_address\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.location_address\" ng-repeat=\"error in errors.location_address\">{{error}}</span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.city.$invalid || errors.city}\">\n" +
+    "    <label class=\"col-lg-3 control-label\">City</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <input name=\"city\" type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.city\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.city\" ng-repeat=\"error in errors.city\">{{error}}</span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.state.$invalid || errors.state}\">\n" +
+    "    <label class=\"col-lg-3 control-label\">State</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <input name=\"state\" type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.state\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.state\" ng-repeat=\"error in errors.state\">{{error}}</span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.zip.$invalid || errors.zip}\">\n" +
+    "    <label class=\"col-lg-3 control-label\">ZIP/Postal Code</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <input name=\"zip\" type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.zip\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.zip\" ng-repeat=\"error in errors.zip\">{{error}}</span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.county.$invalid || errors.county}\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Country</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <select name=\"country\" class=\"form-control\" ng-model=\"AccountObj.country\">\n" +
+    "        <option>USA</option>\n" +
+    "        <option>Armenia</option>\n" +
+    "        <option>Spain</option>\n" +
+    "      </select>\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.country\" ng-repeat=\"error in errors.country\">{{error}}</span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.timezone.$invalid || errors.timezone}\">\n" +
+    "    <label class=\"col-lg-3 control-label\">Timezone</label>\n" +
+    "    <div class=\"col-lg-9\">\n" +
+    "      <select name=\"timezone\" class=\"form-control\" ng-model=\"AccountObj.timezone\">\n" +
+    "         <option ng-repeat=\"tm in timezones\">{{tm}}</option>\n" +
+    "      </select>\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.country\" ng-repeat=\"error in errors.timezone\">{{error}}</span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  </div>\n" +
     "");
 }]);
 
@@ -688,7 +766,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "        <div class=\"event-header\">\n" +
     "          <div class=\"row-wrapper title-line\">\n" +
     "            <div class=\"pull-left\">\n" +
-    "              <a href=\"#/events/{{event.slug}}\"><h1>{{event.title}}</h1></a><span ng-hide=\"event.title\">&nbsp;</span>\n" +
+    "              <a href=\"#/events/{{event.slug}}\"><h1>{{event.title| textlimit:\"32\"}}</h1></a><span ng-hide=\"event.title\">&nbsp;</span>\n" +
     "            </div>\n" +
     "            <div class=\"pull-right\">\n" +
     "              <a ng-show=\"event.srv_live\" href=\"#\" tooltip-placement=\"left\" tooltip=\"[Stream] Happening Now\"><i class=\"xa-icon-live-stream\"></i></a>\n" +
@@ -730,7 +808,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "        </div>\n" +
     "        <div class=\"event-text\">\n" +
     "          <p>\n" +
-    "            {{event.about}}\n" +
+    "            {{event.about | textlimit:\"110\"}}\n" +
     "          </p>\n" +
     "        </div>\n" +
     "        <div class=\"event-footer\">\n" +
@@ -1141,6 +1219,7 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "              <span class=\"location\">\n" +
     "                <i class=\"xa-icon-location\"></i> {{profile.location_address}}\n" +
     "              </span>\n" +
+    "              <span class=\"website\"><a href=\"{{profile.website}}\">{{profile.website}}</a></span>\n" +
     "            </div>\n" +
     "          </div>\n" +
     "          <div class=\"col-md-3 hidden-xs hidden-sm about-col\">\n" +
@@ -1222,6 +1301,7 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
     "                                              <span class=\"location\">\n" +
     "                                                <i class=\"xa-icon-location\"></i> {{Profile.location}}\n" +
     "                                              </span>\n" +
+    "                                              <span class=\"website\"><a href=\"{{Profile.website}}\">{{Profile.website}}</a></span>\n" +
     "                                            </div>\n" +
     "                                          </div>\n" +
     "                                          <div class=\"col-md-3 hidden-xs hidden-sm about-col\">\n" +

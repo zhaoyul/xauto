@@ -104,6 +104,18 @@ angular.module( 'blvdx.events', [
 }])
 
 
+.filter('textlimit', function() {
+    return function(input, param) {
+        if(input.length>param){
+            return input.substr(0,param) + "...";
+        }else{
+            return input;
+        }
+
+    };
+})
+
+
 .controller( 'EventsCtrl', ['$scope', 'titleService', 'Events', '$http',  'AppScope',
     function EventsCtrl( $scope, titleService, Events, $http, AppScope ) {
   titleService.setTitle( 'All events' );
@@ -113,6 +125,9 @@ angular.module( 'blvdx.events', [
   });
 
   $scope.search = {};
+
+
+
 
   $scope.changeDisplayFilter = function(type){
       Events.getEvents({filter_by: type}).then(function (events) {
@@ -358,6 +373,10 @@ angular.module( 'blvdx.events', [
   $scope.reloadEvent = function(){
     Events.getDetails($stateParams.eventId).then(function (event) {
         $scope.EventObj = event;
+
+        //TO DO - paginator
+
+
         $scope.Albums = event.albums;
         var subscription = {
           'profiles': [],

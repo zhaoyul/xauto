@@ -59,6 +59,10 @@ angular.module( 'blvdx', [
         });
     };
 
+    Accounts.getAllTimezones().then(function (timezones) {
+          $scope.timezones = timezones;
+    });
+
     $scope.accountCreate = function(){
         Accounts.createAccount($scope.AccountObj).then(function (account) {
             $(".modal:visible").find(".close").click();

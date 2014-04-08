@@ -510,6 +510,22 @@ class ReportPictureView(APIView):
         picture.is_inappropriate = True
         picture.save()
 
+        #email to admin
+        user = request.user
+        email_body = render_to_string('emails/picture_report_email.html',
+                    {'user': user,
+                     'title': 'Picture report',
+                     'site_name': settings.SITE_NAME,
+                     'domain': request.build_absolute_uri(reverse('index')),
+                     'picture_id': picture_id}
+                )
+        if "mailer" in settings.INSTALLED_APPS:
+            send_html_mail("Picture report", email_body, email_body,
+                settings.DEFAULT_FROM_EMAIL, [settings.ADMINS])
+        else:
+            send_mail("Picture report", email_body,
+                settings.DEFAULT_FROM_EMAIL, [settings.ADMINS])
+
         return Response({}, status=status.HTTP_200_OK)
 
 

@@ -120,6 +120,9 @@ angular.module( 'blvdx.account', [
   titleService.setTitle( 'Account' );
     $scope.AccountObj = {};
 
+
+
+
     $scope.accountCreate = function(){
         Accounts.createAccount($scope.AccountObj).then(function (account) {
             $state.transitionTo('events');

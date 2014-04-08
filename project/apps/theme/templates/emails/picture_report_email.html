@@ -1,0 +1,16 @@
+{% extends "emails/email_base.html" %}
+{% load i18n %}
+
+{% block email_header %}
+    <span style="font-size: 16px; color: gray;">Hello Admin</span>
+    <br /> <br />
+    This is email notification about report of picture on site <a href="{{ domain }}">{{ site_name }}</a>
+{% endblock %}
+
+{% block email_content %}
+    ID of reported picture: {{ picture_id }}<br><br>
+    You can check it via a link:
+    <br><br>
+    <a href="{{ domain }}admin/multiuploader/multiuploaderimage/{{ picture_id }}/" style="color:#0071B2; text-decoration:none; font-weight:bold;">{{ domain }}admin/multiuploader/multiuploaderimage/{{ picture_id }}/</a>
+    <br /><br />
+{% endblock %}

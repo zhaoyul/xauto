@@ -7844,6 +7844,8 @@ div#profile-view-navbar {
 
 .event-list > li {
   position: relative;
+  float: left;
+  width: 400px;
   padding-top: 0;
   padding-bottom: 30px;
   list-style: none;
@@ -7993,8 +7995,10 @@ div#profile-view-navbar {
 }
 
 .event-list > li .event-text p {
+  height: 46px;
   padding: 15px 15px 5px 15px;
   margin: 0;
+  overflow: hidden;
   font-size: 11px;
   line-height: 14px;
   color: #555555;
@@ -8950,4 +8954,19 @@ ul.stream-list > li:hover ul.stream-action-links {
 
 .stream-action-report-hidden ul.stream-list .action-report {
   display: none;
+}
+
+.additional {
+  padding: 0 0 0 8px;
+  border-left: 2px solid #729b00;
+}
+
+.additional .additional_label {
+  padding: 10px 0;
+  font-weight: bold;
+  color: #729b00;
+}
+
+.additional label {
+  font-size: 7.5pt;
 }
