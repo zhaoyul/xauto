@@ -2,6 +2,7 @@
 from rest_framework import serializers
 import pytz
 from django.utils.timezone import localtime
+from datetime import timedelta
 
 from event.models import Event, EventImage, EventDate, Currency
 from multiuploader.serializers import MultiuploaderImageSerializer
@@ -18,6 +19,7 @@ class EventImageSerializer(serializers.ModelSerializer):
 
 class EventDateSerializer(serializers.ModelSerializer):
     currency = serializers.ChoiceField(choices=[(x.id, x.currency) for x in Currency.objects.all()], source="currency.id")
+
 
     class Meta:
         model = EventDate
@@ -43,7 +45,8 @@ class AlbumSerializer(serializers.ModelSerializer):
     def get_date(self, obj):
         view = self.context['view']
         try:
-            obj.start_date = localtime(obj.start_date, timezone=pytz.timezone(view.request.user.profile.timezone))
+            delta = timedelta(hours=float(view.request.user.profile.timezone))
+            obj.start_date = localtime(obj.start_date, timezone=pytz.timezone('GMT')) + delta
         except:
             obj.start_date = localtime(obj.start_date, timezone=pytz.timezone(settings.TIME_ZONE))
         return obj.start_date.strftime('%B %d, %Y %H:%M:%S')

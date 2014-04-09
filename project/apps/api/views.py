@@ -145,6 +145,18 @@ class EventDateViewSet(ModelViewSet):
     serializer_class = EventDateSerializer
     model = EventDate
 
+    def pre_save(self, obj):
+        pass
+        '''print "presave"
+        print obj
+        try:
+            offset = self.request.DATA['offset']
+            if offset:
+                delta = timedelta(hours=float(offset/60)*-1)
+                obj.start_date = obj.start_date+delta
+                obj.end_date = obj.end_date+delta
+        except:
+            pass'''
 
 
 class LastDateView(ListAPIView):
@@ -713,6 +725,19 @@ class RegistrationView(APIView):
         profile_serializer = NewProfileSerializer(data=request.DATA)
         if user_serializer.is_valid() and profile_serializer.is_valid():
             email = user_serializer.data.get('email', None)
+            timezone = request.DATA.get('timezone', None)
+            full_name = user_data.get('full_name', None)
+
+            error = None
+
+            if not email:
+                error = {'email': ['This field is required.']}
+            if not timezone:
+                error = {'timezone': ['This field is required.']}
+            if not full_name:
+                error = {'full_name': ['This field is required.']}
+            if error:
+                return Response(error, status=status.HTTP_400_BAD_REQUEST)
 
             try:
                 User.objects.get(email=email)

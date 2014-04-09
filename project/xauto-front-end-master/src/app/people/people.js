@@ -81,6 +81,20 @@ angular.module( 'blvdx.people', [
 
 }])
 
+
+
+
+.filter('websiteadr', function() {
+    return function(input) {
+        if(input.indexOf('http://')<0){
+            return 'http://' + input;
+        }else{
+            return input;
+        }
+
+    };
+})
+
 .controller( 'ProfileViewCtrl', ['$scope', 'titleService', '$stateParams', 'Profiles', 'Streams', function ProfileViewCtrl( $scope, titleService, $stateParams, Profiles, Streams) {
 
   titleService.setTitle( $stateParams.username+' - Profile' );
