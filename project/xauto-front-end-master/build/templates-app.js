@@ -844,6 +844,9 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "      <!--  -->\n" +
     "    </li>\n" +
     "  </ul>\n" +
+    "    <div class=\"col-xs-12 col-sm-6 hidden-xs\">\n" +
+    "        <a ng-show=\"hasMoreEvents\" ng-click=\"showMore()\" class=\"btn btn-primary btn-lg\"><i class=\"xa-icon-plus\"></i>Show more</a>\n" +
+    "    </div>\n" +
     "</div>\n" +
     "");
 }]);
