@@ -120,14 +120,37 @@ angular.module( 'blvdx.events', [
     function EventsCtrl( $scope, titleService, Events, $http, AppScope ) {
   titleService.setTitle( 'All events' );
 
+		// contain events data ::
+		$scope.eventsPool = null;
+
   Events.getEvents({}).then(function (events) {
-      $scope.events = events;
+        $scope.eventsPool = events;
+        $scope.showMore();
   });
 
+
   $scope.search = {};
+  // if more events aviable to load
+  $scope.hasMoreEvents = false;
+  $scope.eventsPerLoad = 9;
 
-
-
+  $scope.showMore = function (){
+        if($scope.events == null){
+            $scope.events = [];
+        }
+        // count how many events can be added
+        var maxEvents = Math.min($scope.eventsPool.length, $scope.events.length + $scope.eventsPerLoad);
+        // loop and add events ::
+        for(var i = $scope.events.length;i< maxEvents; i++){
+            $scope.events.push($scope.eventsPool[i]);
+        }
+        // check if there are more events to load ; if not hide button
+        if($scope.events.length == $scope.eventsPool.length){
+            $scope.hasMoreEvents = false;
+        }else{
+        $scope.hasMoreEvents = true;
+      }
+  };
 
   $scope.changeDisplayFilter = function(type){
       Events.getEvents({filter_by: type}).then(function (events) {
