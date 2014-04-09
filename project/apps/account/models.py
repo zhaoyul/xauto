@@ -26,7 +26,7 @@ from xauto_lib.models import TimestampedModel
 class UserProfile(TimestampedModel):
 
     user = models.OneToOneField(User, related_name='profile')
-    name = models.CharField(max_length=255, unique=True, default='')
+    name = models.CharField(max_length=255, unique=True, default='', null=False, blank=False)
     slug = AutoSlugField(populate_from='name',
         slugify=lambda value: value.replace(' ','-'))
     about = models.TextField(null=True, blank=True)
@@ -40,9 +40,8 @@ class UserProfile(TimestampedModel):
     region = models.CharField(max_length=50, null=True, blank=True)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
-    timezone = models.CharField(max_length=30, null=True, blank=True)
+    timezone = models.CharField(max_length=30, null=False, blank=False, default="0.0")
     website = models.CharField(max_length=100, null=True, blank=True)
-
 
     main_image = ImageField(upload_to='account_images/', blank=True)
     thumbnail_image = ImageField(upload_to='account_images/', blank=True)

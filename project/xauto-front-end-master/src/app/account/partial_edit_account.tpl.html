@@ -108,9 +108,7 @@
   <div class="form-group" ng-class="{'has-error': form.timezone.$invalid || errors.timezone}">
     <label class="col-lg-3 control-label">Timezone</label>
     <div class="col-lg-9">
-      <select name="timezone" class="form-control" ng-model="AccountObj.timezone">
-         <option ng-repeat="tm in timezones">{{tm}}</option>
-      </select>
+         <ng-include src="'account/timezones.tpl.html'"></ng-include>
       <span class="help-block" ng-show="errors.country" ng-repeat="error in errors.timezone">{{error}}</span>
     </div>
   </div>

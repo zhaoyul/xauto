@@ -285,6 +285,8 @@ angular.module( 'blvdx.events', [
       end_date.setMinutes(end_time[1]);
       $scope.editDate.start_date = start_date;
       $scope.editDate.end_date = end_date;
+
+      $scope.editDate.offset = end_date.getTimezoneOffset();
       if(start_date.getTime() > end_date.getTime()){
         $scope.errors.end_time = ["Event must ends after it begins"];
         has_errors = true;
