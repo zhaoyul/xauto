@@ -169,16 +169,6 @@ class EventDateViewSet(ModelViewSet):
 
     def pre_save(self, obj):
         pass
-        '''print "presave"
-        print obj
-        try:
-            offset = self.request.DATA['offset']
-            if offset:
-                delta = timedelta(hours=float(offset/60)*-1)
-                obj.start_date = obj.start_date+delta
-                obj.end_date = obj.end_date+delta
-        except:
-            pass'''
 
 
 class LastDateView(ListAPIView):
