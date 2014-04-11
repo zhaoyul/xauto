@@ -46,10 +46,15 @@ class EventsListView(ListAPIView):
     permission_classes = (AllowAny,)
     serializer_class = EventSerializer
 
+
     def get_queryset(self):
         search_text = self.request.GET.get('search_text', '')
         filter_by = self.request.GET.get('filter_by', '')
         own_events = self.request.GET.get('own_events', False)
+
+        lat = self.request.GET.get('lat', '')
+        long = self.request.GET.get('long', '')
+
         user = self.request.user
 
         if len(search_text)>=1:
@@ -66,6 +71,23 @@ class EventsListView(ListAPIView):
         if filter_by == 'live':
             queryset = queryset.filter(event_dates__start_date__lt=datetime.now()).filter(
                 event_dates__end_date__gt=datetime.now()).distinct()
+
+        if filter_by == 'nearby':
+            if long and lat:
+
+                neardates = EventDate.objects.filter((Q(latitude__gt=float(lat)-5) & Q(latitude__lt=float(lat)+5))).filter((Q(longitude__gt=float(long)-5) & Q(longitude__lt=float(long)+5))).distinct()
+                #sort by distance
+                near = []
+                for d in neardates:
+                    distance = abs(d.longitude - float(long)) + abs(d.latitude - float(lat))
+                    near.append((d.event.id,distance))
+                near.sort(key=lambda item: item[1])
+                ids = []
+                for el in near:
+                    evid = el[0]
+                    if not evid in ids:
+                        ids.append(evid)
+                queryset = queryset.filter(id__in=ids)[:5]
 
         return queryset
 

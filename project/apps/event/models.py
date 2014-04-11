@@ -19,6 +19,9 @@ from account.models import UserProfile
 from xauto_lib.models import TimestampedModel
 from multiuploader.models import MultiuploaderImage
 
+
+
+
 class Currency(models.Model):
     class Meta:
         verbose_name_plural = 'Currencies'

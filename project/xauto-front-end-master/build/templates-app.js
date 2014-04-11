@@ -790,7 +790,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "        ><i class=\"xa-icon-stream-white\"></i></a>\n" +
     "       <a\n" +
     "        href=\"javascript:;\"\n" +
-    "        ng-click=\"changeDisplayFilter('live')\"\n" +
+    "        ng-click=\"changeDisplayFilter('nearby')\"\n" +
     "        ng-class=\"{active:search.srv_live}\"\n" +
     "        tooltip-placement=\"bottom\"\n" +
     "        tooltip=\"Nearby\"\n" +
@@ -1129,10 +1129,7 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "      <div class=\"form-group\" ng-class=\"{'has-error': form.country.$invalid || errors.country}\">\n" +
     "        <label class=\"col-lg-3 control-label\">Country</label>\n" +
     "        <div class=\"col-lg-9\">\n" +
-    "          <select class=\"form-control\" ng-model=\"editDate.country\" name=\"country\">\n" +
-    "            <option>USA</option>\n" +
-    "            <option>Armenia</option>\n" +
-    "            <option>Spain</option>\n" +
+    "          <select class=\"form-control\" ng-model=\"editDate.country\" name=\"country\" ng-options=\"x.value as x.display_name for x in editDateOptions.countries.choices\">\n" +
     "          </select>\n" +
     "          <span class=\"help-block\" ng-show=\"errors.country\" ng-repeat=\"error in errors.country\">{{error}}</span>\n" +
     "        </div>\n" +

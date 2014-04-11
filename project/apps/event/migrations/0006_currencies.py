@@ -7,14 +7,19 @@ from django.db import models
 class Migration(DataMigration):
 
     def add_cur(self, orm, country, country_code, currency, symbol):
-        c = orm.Currency()
-        c.country = country
-        c.country_code = country_code
-        c.currency = currency
-        c.symbol = symbol
-        c.save()
+        try:
+            c = orm.Currency()
+            c.country = country
+            c.country_code = country_code
+            c.currency = currency
+            c.symbol = symbol
+            c.save()
+        except:
+            pass
 
     def forwards(self, orm):
+        #orm.Currency.objects.all().delete()
+
         self.add_cur(orm,"Argentina","","ARS","$")
         self.add_cur(orm,"Australia","","AUD","$")
         self.add_cur(orm,"Brazil","","BRL","R$")
@@ -24,7 +29,7 @@ class Migration(DataMigration):
 
         self.add_cur(orm,"Denmark","","DKK","kr")
         self.add_cur(orm,"Egypt","","EGP","£")
-        self.add_cur(orm,"Euro Member Countries","","EUR","€")
+
         self.add_cur(orm,"Hong Kong","","HKD","$")
         self.add_cur(orm,"Hungary","","HUF","Ft")
 
@@ -33,10 +38,68 @@ class Migration(DataMigration):
         self.add_cur(orm,"Indonesia","","IDR","Rp")
         self.add_cur(orm,"Iran","","IRR","")
 
-        "Write your forwards methods here."
-        # Note: Don't use "from appname.models import ModelName". 
-        # Use orm.ModelName to refer to models in this application,
-        # and orm['appname.ModelName'] for models in other applications.
+        self.add_cur(orm,"Israel","","ILS","₪")
+        self.add_cur(orm,"Japan","","JPY","¥")
+        self.add_cur(orm,"Korea","","KRW","₩")
+        self.add_cur(orm,"Lebanon","","LBP","£")
+
+        self.add_cur(orm,"Malaysia","","MYR","RM")
+        self.add_cur(orm,"Mexico","","MXN","$")
+        self.add_cur(orm,"New Zealand","","NZD","$")
+        self.add_cur(orm,"Norway","","NOK","kr")
+        self.add_cur(orm,"Oman","","OMR","﷼")
+
+        self.add_cur(orm,"Philippines","","PHP","₱")
+        self.add_cur(orm,"Poland","","PLN","zł")
+        self.add_cur(orm,"Qatar","","QAR","﷼")
+        self.add_cur(orm,"Romania","","RON","lei")
+        self.add_cur(orm,"Russia","","RUB","руб")
+
+        self.add_cur(orm,"Saudi Arabia","","SAR","﷼")
+        self.add_cur(orm,"Singapore","","SGD","$")
+        self.add_cur(orm,"South Africa","","ZAR","R")
+        self.add_cur(orm,"Sweden","","SEK","kr")
+        self.add_cur(orm,"Switzerland","","CHF","CHF")
+        self.add_cur(orm,"Thailand","","THB","฿")
+        self.add_cur(orm,"Turkey","","TRY","")
+        self.add_cur(orm,"United Arab Emirates","","AED","")
+        self.add_cur(orm,"United Kingdom","","GBP","£")
+        self.add_cur(orm,"United States","","USD","$")
+        self.add_cur(orm,"Viet Nam","","VND","₫")
+        self.add_cur(orm,"Yemen","","YER","﷼")
+
+        #with euro
+        self.add_cur(orm,"Austria","","EUR","€")
+        self.add_cur(orm,"Belgium","","EUR","€")
+        self.add_cur(orm,"Bulgaria","","EUR","€")
+        self.add_cur(orm,"Croatia","","EUR","€")
+        self.add_cur(orm,"Cyprus","","EUR","€")
+        self.add_cur(orm,"Czech Republic","","EUR","€")
+
+        self.add_cur(orm,"Denmark","","EUR","€")
+        self.add_cur(orm,"Estonia","","EUR","€")
+        self.add_cur(orm,"Finland","","EUR","€")
+        self.add_cur(orm,"France","","EUR","€")
+        self.add_cur(orm,"Germany","","EUR","€")
+        self.add_cur(orm,"Greece","","EUR","€")
+        self.add_cur(orm,"Hungary","","EUR","€")
+        self.add_cur(orm,"Ireland","","EUR","€")
+        self.add_cur(orm,"Italy","","EUR","€")
+        self.add_cur(orm,"Latvia","","EUR","€")
+        self.add_cur(orm,"Lithuania","","EUR","€")
+        self.add_cur(orm,"Luxembourg","","EUR","€")
+        self.add_cur(orm,"Malta","","EUR","€")
+        self.add_cur(orm,"Netherlands","","EUR","€")
+        self.add_cur(orm,"Poland","","EUR","€")
+        self.add_cur(orm,"Portugal","","EUR","€")
+        self.add_cur(orm,"Romania","","EUR","€")
+        self.add_cur(orm,"Slovakia","","EUR","€")
+        self.add_cur(orm,"Slovenia","","EUR","€")
+        self.add_cur(orm,"Spain","","EUR","€")
+        self.add_cur(orm,"Sweden","","EUR","€")
+        self.add_cur(orm,"United Kingdom","","EUR","€")
+
+
 
     def backwards(self, orm):
         orm.Currency.objects.filter(country_code='').delete()

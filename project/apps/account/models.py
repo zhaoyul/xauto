@@ -23,6 +23,8 @@ from django.conf import settings
 from xauto_lib.models import TimestampedModel
 
 
+
+
 class UserProfile(TimestampedModel):
 
     user = models.OneToOneField(User, related_name='profile')

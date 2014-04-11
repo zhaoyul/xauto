@@ -44,10 +44,7 @@
       <div class="form-group" ng-class="{'has-error': form.country.$invalid || errors.country}">
         <label class="col-lg-3 control-label">Country</label>
         <div class="col-lg-9">
-          <select class="form-control" ng-model="editDate.country" name="country">
-            <option>USA</option>
-            <option>Armenia</option>
-            <option>Spain</option>
+          <select class="form-control" ng-model="editDate.country" name="country" ng-options="x.value as x.display_name for x in editDateOptions.countries.choices">
           </select>
           <span class="help-block" ng-show="errors.country" ng-repeat="error in errors.country">{{error}}</span>
         </div>
