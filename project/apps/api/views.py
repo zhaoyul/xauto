@@ -121,9 +121,14 @@ class AlbumPhotosUploader(APIView):
         i = 0
         for index, photo in enumerate(self.request.DATA):
             imageObj = MultiuploaderImage()
+            ff = photo['file'].split(",")
+            if len(ff)>1:
+                ff = ff[1]
+            else:
+                ff= photo['file']
             imageObj.image.save(
                 photo['name'],
-                ContentFile(photo['file'].decode('base64')),
+                ContentFile(ff.decode('base64')),
                 save=False
             )
             imageObj.userprofile = profile
@@ -187,6 +192,36 @@ class LastDateView(ListAPIView):
         queryset = EventDate.objects.filter(event=ev).order_by("-end_date").order_by("-id")
         return queryset
 
+
+class EventAllImagesView(APIView):
+    """
+    Show all photos of the album
+    """
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, slug, *args, **kwargs):
+        user = self.request.user
+
+        event = Event.objects.get(slug=slug,author=user.profile)
+
+        #setting image
+        sset = self.request.GET.get("id", "")
+        if sset:
+            img = MultiuploaderImage.objects.get(id=sset)
+            new = EventImage()
+            new.image = img.image
+            new.save()
+            event.main_image = new
+            event.save()
+            return Response({}, status=status.HTTP_200_OK)
+
+        imgs = []
+
+        mi = MultiuploaderImage.objects.filter(event_date__in=EventDate.objects.filter(event=event ))
+        for m in mi:
+            imgs.append((m.id, m.thumb_url(250,250)))
+
+        return Response(imgs, status=status.HTTP_200_OK)
 
 
 class DeletePictureView(APIView):

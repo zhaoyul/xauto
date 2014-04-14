@@ -8,6 +8,16 @@ angular.module('resources.events', ['restangular'])
       return Restangular.all('events').customGETLIST('list', params);
   };
 
+  Events.selphotoModal = function (id) {
+      return Restangular.one('events',id).customGET('selphotoModal');
+  };
+
+
+  Events.selimg = function (ev_id,entry) {
+      return Restangular.one('events',ev_id).customGETLIST('selphotoModal', {id:entry[0]});
+  };
+
+
   Events.getEventDatePhotoManage = function (id) {
       return Restangular.one('eventdates',id).customGET('photosmanage');
   };

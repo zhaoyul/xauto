@@ -8708,6 +8708,15 @@ ul.event-details-actions > li > a.btn i {
   margin: 0 -24px;
 }
 
+.selphoto {
+  width: 600px;
+}
+
+.selphoto div {
+  float: left;
+  margin: 10px;
+}
+
 table.events-list-table {
   table-layout: fixed;
   /*

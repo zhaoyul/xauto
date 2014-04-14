@@ -56,7 +56,8 @@ angular.module( 'blvdx.people', [
    $scope.radioModel = 'All';
 
   Profiles.getProfiles({}).then(function (profiles) {
-      $scope.Profiles = profiles;
+      $scope.profilesPool = profiles;
+      $scope.showMore();
   });
 
   $scope.changeDisplayFilter = function(type){
@@ -79,6 +80,32 @@ angular.module( 'blvdx.people', [
       });
   };
 
+
+
+   $scope.search = {};
+  // if more profiles aviable to load
+  $scope.hasMoreProfiles = false;
+  $scope.profilesPerLoad = 9;
+
+  $scope.showMore = function (){
+        if($scope.Profiles == null){
+            $scope.Profiles = [];
+        }
+        // count how many events can be added
+        var maxProfiles = Math.min($scope.profilesPool.length, $scope.Profiles.length + $scope.profilesPerLoad);
+
+        // loop and add Profiles ::
+        for(var i = $scope.Profiles.length;i< maxProfiles; i++){
+            $scope.Profiles.push($scope.profilesPool[i]);
+        }
+        // check if there are more events to load ; if not hide button
+        if($scope.Profiles.length == $scope.profilesPool.length){
+            $scope.hasMoreProfiles = false;
+        }else{
+        $scope.hasMoreProfiles = true;
+      }
+  };
+
 }])
 
 
@@ -86,6 +113,9 @@ angular.module( 'blvdx.people', [
 
 .filter('websiteadr', function() {
     return function(input) {
+        if(!input){
+            return "";
+        }
         if(input.indexOf('http://')<0){
             return 'http://' + input;
         }else{

@@ -66,8 +66,17 @@ class MultiuploaderImage(TimestampedModel):
     def url(self):
         return self.image.url
 
-    def thumb_url(self, size):
-        return unicode(self.image.extra_thumbnails.get(size))
+
+    def thumb_url(self, size, size2):
+        try:
+            imgObject = get_thumbnail(self.image, str(size)+'x'+str(size2), crop='center', quality=99)
+        except:
+            return self.image.url
+        urlImg = imgObject.url
+        return urlImg
+
+    #def thumb_url(self, size):
+    #    return unicode(self.image.extra_thumbnails.get(size))
 
     def EVENT_IMAGE(self):
         from multiuploader.models import MultiuploaderImage

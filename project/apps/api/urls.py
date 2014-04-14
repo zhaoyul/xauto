@@ -10,7 +10,7 @@ from .views import (EventsListView, EventDetailsView, FollowEventView,
     LoginView, LogoutView, CurrentUserView, ActivateView, ResetPasswordView,
     ChangePasswordView, CheckUsernameView, AlbumPhotosUploader,
     ConfigurationView, CoordinatedPhotoUploader, EventDatePhotoManageView, DeletePictureView, ProfileMyOtherPhotosListView, ProfileMyDatesByEventsListView,
-    ProfileMyOutDatesView, LastDateView, ProfileDeletePhotoView, ProfileAllTimezonesListView)
+    ProfileMyOutDatesView, LastDateView, ProfileDeletePhotoView, ProfileAllTimezonesListView, EventAllImagesView)
 
 router = routers.DefaultRouter()
 router.register(r'events', EventViewSet)
@@ -31,6 +31,12 @@ urlpatterns = patterns('',
         name='events-details'),
     url(r'^events/(?P<slug>[-\w]+)/follow/$', FollowEventView.as_view(),
         name='event-follow'),
+
+    url(r'^events/(?P<slug>[-\w]+)/selphotoModal/$', EventAllImagesView.as_view(),
+        name='event-follow'),
+
+
+
     url(r'^register/$', RegistrationView.as_view(), name='profiles-register'),
     url(r'^activate/(?P<activation_key>\w+)/$',
         ActivateView.as_view(), name='activate-profile'),

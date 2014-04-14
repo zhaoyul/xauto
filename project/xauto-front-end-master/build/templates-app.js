@@ -724,6 +724,30 @@ angular.module("events/event-edit.tpl.html", []).run(["$templateCache", function
     "    </div><!-- /.modal-content -->\n" +
     "  </div><!-- /.modal-dialog -->\n" +
     "</div><!-- /.modal -->\n" +
+    "\n" +
+    "\n" +
+    "\n" +
+    "<!-- select photo -->\n" +
+    "<div class=\"modal fade\" id=\"selphotoModal\" data-backdrop=\"static\">\n" +
+    "  <div class=\"modal-dialog\">\n" +
+    "    <div class=\"modal-content\">\n" +
+    "      <div class=\"modal-header\">\n" +
+    "        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n" +
+    "        <h4 class=\"modal-title\">Select an image</h4>\n" +
+    "      </div>\n" +
+    "      <form name=\"dateform\" class=\"form-horizontal\" role=\"form\" ng-submit=\"saveDate()\" novalidate>\n" +
+    "        <div class=\"modal-body selphoto\">\n" +
+    "            <div ng-repeat=\"img in imgs\" ng-click=\"selimg(img)\">\n" +
+    "               <img src=\"{{img.1}}\">\n" +
+    "           </div>\n" +
+    "            <div class=\"clear\"></div>\n" +
+    "        </div>\n" +
+    "        <div class=\"modal-footer\">\n" +
+    "        </div>\n" +
+    "      </form>\n" +
+    "    </div><!-- /.modal-content -->\n" +
+    "  </div><!-- /.modal-dialog -->\n" +
+    "</div><!-- /.modal -->\n" +
     "");
 }]);
 
@@ -993,7 +1017,7 @@ angular.module("events/partial_edit_event_form.tpl.html", []).run(["$templateCac
     "    </div>\n" +
     "    <div class=\"col-lg-4\">\n" +
     "      <strong>or</strong>\n" +
-    "      <button class=\"btn btn-primary\">Select from Event Photos</button>\n" +
+    "      <button class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#selphotoModal\" ng-click=\"selphotoModal();\">Select from Event Photos</button>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
@@ -1353,6 +1377,9 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "    </ul>\n" +
     "\n" +
     "  </div>\n" +
+    "  <div class=\"col-xs-12 col-sm-6 hidden-xs\">\n" +
+    "        <a ng-show=\"hasMoreProfiles\" ng-click=\"showMore()\" class=\"btn btn-primary btn-lg\"><i class=\"xa-icon-plus\"></i>Show more</a>\n" +
+    "    </div>\n" +
     "</div>\n" +
     "");
 }]);

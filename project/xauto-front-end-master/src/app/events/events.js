@@ -193,7 +193,9 @@ angular.module( 'blvdx.events', [
             longc = 0;
       }
       Events.getEvents({filter_by: type, lat:latc, long:longc }).then(function (events) {
-          $scope.events = events;
+          $scope.events = [];
+          $scope.eventsPool = events;
+          $scope.showMore();
       });
   };
 
@@ -215,7 +217,9 @@ angular.module( 'blvdx.events', [
   app_scope = AppScope.getScope();
   app_scope.Search = function(value) {
       Events.getEvents({search_text: value}).then(function (events) {
-          $scope.events = events;
+          $scope.events = [];
+          $scope.eventsPool = events;
+          $scope.showMore();
       });
   };
 }])
@@ -275,6 +279,21 @@ angular.module( 'blvdx.events', [
   };
 
   $scope.reloadEvent();
+
+
+  $scope.selphotoModal = function(){
+        Events.selphotoModal($scope.eventId).then(function (imgs) {
+             $scope.imgs = imgs;
+        });
+  };
+
+
+  $scope.selimg = function(entry){
+        Events.selimg($scope.eventId, entry).then(function(imgs) {
+             $(".modal:visible").find(".close").click();
+             $scope.reloadEvent();
+        });
+  };
 
   $scope.eventSubmit = function(){
     Events.saveEvent($scope.EventObj).then(function (event) {
@@ -439,6 +458,7 @@ angular.module( 'blvdx.events', [
         $scope.EventObj = event;
 
         //TO DO - paginator
+
 
 
         $scope.Albums = event.albums;

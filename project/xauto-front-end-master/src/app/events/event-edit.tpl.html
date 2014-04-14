@@ -37,3 +37,27 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+
+<!-- select photo -->
+<div class="modal fade" id="selphotoModal" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Select an image</h4>
+      </div>
+      <form name="dateform" class="form-horizontal" role="form" ng-submit="saveDate()" novalidate>
+        <div class="modal-body selphoto">
+            <div ng-repeat="img in imgs" ng-click="selimg(img)">
+               <img src="{{img.1}}">
+           </div>
+            <div class="clear"></div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
