@@ -200,7 +200,6 @@ angular.module( 'blvdx.events', [
   };
 
   $scope.Follow = function(event) {
-
     $http.get('/api/current-user/').then(function(response) {
     if(response.data.user !== null) {
       Events.follow(event).then(function (data) {
@@ -531,6 +530,15 @@ angular.module( 'blvdx.events', [
   };
 
   $scope.reloadEvent();
+
+
+	// ------>
+	// display photo viewer ::
+	$scope.showPhoto = function (){
+		console.log('set photo::',this.photo);
+		$scope.currentPhoto = this.photo;
+
+	}
 }])
 
 .controller( 'EventsMyCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', function EventsCtrl( $scope, $state, titleService, $stateParams, Events ) {
@@ -583,4 +591,24 @@ angular.module( 'blvdx.events', [
   return function(scope, element, attr) {
     $("body").find('a[data-type="tab"]').tab('show');
   };
+}])
+.directive('photoviewercontent',[function(){
+	return function(scope, element, attr){
+		console.log('photoviewercontent:',arguments);
+		var pview = {
+			ratio:1220/510,
+			target:element,
+			view:$(window),
+			resize:function(){
+				var scale = Math.min(view.width()/1280 , view.height()/510 );
+				element.css({width:0,height:0});
+			}
+		};
+
+		$(document).resize(pview.resize)
+	}
 }]);
+
+
+
+
