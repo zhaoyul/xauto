@@ -7,6 +7,7 @@ from datetime import timedelta
 from event.models import Event, EventImage, EventDate, Currency
 from multiuploader.serializers import MultiuploaderImageSerializer
 from django.conf import settings
+from django.db.models import Count
 
 
 class EventImageSerializer(serializers.ModelSerializer):
@@ -18,8 +19,14 @@ class EventImageSerializer(serializers.ModelSerializer):
 
 
 class EventDateSerializer(serializers.ModelSerializer):
-    currency = serializers.ChoiceField(choices=[(x.id, x.currency) for x in Currency.objects.all()], source="currency.id")
-
+    currency_choices = []
+    curs = []
+    for x in Currency.objects.all().order_by("currency"):
+        if x.currency not in curs:
+            curs.append(x.currency)
+            currency_choices.append((x.id, x.currency))
+    currency = serializers.ChoiceField(choices=currency_choices, source="currency.id")
+    country = serializers.ChoiceField(choices=[(x.country, x.country) for x in Currency.objects.all().order_by("country")], source="country")
 
     class Meta:
         model = EventDate
@@ -45,7 +52,7 @@ class AlbumSerializer(serializers.ModelSerializer):
     def get_date(self, obj):
         view = self.context['view']
         try:
-            delta = timedelta(hours=float(view.request.user.profile.timezone))
+            delta = timedelta(hours= float(obj.timezone))
             obj.start_date = localtime(obj.start_date, timezone=pytz.timezone('GMT')) + delta
         except:
             obj.start_date = localtime(obj.start_date, timezone=pytz.timezone(settings.TIME_ZONE))

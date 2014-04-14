@@ -116,8 +116,8 @@ angular.module( 'blvdx.events', [
 })
 
 
-.controller( 'EventsCtrl', ['$scope', 'titleService', 'Events', '$http',  'AppScope',
-    function EventsCtrl( $scope, titleService, Events, $http, AppScope ) {
+.controller( 'EventsCtrl', ['$scope', '$geolocation', 'titleService', 'Events', '$http',  'AppScope',
+    function EventsCtrl( $scope, $geolocation, titleService, Events, $http, AppScope ) {
   titleService.setTitle( 'All events' );
 
 		// contain events data ::
@@ -152,8 +152,47 @@ angular.module( 'blvdx.events', [
       }
   };
 
+
+  $scope.check = function(){
+        $scope.aviable = $geolocation.aviable;
+        $scope.error = $geolocation.error;
+        $scope.complete = $geolocation.complete;
+        if($geolocation.position){
+            $scope.timestamp = $geolocation.timestamp;
+            $scope.latitude = $geolocation.position.latitude;
+            $scope.longitude = $geolocation.position.longitude;
+        }
+    };
+
+ $scope.$on(GeolocationEvent.COMPLETE , function (nge){
+        $scope.check();
+        if(!$scope.$$phase){
+            $scope.$apply();// async call z poza angulara potrzebuje apply, inaczej nie zrobi update'u parametrow
+        }
+    });
+    $scope.$on(GeolocationEvent.UPDATE , function (nge){
+        $scope.check();
+        if(!$scope.$$phase){
+            $scope.$apply();// async call z poza angulara potrzebuje apply, inaczej nie zrobi update'u parametrow
+        }
+    });
+
+
+  $geolocation.stopInterval();
+  $geolocation.start();
+
+  $scope.check();
+
   $scope.changeDisplayFilter = function(type){
-      Events.getEvents({filter_by: type}).then(function (events) {
+
+      if($scope.latitude){
+            latc = $scope.latitude;
+            longc = $scope.longitude;
+      }else{
+            latc = 0;
+            longc = 0;
+      }
+      Events.getEvents({filter_by: type, lat:latc, long:longc }).then(function (events) {
           $scope.events = events;
       });
   };

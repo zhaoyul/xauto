@@ -1,109 +1,23 @@
 # -*- coding: utf-8 -*-
 import datetime
 from south.db import db
-from south.v2 import DataMigration
+from south.v2 import SchemaMigration
 from django.db import models
 
-class Migration(DataMigration):
 
-    def add_cur(self, orm, country, country_code, currency, symbol):
-        try:
-            c = orm.Currency()
-            c.country = country
-            c.country_code = country_code
-            c.currency = currency
-            c.symbol = symbol
-            c.save()
-        except:
-            pass
+class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        #orm.Currency.objects.all().delete()
-
-        self.add_cur(orm,"Argentina","","ARS","$")
-        self.add_cur(orm,"Australia","","AUD","$")
-        self.add_cur(orm,"Brazil","","BRL","R$")
-        self.add_cur(orm,"Canada","","CAD","$")
-        self.add_cur(orm,"China","","CNY","¥")
-        self.add_cur(orm,"Czech Republic","","CZK","Kč")
-
-        self.add_cur(orm,"Denmark","","DKK","kr")
-        self.add_cur(orm,"Egypt","","EGP","£")
-
-        self.add_cur(orm,"Hong Kong","","HKD","$")
-        self.add_cur(orm,"Hungary","","HUF","Ft")
-
-        self.add_cur(orm,"Iceland","","ISK","kr")
-        self.add_cur(orm,"India","","INR","")
-        self.add_cur(orm,"Indonesia","","IDR","Rp")
-        self.add_cur(orm,"Iran","","IRR","")
-
-        self.add_cur(orm,"Israel","","ILS","₪")
-        self.add_cur(orm,"Japan","","JPY","¥")
-        self.add_cur(orm,"Korea","","KRW","₩")
-        self.add_cur(orm,"Lebanon","","LBP","£")
-
-        self.add_cur(orm,"Malaysia","","MYR","RM")
-        self.add_cur(orm,"Mexico","","MXN","$")
-        self.add_cur(orm,"New Zealand","","NZD","$")
-        self.add_cur(orm,"Norway","","NOK","kr")
-        self.add_cur(orm,"Oman","","OMR","﷼")
-
-        self.add_cur(orm,"Philippines","","PHP","₱")
-        self.add_cur(orm,"Poland","","PLN","zł")
-        self.add_cur(orm,"Qatar","","QAR","﷼")
-        self.add_cur(orm,"Romania","","RON","lei")
-        self.add_cur(orm,"Russia","","RUB","руб")
-
-        self.add_cur(orm,"Saudi Arabia","","SAR","﷼")
-        self.add_cur(orm,"Singapore","","SGD","$")
-        self.add_cur(orm,"South Africa","","ZAR","R")
-        self.add_cur(orm,"Sweden","","SEK","kr")
-        self.add_cur(orm,"Switzerland","","CHF","CHF")
-        self.add_cur(orm,"Thailand","","THB","฿")
-        self.add_cur(orm,"Turkey","","TRY","")
-        self.add_cur(orm,"United Arab Emirates","","AED","")
-        self.add_cur(orm,"United Kingdom","","GBP","£")
-        self.add_cur(orm,"United States","","USD","$")
-        self.add_cur(orm,"Viet Nam","","VND","₫")
-        self.add_cur(orm,"Yemen","","YER","﷼")
-
-        #with euro
-        self.add_cur(orm,"Austria","","EUR","€")
-        self.add_cur(orm,"Belgium","","EUR","€")
-        self.add_cur(orm,"Bulgaria","","EUR","€")
-        self.add_cur(orm,"Croatia","","EUR","€")
-        self.add_cur(orm,"Cyprus","","EUR","€")
-        self.add_cur(orm,"Czech Republic","","EUR","€")
-
-        self.add_cur(orm,"Denmark","","EUR","€")
-        self.add_cur(orm,"Estonia","","EUR","€")
-        self.add_cur(orm,"Finland","","EUR","€")
-        self.add_cur(orm,"France","","EUR","€")
-        self.add_cur(orm,"Germany","","EUR","€")
-        self.add_cur(orm,"Greece","","EUR","€")
-        self.add_cur(orm,"Hungary","","EUR","€")
-        self.add_cur(orm,"Ireland","","EUR","€")
-        self.add_cur(orm,"Italy","","EUR","€")
-        self.add_cur(orm,"Latvia","","EUR","€")
-        self.add_cur(orm,"Lithuania","","EUR","€")
-        self.add_cur(orm,"Luxembourg","","EUR","€")
-        self.add_cur(orm,"Malta","","EUR","€")
-        self.add_cur(orm,"Netherlands","","EUR","€")
-        self.add_cur(orm,"Poland","","EUR","€")
-        self.add_cur(orm,"Portugal","","EUR","€")
-        self.add_cur(orm,"Romania","","EUR","€")
-        self.add_cur(orm,"Slovakia","","EUR","€")
-        self.add_cur(orm,"Slovenia","","EUR","€")
-        self.add_cur(orm,"Spain","","EUR","€")
-        self.add_cur(orm,"Sweden","","EUR","€")
-        self.add_cur(orm,"United Kingdom","","EUR","€")
-
+        # Adding field 'EventDate.timezone'
+        db.add_column(u'event_eventdate', 'timezone',
+                      self.gf('django.db.models.fields.CharField')(default='0.0', max_length=30),
+                      keep_default=False)
 
 
     def backwards(self, orm):
-        orm.Currency.objects.filter(country_code='').delete()
-        "Write your backwards methods here."
+        # Deleting field 'EventDate.timezone'
+        db.delete_column(u'event_eventdate', 'timezone')
+
 
     models = {
         u'account.userprofile': {
@@ -220,6 +134,7 @@ class Migration(DataMigration):
             'shared': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'shared_dates'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['account.UserProfile']"}),
             'start_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True'}),
             'state': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'}),
+            'timezone': ('django.db.models.fields.CharField', [], {'default': "'0.0'", 'max_length': '30'}),
             'zipcode': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'})
         },
         u'event.eventimage': {
@@ -235,4 +150,3 @@ class Migration(DataMigration):
     }
 
     complete_apps = ['event']
-    symmetrical = True

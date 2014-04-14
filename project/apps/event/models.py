@@ -19,6 +19,9 @@ from account.models import UserProfile
 from xauto_lib.models import TimestampedModel
 from multiuploader.models import MultiuploaderImage
 
+
+
+
 class Currency(models.Model):
     class Meta:
         verbose_name_plural = 'Currencies'
@@ -66,6 +69,8 @@ class EventDate(TimestampedModel):
     event = models.ForeignKey('Event', related_name='event_dates',
                               verbose_name='Your Event')
     #author = models.ForeignKey(User, related_name='user_event_date', verbose_name='Event Author')
+
+    timezone = models.CharField(max_length=30, null=False, blank=False, default="0.0")
     start_date = models.DateTimeField(null=True, blank=False)
     end_date = models.DateTimeField(null=True, blank=True)
     feature_headline = models.CharField(max_length=100)

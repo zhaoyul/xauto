@@ -1,4 +1,4 @@
-angular.module('templates-app', ['account/account-change-pswd.tpl.html', 'account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos-by-date.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'account/partial_edit_account.tpl.html', 'account/timezones.tpl.html', 'events/date-photosmanage.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_edit_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
+angular.module('templates-app', ['account/account-change-pswd.tpl.html', 'account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos-by-date.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'account/partial_edit_account.tpl.html', 'account/timezones.tpl.html', 'events/date-photosmanage.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_edit_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'events/timezones.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
 
 angular.module("account/account-change-pswd.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-change-pswd.tpl.html",
@@ -790,7 +790,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "        ><i class=\"xa-icon-stream-white\"></i></a>\n" +
     "       <a\n" +
     "        href=\"javascript:;\"\n" +
-    "        ng-click=\"changeDisplayFilter('live')\"\n" +
+    "        ng-click=\"changeDisplayFilter('nearby')\"\n" +
     "        ng-class=\"{active:search.srv_live}\"\n" +
     "        tooltip-placement=\"bottom\"\n" +
     "        tooltip=\"Nearby\"\n" +
@@ -1129,10 +1129,7 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "      <div class=\"form-group\" ng-class=\"{'has-error': form.country.$invalid || errors.country}\">\n" +
     "        <label class=\"col-lg-3 control-label\">Country</label>\n" +
     "        <div class=\"col-lg-9\">\n" +
-    "          <select class=\"form-control\" ng-model=\"editDate.country\" name=\"country\">\n" +
-    "            <option>USA</option>\n" +
-    "            <option>Armenia</option>\n" +
-    "            <option>Spain</option>\n" +
+    "          <select class=\"form-control\" ng-model=\"editDate.country\" name=\"country\" ng-options=\"x.value as x.display_name for x in editDateOptions.country.choices\">\n" +
     "          </select>\n" +
     "          <span class=\"help-block\" ng-show=\"errors.country\" ng-repeat=\"error in errors.country\">{{error}}</span>\n" +
     "        </div>\n" +
@@ -1195,6 +1192,13 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "      </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.timezone.$invalid || errors.timezone}\">\n" +
+    "        <label class=\"col-lg-3 control-label\">Timezone</label>\n" +
+    "        <div class=\"col-lg-9\">\n" +
+    "          <ng-include src=\"'events/timezones.tpl.html'\"></ng-include>\n" +
+    "          <span class=\"help-block\" ng-show=\"errors.latitude\" ng-repeat=\"error in errors.timezone\">{{error}}</span>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
     "  <div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">Cost To Attend</label>\n" +
     "    <label class=\"col-lg-2 control-label free-label\">\n" +
@@ -1240,6 +1244,43 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "    </div>\n" +
     "  </div>\n" +
     "");
+}]);
+
+angular.module("events/timezones.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("events/timezones.tpl.html",
+    "<select name=\"timezone\" class=\"form-control\" ng-model=\"editDate.timezone\">\n" +
+    "    <option value=\"-12.0\">(GMT -12:00) Eniwetok, Kwajalein</option>\n" +
+    "    <option value=\"-11.0\">(GMT -11:00) Midway Island, Samoa</option>\n" +
+    "    <option value=\"-10.0\">(GMT -10:00) Hawaii</option>\n" +
+    "    <option value=\"-9.0\">(GMT -9:00) Alaska</option>\n" +
+    "    <option value=\"-8.0\">(GMT -8:00) Pacific Time (US &amp; Canada)</option>\n" +
+    "    <option value=\"-7.0\">(GMT -7:00) Mountain Time (US &amp; Canada)</option>\n" +
+    "    <option value=\"-6.0\">(GMT -6:00) Central Time (US &amp; Canada), Mexico City</option>\n" +
+    "    <option value=\"-5.0\">(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima</option>\n" +
+    "    <option value=\"-4.0\">(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz</option>\n" +
+    "    <option value=\"-3.5\">(GMT -3:30) Newfoundland</option>\n" +
+    "    <option value=\"-3.0\">(GMT -3:00) Brazil, Buenos Aires, Georgetown</option>\n" +
+    "    <option value=\"-2.0\">(GMT -2:00) Mid-Atlantic</option>\n" +
+    "    <option value=\"-1.0\">(GMT -1:00 hour) Azores, Cape Verde Islands</option>\n" +
+    "    <option value=\"0.0\">(GMT) Western Europe Time, London, Lisbon, Casablanca</option>\n" +
+    "    <option value=\"1.0\">(GMT +1:00 hour) Brussels, Copenhagen, Madrid, Paris</option>\n" +
+    "    <option value=\"2.0\">(GMT +2:00) Kaliningrad, South Africa</option>\n" +
+    "    <option value=\"3.0\">(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg</option>\n" +
+    "    <option value=\"3.5\">(GMT +3:30) Tehran</option>\n" +
+    "    <option value=\"4.0\">(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi</option>\n" +
+    "    <option value=\"4.5\">(GMT +4:30) Kabul</option>\n" +
+    "    <option value=\"5.0\">(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent</option>\n" +
+    "    <option value=\"5.5\">(GMT +5:30) Bombay, Calcutta, Madras, New Delhi</option>\n" +
+    "    <option value=\"5.75\">(GMT +5:45) Kathmandu</option>\n" +
+    "    <option value=\"6.0\">(GMT +6:00) Almaty, Dhaka, Colombo</option>\n" +
+    "    <option value=\"7.0\">(GMT +7:00) Bangkok, Hanoi, Jakarta</option>\n" +
+    "    <option value=\"8.0\">(GMT +8:00) Beijing, Perth, Singapore, Hong Kong</option>\n" +
+    "    <option value=\"9.0\">(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk</option>\n" +
+    "    <option value=\"9.5\">(GMT +9:30) Adelaide, Darwin</option>\n" +
+    "    <option value=\"10.0\">(GMT +10:00) Eastern Australia, Guam, Vladivostok</option>\n" +
+    "    <option value=\"11.0\">(GMT +11:00) Magadan, Solomon Islands, New Caledonia</option>\n" +
+    "    <option value=\"12.0\">(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option>\n" +
+    "</select>");
 }]);
 
 angular.module("people/people.tpl.html", []).run(["$templateCache", function($templateCache) {
