@@ -168,8 +168,8 @@ angular.module( 'blvdx.stream', [
   return {
     restrict: 'AC',
     link: function (scope, element, attrs) {
-    $(element).css("background-image", "url('"+attrs.bxStreamPhoto+"')");
-    $(element).colorbox({maxWidth:"100%",maxHeight:"100%",scalePhotos:true, photo:true, href:attrs.bxStreamPhoto});
+    	$(element).css("background-image", "url('"+attrs.bxStreamPhoto+"')");
+    	//$(element).colorbox({maxWidth:"100%",maxHeight:"100%",scalePhotos:true, photo:true, href:attrs.bxStreamPhoto});
     }
   };
 });
