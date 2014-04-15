@@ -460,12 +460,12 @@ angular.module("events/date-photosmanage.tpl.html", []).run(["$templateCache", f
     "        <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"item in DateObj.DateObjImgs\" ng-hide=\"item.hide\">\n" +
     "            <div class=\"inner\">\n" +
     "                <div class=\"stream-picture\">\n" +
-    "                     <div bx-stream-photo=\"{{item.image}}\" class=\"inner\"></div>\n" +
-    "                     <ul class=\"stream-action-links\">\n" +
+    "                    <div bx-stream-photo=\"{{item.image}}\" class=\"inner\"></div>\n" +
+    "                    <ul class=\"stream-action-links\">\n" +
     "                        <li class=\"action-delete\">\n" +
     "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Delete\"\n" +
-    "                              ng-click=\"Delete(item)\">\n" +
-    "                              <i class=\"icon-remove\"></i>\n" +
+    "                               ng-click=\"Delete(item)\">\n" +
+    "                                <i class=\"icon-remove\"></i>\n" +
     "                            </a>\n" +
     "                        </li>\n" +
     "                    </ul>\n" +
@@ -680,7 +680,15 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "    </div><!-- /.modal-content -->\n" +
     "  </div><!-- /.modal-dialog -->\n" +
     "</div><!-- /.modal -->\n" +
-    "");
+    "\n" +
+    "<!-- photo viewer -->\n" +
+    "<div ng-hide=\"currentPhoto == null\" style=\"position: fixed;top:0px ; left:0px;width: 100%;height: 100%;z-index: 10001;\">\n" +
+    "    <div style=\"background-image: url('/static/assets/img/colorbox/overlay.png');opacity: 0.75;width: 100%;height: 100%;\"></div>\n" +
+    "    <div photoviewercontent style=\"position: absolute;top:0px;left:0px;background-color: #ffffff;\">\n" +
+    "        <img src=\"{{currentPhoto.image}}\" style=\"max-width: 500px;max-height: 500px;width: 100%;height: 100%\" />\n" +
+    "    </div>\n" +
+    "\n" +
+    "</div>");
 }]);
 
 angular.module("events/event-edit.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -912,6 +920,8 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "        <a ng-show=\"hasMoreEvents\" ng-click=\"showMore()\" class=\"btn btn-primary btn-lg\"><i class=\"xa-icon-plus\"></i>Show more</a>\n" +
     "    </div>\n" +
     "</div>\n" +
+    "\n" +
+    "\n" +
     "");
 }]);
 
@@ -1083,17 +1093,17 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
     "      <div class=\"panel-body\">\n" +
     "        <div class=\"row\">\n" +
     "          <ul class=\"stream-list\">\n" +
-    "            <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"photo in album.photos\" ng-hide=\"photo.hide\">\n" +
+    "            <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"photo in album.photos\" ng-hide=\"photo.hide\" ng-click=\"showPhoto()\">\n" +
     "              <div class=\"stream-picture\">\n" +
-    "                 <div bx-stream-photo=\"{{photo.image}}\" class=\"inner\"></div>\n" +
+    "                  <div bx-stream-photo=\"{{photo.image}}\" class=\"inner\"></div>\n" +
     "                  <ul class=\"stream-action-links\">\n" +
-    "                        <li class=\"action-delete\" ng-show=\"false\">\n" +
-    "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Delete\"\n" +
-    "                              ng-click=\"Delete(photo)\">\n" +
+    "                      <li class=\"action-delete\" ng-show=\"false\">\n" +
+    "                          <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Delete\"\n" +
+    "                             ng-click=\"Delete(photo)\">\n" +
     "                              <i class=\"icon-remove\"></i>\n" +
-    "                            </a>\n" +
-    "                        </li>\n" +
-    "                    </ul>\n" +
+    "                          </a>\n" +
+    "                      </li>\n" +
+    "                  </ul>\n" +
     "              </div>\n" +
     "            </li>\n" +
     "          </ul>\n" +

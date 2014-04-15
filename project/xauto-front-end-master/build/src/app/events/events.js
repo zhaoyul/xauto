@@ -200,7 +200,6 @@ angular.module( 'blvdx.events', [
   };
 
   $scope.Follow = function(event) {
-
     $http.get('/api/current-user/').then(function(response) {
     if(response.data.user !== null) {
       Events.follow(event).then(function (data) {
@@ -377,6 +376,7 @@ angular.module( 'blvdx.events', [
       return;
     }
     if ($scope.editDate.id !== undefined){
+
         DateObj.saveDate($scope.editDate).then(function (date) {
             $scope.reloadEvent();
             $(".modal:visible").find(".close").click();
@@ -410,11 +410,29 @@ angular.module( 'blvdx.events', [
         }
     };
 
+
+  $scope.withoutimezone = function(date){
+        x = new Date();
+        wot = x.getTimezoneOffset()/60;
+        HH = $filter('date')(date, 'HH');
+        ret = Number(HH)+Number(wot);
+        if(ret<0){
+              ret = 24+ret;
+        }
+        if(String(ret).length==1){
+            ret="0"+ret;
+        }
+        return String(ret) + ':' + $filter('date')(date, 'mm');
+  };
+
   $scope.setThisEditableDate = function(date){
       DateObj.getDate(date.id).then(function (date) {
+
           $scope.editDate = date;
-          $scope.editDate.startTime = $filter('date')(date.start_date, 'HH:mm');
-          $scope.editDate.endTime = $filter('date')(date.end_date, 'HH:mm');
+          $scope.editDate.startTime = $scope.withoutimezone(date.start_date);
+
+          $scope.editDate.endTime = $scope.withoutimezone(date.end_date);
+
       });
       DateObj.getOptions(date.id).then(function(options){
           $scope.editDateOptions = options.actions.PUT;
@@ -531,6 +549,15 @@ angular.module( 'blvdx.events', [
   };
 
   $scope.reloadEvent();
+
+
+	// ------>
+	// display photo viewer ::
+	$scope.showPhoto = function (){
+		console.log('set photo::',this.photo);
+		$scope.currentPhoto = this.photo;
+
+	};
 }])
 
 .controller( 'EventsMyCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', function EventsCtrl( $scope, $state, titleService, $stateParams, Events ) {
@@ -583,4 +610,24 @@ angular.module( 'blvdx.events', [
   return function(scope, element, attr) {
     $("body").find('a[data-type="tab"]').tab('show');
   };
+}])
+.directive('photoviewercontent',[function(){
+	return function(scope, element, attr){
+		console.log('photoviewercontent:',arguments);
+		var pview = {
+			ratio:1220/510,
+			target:element,
+			view:$(window),
+			resize:function(){
+				var scale = Math.min(view.width()/1280 , view.height()/510 );
+				element.css({width:0,height:0});
+			}
+		};
+
+		$(document).resize(pview.resize);
+	};
 }]);
+
+
+
+

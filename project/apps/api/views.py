@@ -173,7 +173,11 @@ class EventDateViewSet(ModelViewSet):
     model = EventDate
 
     def pre_save(self, obj):
-        pass
+        timezone = self.request.DATA.get("offset","")
+        delta = timedelta(hours=int(float(timezone)/60))
+        obj.start_date -= delta
+        obj.end_date -= delta
+        obj.save()
 
 
 class LastDateView(ListAPIView):

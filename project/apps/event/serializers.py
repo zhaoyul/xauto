@@ -27,6 +27,8 @@ class EventDateSerializer(serializers.ModelSerializer):
             currency_choices.append((x.id, x.currency))
     currency = serializers.ChoiceField(choices=currency_choices, source="currency.id")
     country = serializers.ChoiceField(choices=[(x.country, x.country) for x in Currency.objects.all().order_by("country")], source="country")
+    start_date = serializers.SerializerMethodField('start_date')
+    end_date = serializers.SerializerMethodField('end_date')
 
     class Meta:
         model = EventDate
@@ -38,6 +40,11 @@ class EventDateSerializer(serializers.ModelSerializer):
         return super(EventDateSerializer, self).restore_object(attrs, instance)
 
 
+    def start_date(self, obj):
+        return obj.start_date.strftime('%B %d, %Y %H:%M:%S')
+
+    def end_date(self, obj):
+        return obj.end_date.strftime('%B %d, %Y %H:%M:%S')
 
 
 class AlbumSerializer(serializers.ModelSerializer):
@@ -51,11 +58,12 @@ class AlbumSerializer(serializers.ModelSerializer):
 
     def get_date(self, obj):
         view = self.context['view']
-        try:
+        print str(obj.start_date) + " - " + str(float(obj.timezone))
+        '''try:
             delta = timedelta(hours= float(obj.timezone))
             obj.start_date = localtime(obj.start_date, timezone=pytz.timezone('GMT')) + delta
         except:
-            obj.start_date = localtime(obj.start_date, timezone=pytz.timezone(settings.TIME_ZONE))
+            obj.start_date = localtime(obj.start_date, timezone=pytz.timezone(settings.TIME_ZONE))'''
         return obj.start_date.strftime('%B %d, %Y %H:%M:%S')
 
 
