@@ -688,13 +688,16 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "        <img src=\"{{currentPhoto.image}}\" style=\"position:absolute;top:0px;left:0px\" />\n" +
     "        <div ng-click=\"nextPhoto()\" style=\"background-image:  url('/static/assets/img/photoview/arrows.png');position: absolute;top:50%;right:320px;height: 17px;width: 16px;background-position: 16px 0px;\"></div>\n" +
     "        <div ng-click=\"prevPhoto()\" style=\"background-image:  url('/static/assets/img/photoview/arrows.png');position: absolute;top:50%;left:5px;height: 17px;width: 16px\"></div>\n" +
-    "        <div style=\"width: 315px;height: 100%;position: absolute;right: 0px;background-color: #e9e9e9;padding:20px 0px;\">\n" +
+    "        <div style=\"width: 315px;height: 100%;position: absolute;right: 0px;background-color: #FFFFFF;padding:0px 0px;\">\n" +
     "            <div style=\"background-image: url('/static/assets/img/photoview/close.png');width:12px;height:10px;position: absolute;right: 18px;top:14px;cursor: pointer;\" ng-click=\"closePhoto()\"></div>\n" +
-    "            <div style=\"height: 90px;padding:0px 20px;\">\n" +
+    "            <div style=\"height: 90px;padding:10px 40px 0 20px;background-color: #E9E9E9;\">\n" +
     "                <div style=\"color: #365db8;padding-top: 8px;font-size: 15px;padding-bottom: 10px\">{{EventObj.title}}</div>\n" +
     "            </div>\n" +
     "\n" +
-    "            <div style=\"background-color: #ffffff;padding:0px 20px;\">{{currentPhoto}}</div>\n" +
+    "            <div style=\"padding:0px 20px;\">{{currentPhoto}}</div>\n" +
+    "            <div class=\"social\" style=\"background-color: #E9E9E9;position:absolute;bottom:0;height: 90px;width:100%;\">\n" +
+    "                Social links\n" +
+    "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "</div>");

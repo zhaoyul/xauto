@@ -18,9 +18,27 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
     eventslug = serializers.SerializerMethodField('get_eventslug')
     userslug = serializers.SerializerMethodField('get_userslug')
     favorited = serializers.SerializerMethodField('get_favorited')
+    usericon = serializers.SerializerMethodField('get_usericon')
+    username = serializers.SerializerMethodField('get_username')
+    event_date_name = serializers.SerializerMethodField('get_event_date_name')
+    location_name = serializers.SerializerMethodField('get_location_name')
+
+
 
     class Meta(object):
         model = MultiuploaderImage
+
+    def get_location_name(self, obj):
+        return obj.event_date.location_name
+
+    def get_event_date_name(self, obj):
+        return obj.event_date.feature_headline
+
+    def get_usericon(self, obj):
+        return obj.userprofile.get_thumbnail(40,40)
+
+    def get_username(self, obj):
+        return obj.userprofile.get_full_name()
 
     def get_image(self, obj):
         if obj.image:

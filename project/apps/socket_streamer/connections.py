@@ -57,6 +57,7 @@ class PhotoStream(DispatchableConnection):
             "eventslug": eventslug,
             "favorited": entry.favorite_by.filter(user=self.user).count() != 0,
             "reported": entry.is_irrelevant or entry.is_inappropriate,
+            "fgff" : "555888"
         }
         return msg
 
