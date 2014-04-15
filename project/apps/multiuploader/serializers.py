@@ -20,6 +20,7 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
     favorited = serializers.SerializerMethodField('get_favorited')
     usericon = serializers.SerializerMethodField('get_usericon')
     username = serializers.SerializerMethodField('get_username')
+    event_name = serializers.SerializerMethodField('get_event_name')
     event_date_name = serializers.SerializerMethodField('get_event_date_name')
     location_name = serializers.SerializerMethodField('get_location_name')
     srv_followersCount = serializers.SerializerMethodField('srv_followers_count')
@@ -31,6 +32,10 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
 
     def srv_followers_count(self, obj):
         return obj.event_date.event.followed.count()
+
+
+    def get_event_name(self, obj):
+        return obj.event_date.event.title
 
     def get_srv_following(self, obj):
         view = self.context['view']
