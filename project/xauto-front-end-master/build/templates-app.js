@@ -687,7 +687,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "    <div photoviewercontent style=\"position: absolute;top:0px;left:0px;background-color: #e9e9e9;padding:0px\">\n" +
     "        <img src=\"{{currentPhoto.image}}\" style=\"position:absolute;top:0px;left:0px\" />\n" +
     "        <div ng-click=\"nextPhoto()\" style=\"background-image:  url('/static/assets/img/photoview/arrows.png');position: absolute;top:50%;right:320px;height: 17px;width: 16px;background-position: 16px 0px;\"></div>\n" +
-    "        <div ng-click=\"prevPhoto()\" style=\"background-image:  url('/static/assets/img/photoview/arrows.png');position: absolute;top:50%;height: 17px;width: 16px\"></div>\n" +
+    "        <div ng-click=\"prevPhoto()\" style=\"background-image:  url('/static/assets/img/photoview/arrows.png');position: absolute;top:50%;left:5px;height: 17px;width: 16px\"></div>\n" +
     "        <div style=\"width: 315px;height: 100%;position: absolute;right: 0px;background-color: #e9e9e9;padding:20px 0px;\">\n" +
     "            <div style=\"background-image: url('/static/assets/img/photoview/close.png');width:12px;height:10px;position: absolute;right: 18px;top:14px;cursor: pointer;\" ng-click=\"closePhoto()\"></div>\n" +
     "            <div style=\"height: 90px;padding:0px 20px;\">\n" +
