@@ -533,39 +533,38 @@ angular.module( 'blvdx.events', [
   $scope.reloadEvent();
 
 
-		// ------>
-		// display photo viewer ::
-		$scope.showPhoto = function (){
-			console.log('set photo::',this, $scope , $scope.EventObj);
-			$scope.currentPhoto = this.photo;
-			$scope.currentPhotoID = this.$index;
-			$scope.Album = this.$parent.album;
-		}
-		$scope.closePhoto = function (){
-			console.log('close photo');
-			$scope.currentPhotoID = null;
-			$scope.currentPhoto = null;
-		}
+	// ------>
+	// display photo viewer ::
+	$scope.showPhoto = function (){
+		console.log('set photo::',this, $scope , $scope.EventObj);
+		$scope.currentPhoto = this.photo;
+		$scope.currentPhotoID = this.$index;
+		$scope.Album = this.$parent.album;
+	}
+	$scope.closePhoto = function (){
+		$scope.currentPhotoID = null;
+		$scope.currentPhoto = null;
+	}
 
-		$scope.nextPhoto = function (){
-			console.log('next photo clicked');
-			var a = $scope.Album.photos;
-			if(a.length == ($scope.currentPhotoID + 1)){
-				$scope.currentPhotoID = 0;
-			} else {
-				$scope.currentPhotoID = $scope.currentPhotoID +1;
-			}
-			$scope.currentPhoto = a[$scope.currentPhotoID];
+	$scope.nextPhoto = function (){
+		var a = $scope.Album.photos;
+		if(a.length == ($scope.currentPhotoID + 1)){
+			$scope.currentPhotoID = 0;
+		} else {
+			$scope.currentPhotoID = $scope.currentPhotoID +1;
 		}
-		$scope.prevPhoto = function (){
-			var a = $scope.Album.photos;
-			if($scope.currentPhotoID  == 0){
-				$scope.currentPhotoID = a.length -1;
-			} else {
-				$scope.currentPhotoID = $scope.currentPhotoID -1;
-			}
-			$scope.currentPhoto = a[$scope.currentPhotoID];
+		$scope.currentPhoto = a[$scope.currentPhotoID];
+	}
+	$scope.prevPhoto = function (){
+		var a = $scope.Album.photos;
+		if($scope.currentPhotoID  == 0){
+			$scope.currentPhotoID = a.length -1;
+		} else {
+			$scope.currentPhotoID = $scope.currentPhotoID -1;
 		}
+		$scope.currentPhoto = a[$scope.currentPhotoID];
+	}
+	// ------>
 }])
 
 .controller( 'EventsMyCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', function EventsCtrl( $scope, $state, titleService, $stateParams, Events ) {
@@ -619,84 +618,86 @@ angular.module( 'blvdx.events', [
     $("body").find('a[data-type="tab"]').tab('show');
   };
 }])
-	.directive('photoviewercontent',[function(){
-		return function(scope, element, attr){
-			var pview = {
-				ratio:1220/510,
-				container:element,
-				target:element.find('img'),
-				view:$(window),
-				resize:function(){
-					//
-					var minW = 350;
-					var minH = 350;
-					//
-					var sw = (this.view.width() * 0.95 ) - 315;// * offset , depends on screen size , - panel
-					var sh = this.view.height() * 0.95;
-					var aspect = sw > sh;
-					var w = this.target[0].naturalWidth;
-					var h = this.target[0].naturalHeight;
-					var imgRatio = w/h;
+// photoviewer singleton code::
+.directive('photoviewercontent',[function(){
+	return function(scope, element, attr){
+		var pview = {
+			ratio:1220/510,
+			container:element,
+			target:element.find('img'),
+			view:$(window),
+			resize:function(){
+				//
+				var minW = 350;
+				var minH = 350;
+				//
+				var sw = (this.view.width() * 0.95 ) - 315;// * offset , depends on screen size , - panel
+				var sh = this.view.height() * 0.95;
+				var dw , dh;
+				var aspect = sw > sh;
+				var w = this.target[0].naturalWidth;
+				var h = this.target[0].naturalHeight;
+				var imgRatio = w/h;
 
-					if(aspect){
-						//landscape ::
-						if(w < minW && h < minH){
-							// minimal display size
-							var size = 0;
-						} else if(w > sw || h > sh){
-							// image must be scaled down
-							size = 2;
-						} else {
-							// image fit in screen
-							size = 1;
-						}
-						switch(size) {
-							case 0 :
-								sw = minW;
-								sh = minH;
-								this.container.css({width:minW + 315,height:minH});
-								this.target.css({width:w , height:h});
-								break;
-							case 1 :
-								sw = w;
-								sh = h;
-								this.container.css({width:sw + 315,height:sh});
-								this.target.css({width:w , height:h});
-								break;
-							case 2 :
-								this.container.css({width:sw + 315,height:sh});
-								if(w/sw > h/sh){
-									var scale = sw / w;
-								} else {
-									scale = sh / h;
-								}
-								w = w * scale;
-								h = h * scale;
-								this.target.css({width:w,height:h});
-								break;
-						}
-
-						this.container.css({left:(this.view.width() -(sw + 315))/2 , top:(this.view.height() - sh)/2});
-						this.target.css({left:(sw -w)/2 , top:(sh -h)/2});
+				if(aspect){
+					//landscape ::
+					if(w < minW && h < minH){
+						// minimal display size
+						var size = 0;
+					} else if(w > sw || h > sh){
+						// image must be scaled down
+						size = 2;
 					} else {
-						//portrait ::
+						// image fit in screen
+						size = 1;
 					}
-
-
-
-					//console.log('resized to:',this.target);
+					switch(size) {
+						case 0 :
+							sw = minW;
+							dh = sh = minH;
+							dw = minW + 315;
+							//this.target.css({width:w , height:h});
+							break;
+						case 1 :
+							sw = w;
+							dh = sh = h;
+							dw = sw + 315;
+							//this.target.css({width:w , height:h});
+							break;
+						case 2 :
+							dw = sw + 315;
+							dh = sh;
+							if(w/sw > h/sh){
+								var scale = sw / w;
+							} else {
+								scale = sh / h;
+							}
+							w = w * scale;
+							h = h * scale;
+							//this.target.css({width:w,height:h});
+							break;
+					}
+					this.container.stop(true).animate({left:(this.view.width() -(dw))/2 , top:(this.view.height() - dh)/2,width:dw,height:dh},250);
+					this.target.css({left:(sw -w)/2 , top:(dh -h)/2, width:w , height:h }).stop(true).delay(250).animate({opacity:1},250);
+				} else {
+					//portrait ::
 				}
-			};
-			// on img load ::
-			pview.target.on('load' , function(){
-				console.log('img loaded');
-				pview.resize();
-			});
 
-			// page resize ::
-			$( window ).resize(function(){pview.resize.apply(pview,null)});
-		}
-	}]);
+
+
+				//console.log('resized to:',this.target);
+			}
+		};
+		// on img load ::
+		pview.target.on('load' , function(){
+			pview.target.css({opacity:0});
+			pview.resize();
+		});
+
+		// page resize ::
+		$( window ).resize(function(){pview.resize.apply(pview,null)});
+	}
+}]);
 
 
 
