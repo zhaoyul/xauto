@@ -409,11 +409,26 @@ angular.module( 'blvdx.events', [
         }
     };
 
+
+   $scope.withoutimezone = function(date){
+        x = new Date();
+        wot = x.getTimezoneOffset()/60;
+        HH = $filter('date')(date, 'HH');
+        ret = Number(HH)+Number(wot);
+        if(ret<0){
+              ret = 24+ret;
+        }
+        if(String(ret).length==1){
+            ret="0"+ret;
+        }
+        return String(ret) + ':' + $filter('date')(date, 'mm');
+  };
+
   $scope.setThisEditableDate = function(date){
       DateObj.getDate(date.id).then(function (date) {
           $scope.editDate = date;
-          $scope.editDate.startTime = $filter('date')(date.start_date, 'HH:mm');
-          $scope.editDate.endTime = $filter('date')(date.end_date, 'HH:mm');
+          $scope.editDate.startTime = $scope.withoutimezone(date.start_date);
+          $scope.editDate.endTime = $scope.withoutimezone(date.end_date);
       });
       DateObj.getOptions(date.id).then(function(options){
           $scope.editDateOptions = options.actions.PUT;

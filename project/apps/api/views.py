@@ -901,6 +901,9 @@ class CoordinatedPhotoUploader(APIView):
         """
         now = datetime.now()
         match = None
+
+
+
         for event_date in EventDate.objects.filter(start_date__lt=now, end_date__gt=now):
             distance = self.haversine_distance((lat, long), (event_date.latitude, event_date.longitude))
             if distance < radius:
@@ -922,6 +925,7 @@ class CoordinatedPhotoUploader(APIView):
             if "coords" in serializer.object:
                 long = serializer.object["coords"]["long"]
                 lat = serializer.object["coords"]["lat"]
+
                 imageObj.event_date = self.findEventFromCoords(long, lat)
                 imageObj.longitude = long
                 imageObj.latitude = lat
