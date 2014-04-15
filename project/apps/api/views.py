@@ -910,6 +910,8 @@ class CoordinatedPhotoUploader(APIView):
         if len(matches):
             matches.sort(key=lambda item: item[1])
             return matches[0]
+        else:
+            return None
 
     def post(self, request, *args, **kwargs):
         profile = self.request.user.profile
