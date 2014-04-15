@@ -579,6 +579,28 @@ angular.module( 'blvdx.events', [
 		}
 		$scope.currentPhoto = a[$scope.currentPhotoID];
 	}
+
+	$scope.social_tw = function (obj){
+	    alert('1');
+	};
+
+	$scope.social_fb = function (obj){
+	    alert('2');
+	};
+
+	$scope.social_p = function (obj){
+	    alert('3');
+	};
+
+	$scope.social_tu = function (obj){
+	    alert('4');
+	};
+
+	$scope.social_pl = function (obj){
+	    alert('5');
+	};
+
+
 	// ------>
 }])
 

@@ -8698,6 +8698,106 @@ ul.event-details-actions > li > a.btn i {
   }
 }
 
+.photoviewer .nextphoto {
+  position: absolute;
+  top: 50%;
+  right: 320px;
+  width: 16px;
+  height: 17px;
+  background-image: url('/static/assets/img/photoview/arrows.png');
+  background-position: 16px 0px;
+}
+
+.photoviewer .rightwrap {
+  position: absolute;
+  right: 0px;
+  width: 315px;
+  height: 100%;
+  padding: 0px 0px;
+  background-color: #FFFFFF;
+}
+
+.photoviewer .rightwrap .close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  width: 12px;
+  height: 10px;
+  cursor: pointer;
+  background-image: url('/static/assets/img/photoview/close.png');
+}
+
+.photoviewer .rightwrap .eventtitle {
+  height: 90px;
+  padding: 10px 40px 0 20px;
+  background-color: #E9E9E9;
+}
+
+.photoviewer .rightwrap .eventtitle .title {
+  padding-top: 8px;
+  padding-bottom: 10px;
+  font-size: 15px;
+  color: #365db8;
+}
+
+.photoviewer .prevphoto {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  width: 16px;
+  height: 17px;
+  background-image: url('/static/assets/img/photoview/arrows.png');
+}
+
+.photoviewer .authour {
+  padding: 0px 20px;
+  word-wrap: break-word;
+}
+
+.photoviewer .social {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #E9E9E9;
+}
+
+.photoviewer .social .links {
+  width: 300px;
+  padding: 11px 0 0 43px;
+}
+
+.photoviewer .social .links a {
+  display: block;
+  float: left;
+  width: 30px;
+  height: 28px;
+  margin: 0 7px;
+  cursor: pointer;
+  background-image: url('/static/assets/img/img_sprite.png');
+}
+
+.photoviewer .social .links a.social1 {
+  background-position: 0 -380px;
+}
+
+.photoviewer .social .links a.social2 {
+  background-position: -40px -380px;
+}
+
+.photoviewer .social .links a.social3 {
+  background-position: -82px -380px;
+}
+
+.photoviewer .social .links a.social4 {
+  background-position: -124px -380px;
+}
+
+.photoviewer .social .links a.social5 {
+  clear: right;
+  background-position: -165px -380px;
+}
+
 .event-add-form table.table td {
   font-size: 1.5em;
   line-height: 1.5em;

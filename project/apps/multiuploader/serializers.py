@@ -22,11 +22,25 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField('get_username')
     event_date_name = serializers.SerializerMethodField('get_event_date_name')
     location_name = serializers.SerializerMethodField('get_location_name')
-
+    srv_followersCount = serializers.SerializerMethodField('srv_followers_count')
+    srv_following = serializers.SerializerMethodField('get_srv_following')
 
 
     class Meta(object):
         model = MultiuploaderImage
+
+    def srv_followers_count(self, obj):
+        return obj.event_date.event.followed.count()
+
+    def get_srv_following(self, obj):
+        view = self.context['view']
+        user = view.request.user
+        try:
+            if user.profile.followed_events.filter(id=obj.event_date.event.id).count():
+                return True
+        except:
+            pass
+        return False
 
     def get_location_name(self, obj):
         return obj.event_date.location_name

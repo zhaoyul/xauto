@@ -409,3 +409,68 @@ ul.event-details-actions{
 		}
 	}
 }
+
+.photoviewer{
+    .nextphoto{
+            background-image:  url('/static/assets/img/photoview/arrows.png');position: absolute;top:50%;right:320px;height: 17px;width: 16px;background-position: 16px 0px;
+    }
+    .rightwrap{
+            width: 315px;height: 100%;position: absolute;right: 0px;background-color: #FFFFFF;padding:0px 0px;
+            .close{
+                    background-image: url('/static/assets/img/photoview/close.png');width:12px;height:10px;position: absolute;right: 18px;top:14px;cursor: pointer;
+            }
+            .eventtitle{
+                    height: 90px;padding:10px 40px 0 20px;background-color: #E9E9E9;
+                    .title{
+                            color: #365db8;padding-top: 8px;font-size: 15px;padding-bottom: 10px
+                    }
+            }
+    }
+    .prevphoto{
+            background-image:  url('/static/assets/img/photoview/arrows.png');position: absolute;top:50%;left:5px;height: 17px;width: 16px
+    }
+    .authour{
+            padding:0px 20px;
+            word-wrap: break-word;
+    }
+    .social{
+            background-color: #E9E9E9;
+            position:absolute;
+            bottom:0;
+            height:50px;
+            width:100%;
+            .links{
+                width:300px;
+                padding:11px 0 0 43px;
+            }
+    }
+
+    .social .links{
+         a{
+            display:block;
+            float:left;
+            margin:0 7px;
+            background-image: url('/static/assets/img/img_sprite.png');
+            width:30px;
+            height:28px;
+            cursor:pointer;
+        }
+        a.social1{
+            background-position:0 -380px;
+        }
+        a.social2{
+            background-position:-40px -380px;
+        }
+        a.social3{
+            background-position:-82px -380px;
+        }
+        a.social4{
+            background-position:-124px -380px;
+        }
+        a.social5{
+            background-position:-165px -380px;
+            clear:right;
+        }
+    }
+
+}
