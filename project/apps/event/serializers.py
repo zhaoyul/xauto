@@ -59,11 +59,11 @@ class AlbumSerializer(serializers.ModelSerializer):
     def get_date(self, obj):
         view = self.context['view']
         #print str(obj.start_date) + " - " + str(float(obj.timezone))
-        try:
+        ''''try:
             delta = timedelta(hours= float(obj.timezone))
             obj.start_date = localtime(obj.start_date, timezone=pytz.timezone('GMT')) + delta
         except:
-            obj.start_date = localtime(obj.start_date, timezone=pytz.timezone(settings.TIME_ZONE))
+            obj.start_date = localtime(obj.start_date, timezone=pytz.timezone(settings.TIME_ZONE))'''''
         return obj.start_date.strftime('%B %d, %Y %H:%M:%S')
 
 
