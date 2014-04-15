@@ -8701,18 +8701,24 @@ ul.event-details-actions > li > a.btn i {
 .photoviewer .nextphoto {
   position: absolute;
   top: 50%;
-  right: 320px;
+  right: 5px;
   width: 16px;
   height: 17px;
   background-image: url('/static/assets/img/photoview/arrows.png');
   background-position: 16px 0px;
 }
 
+.photoviewer .prevphoto {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  width: 16px;
+  height: 17px;
+  background-image: url('/static/assets/img/photoview/arrows.png');
+}
+
 .photoviewer .rightwrap {
   position: absolute;
-  right: 0px;
-  width: 315px;
-  height: 100%;
   padding: 0px 0px;
   background-color: #FFFFFF;
 }
@@ -8734,24 +8740,65 @@ ul.event-details-actions > li > a.btn i {
 }
 
 .photoviewer .rightwrap .eventtitle .title {
+  display: inline;
   padding-top: 8px;
   padding-bottom: 10px;
   font-size: 15px;
   color: #365db8;
 }
 
-.photoviewer .prevphoto {
-  position: absolute;
-  top: 50%;
-  left: 5px;
-  width: 16px;
-  height: 17px;
-  background-image: url('/static/assets/img/photoview/arrows.png');
+.photoviewer .rightwrap .eventtitle .follow {
+  float: right;
+  padding: 4px 10px;
+  margin-top: 30px;
+  background-color: #ffffff;
+  border: solid 1px #cccccc;
+  border-radius: 5px;
 }
 
-.photoviewer .authour {
-  padding: 0px 20px;
+.photoviewer .rightwrap .eventtitle .follow .followcount {
+  float: left;
+  min-width: 20px;
+  padding: 0px 2px;
+  margin: 4px 0px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 16px;
+  color: #ffffff;
+  text-align: center;
+  background-color: #7e2fc0;
+  border-radius: 10px;
+}
+
+.photoviewer .rightwrap .eventtitle .follow .followicon {
+  float: right;
+}
+
+.photoviewer .author {
+  padding: 15px 15px;
+}
+
+.photoviewer .author .name {
+  margin-left: 65px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #1168c3;
   word-wrap: break-word;
+}
+
+.photoviewer .author .follow {
+  margin-top: 6px;
+  margin-left: 65px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #94be02;
+}
+
+.photoviewer .author .userimg {
+  display: inline;
+  float: left;
+  width: 48px;
+  height: 48px;
 }
 
 .photoviewer .social {

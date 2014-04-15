@@ -900,16 +900,16 @@ class CoordinatedPhotoUploader(APIView):
             Find first matching event for given coordinates (long, lat) within radius (in km)
         """
         now = datetime.now()
-        match = None
-
-
+        matches = []
 
         for event_date in EventDate.objects.filter(start_date__lt=now, end_date__gt=now):
             distance = self.haversine_distance((lat, long), (event_date.latitude, event_date.longitude))
             if distance < radius:
-                match = event_date
-                break
-        return match
+                matches.append((event_date.id,distance))
+
+        if len(matches):
+            matches.sort(key=lambda item: item[1])
+            return matches[0]
 
     def post(self, request, *args, **kwargs):
         profile = self.request.user.profile

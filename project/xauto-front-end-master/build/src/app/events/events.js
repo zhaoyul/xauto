@@ -473,10 +473,35 @@ angular.module( 'blvdx.events', [
         $scope.EventObj = event;
 
         //TO DO - paginator
+         $showcount = 9;
 
+         $scope.showMore = function(j){
+            if(isNaN(j))j=j.index;
+            var maxPhotos = Math.min($scope.Albums[j].photos.length, $scope.Albums[j].showphotos.length + $showcount);
+            for(var i = $scope.Albums[j].showphotos.length;i< maxPhotos; i++){
+               $scope.Albums[j].showphotos.push($scope.Albums[j].photos[i]);
+            }
+            if($scope.Albums[j].showphotos.length == $scope.Albums[j].photos.length){
+                $scope.Albums[j].hasMoreEvents = false;
+            }else{
+                $scope.Albums[j].hasMoreEvents = true;
+          }
+
+        };
 
 
         $scope.Albums = event.albums;
+        for(z=0;z<$scope.Albums.length;z++){
+            $scope.Albums[z].all = $scope.Albums[z].photos.length;
+            $scope.Albums[z].showed = 0;
+            $scope.Albums[z].index=z;
+            $scope.Albums[z].showphotos = []
+            $scope.showMore(z);
+        }
+
+
+
+
         var subscription = {
           'profiles': [],
           'events': [event.slug]
@@ -551,7 +576,8 @@ angular.module( 'blvdx.events', [
 	// ------>
 	// display photo viewer ::
 	$scope.showPhoto = function (){
-		console.log('set photo::',this, $scope , $scope.EventObj);
+		console.log(this.photo);
+		$scope.$emit('imgChange');
 		$scope.currentPhoto = this.photo;
 		$scope.currentPhotoID = this.$index;
 		$scope.Album = this.$parent.album;
@@ -562,6 +588,7 @@ angular.module( 'blvdx.events', [
 	}
 
 	$scope.nextPhoto = function (){
+		$scope.$emit('imgChange');
 		var a = $scope.Album.photos;
 		if(a.length == ($scope.currentPhotoID + 1)){
 			$scope.currentPhotoID = 0;
@@ -571,6 +598,7 @@ angular.module( 'blvdx.events', [
 		$scope.currentPhoto = a[$scope.currentPhotoID];
 	}
 	$scope.prevPhoto = function (){
+		$scope.$emit('imgChange');
 		var a = $scope.Album.photos;
 		if($scope.currentPhotoID  == 0){
 			$scope.currentPhotoID = a.length -1;
@@ -579,7 +607,13 @@ angular.module( 'blvdx.events', [
 		}
 		$scope.currentPhoto = a[$scope.currentPhotoID];
 	}
+	// ------>
+	$scope.FavoriteImage = function(){
+		console.log($scope.currentPhoto.favorited);
+		$scope.currentPhoto.favorited = !$scope.currentPhoto.favorited;
+	}
 
+	// ------> SOCIAL BUTTONS
 	$scope.social_tw = function (obj){
 	    alert('1');
 	};
@@ -658,26 +692,35 @@ angular.module( 'blvdx.events', [
 // photoviewer singleton code::
 .directive('photoviewercontent',[function(){
 	return function(scope, element, attr){
+		console.log('dir:');
 		var pview = {
-			ratio:1220/510,
 			container:element,
-			target:element.find('img'),
+			imgcontainer:element.find('.imgcontainer'),
+			target:element.find('.imgcontainer').find('img'),
 			view:$(window),
+			panel:element.find('.rightwrap'),
 			resize:function(){
 				//
+
 				var minW = 350;
-				var minH = 350;
+				var minH = 450;
 				//
-				var sw = (this.view.width() * 0.95 ) - 315;// * offset , depends on screen size , - panel
+				var sw = this.view.width() * 0.95;
 				var sh = this.view.height() * 0.95;
+				// * offset , depends on screen size , - panel
 				var dw , dh;
-				var aspect = sw > sh;
+				var aspect = sw / sh;
 				var w = this.target[0].naturalWidth;
 				var h = this.target[0].naturalHeight;
 				var imgRatio = w/h;
-
-				if(aspect){
+				if(aspect > 1.2){
 					//landscape ::
+					this.panel.attr('style','top:0px;bottom:0px;right:0px;width:315px;');
+					this.imgcontainer.css({top:0,bottom:0,left:0,right:315});
+
+					sw = this.view.width() * 0.95 - 315;
+
+
 					if(w < minW && h < minH){
 						// minimal display size
 						var size = 0;
@@ -693,13 +736,11 @@ angular.module( 'blvdx.events', [
 							sw = minW;
 							dh = sh = minH;
 							dw = minW + 315;
-							//this.target.css({width:w , height:h});
 							break;
 						case 1 :
 							sw = w;
 							dh = sh = h;
 							dw = sw + 315;
-							//this.target.css({width:w , height:h});
 							break;
 						case 2 :
 							dw = sw + 315;
@@ -711,13 +752,52 @@ angular.module( 'blvdx.events', [
 							}
 							w = w * scale;
 							h = h * scale;
-							//this.target.css({width:w,height:h});
 							break;
 					}
 					this.container.stop(true).animate({left:(this.view.width() -(dw))/2 , top:(this.view.height() - dh)/2,width:dw,height:dh},250);
 					this.target.css({left:(sw -w)/2 , top:(dh -h)/2, width:w , height:h }).stop(true).delay(250).animate({opacity:1},250);
 				} else {
 					//portrait ::
+					this.panel.attr('style','left:0px;right:0px;height:245px;bottom:0px;');
+					this.imgcontainer.css({left:0,right:0,bottom:245,top:0});
+
+					sh = this.view.height() * 0.95 - 245;
+
+					if(w < minW && h < minH){
+						// minimal display size
+						var size = 0;
+					} else if(w > sw || h > sh){
+						// image must be scaled down
+						size = 2;
+					} else {
+						// image fit in screen
+						size = 1;
+					}
+					switch(size) {
+						case 0 :
+							dw = sw = minW;
+							sh = minH;
+							dh = minH + 245;
+							break;
+						case 1 :
+							sw = w;
+							sh = h;
+							dh = sh + 245;
+							break;
+						case 2 :
+							dw = sw;
+							dh = sh + 245;
+							if(w/sw > h/sh){
+								var scale = sw / w;
+							} else {
+								scale = sh / h;
+							}
+							w = w * scale;
+							h = h * scale;
+							break;
+					}
+					this.container.stop(true).animate({left:(this.view.width() -(dw))/2 , top:(this.view.height() - dh)/2,width:dw,height:dh},250);
+					this.target.css({left:(sw -w)/2 , top:(sh -h)/2, width:w , height:h }).stop(true).delay(250).animate({opacity:1},250);
 				}
 
 
@@ -727,14 +807,15 @@ angular.module( 'blvdx.events', [
 		};
 		// on img load ::
 		pview.target.on('load' , function(){
-			pview.target.css({opacity:0});
+			//pview.target.css({opacity:0});
 			pview.resize();
 		});
+		// on image change ::
+		scope.$on('imgChange',function(){
+			pview.target.css({opacity:0});
+		})
 
 		// page resize ::
 		$( window ).resize(function(){pview.resize.apply(pview,null)});
 	}
 }]);
-
-
-
