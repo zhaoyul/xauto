@@ -412,27 +412,76 @@ ul.event-details-actions{
 
 .photoviewer{
     .nextphoto{
-            background-image:  url('/static/assets/img/photoview/arrows.png');position: absolute;top:50%;right:320px;height: 17px;width: 16px;background-position: 16px 0px;
+            background-image:  url('/static/assets/img/photoview/arrows.png');position: absolute;top:50%;right:5px;height: 17px;width: 16px;background-position: 16px 0px;
+    }
+    .prevphoto{
+      background-image:  url('/static/assets/img/photoview/arrows.png');position: absolute;top:50%;left:5px;height: 17px;width: 16px
     }
     .rightwrap{
-            width: 315px;height: 100%;position: absolute;right: 0px;background-color: #FFFFFF;padding:0px 0px;
+            position: absolute;background-color: #FFFFFF;padding:0px 0px;
             .close{
                     background-image: url('/static/assets/img/photoview/close.png');width:12px;height:10px;position: absolute;right: 18px;top:14px;cursor: pointer;
             }
             .eventtitle{
                     height: 90px;padding:10px 40px 0 20px;background-color: #E9E9E9;
                     .title{
-                            color: #365db8;padding-top: 8px;font-size: 15px;padding-bottom: 10px
+                            color: #365db8;padding-top: 8px;font-size: 15px;padding-bottom: 10px;
+                      display: inline;
+                    }
+                    .follow {
+                        float: right;
+                        margin-top: 30px;
+                        background-color: #ffffff;
+                        border: solid 1px #cccccc;
+                        border-radius: 5px;
+                        padding: 4px 10px;
+
+                      .followcount{
+                        margin: 4px 0px;
+                        padding:0px 2px;
+                        border-radius: 10px;
+                        background-color: #7e2fc0;
+                        color: #ffffff;
+                        min-width: 20px;
+                        text-align: center;
+                        float: left;
+                        font-size: 14px;
+                        line-height: 16px;
+                        font-weight: bold;
+                      }
+                      .followicon {
+                        float: right;
+                      }
                     }
             }
     }
-    .prevphoto{
-            background-image:  url('/static/assets/img/photoview/arrows.png');position: absolute;top:50%;left:5px;height: 17px;width: 16px
+
+    .author {
+       padding: 15px 15px;
+
+      .name {
+        color: #1168c3;
+        word-wrap: break-word;
+        margin-left: 65px;
+        font-size: 16px;
+        font-weight: bold;
+      }
+      .follow {
+        color:#94be02;
+        margin-left: 65px;
+        font-size: 14px;
+        margin-top: 6px;
+        font-weight: bold;
+      }
+      .userimg {
+        width: 48px;height: 48px;
+        float: left;
+        display: inline;
+      }
+
+
     }
-    .authour{
-            padding:0px 20px;
-            word-wrap: break-word;
-    }
+
     .social{
             background-color: #E9E9E9;
             position:absolute;
