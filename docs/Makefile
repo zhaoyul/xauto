@@ -3,16 +3,16 @@
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
-SPHINXBUILD = /opt/dev/xauto_milo/bin/sphinx-build
+SPHINXBUILD = /home/alex90/PycharmProjects/xauto/bin/sphinx-build
 PAPER         =
-BUILDDIR      = /opt/dev/xauto_milo/docs
+BUILDDIR      = /home/alex90/PycharmProjects/xauto/docs
 
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
-ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) /opt/dev/xauto_milo/docs-source
+ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) /home/alex90/PycharmProjects/xauto/docs-source
 # the i18n builder cannot share the environment and doctrees with the others
-I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) /opt/dev/xauto_milo/docs-source
+I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) /home/alex90/PycharmProjects/xauto/docs-source
 
 .PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext
 

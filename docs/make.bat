@@ -5,9 +5,9 @@ REM Command file for Sphinx documentation
 if "%SPHINXBUILD%" == "" (
 	set SPHINXBUILD=sphinx-build
 )
-set BUILDDIR=/opt/dev/xauto_milo/docs
-set ALLSPHINXOPTS=-d %BUILDDIR%/doctrees %SPHINXOPTS% /opt/dev/xauto_milo/docs-source
-set I18NSPHINXOPTS=%SPHINXOPTS% /opt/dev/xauto_milo/docs-source
+set BUILDDIR=/home/alex90/PycharmProjects/xauto/docs
+set ALLSPHINXOPTS=-d %BUILDDIR%/doctrees %SPHINXOPTS% /home/alex90/PycharmProjects/xauto/docs-source
+set I18NSPHINXOPTS=%SPHINXOPTS% /home/alex90/PycharmProjects/xauto/docs-source
 if NOT "%PAPER%" == "" (
 	set ALLSPHINXOPTS=-D latex_paper_size=%PAPER% %ALLSPHINXOPTS%
 	set I18NSPHINXOPTS=-D latex_paper_size=%PAPER% %I18NSPHINXOPTS%
