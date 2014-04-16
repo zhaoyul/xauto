@@ -11,7 +11,7 @@
       <div class="panel-body">
         <div class="row">
           <ul class="stream-list">
-            <li class="col-xs-12 col-sm-4 col-lg-3" ng-repeat="photo in album.photos" ng-hide="photo.hide" ng-click="showPhoto()">
+            <li class="col-xs-12 col-sm-4 col-lg-3" ng-repeat="photo in album.showphotos" ng-hide="photo.hide" ng-click="showPhoto()">
               <div class="stream-picture">
                   <div bx-stream-photo="{{photo.image}}" class="inner"></div>
                   <ul class="stream-action-links">
@@ -27,6 +27,9 @@
           </ul>
         </div>
       </div>
+        <div class="col-xs-12 col-sm-6 hidden-xs">
+        <a ng-show="album.hasMoreEvents(album)" ng-click="showMore(album)" class="btn btn-primary btn-lg navbar-btn"><i class="xa-icon-plus"></i>Show more</a>
+    </div>
     </div>
   </div>
 </div>

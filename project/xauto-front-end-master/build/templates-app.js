@@ -685,15 +685,28 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "<div ng-hide=\"currentPhoto == null\" style=\"position: fixed;top:0px ; left:0px;width: 100%;height: 100%;z-index: 10001;\">\n" +
     "    <div style=\"background-image: url('/static/assets/img/colorbox/overlay.png');opacity: 0.75;width: 100%;height: 100%;\"></div>\n" +
     "    <div class=\"photoviewer\" photoviewercontent style=\"position: absolute;top:0px;left:0px;background-color: #e9e9e9;padding:0px\">\n" +
-    "        <img src=\"{{currentPhoto.image}}\" style=\"position:absolute;top:0px;left:0px\" />\n" +
-    "        <div ng-click=\"nextPhoto()\" class=\"nextphoto\"></div>\n" +
-    "        <div ng-click=\"prevPhoto()\" class=\"prevphoto\"></div>\n" +
+    "        <div class=\"imgcontainer\" style=\"position: absolute;top:0px;left:0px;\">\n" +
+    "            <img src=\"{{currentPhoto.image}}\" style=\"position:absolute;top:0px;left:0px;\" />\n" +
+    "            <div ng-click=\"nextPhoto()\" class=\"nextphoto\"></div>\n" +
+    "            <div ng-click=\"prevPhoto()\" class=\"prevphoto\"></div>\n" +
+    "        </div>\n" +
     "        <div class=\"rightwrap\">\n" +
     "            <div class=\"close\" ng-click=\"closePhoto()\"></div>\n" +
     "            <div class=\"eventtitle\">\n" +
     "                <div class=\"title\">{{EventObj.title}}</div>\n" +
+    "                <div class=\"follow\" ng-click=\"FavoriteImage()\">\n" +
+    "                    <div class=\"followcount\">{{currentPhoto.favorite_by.length}}</div>\n" +
+    "                    <a href=\"\" ng-click=\"\" class=\"followicon\" >\n" +
+    "                        <i style=\"width: 28px;height: 18px;margin-top: 2px ; margin-left: 10px\" ng-class=\"{'xa-icon-xauto-white': currentPhoto.favorited ,'xa-icon-xauto-colored': !currentPhoto.favorited}\"></i>\n" +
+    "                    </a>\n" +
+    "\n" +
+    "                </div>\n" +
     "            </div>\n" +
-    "            <div class=\"authour\">{{currentPhoto}}</div>\n" +
+    "            <div class=\"author\">\n" +
+    "                <img class=\"userimg\" src=\"{{EventObj.author_photo}}\"/>\n" +
+    "                <div class=\"name\">{{EventObj.author_name}}</div>\n" +
+    "                <div class=\"follow\" ng-click=\"\">Follow Me</div>\n" +
+    "            </div>\n" +
     "            <div class=\"social\">\n" +
     "                <div class=\"links\">\n" +
     "                    <a href=\"\" class=\"social1\" ng-click=\"social_tw(currentPhoto)\"></a>\n" +
@@ -1111,7 +1124,7 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
     "      <div class=\"panel-body\">\n" +
     "        <div class=\"row\">\n" +
     "          <ul class=\"stream-list\">\n" +
-    "            <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"photo in album.photos\" ng-hide=\"photo.hide\" ng-click=\"showPhoto()\">\n" +
+    "            <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"photo in album.showphotos\" ng-hide=\"photo.hide\" ng-click=\"showPhoto()\">\n" +
     "              <div class=\"stream-picture\">\n" +
     "                  <div bx-stream-photo=\"{{photo.image}}\" class=\"inner\"></div>\n" +
     "                  <ul class=\"stream-action-links\">\n" +
@@ -1127,6 +1140,9 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
     "          </ul>\n" +
     "        </div>\n" +
     "      </div>\n" +
+    "        <div class=\"col-xs-12 col-sm-6 hidden-xs\">\n" +
+    "        <a ng-show=\"album.hasMoreEvents(album)\" ng-click=\"showMore(album)\" class=\"btn btn-primary btn-lg navbar-btn\"><i class=\"xa-icon-plus\"></i>Show more</a>\n" +
+    "    </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "</div>\n" +

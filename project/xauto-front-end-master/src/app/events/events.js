@@ -473,10 +473,35 @@ angular.module( 'blvdx.events', [
         $scope.EventObj = event;
 
         //TO DO - paginator
+         $showcount = 9;
 
+         $scope.showMore = function(j){
+            if(isNaN(j))j=j.index;
+            var maxPhotos = Math.min($scope.Albums[j].photos.length, $scope.Albums[j].showphotos.length + $showcount);
+            for(var i = $scope.Albums[j].showphotos.length;i< maxPhotos; i++){
+               $scope.Albums[j].showphotos.push($scope.Albums[j].photos[i]);
+            }
+            if($scope.Albums[j].showphotos.length == $scope.Albums[j].photos.length){
+                $scope.Albums[j].hasMoreEvents = false;
+            }else{
+                $scope.Albums[j].hasMoreEvents = true;
+          }
+
+        };
 
 
         $scope.Albums = event.albums;
+        for(z=0;z<$scope.Albums.length;z++){
+            $scope.Albums[z].all = $scope.Albums[z].photos.length;
+            $scope.Albums[z].showed = 0;
+            $scope.Albums[z].index=z;
+            $scope.Albums[z].showphotos = []
+            $scope.showMore(z);
+        }
+
+
+
+
         var subscription = {
           'profiles': [],
           'events': [event.slug]
