@@ -15,6 +15,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.core.files.base import ContentFile
 import pytz
+from django.conf import settings
 
 from rest_framework.generics import (ListAPIView, RetrieveAPIView)
 from rest_framework.views import APIView
@@ -103,6 +104,8 @@ class EventDetailsView(RetrieveAPIView):
 
 
 
+
+
 class ProfileAllTimezonesListView(APIView):
     """
     Creates multiple instances of images
@@ -177,7 +180,7 @@ class EventDateViewSet(ModelViewSet):
         delta = timedelta(hours=int(float(timezone)/60))
         obj.start_date -= delta
         obj.end_date -= delta
-        obj.save()
+
 
 
 class LastDateView(ListAPIView):

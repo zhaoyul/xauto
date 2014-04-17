@@ -8845,6 +8845,14 @@ ul.event-details-actions > li > a.btn i {
   background-position: -165px -380px;
 }
 
+.showmorespan {
+  width: 100%;
+  padding: 6px 0 !important;
+  margin: 12px 0 7px 0 !important;
+  color: blue;
+  background: white;
+}
+
 .event-add-form table.table td {
   font-size: 1.5em;
   line-height: 1.5em;

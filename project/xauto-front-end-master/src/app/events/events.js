@@ -473,7 +473,7 @@ angular.module( 'blvdx.events', [
         $scope.EventObj = event;
 
         //TO DO - paginator
-         $showcount = 9;
+         $showcount = 12;
 
          $scope.showMore = function(j){
             if(isNaN(j))j=j.index;

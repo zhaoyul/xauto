@@ -1140,8 +1140,8 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
     "          </ul>\n" +
     "        </div>\n" +
     "      </div>\n" +
-    "        <div class=\"col-xs-12 col-sm-6 hidden-xs\">\n" +
-    "        <a ng-show=\"album.hasMoreEvents(album)\" ng-click=\"showMore(album)\" class=\"btn btn-primary btn-lg navbar-btn\"><i class=\"xa-icon-plus\"></i>Show more</a>\n" +
+    "        <div class=\"col-xs-12\">\n" +
+    "        <a ng-show=\"album.hasMoreEvents(album)\" ng-click=\"showMore(album)\" class=\"btn btn-info  showmorespan\">Show more</a>\n" +
     "    </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
@@ -1205,14 +1205,14 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "      <div class=\"form-group\" ng-class=\"{'has-error': form.longitude.$invalid || errors.longitude}\">\n" +
     "        <label class=\"col-lg-3 control-label\">Longitude</label>\n" +
     "        <div class=\"col-lg-9\">\n" +
-    "          <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"editDate.longitude\" name=\"longitude\">\n" +
+    "          <input type=\"text\" class=\"form-control\" placeholder=\"(Optional)\" ng-model=\"editDate.longitude\" name=\"longitude\">\n" +
     "          <span class=\"help-block\" ng-show=\"errors.longitude\" ng-repeat=\"error in errors.longitude\">{{error}}</span>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "      <div class=\"form-group\" ng-class=\"{'has-error': form.latitude.$invalid || errors.latitude}\">\n" +
     "        <label class=\"col-lg-3 control-label\">Latitude</label>\n" +
     "        <div class=\"col-lg-9\">\n" +
-    "          <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"editDate.latitude\" name=\"latitude\">\n" +
+    "          <input type=\"text\" class=\"form-control\" placeholder=\"(Optional)\" ng-model=\"editDate.latitude\" name=\"latitude\">\n" +
     "          <span class=\"help-block\" ng-show=\"errors.latitude\" ng-repeat=\"error in errors.latitude\">{{error}}</span>\n" +
     "        </div>\n" +
     "      </div>\n" +
