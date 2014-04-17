@@ -641,7 +641,28 @@ angular.module( 'blvdx.events', [
 	};
 
 	$scope.social_fb = function (obj){
-	    alert('2');
+	   	console.log(obj,document.location.href);
+		FB.login(function(response) {
+			if (response.authResponse) {
+				console.log('Welcome!  Fetching your information.... ');
+				FB.api('/me', function(response) {
+					console.log('Good to see you, ' + response.name + '.');
+				});
+			} else {
+				console.log('User cancelled login or did not fully authorize.');
+			}
+		});
+		/*
+		FB.ui(
+			{
+				method: 'feed',
+				name: 'Share image',
+				link: 'http://www.xauto.co/',// document.location.href,
+				//picture: null, 'http://localhost:8000/media/multiuploader_images/A-small-Word-Images-Wallpaper.jpg'
+				caption: 'caption.',
+				description: 'description',
+				message: ''
+			});*/
 	};
 
 	$scope.social_p = function (obj){
