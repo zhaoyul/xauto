@@ -754,10 +754,16 @@ angular.module("events/event-edit.tpl.html", []).run(["$templateCache", function
     "          <ng-include src=\"'events/partial_form_date.tpl.html'\"></ng-include>\n" +
     "        </div>\n" +
     "        <div class=\"modal-footer\">\n" +
+    "          <div class=\"to_confirm\">\n" +
     "          <button ng-hide=\"editDate.id\" type=\"button\" class=\"btn btn-info pull-left\" ng-click=\"copyLastDate()\">Copy Last Date</button>\n" +
     "          <!-- <button type=\"reset\" class=\"btn btn-default\" ng-click=\"resetDate()\">Close</button> -->\n" +
     "          <button ng-hide=\"editDate.id\" type=\"submit\" class=\"btn btn-primary\">Add Date!</button>\n" +
     "          <button ng-show=\"editDate.id\" type=\"sumbit\" class=\"btn btn-primary\">Save</button>\n" +
+    "          </div>\n" +
+    "            <div class=\"back_confirm\">\n" +
+    "                <a href=\"\" class=\"pull-left backlink\" ng-click=\"backDateEdit()\">< Back</a>\n" +
+    "                <input type=\"button\" value=\"Confirm\" class=\"btn btn-primary pull-right\" ng-click=\"saveDateConfirm()\">\n" +
+    "             </div>\n" +
     "        </div>\n" +
     "      </form>\n" +
     "    </div><!-- /.modal-content -->\n" +
@@ -1151,6 +1157,7 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
 
 angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("events/partial_form_date.tpl.html",
+    "<div class=\"el_fields\">\n" +
     "  <div class=\"partial-form-date\">\n" +
     "      <div class=\"form-group\" ng-class=\"{'has-error': form.location_name.$invalid || errors.location_name}\">\n" +
     "        <label class=\"col-lg-3 control-label\">Location Name</label>\n" +
@@ -1311,7 +1318,45 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "      <span class=\"help-block\" ng-show=\"errors.feature_detail\" ng-repeat=\"error in errors.feature_detail\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "");
+    "</div>\n" +
+    "<div class=\"el_confirm\">\n" +
+    "     <h2 id=\"e_name\">{{ EventObj.title }}</h2>\n" +
+    "     <div class=\"loc_adr_dates\">\n" +
+    "        <div class=\"loc\">\n" +
+    "            <p><span>Location Name:</span><b>{{ editDate.location_name }}</b></p><div class=\"clear\"></div>\n" +
+    "            <p><span>Address:</span><b>{{ editDate.address_1 }}</b></p><div class=\"clear\"></div>\n" +
+    "        </div>\n" +
+    "        <div class=\"dates\">\n" +
+    "            <div class=\"dt\">\n" +
+    "                <div>{{ editDate.start_date | date:'MMM'}}</div>\n" +
+    "                <p>{{ editDate.start_date | date:'dd'}}</p>\n" +
+    "                <span>{{ editDate.start_date | date:'yyyy'}}</span>\n" +
+    "            </div>\n" +
+    "            <div class=\"time\">\n" +
+    "                {{editDate.startTime}} - {{editDate.endTime}}\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "     </div>\n" +
+    "     <div class=\"map\">\n" +
+    "\n" +
+    "     </div>\n" +
+    "     <div class=\"feature_prices\">\n" +
+    "        <div class=\"feature\">\n" +
+    "        <p>Feature Headline:</p>\n" +
+    "        <b>Porsche Drive</b>\n" +
+    "        <p>Feature detail:</p>\n" +
+    "        <b>get there early!</b>\n" +
+    "        </div>\n" +
+    "        <div class=\"prices\">\n" +
+    "            <div class=\"wrap\">\n" +
+    "            <p>Attend:<b>FREE</b></p>\n" +
+    "            <p>Exhibit:<b>$50-$65</b></p>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "        <div class=\"clear\"></div>\n" +
+    "     </div>\n" +
+    "\n" +
+    "</div>");
 }]);
 
 angular.module("events/timezones.tpl.html", []).run(["$templateCache", function($templateCache) {
