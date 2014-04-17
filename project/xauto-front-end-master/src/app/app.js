@@ -227,10 +227,11 @@ angular.module( 'blvdx', [
         // continous state ::
         watch: null,
         // internal ::
-        maxTimeout: 12000,
+        maxTimeout: 18000,
         timeout: null,
         //
         startInterval: function (delay, timeout) {
+			console.log('geolocation init1');
             if (typeof delay === "undefined") { delay = 10000; }
             if (typeof timeout === "undefined") { timeout = 15000; }
             if (navigator && navigator.geolocation) {
@@ -238,8 +239,10 @@ angular.module( 'blvdx', [
                     gloc.position = result.coords;
                     gloc.complete = true;
                     gloc.timestamp = result.timestamp;
+					console.log('geolocation set');
                     $rootScope.$broadcast(GeolocationEvent.UPDATE, new GeolocationEvent(true, "received"), gloc.position);
                 }, function (result) {
+					console.log('geolocation er:',result);
                     if (result.code == 3 && gloc.position != null) {
                         return;
                     }
@@ -248,6 +251,7 @@ angular.module( 'blvdx', [
                 }, { enableHighAccuracy: gloc.enableHighAccuracy, timeout: timeout, frequency: delay });
                 return gloc.aviable = true;
             }
+
             return gloc.aviable = false;
         },
         stopInterval: function () {
@@ -258,10 +262,12 @@ angular.module( 'blvdx', [
         },
         // init call :
         start: function (useTimeout) {
+			console.log('geolocation init2');
             if (typeof useTimeout === "undefined") { useTimeout = true; }
             if (gloc.timeout != null) {
                 return;
             }
+
             if (navigator && navigator.geolocation != null) {
                 gloc.aviable = true;
                 navigator.geolocation.getCurrentPosition(function (result) {
@@ -269,6 +275,7 @@ angular.module( 'blvdx', [
                     gloc.position = result.coords;
                     gloc.complete = true;
                     gloc.timestamp = result.timestamp;
+					console.log('geolocation set');
                     $rootScope.$broadcast(GeolocationEvent.COMPLETE, new GeolocationEvent(true, "complete"), gloc.position);
                 }, function (result) {
                     gloc.abort(false);
@@ -280,6 +287,7 @@ angular.module( 'blvdx', [
                 }
                 return;
             }
+			console.log('geolocation not aviable');
             gloc.aviable = false;
             gloc.error = true;
             $rootScope.$broadcast(GeolocationEvent.ERROR);
@@ -348,3 +356,35 @@ var GeolocationEvent = (function () {
     GeolocationEvent.ERROR = "geolocation.error";
     return GeolocationEvent;
 })();
+
+
+
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+// -----------------------> SOCIAL
+
+
+console.log('social init;',$);
+
+// ------> FB
+
+
+window.fbAsyncInit = function() {
+	console.log('fb init');
+	FB.init({
+		appId      : '1394880617455803',
+		status     : true,
+		xfbml      : true,
+		cookie: true
+	});
+};
+
+(function(d, s, id){
+	$('body').append('<div id="fb-root"></div>');
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) {return;}
+	js = d.createElement(s); js.id = id;
+	js.src = "//connect.facebook.net/en_US/all.js";
+	fjs.parentNode.insertBefore(js, fjs);
+
+}(document, 'script', 'facebook-jssdk'));
