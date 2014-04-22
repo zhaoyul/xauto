@@ -608,10 +608,11 @@ angular.module( 'blvdx.events', [
 		$scope.currentPhoto = a[$scope.currentPhotoID];
 	}
 	// ------>
+		/* halted
 	$scope.FavoriteImage = function(){
 		console.log($scope.currentPhoto.favorited);
 		$scope.currentPhoto.favorited = !$scope.currentPhoto.favorited;
-	}
+	}*/
 
 	// ------> SOCIAL BUTTONS
 	$scope.social_tw = function (obj){

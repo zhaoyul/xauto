@@ -192,10 +192,16 @@
             <div class="close" ng-click="closePhoto()"></div>
             <div class="eventtitle">
                 <div class="title">{{EventObj.title}}</div>
-                <div class="follow" ng-click="FavoriteImage()">
-                    <div class="followcount">{{currentPhoto.favorite_by.length}}</div>
-                    <a href="" ng-click="" class="followicon" >
-                        <i style="width: 28px;height: 18px;margin-top: 2px ; margin-left: 10px" ng-class="{'xa-icon-xauto-white': currentPhoto.favorited ,'xa-icon-xauto-colored': !currentPhoto.favorited}"></i>
+                <div class="follow" ng-click="Follow()">
+                    <div class="followcount">{{EventObj.srv_followersCount}}</div>
+                    <a href="" ng-click="" class="followicon">
+                        <!--
+                        {
+                                                'xa-icon-event-details-follow': !EventObj.srv_following,
+                                                'xa-icon-event-details-following': EventObj.srv_following
+                                                }
+                        <i style="width: 28px;height: 18px;margin-top: 2px ; margin-left: 10px" ng-class="{'xa-icon-xauto-white': currentPhoto.favorited ,'xa-icon-xauto-colored': !currentPhoto.favorited}"></i>-->
+                        <i style="width: 28px;height: 18px;margin-top: 2px ; margin-left: 10px" ng-class="{'xa-icon-xauto-white': !EventObj.srv_following ,'xa-icon-xauto-colored': EventObj.srv_following}"></i>
                     </a>
 
                 </div>
