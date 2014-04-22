@@ -41,6 +41,9 @@ angular.module('resources.events', ['restangular'])
   Events.follow = function (event) {
       return Restangular.one('events', event.slug).customPUT(event.slug, 'follow');
   };
+  Events.followUser = function (slug) {
+	  return Restangular.one('profiles', slug).customPUT(slug, 'follow');
+  };
 
   Events.checkShortLink = function (params) {
       return Restangular.one('events').customGET('check-link', params);
