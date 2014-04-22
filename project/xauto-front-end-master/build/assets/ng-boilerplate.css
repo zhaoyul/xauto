@@ -8735,12 +8735,13 @@ ul.event-details-actions > li > a.btn i {
 
 .photoviewer .rightwrap .eventtitle {
   height: 90px;
-  padding: 10px 40px 0 20px;
+  padding: 10px 20px 0px 20px;
   background-color: #E9E9E9;
 }
 
 .photoviewer .rightwrap .eventtitle .title {
-  display: inline;
+  display: block;
+  width: 255px;
   padding-top: 8px;
   padding-bottom: 10px;
   font-size: 15px;
@@ -8750,8 +8751,7 @@ ul.event-details-actions > li > a.btn i {
 .photoviewer .rightwrap .eventtitle .follow {
   float: right;
   padding: 4px 10px;
-  margin-top: 30px;
-  background-color: #ffffff;
+  background-color: #d1d1d1;
   border: solid 1px #cccccc;
   border-radius: 5px;
 }
