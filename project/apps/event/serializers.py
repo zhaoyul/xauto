@@ -8,6 +8,7 @@ from event.models import Event, EventImage, EventDate, Currency
 from multiuploader.serializers import MultiuploaderImageSerializer
 from django.conf import settings
 from django.db.models import Count
+from account.serializers import UserProfileSerializer
 
 
 class EventImageSerializer(serializers.ModelSerializer):
@@ -167,12 +168,13 @@ class EventDetailsSerializer(serializers.ModelSerializer):
     srv_live = serializers.SerializerMethodField('get_srv_live')
     srv_following = serializers.SerializerMethodField('get_srv_following')
     albums = AlbumSerializer(source='event_dates', read_only=True)
+    profile = UserProfileSerializer(source='author', read_only=True)
 
     class Meta:
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'srv_followersCount',
             'srv_photosCount', 'photo', 'srv_futureDates', 'author_name',
-            'author_photo', 'srv_live', 'srv_following', 'albums', 'slug')
+            'author_photo', 'srv_live', 'srv_following', 'albums', 'profile', 'slug')
 
     def get_photo(self, obj):
         if obj.main_image:
