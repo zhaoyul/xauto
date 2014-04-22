@@ -8872,6 +8872,116 @@ ul.event-details-actions > li > a.btn i {
   margin: 10px;
 }
 
+.el_confirm {
+  display: none;
+}
+
+.el_confirm #e_name {
+  margin: 0 0 130px 0;
+  font-size: 32pt;
+  color: #dbdbdb;
+}
+
+.el_confirm .loc_adr_dates .loc {
+  float: left;
+  width: 65%;
+}
+
+.el_confirm .loc_adr_dates .loc p {
+  width: 300px;
+  margin: 15px 0;
+}
+
+.el_confirm .loc_adr_dates .loc p span {
+  display: block;
+  float: left;
+  width: 108px;
+  font-size: 10.5pt;
+  color: #646464;
+  text-align: right;
+}
+
+.el_confirm .loc_adr_dates .loc p b {
+  display: block;
+  float: left;
+  width: 180px;
+  margin-left: 10px;
+  font-size: 14pt;
+  font-weight: normal;
+  color: #3d3d3d;
+}
+
+.el_confirm .loc_adr_dates .dates {
+  float: left;
+  width: 35%;
+  background: #e7e7e7;
+}
+
+.el_confirm .loc_adr_dates .dates .dt {
+  padding: 0 0 0 25px;
+}
+
+.el_confirm .loc_adr_dates .dates .dt div {
+  font-size: 25pt;
+  line-height: 32px;
+  text-transform: uppercase;
+}
+
+.el_confirm .loc_adr_dates .dates .dt p {
+  margin: 0 !important;
+  font-size: 33pt;
+  line-height: 40px;
+}
+
+.el_confirm .loc_adr_dates .dates .dt span {
+  font-size: 20pt;
+  line-height: 23px;
+}
+
+.el_confirm .loc_adr_dates .dates .time {
+  height: 43px;
+  font-size: 10.5pt;
+  line-height: 43px;
+  text-align: center;
+  background: #c5c5c5;
+}
+
+.el_confirm .map {
+  height: 246px;
+  clear: both;
+}
+
+.el_confirm .feature_prices .feature {
+  float: left;
+  width: 50%;
+}
+
+.el_confirm .feature_prices .feature p {
+  margin: 40px 0 0 0;
+}
+
+.el_confirm .feature_prices .prices {
+  float: left;
+  width: 50%;
+}
+
+.el_confirm .feature_prices .prices p {
+  margin: 40px 0 0 0;
+}
+
+.clear {
+  clear: both;
+}
+
+.back_confirm {
+  display: none;
+}
+
+.backlink {
+  font-size: 13pt;
+  color: #c5c5c5;
+}
+
 table.events-list-table {
   table-layout: fixed;
   /*

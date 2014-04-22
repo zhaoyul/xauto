@@ -341,6 +341,26 @@ angular.module( 'blvdx.events', [
   };
 
 
+  $scope.saveDateConfirm = function(){
+    //Resave lan/lon
+    $(".modal:visible").find(".close").click();
+  };
+
+  $scope.backDateEdit = function(){
+        $(".el_fields,.to_confirm").show();
+        $(".el_confirm,.back_confirm").hide();
+  };
+
+
+  $scope.showConfirm = function(){
+        $(".el_fields,.to_confirm").hide();
+        $(".el_confirm,.back_confirm").show();
+
+        adr = $scope.editDate.country + ", " + $scope.editDate.city + ", " + $scope.editDate.address_1;
+        //alert(adr);
+
+  };
+
   $scope.saveDate = function(){
     var has_errors = false;
     $scope.errors = {};
@@ -378,14 +398,16 @@ angular.module( 'blvdx.events', [
     if ($scope.editDate.id !== undefined){
         DateObj.saveDate($scope.editDate).then(function (date) {
             $scope.reloadEvent();
-            $(".modal:visible").find(".close").click();
+            //$(".modal:visible").find(".close").click();
+            $scope.showConfirm();
         }, function(error){
           $scope.errors = error.data;
         });
     } else {
         DateObj.createDate($scope.editDate).then(function (date) {
             $scope.reloadEvent();
-            $(".modal:visible").find(".close").click();
+            //$(".modal:visible").find(".close").click();
+            $scope.showConfirm();
         }, function(error){
           $scope.errors = error.data;
         });
