@@ -180,10 +180,11 @@
 </div><!-- /.modal -->
 
 <!-- photo viewer -->
-<div ng-hide="currentPhoto == null" style="position: fixed;top:0px ; left:0px;width: 100%;height: 100%;z-index: 10001;">
+<div photoviewercontent ng-hide="currentPhoto == null" style="position: fixed;top:0px ; left:0px;width: 100%;height: 100%;z-index: 10001;">
     <div style="background-image: url('/static/assets/img/colorbox/overlay.png');opacity: 0.75;width: 100%;height: 100%;"></div>
-    <div class="photoviewer" photoviewercontent style="position: absolute;top:0px;left:0px;background-color: #e9e9e9;padding:0px">
-        <div class="imgcontainer" style="position: absolute;top:0px;left:0px;">
+    <div class="photoback" style="position: absolute;top:0px;left:0px;bottom:0px; right:0px;overflow-x: hidden;overflow-y: auto">
+    <div class="photoviewer" style="position: absolute;top:0px;left:0px;background-color: #e9e9e9;" ng-keypress="keyChangePhoto()">
+        <div class="imgcontainer" style="position: absolute;top:0px;left:0px;background-color: #000000">
             <img src="{{currentPhoto.image}}" style="position:absolute;top:0px;left:0px;" />
             <div ng-click="nextPhoto()" class="nextphoto"></div>
             <div ng-click="prevPhoto()" class="prevphoto"></div>
@@ -195,21 +196,15 @@
                 <div class="follow" ng-click="Follow()">
                     <div class="followcount">{{EventObj.srv_followersCount}}</div>
                     <a href="" ng-click="" class="followicon">
-                        <!--
-                        {
-                                                'xa-icon-event-details-follow': !EventObj.srv_following,
-                                                'xa-icon-event-details-following': EventObj.srv_following
-                                                }
-                        <i style="width: 28px;height: 18px;margin-top: 2px ; margin-left: 10px" ng-class="{'xa-icon-xauto-white': currentPhoto.favorited ,'xa-icon-xauto-colored': !currentPhoto.favorited}"></i>-->
-                        <i style="width: 28px;height: 18px;margin-top: 2px ; margin-left: 10px" ng-class="{'xa-icon-xauto-white': !EventObj.srv_following ,'xa-icon-xauto-colored': EventObj.srv_following}"></i>
+                         <i style="width: 28px;height: 18px;margin-top: 2px ; margin-left: 10px" ng-class="{'xa-icon-xauto-white': !EventObj.srv_following ,'xa-icon-xauto-colored': EventObj.srv_following}"></i>
                     </a>
-
                 </div>
             </div>
             <div class="author">
                 <img class="userimg" src="{{EventObj.author_photo}}"/>
                 <div class="name">{{EventObj.author_name}}</div>
-                <div class="follow" ng-click="">Follow Me</div>
+                <div ng-hide="EventObj.profile.srv_following" class="follow" ng-click="FollowUser()">Follow Me</div>
+                <div ng-show="EventObj.profile.srv_following" class="follow" ng-click="FollowUser()">Following</div>
             </div>
             <div class="social">
                 <div class="links">
@@ -222,5 +217,6 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </div>
