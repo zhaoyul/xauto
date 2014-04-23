@@ -77,6 +77,7 @@ angular.module( 'blvdx.events', [
           }
         }
       })
+	   /*
       .state( 'eventDetailsTabs', {
         url: '/events/:eventId/:showTab',
         views: {
@@ -85,7 +86,10 @@ angular.module( 'blvdx.events', [
             templateUrl: 'events/event-details.tpl.html'
           }
         }
-      });
+      })*/
+	   .state( 'eventDetails.Photo', {
+		   url: '/:Album/:Photo/'
+	   });
 }])
 
 
@@ -487,14 +491,15 @@ angular.module( 'blvdx.events', [
 
 }])
 
-.controller( 'EventDetailsCtrl', ['$scope', 'titleService', '$stateParams', 'Events', '$http', 'Streams', function EventsCtrl( $scope, titleService, $stateParams, Events, $http, Streams) {
+.controller( 'EventDetailsCtrl', ['$scope', 'titleService','$location', '$stateParams', 'Events', '$http', 'Streams' ,'$state', function EventsCtrl( $scope, titleService,$location, $stateParams, Events, $http, Streams,$state) {
   titleService.setTitle( 'Event Details' );
   $scope.stateParams = $stateParams;
+		console.log('$stateParams:',$stateParams,$state);
 
   $scope.reloadEvent = function(){
+	  // get event data from url id ::
     Events.getDetails($stateParams.eventId).then(function (event) {
         $scope.EventObj = event;
-		console.log('init events ctrl ::',event);
 
         //TO DO - paginator
          $showcount = 12;
@@ -532,6 +537,10 @@ angular.module( 'blvdx.events', [
         };
         Streams.send_subscribe(subscription);
         Streams.send_fetch_latest();
+		var p = $state.params;
+		if(p && p.Album && p.Photo){
+			$scope.showPhoto(p.Album , p.Photo);
+		}
     });
   };
 
@@ -593,7 +602,7 @@ angular.module( 'blvdx.events', [
 				$(".navbar-nav a").eq(1).click();
 			}
 		});
-	}
+	};
 
   $scope.Follow = function() {
     $http.get('/api/current-user/').then(function(response) {
@@ -626,43 +635,59 @@ angular.module( 'blvdx.events', [
 		}
 		// non-ng event , so apply ::
 		$scope.$apply();
+	};
+
+	$scope.selectPhoto = function (){
+		$scope.showPhoto(this.$parent.album.index,this.$index);
 	}
 
-	$scope.showPhoto = function (){
-		console.log('event::',$scope.EventObj);
+	$scope.showPhoto = function (albumID , photoID){
 		$scope.$emit('imgChange');
-		$scope.currentPhoto = this.photo;
-		$scope.currentPhotoID = this.$index;
-		$scope.Album = this.$parent.album;
-
+		// check if album exist ::
+		if($scope.Albums == null || $scope.Albums[albumID] == null){
+			alert('Album not exist');
+			return;
+		}
+		$scope.currentAlbum = $scope.Albums[albumID];
+		$scope.currentAlbumLength = parseInt($scope.currentAlbum.photos.length);
+		$scope.setPhoto(photoID);
+		// key listener ::
 		$(document).on('keydown' , $scope.keyChangePhoto);
-	}
+	};
 	$scope.closePhoto = function (){
 		$scope.currentPhotoID = null;
 		$scope.currentPhoto = null;
+		// remove key listener ::
 		$(document).off('keydown' ,$scope.keyChangePhoto);
-	}
+	};
 
 	$scope.nextPhoto = function (){
-		$scope.$emit('imgChange');
-		var a = $scope.Album.photos;
-		if(a.length == ($scope.currentPhotoID + 1)){
-			$scope.currentPhotoID = 0;
+		var p = parseInt($scope.currentPhotoID);
+		if($scope.currentAlbumLength == (p + 1)){
+			p = 0;
 		} else {
-			$scope.currentPhotoID = $scope.currentPhotoID +1;
+			p = p + 1;
 		}
-		$scope.currentPhoto = a[$scope.currentPhotoID];
-	}
+		$scope.setPhoto(p);
+	};
 	$scope.prevPhoto = function (){
-		$scope.$emit('imgChange');
-		var a = $scope.Album.photos;
-		if($scope.currentPhotoID  == 0){
-			$scope.currentPhotoID = a.length -1;
+		var p = parseInt($scope.currentPhotoID);
+		if( p == 0){
+			p = $scope.currentAlbumLength -1;
 		} else {
-			$scope.currentPhotoID = $scope.currentPhotoID -1;
+			p = p -1;
 		}
-		$scope.currentPhoto = a[$scope.currentPhotoID];
-	}
+		$scope.setPhoto(p);
+	};
+	// set photo id and photo from current album
+	$scope.setPhoto = function(photoID){
+		$scope.$emit('imgChange');
+		var a = $scope.currentAlbum.photos;
+		$scope.currentPhotoID = photoID;
+		$scope.currentPhoto = a[photoID];
+		//$location.hash( "/events/"+$scope.stateParams.eventId + "/photo/" + $scope.currentAlbum.index + "/"+ photoID);
+		window.location.href = "/#/events/"+$scope.stateParams.eventId + "/" + $scope.currentAlbum.index + "/"+ photoID + "/";
+	};
 
 	// photo slide ::
 	new Hammer($('.photoviewer')[0], { drag_lock_to_axis: true }).on("dragleft dragright swipeleft swiperight", function(e){

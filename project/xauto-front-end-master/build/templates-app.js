@@ -1132,7 +1132,7 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
     "      <div class=\"panel-body\">\n" +
     "        <div class=\"row\">\n" +
     "          <ul class=\"stream-list\">\n" +
-    "            <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"photo in album.showphotos\" ng-hide=\"photo.hide\" ng-click=\"showPhoto()\">\n" +
+    "            <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"photo in album.showphotos\" ng-hide=\"photo.hide\" ng-click=\"selectPhoto()\">\n" +
     "              <div class=\"stream-picture\">\n" +
     "                  <div bx-stream-photo=\"{{photo.image}}\" class=\"inner\"></div>\n" +
     "                  <ul class=\"stream-action-links\">\n" +
