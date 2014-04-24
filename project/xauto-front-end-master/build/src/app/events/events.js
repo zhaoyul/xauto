@@ -616,10 +616,8 @@ angular.module('blvdx.events', [
         $scope.reloadEvent();
 
 
-        // ------>
-        // display photo viewer ::
-
-
+        // ------> display photo viewer ::
+		// change image on key press
         $scope.keyChangePhoto = function (evt) {
             switch (evt.keyCode) {
                 case 37:
@@ -634,16 +632,19 @@ angular.module('blvdx.events', [
         };
 
         $scope.selectPhoto = function () {
+			// select photo by click in html
             $scope.showPhoto(this.$parent.album.index, this.$index);
         };
-
+		// display photo
         $scope.showPhoto = function (albumID, photoID) {
+			// emit img change
             $scope.$emit('imgChange');
             // check if album exist ::
             if ($scope.Albums == null || $scope.Albums[albumID] == null) {
-                alert('Album not exist');
+                console.log('Album not exist');
                 return;
             }
+			// set current album and length
             $scope.currentAlbum = $scope.Albums[albumID];
             $scope.currentAlbumLength = parseInt($scope.currentAlbum.photos.length, 10);
             $scope.setPhoto(photoID);
@@ -651,10 +652,13 @@ angular.module('blvdx.events', [
             $(document).on('keydown', $scope.keyChangePhoto);
         };
         $scope.closePhoto = function () {
+			// remove image selection
             $scope.currentPhotoID = null;
             $scope.currentPhoto = null;
             // remove key listener ::
             $(document).off('keydown', $scope.keyChangePhoto);
+			// return to event url ::
+			window.location.href = "/#/events/" + $scope.stateParams.eventId;
         };
 
         $scope.nextPhoto = function () {
@@ -677,11 +681,14 @@ angular.module('blvdx.events', [
         };
         // set photo id and photo from current album
         $scope.setPhoto = function (photoID) {
+			// emit image change event
             $scope.$emit('imgChange');
+			// get photos
             var a = $scope.currentAlbum.photos;
+			// set selected photo
             $scope.currentPhotoID = photoID;
             $scope.currentPhoto = a[photoID];
-            //$location.hash( "/events/"+$scope.stateParams.eventId + "/photo/" + $scope.currentAlbum.index + "/"+ photoID);
+			// set new location for given image ::
             window.location.href = "/#/events/" + $scope.stateParams.eventId + "/" + $scope.currentAlbum.index + "/" + photoID + "/";
         };
 
@@ -699,20 +706,13 @@ angular.module('blvdx.events', [
             $scope.$apply();
         });
 
-
-        // ------>
-        /* halted
-         $scope.FavoriteImage = function(){
-         console.log($scope.currentPhoto.favorited);
-         $scope.currentPhoto.favorited = !$scope.currentPhoto.favorited;
-         }*/
-
         // ------> SOCIAL BUTTONS
         $scope.social_tw = function (obj) {
-            alert('1');
+			window.open('https://twitter.com/intent/tweet?text='+ $scope.EventObj.title + '&url=' + escape(window.location.href));
         };
 
         $scope.social_fb = function (obj) {
+			/* to work when account will be ready
             console.log(obj, document.location.href);
             FB.login(function (response) {
                 if (response.authResponse) {
@@ -723,7 +723,7 @@ angular.module('blvdx.events', [
                 } else {
                     console.log('User cancelled login or did not fully authorize.');
                 }
-            });
+            });*/
             /*
              FB.ui(
              {
@@ -738,7 +738,7 @@ angular.module('blvdx.events', [
         };
 
         $scope.social_p = function (obj) {
-            alert('3');
+
         };
 
         $scope.social_tu = function (obj) {
