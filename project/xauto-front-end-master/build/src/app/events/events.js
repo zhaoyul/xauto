@@ -738,15 +738,17 @@ angular.module('blvdx.events', [
         };
 
         $scope.social_p = function (obj) {
-
+			window.open("http://pinterest.com/pin/create/button/?source_url='" + escape(window.location.href) + '&media=' +escape($scope.currentPhoto.image) + '&description=' + escape($scope.EventObj.title) );
         };
 
         $scope.social_tu = function (obj) {
-            alert('4');
+			window.open("https://www.tumblr.com/share/photo?source=" + escape($scope.currentPhoto.image) +
+				"&caption=" + $scope.EventObj.title +
+				"&click_thru=" + escape(window.location.href));
         };
 
         $scope.social_pl = function (obj) {
-            alert('5');
+			window.open('https://plus.google.com/share?url=' + escape(window.location.href));
         };
 
 
