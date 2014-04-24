@@ -7,8 +7,9 @@ angular.module( 'blvdx', [
   'blvdx.stream',
   'blvdx.account',
 
-  'ui.state',
-  'ui.route',
+  //'ui.state',
+  'ui.router',
+  //'ui.route',
 
   'restangular',
   'security',

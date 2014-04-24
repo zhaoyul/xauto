@@ -1,6 +1,6 @@
 angular.module('blvdx.events', [
         'resources.events',
-        'ui.state',
+        'ui.router',
         // 'placeholders',
         'ui.bootstrap',
         'security.authorization',

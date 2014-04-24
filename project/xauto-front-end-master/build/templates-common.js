@@ -2,6 +2,21 @@ angular.module('templates-common', ['security/login/form.tpl.html', 'security/lo
 
 angular.module("security/login/form.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("security/login/form.tpl.html",
+    "<form class=\"form-horizontal\" role=\"form\" novalidate>\n" +
+    "<div class=\"modal-header\">\n" +
+    "    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n" +
+    "    <h4 class=\"modal-title\">Log In</h4>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "    <ng-include src=\"'account/account-login.tpl.html'\"></ng-include>\n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">\n" +
+    "    <button class=\"btn btn-primary login\" ng-click=\"accountSubmit()\" ng-disabled='form.$invalid'>Log in</button>\n" +
+    "    <button class=\"btn btn-primary login\" ng-click=\"login()\" ng-disabled='form.$invalid'>Log in</button>\n" +
+    "</div>\n" +
+    "</form>\n" +
+    "\n" +
+    "<!--\n" +
     "<div class=\"modal\">\n" +
     "<form name=\"form\" novalidate class=\"login-form\">\n" +
     "    <div class=\"modal-dialog\">\n" +
@@ -31,6 +46,7 @@ angular.module("security/login/form.tpl.html", []).run(["$templateCache", functi
     "    </div>\n" +
     "</form>\n" +
     "</div>\n" +
+    "-->\n" +
     "");
 }]);
 
@@ -38,7 +54,10 @@ angular.module("security/login/toolbar.tpl.html", []).run(["$templateCache", fun
   $templateCache.put("security/login/toolbar.tpl.html",
     "<ul class=\"nav navbar-nav navbar-right\">\n" +
     "      <li ng-hide=\"isAuthenticated()\"><a data-toggle=\"modal\" href=\"#signupModal\">Sign Up</a></li>\n" +
-    "      <li ng-hide=\"isAuthenticated()\"><a data-toggle=\"modal\" href=\"#loginModal\">Log In</a></li>\n" +
+    "\n" +
+    "      <!--li ng-hide=\"isAuthenticated()\"><a data-toggle=\"modal\" href=\"#loginModal\">Log In</a></li-->\n" +
+    "      <li ng-hide=\"isAuthenticated()\"><a href=\"#\" ng-click=\"login()\">Log In</a></li>\n" +
+    "\n" +
     "      <li class=\"dropdown\" ng-show=\"isAuthenticated()\">\n" +
     "        <a href=\"#\" class=\"dropdown-toggle profile-dropdown\" data-toggle=\"dropdown\">\n" +
     "          <img src=\"{{currentUser.thumbnail_image}}\" alt=\"\" class=\"img-rounded navbar-profile-pic\"> {{currentUser.firstName}} {{currentUser.lastName}} <b class=\"caret\"></b>\n" +

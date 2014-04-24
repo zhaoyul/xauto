@@ -13,7 +13,7 @@
  * specified, as shown below.
  */
 angular.module( 'blvdx.stream', [
-  'ui.state',
+  'ui.router',
   'titleService',
   'plusOne',
   'security.authorization',

@@ -1,6 +1,6 @@
 
 angular.module( 'blvdx.account', [
-  'ui.state',
+  'ui.router',
   'titleService',
   'plusOne',
   'angularFileUpload',
@@ -120,9 +120,6 @@ angular.module( 'blvdx.account', [
   titleService.setTitle( 'Account' );
     $scope.AccountObj = {};
 
-
-
-
     $scope.accountCreate = function(){
         Accounts.createAccount($scope.AccountObj).then(function (account) {
             $state.transitionTo('events');
@@ -131,7 +128,8 @@ angular.module( 'blvdx.account', [
 
 }])
 .controller( 'AccountLoginCtrl', ['$scope', '$state', 'titleService', 'Accounts', function AccountCtrl( $scope, $state, titleService, Accounts ) {
-  titleService.setTitle( 'Log In' );
+        console.log('account login ctrl');
+    titleService.setTitle( 'Log In' );
     $scope.AccountObj = {};
 
     $scope.accountSubmit = function(){

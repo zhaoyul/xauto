@@ -28,15 +28,18 @@ angular.module('security.login.form', [])
 
     // Try to login
     security.login($scope.user.email, $scope.user.password).then(function(loggedIn) {
+      console.log('controler login success?');
       if ( !loggedIn ) {
+        console.log('ups, we have an error with credentials');
         // If we get here then the login failed due to bad credentials
         //$scope.authError = localizedMessages.get('login.error.invalidCredentials');
-        $scope.authError = "test3";
+        $scope.authError = "Login credentials invalid";
       }
     }, function(x) {
+      console.log('ups, we have an unknown error');
       // If we get here then there was a problem with the login request to the server
       //$scope.authError = localizedMessages.get('login.error.serverError', { exception: x });
-      $scope.authError = "test4";
+      $scope.authError = "Authentication error due to server fail.";
     });
   };
 

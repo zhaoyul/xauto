@@ -55,16 +55,23 @@ angular.module("account/account-edit.tpl.html", []).run(["$templateCache", funct
 
 angular.module("account/account-login.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-login.tpl.html",
+    "\n" +
+    "<div class=\"alert alert-warning\" id=\"login_invalid\" ng-show=\"authError\">\n" +
+    "    {{authError}}\n" +
+    "    <br/>\n" +
+    "    <a data-toggle=\"modal\" data-dismiss=\"modal\" href=\"#resetPassword\">Forgot your password?</a>\n" +
+    "</div>\n" +
+    "\n" +
     "<div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">Email</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"email\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.email\" required>\n" +
+    "      <input type=\"email\" class=\"form-control\" placeholder=\"\" ng-model=\"user.email\" required>\n" +
     "    </div>\n" +
     "</div>\n" +
     "<div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">Password</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input type=\"password\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.password\" required>\n" +
+    "      <input type=\"password\" class=\"form-control\" placeholder=\"\" ng-model=\"user.password\" required>\n" +
     "    </div>\n" +
     "</div>\n" +
     "");

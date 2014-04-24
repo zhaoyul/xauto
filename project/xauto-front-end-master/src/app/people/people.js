@@ -13,7 +13,7 @@
  * specified, as shown below.
  */
 angular.module( 'blvdx.people', [
-  'ui.state',
+  'ui.router',
   'titleService',
   'plusOne',
   'security.authorization',

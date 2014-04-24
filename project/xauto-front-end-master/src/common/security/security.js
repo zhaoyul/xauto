@@ -2,10 +2,10 @@
 angular.module('security.service', [
   'security.retryQueue',    // Keeps track of failed requests that need to be retried once the user logs in
   'security.login',         // Contains the login form template and controller
-  'ui.bootstrap.dialog'     // Used to display the login form as a modal dialog.
+  'ui.bootstrap.modal'     // Used to display the login form as a modal dialog.
 ])
 
-.factory('security', ['$http', '$q', '$location', 'securityRetryQueue', '$dialog', function($http, $q, $location, queue, $dialog) {
+.factory('security', ['$http', '$q', '$location', 'securityRetryQueue', '$modal', 'Accounts', function($http, $q, $location, queue, $modal, Accounts) {
 
   // Redirect to the given url (defaults to '/')
   function redirect(url) {
@@ -16,12 +16,16 @@ angular.module('security.service', [
   // Login form dialog stuff
   var loginDialog = null;
   function openLoginDialog() {
-      console.log('login dialog');
     if ( loginDialog ) {
       throw new Error('Trying to open a dialog that is already open!');
     }
-    loginDialog = $dialog.dialog();
-    loginDialog.open('security/login/form.tpl.html', 'LoginFormController').then(onLoginDialogClose);
+    //loginDialog = $dialog.dialog();
+    loginDialog = $modal.open({
+        templateUrl: 'security/login/form.tpl.html',
+        controller: 'LoginFormController'
+    });
+
+    loginDialog.result.then(onLoginDialogClose, onLoginDialogClose);
     //jQuery.noConflict();
     //$('#loginModal').modal('show');
   }
@@ -63,17 +67,31 @@ angular.module('security.service', [
 
     // Attempt to authenticate a user by the given email and password
     login: function(email, password) {
-      var request = $http.post('/api/login/', {email: email, password: password});
-      return request.then(function(response) {
-        service.currentUser = response.data.user;
-        $("#login_invalid").hide();
-        if ( service.isAuthenticated() ) {
-          $(".modal:visible").find(".close").click();
-          //closeLoginDialog(true);
-        }else{
-          $("#login_invalid").show();
-        }
-      });
+      //var request = $http.post('/api/login/', {email: email, password: password});
+      console.log({email: email, password: password});
+      return Accounts.login({email: email, password: password}).then(
+          function(account) {
+              console.log(account);
+              if (account.user){
+                  service.currentUser = account.user;
+                  if ( service.isAuthenticated() ) {
+                      closeLoginDialog(true);
+                  }
+              }
+              return service.isAuthenticated();
+          });
+
+      //var request = $http.post('/login/', {email: email, password: password});
+//      return request.then(function(response) {
+//        service.currentUser = response.data.user;
+//        //$("#login_invalid").hide();
+//        if ( service.isAuthenticated() ) {
+//          $(".modal:visible").find(".close").click();
+//          //closeLoginDialog(true);
+//        }else{
+//          //$("#login_invalid").show();
+//        }
+      //});
     },
 
     // Give up trying to login and clear the retry queue
