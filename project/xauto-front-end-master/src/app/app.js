@@ -356,35 +356,3 @@ var GeolocationEvent = (function () {
     GeolocationEvent.ERROR = "geolocation.error";
     return GeolocationEvent;
 })();
-
-
-
-//////////////////////////////////////////////////
-//////////////////////////////////////////////////
-// -----------------------> SOCIAL
-
-
-console.log('social init;',$);
-
-// ------> FB
-
-
-window.fbAsyncInit = function() {
-	console.log('fb init');
-	FB.init({
-		appId      : '1394880617455803',
-		status     : true,
-		xfbml      : true,
-		cookie: true
-	});
-};
-
-(function(d, s, id){
-	$('body').append('<div id="fb-root"></div>');
-	var js, fjs = d.getElementsByTagName(s)[0];
-	if (d.getElementById(id)) {return;}
-	js = d.createElement(s); js.id = id;
-	js.src = "//connect.facebook.net/en_US/all.js";
-	fjs.parentNode.insertBefore(js, fjs);
-
-}(document, 'script', 'facebook-jssdk'));
