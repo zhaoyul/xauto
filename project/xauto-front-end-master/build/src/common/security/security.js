@@ -16,13 +16,14 @@ angular.module('security.service', [
   // Login form dialog stuff
   var loginDialog = null;
   function openLoginDialog() {
-//    if ( loginDialog ) {
-//      throw new Error('Trying to open a dialog that is already open!');
-//    }
-//    loginDialog = $dialog.dialog();
-//    loginDialog.open('security/login/form.tpl.html', 'LoginFormController').then(onLoginDialogClose);
-    jQuery.noConflict();
-    $('#loginModal').modal('show');
+      console.log('login dialog');
+    if ( loginDialog ) {
+      throw new Error('Trying to open a dialog that is already open!');
+    }
+    loginDialog = $dialog.dialog();
+    loginDialog.open('security/login/form.tpl.html', 'LoginFormController').then(onLoginDialogClose);
+    //jQuery.noConflict();
+    //$('#loginModal').modal('show');
   }
   function closeLoginDialog(success) {
     if (loginDialog) {
