@@ -5,6 +5,7 @@ angular.module('blvdx.events', [
         'ui.bootstrap',
         'security.authorization',
         'titleService',
+		'social',
         'angularFileUpload'
     ])
 
@@ -486,11 +487,11 @@ angular.module('blvdx.events', [
 
         }])
 
-    .controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', '$http', 'Streams' , '$state', function EventsCtrl($scope, titleService, $location, $stateParams, Events, $http, Streams, $state) {
+    .controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', '$http', 'Streams' , '$state' , '$fb',
+		function EventsCtrl($scope, titleService, $location, $stateParams, Events, $http, Streams, $state , $fb) {
         titleService.setTitle('Event Details');
         $scope.stateParams = $stateParams;
-        console.log('$stateParams:', $stateParams, $state);
-
+		console.log('fb servicE:',$fb);
         $scope.reloadEvent = function () {
             // get event data from url id ::
             Events.getDetails($stateParams.eventId).then(function (event) {
@@ -712,29 +713,7 @@ angular.module('blvdx.events', [
         };
 
         $scope.social_fb = function (obj) {
-			/* to work when account will be ready
-            console.log(obj, document.location.href);
-            FB.login(function (response) {
-                if (response.authResponse) {
-                    console.log('Welcome!  Fetching your information.... ');
-                    FB.api('/me', function (response) {
-                        console.log('Good to see you, ' + response.name + '.');
-                    });
-                } else {
-                    console.log('User cancelled login or did not fully authorize.');
-                }
-            });*/
-            /*
-             FB.ui(
-             {
-             method: 'feed',
-             name: 'Share image',
-             link: 'http://www.xauto.co/',// document.location.href,
-             //picture: null, 'http://localhost:8000/media/multiuploader_images/A-small-Word-Images-Wallpaper.jpg'
-             caption: 'caption.',
-             description: 'description',
-             message: ''
-             });*/
+			$fb.sharePhoto($scope.currentPhoto.event_name,window.location.href,window.location.host + $scope.currentPhoto.image,$scope.currentPhoto.caption,$scope.EventObj.about);
         };
 
         $scope.social_p = function (obj) {
