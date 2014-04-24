@@ -807,136 +807,142 @@ angular.module('blvdx.events', [
     .directive('photoviewercontent', [function () {
         return function (scope, element, attr) {
             var pview = {
-                back: element.find('.photoback'),
-                container: element.find('.photoviewer'),
-                imgcontainer: element.find('.imgcontainer'),
-                target: element.find('.imgcontainer').find('img'),
-                view: $(window),
-                panel: element.find('.rightwrap'),
-                resize: function () {
-                    var sw = this.back.width();// * 0.95;
-                    var sh = this.back.height();// * 0.95;
+				back:element.find('.photoback'),// full container
+				container:element.find('.photoviewer'),// display area
+				imgcontainer:element.find('.imgcontainer'),// img container
+				target:element.find('.imgcontainer').find('img'),// target img
+				panel:element.find('.rightwrap'),// bottom || right  panel div
 
-                    // * offset , depends on screen size , - panel
-                    var dw , dh;
-                    var aspect = sw / sh;
-                    var w = this.target[0].naturalWidth;
-                    var h = this.target[0].naturalHeight;
-                    var minW;
-                    var minH;
-                    var size;
-                    var scale;
+				resize:function(){
+					var size,scale,sw,sh,dw,dh,minW,minH;
+					// container possible area
+					sw = this.back.width();
+					sh = this.back.height();
 
-                    var imgRatio = w / h;
-                    if (aspect > 1.2) {
-                        //landscape ::
-                        minW = 350;
-                        minH = 450;
-                        this.panel.attr('style', 'top:0px;bottom:0px;right:0px;width:315px;');
-                        this.imgcontainer.css({top: 0, bottom: 0, left: 0, right: 315});
+					// image display aspect , depends on screen size and w/h ratio
+					var aspect = sw / sh;
+					if(sw < 1000 || sh < 600){//
+						aspect = 0;
+					}
+					// image size ::
+					var w = this.target[0].naturalWidth;
+					var h = this.target[0].naturalHeight;
+					// check image ratio
+					var imgRatio = w/h;
 
-                        sw = this.view.width() * 0.95 - 315;
+					// select display mode : landscape 1 , portrait 2
+					if(aspect > 1.1){//landscape ::
+						// minimal display size
+						minW = 650;
+						minH = 450;
+						// set landscape panel
+						this.panel.attr('style','top:0px;bottom:0px;right:0px;width:315px;');
+						this.imgcontainer.css({top:0,bottom:0,left:0,right:315});
 
+						// img area without panel
+						sw = this.back.width() - 315;// * 0.95
 
-                        if (w < minW && h < minH) {
-                            // minimal display size
-                            size = 0;
-                        } else if (w > sw || h > sh) {
-                            // image must be scaled down
-                            size = 2;
-                        } else {
-                            // image fit in screen
-                            size = 1;
-                        }
-                        switch (size) {
-                            case 0 :
-                                sw = minW;
-                                dh = sh = minH;
-                                dw = minW + 315;
-                                break;
-                            case 1 :
-                                sw = w;
-                                dh = sh = h;
-                                dw = sw + 315;
-                                break;
-                            case 2 :
-                                if (w / sw > h / sh) {
-                                    scale = sw / w;
-                                } else {
-                                    scale = sh / h;
-                                }
-                                w = w * scale;
-                                h = h * scale;
-                                sw = w;
-                                dw = w + 315;
-                                dh = sh = h;
-                                break;
-                        }
-                        this.container.stop(true).animate({left: (this.view.width() - (dw)) / 2, top: (this.view.height() - dh) / 2, width: dw, height: dh}, 250);
-                        this.target.css({left: (sw - w) / 2, top: (dh - h) / 2, width: w, height: h }).stop(true).delay(250).animate({opacity: 1}, 250);
-                    } else {
-                        //portrait ::
-                        minW = 400;
-                        minH = 450;
-                        this.panel.attr('style', 'left:0px;right:0px;height:245px;bottom:0px;');
-                        this.imgcontainer.css({left: 0, right: 0, bottom: 245, top: 0});
+						// get image display mode
+						if(w < minW && h < minH){
+							// minimal display size
+							size = 0;
+						} else if(w > sw || h > sh){
+							// image must be scaled down
+							size = 2;
+						} else {
+							// image fit in screen
+							size = 1;
+						}
 
-                        //sh = this.back.height() - 245;// * 0.95
-                        console.log('swsh:', sw, sh, w, h);
-                        if (w < minW && h < minH) {
-                            // minimal display size
-                            size = 0;
-                        } else if (w > sw || h > sh) {
-                            // image must be scaled down
-                            size = 2;
-                        } else {
-                            // image fit in screen
-                            size = 1;
-                        }
-                        switch (size) {
-                            case 0 :
-                                dw = sw = minW;
-                                sh = minH;
-                                dh = minH + 245;
-                                break;
-                            case 1 :
-                                dw = sw = w;
-                                sh = h;
-                                dh = sh + 245;
-                                break;
-                            case 2 :
-                                sw = Math.max(sw, minW);
-                                sh = Math.max(sh, minH);
-                                /*if(w/sw > h/sh){
+						// calculations ::
+						switch(size) {
+							case 0 :
+								sw = minW;
+								dh = sh = minH;
+								dw = minW + 315;
+								break;
+							case 1 :
+								sw = Math.max(w,minW);
+								dh = sh = Math.max(h,minH);
+								dw = sw + 315;
+								break;
+							case 2 :
+								sw = Math.max(sw,minW);
+								sh = Math.max(sh,minH);
+								if(w/sw > h/sh){
+									scale = sw / w;
+								} else {
+									scale = sh / h;
+								}
+								w = w * scale;
+								h = h * scale;
+								sw = w;
+								dw = w + 315;
+								dh = sh = h;
+								break;
+						}
+						this.container.stop(true).animate({left:Math.max(0,(this.back.width() -(dw))/2) , top:Math.max(0,(this.back.height() - dh)/2),width:dw,height:dh},250);
+						this.target.css({left:(sw -w)/2 , top:(dh -h)/2, width:w , height:h }).stop(true).delay(250).animate({opacity:1},250);
+					} else {
+						//portrait ::
+						minW = 300;
+						minH = 300;
+						// set portrait panel
+						this.panel.attr('style','left:0px;right:0px;height:245px;bottom:0px;');
+						this.imgcontainer.css({left:0,right:0,bottom:245,top:0});
 
-                                 } else {
-                                 var scale = sh / h;
-                                 }*/
-                                scale = sw / w;
-                                w = w * scale;
-                                h = h * scale;
-                                dw = sw = w;
-                                sh = h;
-                                dh = h + 245;
-                                break;
-                        }
-                        this.container.stop(true).animate({left: (this.view.width() - (dw)) / 2, top: (this.view.height() - dh) / 2, width: dw, height: dh}, 250);
-                        this.target.css({left: (sw - w) / 2, top: (sh - h) / 2, width: w, height: h }).stop(true).delay(250).animate({opacity: 1}, 250);
-                    }
-                }
-            };
-            // on img load ::
-            pview.target.on('load', function () {
-                pview.resize();
-            });
-            // on image change ::
-            scope.$on('imgChange', function () {
-                pview.target.css({opacity: 0});
-            });
+						// get image display mode
+						if(w < minW && h < minH){
+							// minimal display size
+							size = 0;
+						} else if(w > sw || h > sh){
+							// image must be scaled down
+							size = 2;
+						} else {
+							// image fit in screen
+							size = 1;
+						}
+						// calculations ::
+						switch(size) {
+							case 0 :
+								dw = sw = minW;
+								sh = minH;
+								dh = minH + 245;
+								break;
+							case 1 :
+								dw = sw = w;
+								sh = h;
+								dh = sh + 245;
+								break;
+							case 2 :
+								sw = Math.max(sw,minW);
+								sh = Math.max(sh,minH);
+								scale = sw / w;
+								w = w * scale;
+								h = h * scale;
+								dw = sw = w;
+								sh = h;
+								dh = h + 245;
+								break;
+						}
+						// apply animation ::
+						this.container.stop(true).animate({left:Math.max(0,(this.back.width() -(dw))/2) , top:Math.max(0,this.back.height() - dh)/2,width:dw,height:dh},250);
+						this.target.css({left:(sw -w)/2 , top:(sh -h)/2, width:w , height:h }).stop(true).delay(250).animate({opacity:1},250);
+					}
+				}
+			};
+			// on img load ::
+			pview.target.on('load' , function(){
+				pview.resize();
+			});
+			// on image change :: hide
+			scope.$on('imgChange',function(){
+				pview.target.css({opacity:0});
+			});
 
-            // page resize ::
-            $(window).resize(function () {
-                pview.resize.apply(pview, null);
-            });
+			// page resize ::
+			$( window ).resize(function(){
+				pview.resize.apply(pview,null);
+			});
         };
     }]);
