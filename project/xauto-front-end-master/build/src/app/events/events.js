@@ -496,6 +496,7 @@ angular.module('blvdx.events', [
             Events.getDetails($stateParams.eventId).then(function (event) {
                 $scope.EventObj = event;
 
+
                 //TO DO - paginator
                 $showcount = 12;
 

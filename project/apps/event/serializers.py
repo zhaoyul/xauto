@@ -169,16 +169,24 @@ class EventDetailsSerializer(serializers.ModelSerializer):
     srv_following = serializers.SerializerMethodField('get_srv_following')
     albums = AlbumSerializer(source='event_dates', read_only=True)
     profile = UserProfileSerializer(source='author', read_only=True)
+    gotolink = serializers.SerializerMethodField('get_gotolink')
 
     class Meta:
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'srv_followersCount',
             'srv_photosCount', 'photo', 'srv_futureDates', 'author_name',
-            'author_photo', 'srv_live', 'srv_following', 'albums', 'profile', 'slug')
+            'author_photo', 'srv_live', 'srv_following', 'albums', 'profile', 'slug', 'gotolink')
 
     def get_photo(self, obj):
         if obj.main_image:
             return obj.thumb_url(1500,290)
+
+    def get_gotolink(self, obj):
+        near = obj.get_nearest_date()
+        if near:
+            if near.latitude and near.longitude:
+                return "https://maps.google.com/?q="+str(near.latitude)+","+str(near.longitude)
+        return ""
 
     def srv_followers_count(self, obj):
         return obj.followed.count()

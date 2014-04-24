@@ -86,8 +86,8 @@
                             </div>
                             <div class="col-xs-12 col-sm-8">
                                 <ul class="event-details-navbar-items pull-right">
-                                    <li>
-                                        <a href="#">
+                                    <li ng-show="EventObj.gotolink">
+                                        <a href="{{EventObj.gotolink}}">
                                             <i class="xa-icon-event-details-goto"></i>
                                             Go to
                                         </a>
