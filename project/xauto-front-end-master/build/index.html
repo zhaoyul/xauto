@@ -36,6 +36,7 @@
     <script type="text/javascript" src="/static/vendor/angular/angular.js"></script>
     <script type="text/javascript" src="/static/vendor/ng-file-upload/angular-file-upload.min.js"></script>
     <script type="text/javascript" src="/static/vendor/angular-resource/angular-resource.js"></script>
+    <script type="text/javascript" src="/static/vendor/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/static/vendor/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script type="text/javascript" src="/static/vendor/angular-ui-router/release/angular-ui-router.js"></script>
     <script type="text/javascript" src="/static/vendor/angular-ui-utils/modules/route/route.js"></script>
@@ -106,7 +107,6 @@
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Quick search" ng-keyup="Search($event.target.value)">
               </div>
-              <!-- <button type="submit" class="btn btn-default">Go</button> -->
             </form>
 
             <div login-toolbar></div>
@@ -145,18 +145,7 @@
       </div>
     </div>
 
-    <footer id="footer">
-      <!-- <div class="container">
-        <div class="footer-inner">
-
-
-
-          <p>
-            (c) 2013 B
-          </p>
-        </div>
-      </div> -->
-    </footer>
+    <footer id="footer"></footer>
 
     <div class="modal fade" id="signupModal" data-backdrop="static">
       <div class="modal-dialog">
