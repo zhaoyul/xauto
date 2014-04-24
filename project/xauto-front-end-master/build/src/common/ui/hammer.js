@@ -652,7 +652,7 @@
             var types = type.split(' ');
             Utils.each(types, function (type) {
                 Utils.on(element, type, handler);
-                hook && hook(type);
+                if(hook){hook(type);}
             });
         },
 
@@ -670,7 +670,7 @@
             var types = type.split(' ');
             Utils.each(types, function (type) {
                 Utils.off(element, type, handler);
-                hook && hook(type);
+                if(hook){hook(type);}
             });
         },
 
@@ -920,8 +920,8 @@
                  */
                 preventDefault: function () {
                     var srcEvent = this.srcEvent;
-                    srcEvent.preventManipulation && srcEvent.preventManipulation();
-                    srcEvent.preventDefault && srcEvent.preventDefault();
+                    if(srcEvent.preventManipulation){srcEvent.preventManipulation();}
+                    if(srcEvent.preventDefault){srcEvent.preventDefault();}
                 },
 
                 /**

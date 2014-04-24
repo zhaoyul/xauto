@@ -508,27 +508,27 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                    <div class=\"row-wrapper\">\n" +
     "                        <div class=\"row\" id=\"event-details-cover-wrapper\">\n" +
     "                            <div class=\"col-xs-12\" >\n" +
-    "                            <div class=\"event-details-cover-photo\" ng-style=\"{'background-image': 'url(' + EventObj.photo + ')'}\"></div>\n" +
-    "                            <div class=\"event-details-overlay\">\n" +
-    "                                <div class=\"event-details-header\">\n" +
-    "                                    <h1 class=\"pull-left\">{{EventObj.title}}</h1>\n" +
-    "                                    <a href=\"#\" class=\"organizer\" tooltip-placement=\"bottom\" tooltip=\"Organizer: {{EventObj.author_name}}\">\n" +
-    "                                        <img class=\"user-pic\" alt=\"\" ng-src=\"{{ EventObj.author_photo }}\">\n" +
-    "                                    </a>\n" +
-    "                                </div>\n" +
-    "                                <div class=\"event-details-about\" ng-init=\"eventDetailsExpanded=false\" ng-class=\"{expanded: eventDetailsExpanded}\" bx-event-detailed-text-mobile-toggle>\n" +
-    "                                    <a href=\"javascript:;\" class=\"btn btn-sm btn-primary visible-xs\">show description</a>\n" +
-    "                                    <p>\n" +
-    "                                        {{EventObj.about}}\n" +
-    "                                    </p>\n" +
+    "                                <div class=\"event-details-cover-photo\" ng-style=\"{'background-image': 'url(' + EventObj.photo + ')'}\"></div>\n" +
+    "                                <div class=\"event-details-overlay\">\n" +
+    "                                    <div class=\"event-details-header\">\n" +
+    "                                        <h1 class=\"pull-left\">{{EventObj.title}}</h1>\n" +
+    "                                        <a href=\"#\" class=\"organizer\" tooltip-placement=\"bottom\" tooltip=\"Organizer: {{EventObj.author_name}}\">\n" +
+    "                                            <img class=\"user-pic\" alt=\"\" ng-src=\"{{ EventObj.author_photo }}\">\n" +
+    "                                        </a>\n" +
+    "                                    </div>\n" +
+    "                                    <div class=\"event-details-about\" ng-init=\"eventDetailsExpanded=false\" ng-class=\"{expanded: eventDetailsExpanded}\" bx-event-detailed-text-mobile-toggle>\n" +
+    "                                        <a href=\"javascript:;\" class=\"btn btn-sm btn-primary visible-xs\">show description</a>\n" +
+    "                                        <p>\n" +
+    "                                            {{EventObj.about}}\n" +
+    "                                        </p>\n" +
     "                                        <a href=\"javascript:;\" ng-click=\"eventDetailsExpanded=!eventDetailsExpanded\" class='toggle-event-details-about info-close hidden-xs'>\n" +
-    "                                        <i class=\"icon-remove\"></i>\n" +
+    "                                            <i class=\"icon-remove\"></i>\n" +
+    "                                        </a>\n" +
+    "                                    </div>\n" +
+    "                                    <a href=\"javascript:;\" ng-show=\"!eventDetailsExpanded\" ng-click=\"eventDetailsExpanded=!eventDetailsExpanded\" class='toggle-event-details-about info-opener'>\n" +
+    "                                        <i class=\"icon-info-sign\"></i>\n" +
     "                                    </a>\n" +
     "                                </div>\n" +
-    "                                <a href=\"javascript:;\" ng-show=\"!eventDetailsExpanded\" ng-click=\"eventDetailsExpanded=!eventDetailsExpanded\" class='toggle-event-details-about info-opener'>\n" +
-    "                                    <i class=\"icon-info-sign\"></i>\n" +
-    "                                </a>\n" +
-    "                            </div>\n" +
     "                            </div>\n" +
     "                        </div>\n" +
     "                        <div class=\"row\" id=\"event-details-navbar\">\n" +
@@ -603,7 +603,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                                    </li>\n" +
     "                                    <li>\n" +
     "                                        <a href=\"javascript:;\" ng-click=\"Follow()\" class=\"btn-follow\"\n" +
-    "                                            ng-class=\"{following:EventObj.srv_following}\">\n" +
+    "                                           ng-class=\"{following:EventObj.srv_following}\">\n" +
     "                                            <i ng-class=\"{\n" +
     "                                                'xa-icon-event-details-follow': !EventObj.srv_following,\n" +
     "                                                'xa-icon-event-details-following': EventObj.srv_following\n" +
@@ -629,16 +629,16 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                </ul>\n" +
     "\n" +
     "                <div class=\"tab-content event-details-tab-contents\">\n" +
-    "                  <div class=\"tab-pane\" id=\"stream\" ng-class=\"{'active': EventObj.srv_live}\">\n" +
-    "                      <ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>\n" +
-    "                      <div ng-show=\"is_fetching\">Loading older entries...</div>\n" +
-    "                  </div>\n" +
-    "                  <div class=\"tab-pane\" id=\"photos\" ng-class=\"{'active': !EventObj.srv_live}\">\n" +
-    "                      <ng-include src=\"'events/partial_event_details_photos.tpl.html'\"></ng-include>\n" +
-    "                  </div>\n" +
-    "                  <div class=\"tab-pane\" id=\"followers\">\n" +
-    "                      Followers\n" +
-    "                  </div>\n" +
+    "                    <div class=\"tab-pane\" id=\"stream\" ng-class=\"{'active': EventObj.srv_live}\">\n" +
+    "                        <ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>\n" +
+    "                        <div ng-show=\"is_fetching\">Loading older entries...</div>\n" +
+    "                    </div>\n" +
+    "                    <div class=\"tab-pane\" id=\"photos\" ng-class=\"{'active': !EventObj.srv_live}\">\n" +
+    "                        <ng-include src=\"'events/partial_event_details_photos.tpl.html'\"></ng-include>\n" +
+    "                    </div>\n" +
+    "                    <div class=\"tab-pane\" id=\"followers\">\n" +
+    "                        Followers\n" +
+    "                    </div>\n" +
     "                </div>\n" +
     "            </div>\n" +
     "        </div>\n" +
@@ -648,78 +648,78 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "\n" +
     "\n" +
     "<div class=\"modal fade\" id=\"addPhotosModal\">\n" +
-    "  <div class=\"modal-dialog\">\n" +
-    "    <div class=\"modal-content\">\n" +
-    "      <div class=\"modal-header\">\n" +
-    "        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n" +
-    "        <h4 class=\"modal-title\">Add Photos</h4>\n" +
-    "      </div>\n" +
-    "      <form class=\"form-horizontal\" role=\"form\" ng-submit=\"savePhotos()\" novalidate name=\"form\">\n" +
-    "        <div class=\"modal-body\">\n" +
-    "            <div class=\"form-group\" ng-class=\"{'has-error': form.albumid.$invalid || errors.id}\">\n" +
-    "                <label class=\"col-lg-3 control-label\">Event Date</label>\n" +
-    "                <div class=\"col-lg-9\">\n" +
-    "                  <select class=\"form-control\" ng-model=\"Album.id\" name=\"albumid\" required>\n" +
-    "                    <option ng-repeat=\"album in EventObj.albums\" value=\"{{album.id}}\">{{album.feature_headline}} - {{album.date}}</option>\n" +
-    "                  </select>\n" +
-    "                  <span class=\"help-block\" ng-show=\"errors.id\" ng-repeat=\"error in errors.id\">{{error}}</span>\n" +
-    "                </div>\n" +
+    "    <div class=\"modal-dialog\">\n" +
+    "        <div class=\"modal-content\">\n" +
+    "            <div class=\"modal-header\">\n" +
+    "                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n" +
+    "                <h4 class=\"modal-title\">Add Photos</h4>\n" +
     "            </div>\n" +
-    "            <div class=\"form-group\" ng-class=\"{'has-error': form.event_upload_images.$invalid || errors.event_upload_images}\">\n" +
-    "                <label class=\"col-lg-3 control-label\">Photos</label>\n" +
-    "                <div class=\"col-lg-9\">\n" +
-    "                  <input name=\"event_upload_images\" type=\"file\" ng-file-select=\"onMultipleFilesSelect($files)\" multiple ng-model=\"Album.event_upload_images\">\n" +
+    "            <form class=\"form-horizontal\" role=\"form\" ng-submit=\"savePhotos()\" novalidate name=\"form\">\n" +
+    "                <div class=\"modal-body\">\n" +
+    "                    <div class=\"form-group\" ng-class=\"{'has-error': form.albumid.$invalid || errors.id}\">\n" +
+    "                        <label class=\"col-lg-3 control-label\">Event Date</label>\n" +
+    "                        <div class=\"col-lg-9\">\n" +
+    "                            <select class=\"form-control\" ng-model=\"Album.id\" name=\"albumid\" required>\n" +
+    "                                <option ng-repeat=\"album in EventObj.albums\" value=\"{{album.id}}\">{{album.feature_headline}} - {{album.date}}</option>\n" +
+    "                            </select>\n" +
+    "                            <span class=\"help-block\" ng-show=\"errors.id\" ng-repeat=\"error in errors.id\">{{error}}</span>\n" +
+    "                        </div>\n" +
+    "                    </div>\n" +
+    "                    <div class=\"form-group\" ng-class=\"{'has-error': form.event_upload_images.$invalid || errors.event_upload_images}\">\n" +
+    "                        <label class=\"col-lg-3 control-label\">Photos</label>\n" +
+    "                        <div class=\"col-lg-9\">\n" +
+    "                            <input name=\"event_upload_images\" type=\"file\" ng-file-select=\"onMultipleFilesSelect($files)\" multiple ng-model=\"Album.event_upload_images\">\n" +
+    "                        </div>\n" +
+    "                        <span class=\"help-block\" ng-show=\"errors.event_upload_images\" ng-repeat=\"error in errors.event_upload_images\">{{error}}</span>\n" +
+    "                    </div>\n" +
     "                </div>\n" +
-    "                <span class=\"help-block\" ng-show=\"errors.event_upload_images\" ng-repeat=\"error in errors.event_upload_images\">{{error}}</span>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
-    "        <div class=\"modal-footer\">\n" +
-    "          <button type=\"sumbit\" class=\"btn btn-primary\">Save</button>\n" +
-    "        </div>\n" +
-    "      </form>\n" +
-    "    </div><!-- /.modal-content -->\n" +
-    "  </div><!-- /.modal-dialog -->\n" +
+    "                <div class=\"modal-footer\">\n" +
+    "                    <button type=\"sumbit\" class=\"btn btn-primary\">Save</button>\n" +
+    "                </div>\n" +
+    "            </form>\n" +
+    "        </div><!-- /.modal-content -->\n" +
+    "    </div><!-- /.modal-dialog -->\n" +
     "</div><!-- /.modal -->\n" +
     "\n" +
     "<!-- photo viewer -->\n" +
     "<div photoviewercontent ng-hide=\"currentPhoto == null\" style=\"position: fixed;top:0px ; left:0px;width: 100%;height: 100%;z-index: 10001;\">\n" +
     "    <div style=\"background-image: url('/static/assets/img/colorbox/overlay.png');opacity: 0.75;width: 100%;height: 100%;\"></div>\n" +
-    "    <div class=\"photoback\" style=\"position: absolute;top:0px;left:0px;bottom:0px; right:0px;overflow-x: hidden;overflow-y: auto\">\n" +
-    "    <div class=\"photoviewer\" style=\"position: absolute;top:0px;left:0px;background-color: #e9e9e9;\" ng-keypress=\"keyChangePhoto()\">\n" +
-    "        <div class=\"imgcontainer\" style=\"position: absolute;top:0px;left:0px;background-color: #000000\">\n" +
-    "            <img src=\"{{currentPhoto.image}}\" style=\"position:absolute;top:0px;left:0px;\" />\n" +
-    "            <div ng-click=\"nextPhoto()\" class=\"nextphoto\"></div>\n" +
-    "            <div ng-click=\"prevPhoto()\" class=\"prevphoto\"></div>\n" +
-    "        </div>\n" +
-    "        <div class=\"rightwrap\">\n" +
-    "            <div class=\"close\" ng-click=\"closePhoto()\"></div>\n" +
-    "            <div class=\"eventtitle\">\n" +
-    "                <div class=\"title\">{{EventObj.title}}</div>\n" +
-    "                <div class=\"follow\" ng-click=\"Follow()\">\n" +
-    "                    <div class=\"followcount\">{{EventObj.srv_followersCount}}</div>\n" +
-    "                    <a href=\"\" ng-click=\"\" class=\"followicon\">\n" +
-    "                         <i style=\"width: 28px;height: 18px;margin-top: 2px ; margin-left: 10px\" ng-class=\"{'xa-icon-xauto-white': !EventObj.srv_following ,'xa-icon-xauto-colored': EventObj.srv_following}\"></i>\n" +
-    "                    </a>\n" +
+    "    <div class=\"photoback\" style=\"position: absolute;top:0px;left:0px;bottom:0px; right:0px;overflow: auto\">\n" +
+    "        <div class=\"photoviewer\" style=\"position: absolute;top:0px;left:0px;background-color: #e9e9e9;\" ng-keypress=\"keyChangePhoto()\">\n" +
+    "            <div class=\"imgcontainer\" style=\"position: absolute;top:0px;left:0px;background-color: #000000\">\n" +
+    "                <img src=\"{{currentPhoto.image}}\" style=\"position:absolute;top:0px;left:0px;\" />\n" +
+    "                <div ng-click=\"nextPhoto()\" class=\"nextphoto\"></div>\n" +
+    "                <div ng-click=\"prevPhoto()\" class=\"prevphoto\"></div>\n" +
+    "            </div>\n" +
+    "            <div class=\"rightwrap\">\n" +
+    "                <div class=\"close\" ng-click=\"closePhoto()\"></div>\n" +
+    "                <div class=\"eventtitle\">\n" +
+    "                    <div class=\"title\">{{EventObj.title}}</div>\n" +
+    "                    <div class=\"follow\" ng-click=\"Follow()\">\n" +
+    "                        <div class=\"followcount\">{{EventObj.srv_followersCount}}</div>\n" +
+    "                        <a href=\"\" ng-click=\"\" class=\"followicon\">\n" +
+    "                            <i style=\"width: 28px;height: 18px;margin-top: 2px ; margin-left: 10px\" ng-class=\"{'xa-icon-xauto-white': !EventObj.srv_following ,'xa-icon-xauto-colored': EventObj.srv_following}\"></i>\n" +
+    "                        </a>\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "                <div class=\"author\">\n" +
+    "                    <img class=\"userimg\" src=\"{{EventObj.author_photo}}\"/>\n" +
+    "                    <div class=\"name\">{{EventObj.author_name}}</div>\n" +
+    "                    <div ng-hide=\"EventObj.profile.srv_following\" class=\"follow\" ng-click=\"FollowUser()\">Follow Me</div>\n" +
+    "                    <div ng-show=\"EventObj.profile.srv_following\" class=\"follow\" ng-click=\"FollowUser()\">Following</div>\n" +
+    "                </div>\n" +
+    "                <div class=\"social\">\n" +
+    "                    <div class=\"links\">\n" +
+    "                        <a href=\"\" class=\"social1\" ng-click=\"social_tw(currentPhoto)\"></a>\n" +
+    "                        <a href=\"\" class=\"social2\" ng-click=\"social_fb(currentPhoto)\"></a>\n" +
+    "                        <a href=\"\" class=\"social3\" ng-click=\"social_p(currentPhoto)\"></a>\n" +
+    "                        <a href=\"\" class=\"social4\" ng-click=\"social_tu(currentPhoto)\"></a>\n" +
+    "                        <a href=\"\" class=\"social5\" ng-click=\"social_pl(currentPhoto)\"></a>\n" +
+    "                        <div class=\"clear\"></div>\n" +
+    "                    </div>\n" +
     "                </div>\n" +
     "            </div>\n" +
-    "            <div class=\"author\">\n" +
-    "                <img class=\"userimg\" src=\"{{EventObj.author_photo}}\"/>\n" +
-    "                <div class=\"name\">{{EventObj.author_name}}</div>\n" +
-    "                <div ng-hide=\"EventObj.profile.srv_following\" class=\"follow\" ng-click=\"FollowUser()\">Follow Me</div>\n" +
-    "                <div ng-show=\"EventObj.profile.srv_following\" class=\"follow\" ng-click=\"FollowUser()\">Following</div>\n" +
-    "            </div>\n" +
-    "            <div class=\"social\">\n" +
-    "                <div class=\"links\">\n" +
-    "                    <a href=\"\" class=\"social1\" ng-click=\"social_tw(currentPhoto)\"></a>\n" +
-    "                    <a href=\"\" class=\"social2\" ng-click=\"social_fb(currentPhoto)\"></a>\n" +
-    "                    <a href=\"\" class=\"social3\" ng-click=\"social_p(currentPhoto)\"></a>\n" +
-    "                    <a href=\"\" class=\"social4\" ng-click=\"social_tu(currentPhoto)\"></a>\n" +
-    "                    <a href=\"\" class=\"social5\" ng-click=\"social_pl(currentPhoto)\"></a>\n" +
-    "                    <div class=\"clear\"></div>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
     "        </div>\n" +
-    "    </div>\n" +
     "    </div>\n" +
     "</div>");
 }]);
