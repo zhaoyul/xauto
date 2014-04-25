@@ -1,0 +1,19 @@
+<form class="form-horizontal" role="form" novalidate name="form">
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="cancelResetDialog()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Reset password</h4>
+  </div>
+    <div class="modal-body">
+      <div class="form-group" ng-class="{'has-error': form.email.$invalid || errors.email}">
+          <label class="col-lg-3 control-label">Email</label>
+          <div class="col-lg-9">
+            <input type="email" class="form-control" placeholder="" ng-model="AccountObj.email" required>
+            <span class="help-block" ng-show="errors.email" ng-repeat="error in errors.email">{{error}}</span>
+          </div>
+      </div>
+      <a data-toggle="modal" data-dismiss="modal" href="#loginModal">Back to login</a>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" ng-click="resetPassword()" ng-disabled='form.$invalid'>Send</button>
+    </div>
+</form>

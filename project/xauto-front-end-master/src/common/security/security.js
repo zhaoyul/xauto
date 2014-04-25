@@ -25,7 +25,7 @@ angular.module('security.service', [
         controller: 'LoginFormController'
     });
 
-    loginDialog.result.then(onLoginDialogClose, onLoginDialogClose);
+    loginDialog.result.then(onLoginDialogClose, onLoginDialogCancel);
     //jQuery.noConflict();
     //$('#loginModal').modal('show');
   }
@@ -34,16 +34,52 @@ angular.module('security.service', [
       loginDialog.close(success);
     }
   }
+  function onLoginDialogCancel(reason) {
+    console.log('onlogindialogcancel called');
+    console.log('reason: ' + reason);
+    loginDialog = null;
+    queue.cancelAll();
+    //redirect();
+  }
   function onLoginDialogClose(success) {
+    console.log('onlogindialogclose called');
     loginDialog = null;
     if ( success ) {
       queue.retryAll();
-      redirect('/events');
+      redirect();
     } else {
       queue.cancelAll();
-      redirect();
+      //redirect();
     }
   }
+
+  //reset password stuff
+
+  var resetDialog = null;
+  function openResetPasswordDialog() {
+    if ( resetDialog ) {
+      throw new Error('Trying to open a dialog that is already open!');
+    }
+    resetDialog = $modal.open({
+        templateUrl: 'security/login/reset_form.tpl.html',
+        controller: 'ResetPasswordFormController'
+    });
+
+    resetDialog.result.then(onResetDialogClose, onResetDialogCancel);
+  }
+
+   function closeResetPasswordDialog(success) {
+    if (resetDialog) {
+      resetDialog.close(success);
+    }
+  }
+  function onResetDialogCancel(reason) {
+    resetDialog = null;
+  }
+  function onResetDialogClose(success) {
+    resetDialog = null;
+  }
+
 
   // Register a handler for when an item is added to the retry queue
   queue.onItemAddedCallbacks.push(function(retryItem) {
@@ -96,8 +132,9 @@ angular.module('security.service', [
 
     // Give up trying to login and clear the retry queue
     cancelLogin: function() {
+      console.log('cancelLogin');
       closeLoginDialog(false);
-      redirect();
+      //redirect(url);
     },
 
     // Logout the current user and redirect
@@ -106,6 +143,10 @@ angular.module('security.service', [
         service.currentUser = null;
         redirect(redirectTo);
       });
+    },
+
+    resetPassword: function () {
+        closeLoginDialog(false);
     },
 
     // Ask the backend to see if a user is already authenticated - this may be from a previous session.

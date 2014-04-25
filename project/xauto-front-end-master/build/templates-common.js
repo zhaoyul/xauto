@@ -1,17 +1,16 @@
-angular.module('templates-common', ['security/login/form.tpl.html', 'security/login/toolbar.tpl.html']);
+angular.module('templates-common', ['security/login/form.tpl.html', 'security/login/reset_form.tpl.html', 'security/login/toolbar.tpl.html']);
 
 angular.module("security/login/form.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("security/login/form.tpl.html",
     "<form class=\"form-horizontal\" role=\"form\" novalidate>\n" +
     "<div class=\"modal-header\">\n" +
-    "    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n" +
+    "    <button type=\"button\" class=\"close\" ng-click=\"cancelLogin()\" aria-hidden=\"true\">&times;</button>\n" +
     "    <h4 class=\"modal-title\">Log In</h4>\n" +
     "</div>\n" +
     "<div class=\"modal-body\">\n" +
     "    <ng-include src=\"'account/account-login.tpl.html'\"></ng-include>\n" +
     "</div>\n" +
     "<div class=\"modal-footer\">\n" +
-    "    <button class=\"btn btn-primary login\" ng-click=\"accountSubmit()\" ng-disabled='form.$invalid'>Log in</button>\n" +
     "    <button class=\"btn btn-primary login\" ng-click=\"login()\" ng-disabled='form.$invalid'>Log in</button>\n" +
     "</div>\n" +
     "</form>\n" +
@@ -50,13 +49,37 @@ angular.module("security/login/form.tpl.html", []).run(["$templateCache", functi
     "");
 }]);
 
+angular.module("security/login/reset_form.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("security/login/reset_form.tpl.html",
+    "<form class=\"form-horizontal\" role=\"form\" novalidate name=\"form\">\n" +
+    "  <div class=\"modal-header\">\n" +
+    "    <button type=\"button\" class=\"close\" ng-click=\"cancelResetDialog()\" aria-hidden=\"true\">&times;</button>\n" +
+    "    <h4 class=\"modal-title\">Reset password</h4>\n" +
+    "  </div>\n" +
+    "    <div class=\"modal-body\">\n" +
+    "      <div class=\"form-group\" ng-class=\"{'has-error': form.email.$invalid || errors.email}\">\n" +
+    "          <label class=\"col-lg-3 control-label\">Email</label>\n" +
+    "          <div class=\"col-lg-9\">\n" +
+    "            <input type=\"email\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.email\" required>\n" +
+    "            <span class=\"help-block\" ng-show=\"errors.email\" ng-repeat=\"error in errors.email\">{{error}}</span>\n" +
+    "          </div>\n" +
+    "      </div>\n" +
+    "      <a data-toggle=\"modal\" data-dismiss=\"modal\" href=\"#loginModal\">Back to login</a>\n" +
+    "    </div>\n" +
+    "    <div class=\"modal-footer\">\n" +
+    "        <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"resetPassword()\" ng-disabled='form.$invalid'>Send</button>\n" +
+    "    </div>\n" +
+    "</form>\n" +
+    "");
+}]);
+
 angular.module("security/login/toolbar.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("security/login/toolbar.tpl.html",
     "<ul class=\"nav navbar-nav navbar-right\">\n" +
     "      <li ng-hide=\"isAuthenticated()\"><a data-toggle=\"modal\" href=\"#signupModal\">Sign Up</a></li>\n" +
     "\n" +
     "      <!--li ng-hide=\"isAuthenticated()\"><a data-toggle=\"modal\" href=\"#loginModal\">Log In</a></li-->\n" +
-    "      <li ng-hide=\"isAuthenticated()\"><a href=\"#\" ng-click=\"login()\">Log In</a></li>\n" +
+    "      <li ng-hide=\"isAuthenticated()\"><a href=\"\" ng-click=\"login()\">Log In</a></li>\n" +
     "\n" +
     "      <li class=\"dropdown\" ng-show=\"isAuthenticated()\">\n" +
     "        <a href=\"#\" class=\"dropdown-toggle profile-dropdown\" data-toggle=\"dropdown\">\n" +

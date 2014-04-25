@@ -28,15 +28,15 @@ angular.module( 'blvdx.account', [
       }
     }
   })
-  .state( 'accountLogin', {
-    url: '/account/login',
-    views: {
-      "main": {
-        controller: 'AccountLoginCtrl',
-        templateUrl: 'account/account-login.tpl.html'
-      }
-    }
-  })
+//  .state( 'accountLogin', {
+//    url: '/account/login',
+//    views: {
+//      "main": {
+//        controller: 'AccountLoginCtrl',
+//        templateUrl: 'account/account-login.tpl.html'
+//      }
+//    }
+//  })
   .state( 'changePassword', {
     url: '/account/changePassword/:token/',
     views: {
