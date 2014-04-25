@@ -51,14 +51,6 @@ angular.module( 'blvdx', [
     $scope.accountSubmit = function(){
         security.login($scope.AccountObj.email, $scope.AccountObj.password);
     };
-    $scope.resetPassword = function(){
-        Accounts.resetPassword($scope.AccountObj).then(function (account) {
-            $(".modal:visible").find(".close").click();
-            $state.transitionTo('events');
-        }, function(error){
-            $scope.errors = error.data;
-        });
-    };
 
     Accounts.getAllTimezones().then(function (timezones) {
           $scope.timezones = timezones;

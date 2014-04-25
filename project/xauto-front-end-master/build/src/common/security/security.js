@@ -68,7 +68,7 @@ angular.module('security.service', [
     resetDialog.result.then(onResetDialogClose, onResetDialogCancel);
   }
 
-   function closeResetPasswordDialog(success) {
+  function closeResetPasswordDialog(success) {
     if (resetDialog) {
       resetDialog.close(success);
     }
@@ -101,13 +101,15 @@ angular.module('security.service', [
       openLoginDialog();
     },
 
+    showReset: function() {
+      openResetPasswordDialog();
+    },
+
     // Attempt to authenticate a user by the given email and password
     login: function(email, password) {
-      //var request = $http.post('/api/login/', {email: email, password: password});
       console.log({email: email, password: password});
       return Accounts.login({email: email, password: password}).then(
           function(account) {
-              console.log(account);
               if (account.user){
                   service.currentUser = account.user;
                   if ( service.isAuthenticated() ) {
@@ -116,18 +118,10 @@ angular.module('security.service', [
               }
               return service.isAuthenticated();
           });
+    },
 
-      //var request = $http.post('/login/', {email: email, password: password});
-//      return request.then(function(response) {
-//        service.currentUser = response.data.user;
-//        //$("#login_invalid").hide();
-//        if ( service.isAuthenticated() ) {
-//          $(".modal:visible").find(".close").click();
-//          //closeLoginDialog(true);
-//        }else{
-//          //$("#login_invalid").show();
-//        }
-      //});
+    resetPassword: function(email){
+        return Accounts.resetPassword({email: email});
     },
 
     // Give up trying to login and clear the retry queue
@@ -137,16 +131,17 @@ angular.module('security.service', [
       //redirect(url);
     },
 
+    cancelReset: function() {
+      console.log('cancelReset');
+      closeResetPasswordDialog(false);
+    },
+
     // Logout the current user and redirect
     logout: function(redirectTo) {
       $http.post('/api/logout/').then(function() {
         service.currentUser = null;
         redirect(redirectTo);
       });
-    },
-
-    resetPassword: function () {
-        closeLoginDialog(false);
     },
 
     // Ask the backend to see if a user is already authenticated - this may be from a previous session.

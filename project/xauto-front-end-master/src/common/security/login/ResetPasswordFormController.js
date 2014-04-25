@@ -10,17 +10,6 @@ angular.module('security.login.resetpasswordform', [])
   // Any error message from failing to login
   $scope.authError = null;
 
-  // The reason that we are being asked to login - for instance because we tried to access something to which we are not authorized
-  // We could do something diffent for each reason here but to keep it simple...
-  $scope.authReason = null;
-  if ( security.getLoginReason() ) {
-    $scope.authReason = ( security.isAuthenticated() ) ?
-      "test1":
-      "test2";
-      //localizedMessages.get('login.reason.notAuthorized') :
-      //localizedMessages.get('login.reason.notAuthenticated');
-  }
-
   // Attempt to authenticate the user specified in the form's model
   $scope.login = function() {
     // Clear any previous security errors
@@ -43,11 +32,28 @@ angular.module('security.login.resetpasswordform', [])
     });
   };
 
+  $scope.resetPassword = function(){
+    security.resetPassword($scope.user.email).then(
+        function(response){
+            console.log('done! ' + response);
+        },
+        function(response){
+            console.log(response);
+        }
+    );
+  };
+
   $scope.clearForm = function() {
     $scope.user = {};
   };
 
-  $scope.cancelLogin = function() {
-    security.cancelLogin();
+  $scope.cancelReset = function() {
+    security.cancelReset();
   };
+
+  $scope.showLogin = function () {
+    security.cancelReset();
+    security.showLogin();
+  };
+
 }]);

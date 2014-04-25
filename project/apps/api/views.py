@@ -723,7 +723,7 @@ class ResetPasswordView(APIView):
                     send_mail("Reset Password", email_body,
                         settings.DEFAULT_FROM_EMAIL, [user.email])
 
-                return redirect('/')
+                return Response({'success': True})
             except User.DoesNotExist:
                 return Response(
                     {'email': ["User with this email address doesn't exist"]},

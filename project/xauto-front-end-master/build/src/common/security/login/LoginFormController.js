@@ -50,4 +50,10 @@ angular.module('security.login.form', [])
   $scope.cancelLogin = function() {
     security.cancelLogin();
   };
+
+  $scope.resetPassword = function () {
+    security.cancelLogin();
+    security.showReset();
+  };
+
 }]);

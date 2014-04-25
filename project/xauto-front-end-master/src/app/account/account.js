@@ -171,8 +171,6 @@ angular.module( 'blvdx.account', [
           $scope.timezones = timezones;
   });
 
-
-
   $scope.checkUsername = function(value) {
       Accounts.checkUsername({search_text: value}).then(function (response) {
           $scope.AccountObj.username_available = response.response;

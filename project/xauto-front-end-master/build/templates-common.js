@@ -53,18 +53,18 @@ angular.module("security/login/reset_form.tpl.html", []).run(["$templateCache", 
   $templateCache.put("security/login/reset_form.tpl.html",
     "<form class=\"form-horizontal\" role=\"form\" novalidate name=\"form\">\n" +
     "  <div class=\"modal-header\">\n" +
-    "    <button type=\"button\" class=\"close\" ng-click=\"cancelResetDialog()\" aria-hidden=\"true\">&times;</button>\n" +
+    "    <button type=\"button\" class=\"close\" ng-click=\"cancelReset()\" aria-hidden=\"true\">&times;</button>\n" +
     "    <h4 class=\"modal-title\">Reset password</h4>\n" +
     "  </div>\n" +
     "    <div class=\"modal-body\">\n" +
     "      <div class=\"form-group\" ng-class=\"{'has-error': form.email.$invalid || errors.email}\">\n" +
     "          <label class=\"col-lg-3 control-label\">Email</label>\n" +
     "          <div class=\"col-lg-9\">\n" +
-    "            <input type=\"email\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.email\" required>\n" +
+    "            <input type=\"email\" class=\"form-control\" placeholder=\"\" ng-model=\"user.email\" required>\n" +
     "            <span class=\"help-block\" ng-show=\"errors.email\" ng-repeat=\"error in errors.email\">{{error}}</span>\n" +
     "          </div>\n" +
     "      </div>\n" +
-    "      <a data-toggle=\"modal\" data-dismiss=\"modal\" href=\"#loginModal\">Back to login</a>\n" +
+    "      <a href=\"\" ng-click=\"showLogin()\">Back to login</a>\n" +
     "    </div>\n" +
     "    <div class=\"modal-footer\">\n" +
     "        <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"resetPassword()\" ng-disabled='form.$invalid'>Send</button>\n" +
