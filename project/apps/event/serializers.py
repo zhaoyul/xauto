@@ -126,7 +126,8 @@ class EventSerializer(serializers.ModelSerializer):
         return ""
 
     def get_srv_live(self, obj):
-        return obj.is_live_streaming()
+        view = self.context['view']
+        return obj.is_live_streaming(view.request.user)
 
     def get_srv_following(self, obj):
         view = self.context['view']
@@ -205,7 +206,8 @@ class EventDetailsSerializer(serializers.ModelSerializer):
         return ""
 
     def get_srv_live(self, obj):
-        return obj.is_live_streaming()
+        view = self.context['view']
+        return obj.is_live_streaming(view.request.user)
 
     def get_srv_following(self, obj):
         view = self.context['view']

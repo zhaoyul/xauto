@@ -19,6 +19,10 @@ from account.models import UserProfile
 from xauto_lib.models import TimestampedModel
 from multiuploader.models import MultiuploaderImage
 
+import pytz
+from django.utils.timezone import localtime
+from datetime import timedelta
+
 
 
 
@@ -186,9 +190,14 @@ class Event(TimestampedModel):
             return nearest_dates[0]
         return None
 
-    def is_live_streaming(self):
-        if self.event_dates.filter(start_date__lt=datetime.now()).filter(
-                end_date__gt=datetime.now()).exists():
+    def is_live_streaming(self, user=None):
+        try:
+            delta = timedelta(hours=float(user.profile.timezone))
+            nowtime = datetime.now() + delta
+        except:
+            nowtime = datetime.now()
+        if self.event_dates.filter(start_date__lt=nowtime).filter(
+                end_date__gt=nowtime).exists():
             return True
         return False
 
