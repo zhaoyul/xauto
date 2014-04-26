@@ -9,6 +9,7 @@ from multiuploader.serializers import MultiuploaderImageSerializer
 from django.conf import settings
 from django.db.models import Count
 from account.serializers import UserProfileSerializer
+from django_countries import countries
 
 
 class EventImageSerializer(serializers.ModelSerializer):
@@ -20,14 +21,9 @@ class EventImageSerializer(serializers.ModelSerializer):
 
 
 class EventDateSerializer(serializers.ModelSerializer):
-    currency_choices = []
-    curs = []
-    for x in Currency.objects.all().order_by("currency"):
-        if x.currency not in curs:
-            curs.append(x.currency)
-            currency_choices.append((x.id, x.currency))
+    currency_choices = [(c.id, c.currency) for c in Currency.objects.all().order_by('currency')]
     currency = serializers.ChoiceField(choices=currency_choices, source="currency.id")
-    country = serializers.ChoiceField(choices=[(x.country, x.country) for x in Currency.objects.all().order_by("country")], source="country")
+    country = serializers.ChoiceField(choices=[(c[0], c[1]) for c in list(countries)], source="country")
     start_date = serializers.SerializerMethodField('start_date')
     end_date = serializers.SerializerMethodField('end_date')
 
@@ -40,7 +36,6 @@ class EventDateSerializer(serializers.ModelSerializer):
             del attrs["currency.id"]
         return super(EventDateSerializer, self).restore_object(attrs, instance)
 
-
     def start_date(self, obj):
         return obj.start_date.strftime('%B %d, %Y %H:%M:%S')
 
@@ -49,8 +44,7 @@ class EventDateSerializer(serializers.ModelSerializer):
 
 
 class AlbumSerializer(serializers.ModelSerializer):
-    photos = MultiuploaderImageSerializer(source='event_upload_images',
-                                              read_only=True)
+    photos = MultiuploaderImageSerializer(source='event_upload_images', read_only=True)
     date = serializers.SerializerMethodField('get_date')
     active = True
 
@@ -59,7 +53,6 @@ class AlbumSerializer(serializers.ModelSerializer):
 
     def get_date(self, obj):
         view = self.context['view']
-        #print str(obj.start_date) + " - " + str(float(obj.timezone))
         ''''try:
             delta = timedelta(hours= float(obj.timezone))
             obj.start_date = localtime(obj.start_date, timezone=pytz.timezone('GMT')) + delta
@@ -72,11 +65,11 @@ class EventModelSerializer(serializers.ModelSerializer):
 
     dates = EventDateSerializer(source='event_dates', read_only=True)
 
-
     class Meta:
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'short_link',
             'main_image', 'author', 'dates', 'slug')
+
 
 class EventSerializer(serializers.ModelSerializer):
     photo = serializers.SerializerMethodField('get_photo')

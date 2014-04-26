@@ -43,6 +43,7 @@ class EventImageInline(AdminImageMixin, admin.ModelAdmin):
     extra = 1
     fields = ('image', 'caption', 'created', 'modified')
 
+
 class EventDateInline(admin.TabularInline):
     """
     Inline admin  for Event Date
@@ -115,10 +116,9 @@ class EventAdmin(AdminImageMixin, admin.ModelAdmin):
 
 
 class CurrencyAdmin(admin.ModelAdmin):
-    list_display = ('country', 'currency',)
-    search_fields = ['country', 'currency']
-    #readonly_fields = ['country']
-    ordering = ('country',)
+    list_display = ('symbol', 'currency',)
+    search_fields = ['symbol', 'currency']
+    ordering = ('currency',)
 
 
 class EventDateAdmin(admin.ModelAdmin):

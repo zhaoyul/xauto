@@ -3,36 +3,30 @@ from datetime import datetime
 # --- Django base core code (system)              ---
 from django.db import models
 from django.db.models import permalink
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 # ---------------------------------------------------
 # --- Django addon                                ---
-#from livesettings.models import Setting
 from sorl.thumbnail.fields import ImageField
 from autoslug import AutoSlugField
 from sorl.thumbnail import get_thumbnail
-from django.conf import settings
-
-
+from django_countries.fields import CountryField
 from account.models import UserProfile
 from xauto_lib.models import TimestampedModel
 from multiuploader.models import MultiuploaderImage
 
-import pytz
-from django.utils.timezone import localtime
 from datetime import timedelta
 
 
-
-
 class Currency(models.Model):
-    class Meta:
-        verbose_name_plural = 'Currencies'
-    country = models.CharField(max_length=64, unique=True)
-    country_code = models.CharField(max_length=64, default='', blank=True, null=False, unique=False)
     currency = models.CharField(max_length=5)
     symbol = models.CharField(max_length=40, null=True)
+
+    class Meta:
+        verbose_name_plural = 'Currencies'
+
+    def __unicode__(self):
+        return u'{}'.format(self.currency)
 
     def get_currency(self):
         return self.symbol if self.symbol else ''
@@ -46,25 +40,18 @@ class Currency(models.Model):
         return self.symbol if self.symbol else ''
 
 
-    def __unicode__(self):
-        return '%s: %s' % (self.country, self.currency)
-
-
 class EventDate(TimestampedModel):
     """
     Django models in relation with Event Models (Event Date)
     Start / End Date  - Price/Cost / featured
     """
-
-    location_name = models.CharField(max_length=250, default='', null=True,
-                                     blank=True)
+    location_name = models.CharField(max_length=250, default='', null=True, blank=True)
     latitude = models.FloatField(default=0.00)
     longitude = models.FloatField(default=0.00)
-    address_1 = models.CharField(max_length=100, default='', null=True,
-                                 blank=True)
-    address_2 = models.CharField(max_length=100, default='', null=True,
-                                 blank=True)
-    country = models.CharField(max_length=50,null=True, blank=True)
+    address_1 = models.CharField(max_length=100, default='', null=True, blank=True)
+    address_2 = models.CharField(max_length=100, default='', null=True, blank=True)
+    #country = models.CharField(max_length=50,null=True, blank=True)
+    country = CountryField(null=True, blank=True)
     country_short = models.CharField(max_length=50,null=True, blank=True)
     city = models.CharField(max_length=100,null=True, blank=True)
     state = models.CharField(max_length=50,null=True, blank=True)
@@ -72,7 +59,6 @@ class EventDate(TimestampedModel):
     zipcode = models.CharField(max_length=20, null=True, blank=True)
     event = models.ForeignKey('Event', related_name='event_dates',
                               verbose_name='Your Event')
-    #author = models.ForeignKey(User, related_name='user_event_date', verbose_name='Event Author')
 
     timezone = models.CharField(max_length=30, null=False, blank=False, default="0.0")
     start_date = models.DateTimeField(null=True, blank=False)
@@ -99,7 +85,7 @@ class EventDate(TimestampedModel):
 
 
 class Event(TimestampedModel):
-    STATUS_NEW =  'new'
+    STATUS_NEW = 'new'
     STATUS_CANCELED = 'canceled'
     STATUS_REMOVED = 'removed'
     STATUS_CLOSED = 'closed'
@@ -141,8 +127,6 @@ class Event(TimestampedModel):
 
     STATUS_COMPLETED_EVENT = [STATUS_COMPLETE, ]
 
-
-
     title = models.CharField(max_length=255, null=True, blank=True)
     about = models.TextField()
 
@@ -157,12 +141,12 @@ class Event(TimestampedModel):
     eventSize = models.IntegerField(choices=EVENT_SIZE, default=10)  # How big is your event in Cars
     capacity = models.IntegerField(default=0)  # How big is your Capacity in people in people
 
-
     short_link = models.CharField(max_length=50, default='', unique=True)
 
-
     slug = AutoSlugField(populate_from='short_link',
-        slugify=lambda value: value.replace(' ','-'))
+        slugify=lambda value: value.replace(' ', '-'),
+        always_update=True,
+        unique=True)
 
     main_image = models.ForeignKey('EventImage', on_delete=models.SET_NULL,
         blank=True, null=True, related_name='main')
@@ -214,7 +198,8 @@ class Event(TimestampedModel):
 
     @permalink
     def get_absolute_url(self):
-        return ('view_event', None, { 'slug': self.slug })
+        return 'view_event', None, {'slug': self.slug}
+
 
 class EventImage(TimestampedModel):
     """
@@ -224,7 +209,6 @@ class EventImage(TimestampedModel):
     longitude = models.FloatField(default=0.00, db_index=True)
     image = ImageField(upload_to='event_images/')
     caption = models.CharField(max_length=100, blank=True)
-
 
     def __unicode__(self):
         return self.image.name

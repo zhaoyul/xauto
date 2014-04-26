@@ -67,7 +67,8 @@ angular.module("security/login/reset_form.tpl.html", []).run(["$templateCache", 
     "      <a href=\"\" ng-click=\"showLogin()\">Back to login</a>\n" +
     "    </div>\n" +
     "    <div class=\"modal-footer\">\n" +
-    "        <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"resetPassword()\" ng-disabled='form.$invalid'>Send</button>\n" +
+    "        <button type=\"submit\" ng-hide=\"is_reset_done\" class=\"btn btn-primary\" ng-click=\"resetPassword()\" ng-disabled='form.$invalid'>Send</button>\n" +
+    "        <button type=\"submit\" ng-show=\"is_reset_done\" class=\"btn btn-primary\" ng-click=\"cancelReset()\">Close</button>\n" +
     "    </div>\n" +
     "</form>\n" +
     "");

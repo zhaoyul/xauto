@@ -327,7 +327,6 @@ angular.module('blvdx.events', [
                 });
             };
 
-
             $scope.copyLastDate = function () {
 
                 DateObj.getLastDate($scope.EventObj.id).then(function (date) {
@@ -340,7 +339,6 @@ angular.module('blvdx.events', [
 
 
             };
-
 
             $scope.saveDateConfirm = function () {
                 //Resave lan/lon

@@ -29,6 +29,7 @@ COMPRESS_ENABLED = True
 
 INSTALLED_APPS = INSTALLED_APPS + [
     'gunicorn',
+    'raven.contrib.django.raven_compat'
 ]
 
 LOGGING = {
@@ -53,3 +54,6 @@ SOCKET_STREAMER_URL = "/photostream"
 SOCKET_STREAMER_PORT = 8449
 SOCKET_STREAMER_FULL_URL = "http://xauto.dev.milosolutions.com:%i%s" % (SOCKET_STREAMER_PORT, SOCKET_STREAMER_URL)
 
+RAVEN_CONFIG = {
+    'dsn': 'http://c78daee601974a69bfe4377165b675d8:50ac16cd6054469fa486fa6f6100400d@sentry.milosolutions.com/11',
+}

@@ -6,6 +6,7 @@ angular.module('security.login.resetpasswordform', [])
 .controller('ResetPasswordFormController', ['$scope', 'security',  function($scope, security) {
   // The model for this form
   $scope.user = {};
+  $scope.is_reset_done = false;
 
   // Any error message from failing to login
   $scope.authError = null;
@@ -36,9 +37,11 @@ angular.module('security.login.resetpasswordform', [])
     security.resetPassword($scope.user.email).then(
         function(response){
             console.log('done! ' + response);
+            $scope.is_reset_done = true;
         },
         function(response){
             console.log(response);
+            $scope.is_reset_done = false;
         }
     );
   };

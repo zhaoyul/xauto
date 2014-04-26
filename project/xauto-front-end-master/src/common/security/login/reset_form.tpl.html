@@ -14,6 +14,7 @@
       <a href="" ng-click="showLogin()">Back to login</a>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" ng-click="resetPassword()" ng-disabled='form.$invalid'>Send</button>
+        <button type="submit" ng-hide="is_reset_done" class="btn btn-primary" ng-click="resetPassword()" ng-disabled='form.$invalid'>Send</button>
+        <button type="submit" ng-show="is_reset_done" class="btn btn-primary" ng-click="cancelReset()">Close</button>
     </div>
 </form>

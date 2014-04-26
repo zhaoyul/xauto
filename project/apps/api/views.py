@@ -1,33 +1,28 @@
 # -*- coding: utf-8 -*-
 import uuid
 import math
-from datetime import datetime, date, timedelta
+from datetime import datetime, timedelta
 from random import randrange
 from hashlib import sha1
 
-#from django.views.decorators.cache import never_cache
+import pytz
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth import (login as auth_login, logout, authenticate)
 from django.template.loader import render_to_string
-from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.core.files.base import ContentFile
-import pytz
 from django.conf import settings
-
 from rest_framework.generics import (ListAPIView, RetrieveAPIView)
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAuthenticated
-
 from event.models import Event, EventDate, EventImage
 from event.serializers import (EventSerializer, EventDetailsSerializer,
-    EventModelSerializer, EventDateSerializer, AlbumSerializer)
+    EventModelSerializer, EventDateSerializer)
 from account.serializers import (UserProfileSerializer, UserSerializer,
     NewProfileSerializer, EmailSerializer)
 from account.models import UserProfile
@@ -35,10 +30,12 @@ from multiuploader.serializers import (MultiuploaderImageSerializer,
     CoordinatedPhotoSerializer)
 from multiuploader.models import MultiuploaderImage
 
+
 if "mailer" in settings.INSTALLED_APPS:
     from mailer import send_mail, send_html_mail
 else:
     from django.core.mail import send_mail
+
 
 class EventsListView(ListAPIView):
     """
@@ -46,7 +43,6 @@ class EventsListView(ListAPIView):
     """
     permission_classes = (AllowAny,)
     serializer_class = EventSerializer
-
 
     def get_queryset(self):
         search_text = self.request.GET.get('search_text', '')
@@ -103,15 +99,13 @@ class EventDetailsView(RetrieveAPIView):
     lookup_field = 'slug'
 
 
-
-
-
 class ProfileAllTimezonesListView(APIView):
     """
     Creates multiple instances of images
     """
     def get(self, request, *args, **kwargs):
         return Response(pytz.common_timezones, status=status.HTTP_200_OK)
+
 
 class AlbumPhotosUploader(APIView):
     """
@@ -143,7 +137,7 @@ class AlbumPhotosUploader(APIView):
 
         return Response({}, status=status.HTTP_200_OK)
 
-from django.core.exceptions import ValidationError
+
 class EventViewSet(ModelViewSet):
     """
     Returns Event CRUD methods
@@ -154,7 +148,6 @@ class EventViewSet(ModelViewSet):
     lookup_field = 'slug'
 
     def pre_save(self, obj):
-
         if not obj.author:
             obj.author = self.request.user.profile
 
@@ -180,7 +173,6 @@ class EventDateViewSet(ModelViewSet):
         delta = timedelta(hours=int(float(timezone)/60))
         obj.start_date -= delta
         obj.end_date -= delta
-
 
 
 class LastDateView(ListAPIView):
@@ -264,6 +256,7 @@ class EventDatePhotoManageView(APIView):
         for img in imgs:
             data["DateObjImgs"].append({"id":img.id,"image":img.image.url})
         return Response(data, status=status.HTTP_200_OK)
+
 
 class FollowEventView(APIView):
     """
@@ -413,7 +406,6 @@ class FollowProfileView(APIView):
         return Response({}, status=status.HTTP_403_FORBIDDEN)
 
 
-
 class ProfileMyDatesByEventsListView(APIView):
     """
     Returns current user dates grouped by events
@@ -469,7 +461,6 @@ class ProfileMyPhotosListView(ListAPIView):
             upload_date = datetime.strptime(dt, '%d-%m-%Y')
             upload_date2 = upload_date + timedelta(days=1)
             return MultiuploaderImage.objects.filter(upload_date__gt=upload_date,upload_date__lt=upload_date2)
-
 
 
 class ProfileDeletePhotoView(APIView):
@@ -628,8 +619,8 @@ class LoginView(APIView):
     #@method_decorator(ensure_csrf_cookie)
     def post(self, request, *args, **kwargs):
         user_data = None
-        email = request.DATA.get('email')
-        password = request.DATA.get('password')
+        email = request.DATA.get('email', '')
+        password = request.DATA.get('password', '')
         user = authenticate(email=email, password=password)
         if user:
             if not user.is_active:
