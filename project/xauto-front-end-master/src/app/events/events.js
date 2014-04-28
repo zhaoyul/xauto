@@ -1,1503 +1,680 @@
 angular.module('blvdx.events', [
-        'resources.events',
-        'ui.router',
-        // 'placeholders',
-        'ui.bootstrap',
-        'security.authorization',
-        'titleService',
+		'resources.events',
+		'ui.router',
+		// 'placeholders',
+		'ui.bootstrap',
+		'security.authorization',
+		'titleService',
 		'social',
-        'angularFileUpload'
-<<<<<<< HEAD
-])
+		'angularFileUpload'
+	])
 
-.config(['$stateProvider', 'securityAuthorizationProvider', function config($stateProvider, securityAuthorizationProvider) {
+	.config(['$stateProvider', 'securityAuthorizationProvider', function config($stateProvider, securityAuthorizationProvider) {
 
-	$stateProvider
-		.state('events', {
-			url: '/events',
-			views: {
-				"main": {
-					controller: 'EventsCtrl',
-					templateUrl: 'events/events.tpl.html'
-				}
-			}
-		})
-		.state('eventDatesPhotosmanage', {
-			url: '/eventdates/:dateId/photosmanage',
-			views: {
-				"main": {
-					controller: 'eventDatesPhotosmanageCtrl',
-					templateUrl: 'events/date-photosmanage.tpl.html',
-					resolve: {
-						authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+		$stateProvider
+			.state('events', {
+				url: '/events',
+				views: {
+					"main": {
+						controller: 'EventsCtrl',
+						templateUrl: 'events/events.tpl.html'
 					}
 				}
-			}
-		})
-		.state('eventAdd', {
-			url: '/events/add',
-			views: {
-				"main": {
-					controller: 'EventAddCtrl',
-					templateUrl: 'events/event-add.tpl.html',
-					resolve: {
-						authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
-=======
-    ])
-
-    .config(['$stateProvider', 'securityAuthorizationProvider', function config($stateProvider, securityAuthorizationProvider) {
-
-        $stateProvider
-            .state('events', {
-                url: '/events',
-                views: {
-                    "main": {
-                        controller: 'EventsCtrl',
-                        templateUrl: 'events/events.tpl.html'
-                    }
-                }
-            })
-            .state('eventDatesPhotosmanage', {
-                url: '/eventdates/:dateId/photosmanage',
-                views: {
-                    "main": {
-                        controller: 'eventDatesPhotosmanageCtrl',
-                        templateUrl: 'events/date-photosmanage.tpl.html',
-                        resolve: {
-                            authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
-                        }
-                    }
-                }
-            })
-            .state('eventAdd', {
-                url: '/events/add',
-                views: {
-                    "main": {
-                        controller: 'EventAddCtrl',
-                        templateUrl: 'events/event-add.tpl.html',
-                        resolve: {
-                            authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
-                        }
-                    }
-                }
-            })
-            .state('eventsMy', {
-                url: '/events/my',
-                views: {
-                    "main": {
-                        controller: 'EventsMyCtrl',
-                        templateUrl: 'events/events-my.tpl.html',
-                        resolve: {
-                            authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
-                        }
-                    }
-                }
-            })
-            .state('eventEdit', {
-                url: '/events/:eventId/edit',
-                views: {
-                    "main": {
-                        controller: 'EventEditCtrl',
-                        templateUrl: 'events/event-edit.tpl.html',
-                        resolve: {
-                            authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
-                        }
-                    }
-                }
-            })
-            .state('eventEdit.addDate', {
-                url: '/dates/add',
-                onEnter: function($stateParams, $state, $modal){
-                    $modal.open({
-                        templateUrl: "events/partial_add_date.tpl.html",
-                        controller: ['$scope', 'DateObj', function($scope, DateObj) {
-
-                            // initialization
-                            $scope.editDate = {event: $stateParams.eventId};
-                            $scope.editDate.start_date = new Date();
-                            $scope.editDate.startTime = "11:00";
-                            $scope.editDate.endTime = "16:00";
-                            DateObj.getOptions(null).then(function (options) {
-                                $scope.editDateOptions = options.actions.POST;
-                            });
-
-                            /* datepicker */
-                            $scope.today = function () {
-                                $scope.dt = new Date();
-                            };
-                            $scope.today();
-
-                            $scope.showWeeks = true;
-
-                            $scope.dateOptions = {
-                                'year-format': "'yyyy'",
-                                'starting-day': 1
-                            };
-
-                            $scope.minDate = new Date();
-                            $scope.maxDate = new Date();
-                            $scope.maxDate.setDate($scope.maxDate.getDate() + 365);
-
-                            /* end of datepicker */
-
-                          $scope.dismiss = function() {
-                            console.log('dismiss called');
-                            $scope.$dismiss();
-                          };
-
-                          $scope.save = function() {
-                            item.update().then(function() {
-                              $scope.$close(true);
-                            });
-                          };
-                        }]
-                    }).result.then(
-                        function(result) {
-                            console.log('closed modal');
-                            console.log('id: ' + $stateParams.eventId);
-                            return $state.transitionTo('eventEdit', {eventId: $stateParams.eventId});
-                        },
-                        function(result) {
-                            console.log('dismissed modal');
-                            console.log('id: ' + $stateParams.eventId);
-                            return $state.transitionTo('eventEdit', {eventId: $stateParams.eventId});
-                    });
-                }
-            })
-            .state('eventDetails', {
-                url: '/events/:eventId',
-                views: {
-                    "main": {
-                        controller: 'EventDetailsCtrl',
-                        templateUrl: 'events/event-details.tpl.html'
-                    }
-                }
-            })
-            /*
-             .state( 'eventDetailsTabs', {
-             url: '/events/:eventId/:showTab',
-             views: {
-             "main": {
-             controller: 'EventDetailsCtrl',
-             templateUrl: 'events/event-details.tpl.html'
-             }
-             }
-             })*/
-            .state('eventDetails.Photo', {
-                url: '/:Album/:Photo/'
-            });
-    }])
-
-
-    .controller('eventDatesPhotosmanageCtrl', ['$scope', 'titleService', '$stateParams', 'Events', 'AppScope',
-        function eventDatesPhotosmanageCtrl($scope, titleService, $stateParams, Events, AppScope) {
-            titleService.setTitle('Edit date photos');
-
-            Events.getEventDatePhotoManage($stateParams.dateId).then(function (data) {
-                $scope.DateObj = data;
-            });
-
-
-        }])
-
-
-    .filter('textlimit', function () {
-        return function (input, param) {
-            if (input.length > param) {
-                return input.substr(0, param) + "...";
-            } else {
-                return input;
-            }
-
-        };
-    })
-
-
-    .controller('EventsCtrl', ['$scope', '$geolocation', 'titleService', 'Events', '$http', 'AppScope',
-        function EventsCtrl($scope, $geolocation, titleService, Events, $http, AppScope) {
-            titleService.setTitle('All events');
-
-            // contain events data ::
-            $scope.eventsPool = null;
-
-            Events.getEvents({}).then(function (events) {
-                $scope.eventsPool = events;
-                $scope.showMore();
-            });
-
-            $scope.search = {};
-            // if more events aviable to load
-            $scope.hasMoreEvents = false;
-            $scope.eventsPerLoad = 9;
-
-            $scope.showMore = function () {
-                if ($scope.events == null) {
-                    $scope.events = [];
-                }
-                // count how many events can be added
-                var maxEvents = Math.min($scope.eventsPool.length, $scope.events.length + $scope.eventsPerLoad);
-                // loop and add events ::
-                for (var i = $scope.events.length; i < maxEvents; i++) {
-                    $scope.events.push($scope.eventsPool[i]);
-                }
-                // check if there are more events to load ; if not hide button
-                if ($scope.events.length == $scope.eventsPool.length) {
-                    $scope.hasMoreEvents = false;
-                } else {
-                    $scope.hasMoreEvents = true;
-                }
-            };
-
-
-            $scope.check = function () {
-                $scope.aviable = $geolocation.aviable;
-                $scope.error = $geolocation.error;
-                $scope.complete = $geolocation.complete;
-                if ($geolocation.position) {
-                    $scope.timestamp = $geolocation.timestamp;
-                    $scope.latitude = $geolocation.position.latitude;
-                    $scope.longitude = $geolocation.position.longitude;
-                }
-            };
-
-            $scope.$on(GeolocationEvent.COMPLETE, function (nge) {
-                $scope.check();
-                if (!$scope.$$phase) {
-                    $scope.$apply();// async call z poza angulara potrzebuje apply, inaczej nie zrobi update'u parametrow
-                }
-            });
-            $scope.$on(GeolocationEvent.UPDATE, function (nge) {
-                $scope.check();
-                if (!$scope.$$phase) {
-                    $scope.$apply();// async call z poza angulara potrzebuje apply, inaczej nie zrobi update'u parametrow
-                }
-            });
-
-
-            $geolocation.stopInterval();
-            $geolocation.start();
-
-            $scope.check();
-
-            $scope.changeDisplayFilter = function (type) {
-
-                if ($scope.latitude) {
-                    latc = $scope.latitude;
-                    longc = $scope.longitude;
-                } else {
-                    latc = 0;
-                    longc = 0;
-                }
-                Events.getEvents({filter_by: type, lat: latc, long: longc }).then(function (events) {
-                    $scope.events = [];
-                    $scope.eventsPool = events;
-                    $scope.showMore();
-                });
-            };
-
-
-            $scope.Follow = function (event) {
-                $http.get('/api/current-user/').then(function (response) {
-                    if (response.data.user !== null) {
-                        Events.follow(event).then(function (data) {
-                            event.srv_following = data.srv_following;
-                            event.srv_followersCount = data.srv_followersCount;
-                        });
-                    } else {
-                        $(".navbar-nav a").eq(1).click();
-                    }
-                });
-            };
-
-            app_scope = AppScope.getScope();
-            app_scope.Search = function (value) {
-                Events.getEvents({search_text: value}).then(function (events) {
-                    $scope.events = [];
-                    $scope.eventsPool = events;
-                    $scope.showMore();
-                });
-            };
-        }])
-
-    .controller('EventAddCtrl', ['$scope', '$state', 'titleService', 'Events', '$upload',
-        function EventsCtrl($scope, $state, titleService, Events, $upload) {
-            titleService.setTitle('Add New Event');
-
-            $scope.open = function () {
-                $scope.opened = true;
-            };
-
-            $scope.checkShortLink = function (value) {
-                Events.checkShortLink({search_text: value}).then(function (response) {
-                    $scope.EventObj.short_link_available = response.response;
-                });
-            };
-
-            $scope.EventObj = {};
-
-            $scope.eventSubmit = function () {
-                Events.createEvent($scope.EventObj).then(function (event) {
-                    $state.transitionTo('eventEdit', {"eventId": event.slug});
-                }, function (error) {
-                    $scope.errors = error.data;
-                });
-            };
-
-            $scope.onFileSelect = function ($files, field) {
-                //$files: an array of files selected, each file has name, size, and type.
-                var fileObj = {};
-                var reader = new FileReader();
-                reader.onloadend = function (evt) {
-                    fileObj['file'] = evt.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
-                    $scope.EventObj[field] = fileObj;
-                };
-
-                for (var i = 0; i < $files.length; i++) {
-                    var $file = $files[i];
-                    fileObj['name'] = $file.name;
-                    reader.readAsDataURL($file);
-                }
-            };
-
-        }])
-
-    .controller('EventEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', 'DateObj', '$upload', '$filter',
-        function EventEditCtrl($scope, $state, titleService, $stateParams, Events, DateObj, $upload, $filter) {
-
-            titleService.setTitle('Edit Event');
-            $scope.eventId = $stateParams.eventId;
-
-            $scope.reloadEvent = function () {
-                Events.getEvent($scope.eventId).then(function (event) {
-                    $scope.EventObj = event;
-                });
-            };
-
-            $scope.reloadEvent();
-
-
-            $scope.selphotoModal = function () {
-                Events.selphotoModal($scope.eventId).then(function (imgs) {
-                    $scope.imgs = imgs;
-                });
-            };
-
-            $scope.selimg = function (entry) {
-                Events.selimg($scope.eventId, entry).then(function (imgs) {
-                    $(".modal:visible").find(".close").click();
-                    $scope.reloadEvent();
-                });
-            };
-
-            $scope.eventSubmit = function () {
-                Events.saveEvent($scope.EventObj).then(function (event) {
-                    $state.transitionTo('events');
-                    //$('.xa-icon-nav-events').click();
-                });
-                //$scope.EventObj.$save();
-            };
-
-            $scope.removeEvent = function (event) {
-                Events.removeEvent(event).then(function () {
-                    $state.transitionTo('events');
-                    //$('.xa-icon-nav-events').click();
-                });
-            };
-
-            $scope.checkShortLink = function (value) {
-                Events.checkShortLink({search_text: value}).then(function (response) {
-                    $scope.EventObj.short_link_available = response.response;
-                });
-            };
-
-            $scope.copyLastDate = function () {
-
-                DateObj.getLastDate($scope.EventObj.id).then(function (date) {
-                    date = date[0];
-                    delete date.id;
-                    $scope.editDate = date;
-                    $scope.editDate.startTime = $filter('date')(date.start_date, 'HH:mm');
-                    $scope.editDate.endTime = $filter('date')(date.end_date, 'HH:mm');
-                });
-            };
-
-            $scope.saveDateConfirm = function () {
-                //Resave lan/lon
-                $(".modal:visible").find(".close").click();
-            };
-
-            $scope.backDateEdit = function () {
-                $(".el_fields,.to_confirm").show();
-                $(".el_confirm,.back_confirm").hide();
-            };
-
-
-            $scope.showConfirm = function () {
-                $(".el_fields,.to_confirm").hide();
-                $(".el_confirm,.back_confirm").show();
-
-                adr = $scope.editDate.country + ", " + $scope.editDate.city + ", " + $scope.editDate.address_1;
-                //alert(adr);
-
-            };
-
-            $scope.saveDate = function () {
-                var has_errors = false;
-                $scope.errors = {};
-                if ($scope.editDate.startTime === undefined) {
-                    $scope.errors.start_time = ["Start time is required"];
-                    has_errors = true;
-                }
-                if ($scope.editDate.endTime === undefined) {
-                    $scope.errors.end_time = ["End time is required"];
-                    has_errors = true;
-                }
-                if (has_errors === false) {
-                    // no errors so far?
-                    var date = new Date($scope.editDate.start_date);
-                    var start_time = $scope.editDate.startTime.split(":");
-                    var end_time = $scope.editDate.endTime.split(":");
-                    var start_date = new Date(date);
-                    start_date.setHours(start_time[0]);
-                    start_date.setMinutes(start_time[1]);
-                    var end_date = new Date(date);
-                    end_date.setHours(end_time[0]);
-                    end_date.setMinutes(end_time[1]);
-                    $scope.editDate.start_date = start_date;
-                    $scope.editDate.end_date = end_date;
-
-                    $scope.editDate.offset = end_date.getTimezoneOffset();
-                    if (start_date.getTime() > end_date.getTime()) {
-                        $scope.errors.end_time = ["Event must ends after it begins"];
-                        has_errors = true;
-                    }
-                }
-                if (has_errors) {
-                    return;
-                }
-                if ($scope.editDate.id !== undefined) {
-                    DateObj.saveDate($scope.editDate).then(function (date) {
-                        $scope.reloadEvent();
-                        //$(".modal:visible").find(".close").click();
-                        $scope.showConfirm();
-                    }, function (error) {
-                        $scope.errors = error.data;
-                    });
-                } else {
-                    DateObj.createDate($scope.editDate).then(function (date) {
-                        $scope.reloadEvent();
-                        //$(".modal:visible").find(".close").click();
-                        $scope.showConfirm();
-                    }, function (error) {
-                        $scope.errors = error.data;
-                    });
-                }
-
-            };
-
-            $scope.onFileSelect = function ($files, field) {
-                //$files: an array of files selected, each file has name, size, and type.
-                var fileObj = {};
-                var reader = new FileReader();
-                reader.onloadend = function (evt) {
-                    fileObj['file'] = evt.target.result.replace("data:image/jpeg;base64,", "");
-                    $scope.EventObj[field] = fileObj;
-                };
-
-                for (var i = 0; i < $files.length; i++) {
-                    var $file = $files[i];
-                    fileObj['name'] = $file.name;
-                    reader.readAsDataURL($file);
-                }
-            };
-
-            $scope.withoutimezone = function (date) {
-                x = new Date();
-                wot = x.getTimezoneOffset() / 60;
-                HH = $filter('date')(date, 'HH');
-                ret = Number(HH) + Number(wot);
-                if (ret < 0) {
-                    ret = 24 + ret;
-                }
-                if (String(ret).length == 1) {
-                    ret = "0" + ret;
-                }
-                return String(ret) + ':' + $filter('date')(date, 'mm');
-            };
-
-            $scope.setThisEditableDate = function (date) {
-                DateObj.getDate(date.id).then(function (date) {
-                    $scope.editDate = date;
-                    $scope.editDate.startTime = $scope.withoutimezone(date.start_date);
-                    $scope.editDate.endTime = $scope.withoutimezone(date.end_date);
-                });
-                DateObj.getOptions(date.id).then(function (options) {
-                    $scope.editDateOptions = options.actions.PUT;
-                });
-                //$scope.editDate = date;
-            };
-
-            $scope.removeDate = function ($index, $pk) {
-                DateObj.removeDate($pk).then(function () {
-                    $scope.EventObj.dates.splice($index, 1);
-                });
-            };
-
-        }])
-
-    .controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', '$http', 'Streams' , '$state' , '$fb',
-		function EventsCtrl($scope, titleService, $location, $stateParams, Events, $http, Streams, $state , $fb) {
-        titleService.setTitle('Event Details');
-        $scope.stateParams = $stateParams;
-		console.log('fb servicE:',$fb);
-        $scope.reloadEvent = function () {
-            // get event data from url id ::
-            Events.getDetails($stateParams.eventId).then(function (event) {
-                $scope.EventObj = event;
-
-
-                //TO DO - paginator
-                $showcount = 12;
-
-                $scope.showMore = function (j) {
-                    if (isNaN(j)){
-                        j = j.index;
-                    }
-                    var maxPhotos = Math.min($scope.Albums[j].photos.length, $scope.Albums[j].showphotos.length + $showcount);
-                    for (var i = $scope.Albums[j].showphotos.length; i < maxPhotos; i++) {
-                        $scope.Albums[j].showphotos.push($scope.Albums[j].photos[i]);
-                    }
-                    if ($scope.Albums[j].showphotos.length == $scope.Albums[j].photos.length) {
-                        $scope.Albums[j].hasMoreEvents = false;
-                    } else {
-                        $scope.Albums[j].hasMoreEvents = true;
-                    }
-
-                };
-
-
-                $scope.Albums = event.albums;
-                for (z = 0; z < $scope.Albums.length; z++) {
-                    $scope.Albums[z].all = $scope.Albums[z].photos.length;
-                    $scope.Albums[z].showed = 0;
-                    $scope.Albums[z].index = z;
-                    $scope.Albums[z].showphotos = [];
-                    $scope.showMore(z);
-                }
-
-
-                var subscription = {
-                    'profiles': [],
-                    'events': [event.slug]
-                };
-                Streams.send_subscribe(subscription);
-                Streams.send_fetch_latest();
-                var p = $state.params;
-                if (p && p.Album && p.Photo) {
-                    $scope.showPhoto(p.Album, p.Photo);
-                }
-            });
-        };
-
-        $('.schedule-dropdown-menu').click(function (e) {
-            e.stopPropagation();
-        });
-
-        $scope.Album = {photos: []};
-
-        $http.get('/api/current-user/').then(function (response) {
-            if (response.data.user == null) {
-                //$("#uploadphotolink").hide();
-            }
-        });
-
-        createImageObj = function ($file) {
-            var fileObj = {};
-            var reader = new FileReader();
-            reader.onloadend = function (evt) {
-                fileObj['name'] = $file.name;
-                fileObj['file'] = evt.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
-            };
-            reader.readAsDataURL($file);
-            return fileObj;
-        };
-
-        $scope.onMultipleFilesSelect = function ($files, field) {
-            //$files: an array of files selected, each file has name, size, and type.
-            for (var i = 0; i < $files.length; i++) {
-                var $file = $files[i];
-                $scope.Album.photos.push(createImageObj($file));
-            }
-        };
-
-        $scope.savePhotos = function () {
-            if ($scope.form.$invalid) {
-                return;
-            }
-            for (var i = 0; i < $scope.Album.photos.length; i++) {
-                $scope.Album.photos[i]['event_date'] = $scope.Album.id;
-            }
-            Events.uploadPhotos($scope.Album.photos).then(function (photos) {
-                $(".modal:visible").find(".close").click();
-                $scope.Album = {photos: []};
-            }, function (error) {
-                $scope.errors = error.data;
-            });
-        };
-
-        $scope.FollowUser = function () {
-            $http.get('/api/current-user/').then(function (response) {
-                if (response.data.user !== null) {
-                    Events.followUser($scope.EventObj.profile.slug).then(function (data) {
-                        console.log('srv_following:', data.srv_following);
-                        $scope.EventObj.profile.srv_following = data.srv_following;
-                        $scope.EventObj.profile.srv_followersCount = data.srv_followersCount;
-                    });
-                } else {
-                    $(".navbar-nav a").eq(1).click();
-                }
-            });
-        };
-
-        $scope.Follow = function () {
-            $http.get('/api/current-user/').then(function (response) {
-                if (response.data.user == null) {
-                    $(".navbar-nav a").eq(1).click();
-                } else {
-                    Events.follow($scope.EventObj).then(function (data) {
-                        $scope.EventObj.srv_following = data.srv_following;
-                        $scope.EventObj.srv_followersCount = data.srv_followersCount;
-                    });
-                }
-            });
-        };
-
-        $scope.reloadEvent();
-
-
-        // ------> display photo viewer ::
-		// change image on key press
-        $scope.keyChangePhoto = function (evt) {
-            switch (evt.keyCode) {
-                case 37:
-                    $scope.prevPhoto();
-                    break;
-                case 39:
-                    $scope.nextPhoto();
-                    break;
-            }
-            // non-ng event , so apply ::
-            $scope.$apply();
-        };
-
-        $scope.selectPhoto = function () {
-			// select photo by click in html
-            $scope.showPhoto(this.$parent.album.index, this.$index);
-        };
-		// display photo
-        $scope.showPhoto = function (albumID, photoID) {
-			// emit img change
-            $scope.$emit('imgChange');
-            // check if album exist ::
-            if ($scope.Albums == null || $scope.Albums[albumID] == null) {
-                console.log('Album not exist');
-                return;
-            }
-			// set current album and length
-            $scope.currentAlbum = $scope.Albums[albumID];
-            $scope.currentAlbumLength = parseInt($scope.currentAlbum.photos.length, 10);
-            $scope.setPhoto(photoID);
-            // key listener ::
-            $(document).on('keydown', $scope.keyChangePhoto);
-        };
-        $scope.closePhoto = function () {
-			// remove image selection
-            $scope.currentPhotoID = null;
-            $scope.currentPhoto = null;
-            // remove key listener ::
-            $(document).off('keydown', $scope.keyChangePhoto);
-			// return to event url ::
-			window.location.href = "/#/events/" + $scope.stateParams.eventId;
-        };
-
-        $scope.nextPhoto = function () {
-            var p = parseInt($scope.currentPhotoID, 10);
-            if ($scope.currentAlbumLength == (p + 1)) {
-                p = 0;
-            } else {
-                p = p + 1;
-            }
-            $scope.setPhoto(p);
-        };
-        $scope.prevPhoto = function () {
-            var p = parseInt($scope.currentPhotoID, 10);
-            if (p === 0) {
-                p = $scope.currentAlbumLength - 1;
-            } else {
-                p = p - 1;
-            }
-            $scope.setPhoto(p);
-        };
-        // set photo id and photo from current album
-        $scope.setPhoto = function (photoID) {
-			// emit image change event
-            $scope.$emit('imgChange');
-			// get photos
-            var a = $scope.currentAlbum.photos;
-			// set selected photo
-            $scope.currentPhotoID = photoID;
-            $scope.currentPhoto = a[photoID];
-			// set new location for given image ::
-            window.location.href = "/#/events/" + $scope.stateParams.eventId + "/" + $scope.currentAlbum.index + "/" + photoID + "/";
-        };
-
-        // photo slide ::
-        new Hammer($('.photoviewer')[0], { drag_lock_to_axis: true }).on("dragleft dragright swipeleft swiperight", function (e) {
-            e.gesture.preventDefault();
-            switch (e.type) {
-                case 'swipeleft':
-                    $scope.nextPhoto();
-                    break;
-                case 'swiperight':
-                    $scope.prevPhoto();
-                    break;
-            }
-            $scope.$apply();
-        });
-
-        // ------> SOCIAL BUTTONS
-        $scope.social_tw = function (obj) {
-			window.open('https://twitter.com/intent/tweet?text='+ $scope.EventObj.title + '&url=' + escape(window.location.href));
-        };
-
-        $scope.social_fb = function (obj) {
-			$fb.sharePhoto($scope.currentPhoto.event_name,window.location.href,window.location.host + $scope.currentPhoto.image,$scope.currentPhoto.caption,$scope.EventObj.about);
-        };
-
-        $scope.social_p = function (obj) {
-			window.open("http://pinterest.com/pin/create/button/?source_url='" + escape(window.location.href) + '&media=' +escape($scope.currentPhoto.image) + '&description=' + escape($scope.EventObj.title) );
-        };
-
-        $scope.social_tu = function (obj) {
-			window.open("https://www.tumblr.com/share/photo?source=" + escape($scope.currentPhoto.image) +
-				"&caption=" + $scope.EventObj.title +
-				"&click_thru=" + escape(window.location.href));
-        };
-
-        $scope.social_pl = function (obj) {
-			window.open('https://plus.google.com/share?url=' + escape(window.location.href));
-        };
-
-
-        // ------>
-    }])
-
-    .controller('EventsMyCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', function EventsCtrl($scope, $state, titleService, $stateParams, Events) {
-        titleService.setTitle('My Events');
-        $scope.stateParams = $stateParams;
-        Events.getEvents({own_events: true}).then(function (events) {
-            $scope.myEvents = events; // TODO: must be EventObj
-        }); // TODO: must be EventObj
-
-        $scope.removeEvent = function (event) {
-            Events.removeEvent(event).then(function () {
-                $state.transitionTo('events');
-            });
-        };
-    }])
-
-    .directive('bxSlideSchedule', [function () {
-        // attr.$observe('rpTooltip', function(value) {
-        // });
-        return function (scope, element, attr) {
-            element.mouseenter(function () {
-                $(element).find(".event-schedule-overlay-wrapper ul").slideDown(150);
-            })
-                .mouseleave(function () {
-                    $(element).find(".event-schedule-overlay-wrapper ul").slideUp(150);
-                });
-        };
-    }])
-    .directive('bxEventDetailedTextMobileToggle', [function () {
-        // attr.$observe('rpTooltip', function(value) {
-        // });
-        return function (scope, element, attr) {
-            $buttonElement = $(element).find(".btn.visible-xs");
-            $pElement = $(element).find("p");
-            $buttonElement.click(function () {
-                if ($pElement.is(":visible")) {
-                    $buttonElement.html("show description");
-                }
-                else {
-                    $buttonElement.html("hide description");
-                }
-                $pElement.slideToggle(150);
-
-            });
-        };
-    }])
-    .directive('bxTabEventDetails', [function () {
-        // attr.$observe('rpTooltip', function(value) {
-        // });
-        return function (scope, element, attr) {
-            $("body").find('a[data-type="tab"]').tab('show');
-        };
-    }])
-// photoviewer singleton code::
-    .directive('photoviewercontent', [function () {
-        return function (scope, element, attr) {
-            var pview = {
-				back:element.find('.photoback'),// full container
-				container:element.find('.photoviewer'),// display area
-				imgcontainer:element.find('.imgcontainer'),// img container
-				target:element.find('.imgcontainer').find('img'),// target img
-				panel:element.find('.rightwrap'),// bottom || right  panel div
-
-				resize:function(){
-					var size,scale,sw,sh,dw,dh,minW,minH;
-					// container possible area
-					sw = this.back.width();
-					sh = this.back.height();
-
-					// image display aspect , depends on screen size and w/h ratio
-					var aspect = sw / sh;
-					if(sw < 1000 || sh < 600){//
-						aspect = 0;
->>>>>>> ae2258210db11a6d4f6c37fac62325fe31e42ff1
+			})
+			.state('eventDatesPhotosmanage', {
+				url: '/eventdates/:dateId/photosmanage',
+				views: {
+					"main": {
+						controller: 'eventDatesPhotosmanageCtrl',
+						templateUrl: 'events/date-photosmanage.tpl.html',
+						resolve: {
+							authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+						}
 					}
 				}
-			}
-		})
-		.state('eventsMy', {
-			url: '/events/my',
-			views: {
-				"main": {
-					controller: 'EventsMyCtrl',
-					templateUrl: 'events/events-my.tpl.html',
-					resolve: {
-						authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+			})
+			.state('eventAdd', {
+				url: '/events/add',
+				views: {
+					"main": {
+						controller: 'EventAddCtrl',
+						templateUrl: 'events/event-add.tpl.html',
+						resolve: {
+							authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+						}
 					}
 				}
-			}
-		})
-		.state('eventEdit', {
-			url: '/events/:eventId/edit',
-			views: {
-				"main": {
-					controller: 'EventEditCtrl',
-					templateUrl: 'events/event-edit.tpl.html',
-					resolve: {
-						authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+			})
+			.state('eventsMy', {
+				url: '/events/my',
+				views: {
+					"main": {
+						controller: 'EventsMyCtrl',
+						templateUrl: 'events/events-my.tpl.html',
+						resolve: {
+							authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+						}
 					}
 				}
-			}
-		})
-		.state('eventDetails', {
-			url: '/events/:eventId',
-			views: {
-				"main": {
-					controller: 'EventDetailsCtrl',
-					templateUrl: 'events/event-details.tpl.html'
+			})
+			.state('eventEdit', {
+				url: '/events/:eventId/edit',
+				views: {
+					"main": {
+						controller: 'EventEditCtrl',
+						templateUrl: 'events/event-edit.tpl.html',
+						resolve: {
+							authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+						}
+					}
 				}
-			}
-		})
-		.state('eventDetails.Photo', {
-			url: '/:Album/:Photo/'
-		})
-		.state('eventDetails.Album', {
-			url: '/:Album/'
-		});
-}])
-
-
-.controller('eventDatesPhotosmanageCtrl', ['$scope', 'titleService', '$stateParams', 'Events', 'AppScope',
-	function eventDatesPhotosmanageCtrl($scope, titleService, $stateParams, Events, AppScope) {
-		titleService.setTitle('Edit date photos');
-
-		Events.getEventDatePhotoManage($stateParams.dateId).then(function (data) {
-			$scope.DateObj = data;
-		});
-
-
+			})
+			.state('eventDetails', {
+				url: '/events/:eventId',
+				views: {
+					"main": {
+						controller: 'EventDetailsCtrl',
+						templateUrl: 'events/event-details.tpl.html'
+					}
+				}
+			})
+			.state('eventDetails.Photo', {
+				url: '/:Album/:Photo/'
+			})
+			.state('eventDetails.Album', {
+				url: '/:Album/'
+			});
 	}])
 
 
-.filter('textlimit', function () {
-	return function (input, param) {
-		if (input.length > param) {
-			return input.substr(0, param) + "...";
-		} else {
-			return input;
-		}
+	.controller('eventDatesPhotosmanageCtrl', ['$scope', 'titleService', '$stateParams', 'Events', 'AppScope',
+		function eventDatesPhotosmanageCtrl($scope, titleService, $stateParams, Events, AppScope) {
+			titleService.setTitle('Edit date photos');
 
-	};
-})
+			Events.getEventDatePhotoManage($stateParams.dateId).then(function (data) {
+				$scope.DateObj = data;
+			});
 
 
-.controller('EventsCtrl', ['$scope', '$geolocation', 'titleService', 'Events', '$http', 'AppScope','$global',
-	function EventsCtrl($scope, $geolocation, titleService, Events, $http, AppScope,$global) {
-		titleService.setTitle('All events');
+		}])
 
 
-		// contain events data ::
-		$scope.eventsPool = null;
-		$scope.isMobile = $global.isMobile;
-
-		Events.getEvents({}).then(function (events) {
-			$scope.eventsPool = events;
-			$scope.showMore();
-		});
-
-		$scope.search = {};
-		// if more events aviable to load
-		$scope.hasMoreEvents = false;
-		$scope.eventsPerLoad = 9;
-
-		$scope.showMore = function () {
-			if ($scope.events == null) {
-				$scope.events = [];
-			}
-			// count how many events can be added
-			var maxEvents = Math.min($scope.eventsPool.length, $scope.events.length + $scope.eventsPerLoad);
-			// loop and add events ::
-			for (var i = $scope.events.length; i < maxEvents; i++) {
-				$scope.events.push($scope.eventsPool[i]);
-			}
-			// check if there are more events to load ; if not hide button
-			if ($scope.events.length == $scope.eventsPool.length) {
-				$scope.hasMoreEvents = false;
+	.filter('textlimit', function () {
+		return function (input, param) {
+			if (input.length > param) {
+				return input.substr(0, param) + "...";
 			} else {
-				$scope.hasMoreEvents = true;
+				return input;
 			}
+
 		};
+	})
 
 
-		$scope.check = function () {
-			$scope.aviable = $geolocation.aviable;
-			$scope.error = $geolocation.error;
-			$scope.complete = $geolocation.complete;
-			if ($geolocation.position) {
-				$scope.timestamp = $geolocation.timestamp;
-				$scope.latitude = $geolocation.position.latitude;
-				$scope.longitude = $geolocation.position.longitude;
-			}
-		};
+	.controller('EventsCtrl', ['$scope', '$geolocation', 'titleService', 'Events', '$http', 'AppScope',
+		function EventsCtrl($scope, $geolocation, titleService, Events, $http, AppScope) {
+			titleService.setTitle('All events');
 
-		$scope.$on(GeolocationEvent.COMPLETE, function (nge) {
-			$scope.check();
-			if (!$scope.$$phase) {
-				$scope.$apply();// async call z poza angulara potrzebuje apply, inaczej nie zrobi update'u parametrow
-			}
-		});
-		$scope.$on(GeolocationEvent.UPDATE, function (nge) {
-			$scope.check();
-			if (!$scope.$$phase) {
-				$scope.$apply();// async call z poza angulara potrzebuje apply, inaczej nie zrobi update'u parametrow
-			}
-		});
+			// contain events data ::
+			$scope.eventsPool = null;
 
-
-		$geolocation.stopInterval();
-		$geolocation.start();
-
-		$scope.check();
-
-		$scope.changeDisplayFilter = function (type) {
-
-			if ($scope.latitude) {
-				latc = $scope.latitude;
-				longc = $scope.longitude;
-			} else {
-				latc = 0;
-				longc = 0;
-			}
-			Events.getEvents({filter_by: type, lat: latc, long: longc }).then(function (events) {
-				$scope.events = [];
+			Events.getEvents({}).then(function (events) {
 				$scope.eventsPool = events;
 				$scope.showMore();
 			});
-		};
 
+			$scope.search = {};
+			// if more events aviable to load
+			$scope.hasMoreEvents = false;
+			$scope.eventsPerLoad = 8;
 
-		$scope.Follow = function (event) {
-			$http.get('/api/current-user/').then(function (response) {
-				if (response.data.user !== null) {
-					Events.follow(event).then(function (data) {
-						event.srv_following = data.srv_following;
-						event.srv_followersCount = data.srv_followersCount;
-					});
+			$scope.showMore = function () {
+				if ($scope.events == null) {
+					$scope.events = [];
+				}
+				// count how many events can be added
+				var maxEvents = Math.min($scope.eventsPool.length, $scope.events.length + $scope.eventsPerLoad);
+				// loop and add events ::
+				for (var i = $scope.events.length; i < maxEvents; i++) {
+					$scope.events.push($scope.eventsPool[i]);
+				}
+				// check if there are more events to load ; if not hide button
+				if ($scope.events.length == $scope.eventsPool.length) {
+					$scope.hasMoreEvents = false;
 				} else {
-					$(".navbar-nav a").eq(1).click();
+					$scope.hasMoreEvents = true;
 				}
-			});
-
-		};
-
-		app_scope = AppScope.getScope();
-		app_scope.Search = function (value) {
-			Events.getEvents({search_text: value}).then(function (events) {
-				$scope.events = [];
-				$scope.eventsPool = events;
-				$scope.showMore();
-			});
-		};
-	}])
-
-.controller('EventAddCtrl', ['$scope', '$state', 'titleService', 'Events', '$upload',
-	function EventsCtrl($scope, $state, titleService, Events, $upload) {
-		titleService.setTitle('Add New Event');
-
-		$scope.open = function () {
-			$scope.opened = true;
-		};
-
-		$scope.checkShortLink = function (value) {
-			Events.checkShortLink({search_text: value}).then(function (response) {
-				$scope.EventObj.short_link_available = response.response;
-			});
-		};
-
-		$scope.EventObj = {};
-
-		$scope.eventSubmit = function () {
-			Events.createEvent($scope.EventObj).then(function (event) {
-				$state.transitionTo('eventEdit', {"eventId": event.slug});
-			}, function (error) {
-				$scope.errors = error.data;
-			});
-		};
-
-		$scope.onFileSelect = function ($files, field) {
-			//$files: an array of files selected, each file has name, size, and type.
-			var fileObj = {};
-			var reader = new FileReader();
-			reader.onloadend = function (evt) {
-				fileObj['file'] = evt.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
-				$scope.EventObj[field] = fileObj;
 			};
 
-			for (var i = 0; i < $files.length; i++) {
-				var $file = $files[i];
-				fileObj['name'] = $file.name;
-				reader.readAsDataURL($file);
-			}
-		};
 
-	}])
+			$scope.check = function () {
+				$scope.aviable = $geolocation.aviable;
+				$scope.error = $geolocation.error;
+				$scope.complete = $geolocation.complete;
+				if ($geolocation.position) {
+					$scope.timestamp = $geolocation.timestamp;
+					$scope.latitude = $geolocation.position.latitude;
+					$scope.longitude = $geolocation.position.longitude;
+				}
+			};
 
-.controller('EventEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', 'DateObj', '$upload', '$filter',
-	function EventEditCtrl($scope, $state, titleService, $stateParams, Events, DateObj, $upload, $filter) {
-
-		titleService.setTitle('Edit Event');
-		$scope.eventId = $stateParams.eventId;
-
-		$scope.reloadEvent = function () {
-			Events.getEvent($scope.eventId).then(function (event) {
-				$scope.EventObj = event;
+			$scope.$on(GeolocationEvent.COMPLETE, function (nge) {
+				$scope.check();
+				if (!$scope.$$phase) {
+					$scope.$apply();// async call z poza angulara potrzebuje apply, inaczej nie zrobi update'u parametrow
+				}
 			});
-		};
-
-		$scope.reloadEvent();
-
-
-		$scope.selphotoModal = function () {
-			Events.selphotoModal($scope.eventId).then(function (imgs) {
-				$scope.imgs = imgs;
+			$scope.$on(GeolocationEvent.UPDATE, function (nge) {
+				$scope.check();
+				if (!$scope.$$phase) {
+					$scope.$apply();// async call z poza angulara potrzebuje apply, inaczej nie zrobi update'u parametrow
+				}
 			});
-		};
 
 
-		$scope.selimg = function (entry) {
-			Events.selimg($scope.eventId, entry).then(function (imgs) {
+			$geolocation.stopInterval();
+			$geolocation.start();
+
+			$scope.check();
+
+			$scope.changeDisplayFilter = function (type) {
+
+				if ($scope.latitude) {
+					latc = $scope.latitude;
+					longc = $scope.longitude;
+				} else {
+					latc = 0;
+					longc = 0;
+				}
+				Events.getEvents({filter_by: type, lat: latc, long: longc }).then(function (events) {
+					$scope.events = [];
+					$scope.eventsPool = events;
+					$scope.showMore();
+				});
+			};
+
+
+			$scope.Follow = function (event) {
+				$http.get('/api/current-user/').then(function (response) {
+					if (response.data.user !== null) {
+						Events.follow(event).then(function (data) {
+							event.srv_following = data.srv_following;
+							event.srv_followersCount = data.srv_followersCount;
+						});
+					} else {
+						$(".navbar-nav a").eq(1).click();
+					}
+				});
+
+			};
+
+			app_scope = AppScope.getScope();
+			app_scope.Search = function (value) {
+				Events.getEvents({search_text: value}).then(function (events) {
+					$scope.events = [];
+					$scope.eventsPool = events;
+					$scope.showMore();
+				});
+			};
+		}])
+
+	.controller('EventAddCtrl', ['$scope', '$state', 'titleService', 'Events', '$upload',
+		function EventsCtrl($scope, $state, titleService, Events, $upload) {
+			titleService.setTitle('Add New Event');
+
+			$scope.open = function () {
+				$scope.opened = true;
+			};
+
+			$scope.checkShortLink = function (value) {
+				Events.checkShortLink({search_text: value}).then(function (response) {
+					$scope.EventObj.short_link_available = response.response;
+				});
+			};
+
+			$scope.EventObj = {};
+
+			$scope.eventSubmit = function () {
+				Events.createEvent($scope.EventObj).then(function (event) {
+					$state.transitionTo('eventEdit', {"eventId": event.slug});
+				}, function (error) {
+					$scope.errors = error.data;
+				});
+			};
+
+			$scope.onFileSelect = function ($files, field) {
+				//$files: an array of files selected, each file has name, size, and type.
+				var fileObj = {};
+				var reader = new FileReader();
+				reader.onloadend = function (evt) {
+					fileObj['file'] = evt.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+					$scope.EventObj[field] = fileObj;
+				};
+
+				for (var i = 0; i < $files.length; i++) {
+					var $file = $files[i];
+					fileObj['name'] = $file.name;
+					reader.readAsDataURL($file);
+				}
+			};
+
+		}])
+
+	.controller('EventEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', 'DateObj', '$upload', '$filter',
+		function EventEditCtrl($scope, $state, titleService, $stateParams, Events, DateObj, $upload, $filter) {
+
+			titleService.setTitle('Edit Event');
+			$scope.eventId = $stateParams.eventId;
+
+			$scope.reloadEvent = function () {
+				Events.getEvent($scope.eventId).then(function (event) {
+					$scope.EventObj = event;
+				});
+			};
+
+			$scope.reloadEvent();
+
+
+			$scope.selphotoModal = function () {
+				Events.selphotoModal($scope.eventId).then(function (imgs) {
+					$scope.imgs = imgs;
+				});
+			};
+
+
+			$scope.selimg = function (entry) {
+				Events.selimg($scope.eventId, entry).then(function (imgs) {
+					$(".modal:visible").find(".close").click();
+					$scope.reloadEvent();
+				});
+			};
+
+			$scope.eventSubmit = function () {
+				Events.saveEvent($scope.EventObj).then(function (event) {
+					$state.transitionTo('events');
+					//$('.xa-icon-nav-events').click();
+				});
+				//$scope.EventObj.$save();
+			};
+
+			$scope.removeEvent = function (event) {
+				Events.removeEvent(event).then(function () {
+					$state.transitionTo('events');
+					//$('.xa-icon-nav-events').click();
+				});
+			};
+
+			$scope.checkShortLink = function (value) {
+				Events.checkShortLink({search_text: value}).then(function (response) {
+					$scope.EventObj.short_link_available = response.response;
+				});
+			};
+
+			$scope.addDate = function () {
+				$scope.editDate = {event: $scope.EventObj.id};
+				$scope.editDate.start_date = new Date();
+				$scope.editDate.startTime = "11:00";
+				$scope.editDate.endTime = "16:00";
+				DateObj.getOptions(null).then(function (options) {
+					$scope.editDateOptions = options.actions.POST;
+				});
+			};
+
+
+			$scope.copyLastDate = function () {
+
+				DateObj.getLastDate($scope.EventObj.id).then(function (date) {
+					date = date[0];
+					delete date.id;
+					$scope.editDate = date;
+					$scope.editDate.startTime = $filter('date')(date.start_date, 'HH:mm');
+					$scope.editDate.endTime = $filter('date')(date.end_date, 'HH:mm');
+				});
+
+
+			};
+
+
+			$scope.saveDateConfirm = function () {
+				//Resave lan/lon
 				$(".modal:visible").find(".close").click();
-				$scope.reloadEvent();
-			});
-		};
+			};
 
-		$scope.eventSubmit = function () {
-			Events.saveEvent($scope.EventObj).then(function (event) {
-				$state.transitionTo('events');
-				//$('.xa-icon-nav-events').click();
+			$scope.backDateEdit = function () {
+				$(".el_fields,.to_confirm").show();
+				$(".el_confirm,.back_confirm").hide();
+			};
+
+
+			$scope.showConfirm = function () {
+				$(".el_fields,.to_confirm").hide();
+				$(".el_confirm,.back_confirm").show();
+
+				adr = $scope.editDate.country + ", " + $scope.editDate.city + ", " + $scope.editDate.address_1;
+				//alert(adr);
+
+			};
+
+			$scope.saveDate = function () {
+				var has_errors = false;
+				$scope.errors = {};
+				if ($scope.editDate.startTime === undefined) {
+					$scope.errors.start_time = ["Start time is required"];
+					has_errors = true;
+				}
+				if ($scope.editDate.endTime === undefined) {
+					$scope.errors.end_time = ["End time is required"];
+					has_errors = true;
+				}
+				if (has_errors === false) {
+					// no errors so far?
+					var date = new Date($scope.editDate.start_date);
+					var start_time = $scope.editDate.startTime.split(":");
+					var end_time = $scope.editDate.endTime.split(":");
+					var start_date = new Date(date);
+					start_date.setHours(start_time[0]);
+					start_date.setMinutes(start_time[1]);
+					var end_date = new Date(date);
+					end_date.setHours(end_time[0]);
+					end_date.setMinutes(end_time[1]);
+					$scope.editDate.start_date = start_date;
+					$scope.editDate.end_date = end_date;
+
+					$scope.editDate.offset = end_date.getTimezoneOffset();
+					if (start_date.getTime() > end_date.getTime()) {
+						$scope.errors.end_time = ["Event must ends after it begins"];
+						has_errors = true;
+					}
+				}
+				if (has_errors) {
+					return;
+				}
+				if ($scope.editDate.id !== undefined) {
+					DateObj.saveDate($scope.editDate).then(function (date) {
+						$scope.reloadEvent();
+						//$(".modal:visible").find(".close").click();
+						$scope.showConfirm();
+					}, function (error) {
+						$scope.errors = error.data;
+					});
+				} else {
+					DateObj.createDate($scope.editDate).then(function (date) {
+						$scope.reloadEvent();
+						//$(".modal:visible").find(".close").click();
+						$scope.showConfirm();
+					}, function (error) {
+						$scope.errors = error.data;
+					});
+				}
+
+			};
+
+			$scope.onFileSelect = function ($files, field) {
+				//$files: an array of files selected, each file has name, size, and type.
+				var fileObj = {};
+				var reader = new FileReader();
+				reader.onloadend = function (evt) {
+					fileObj['file'] = evt.target.result.replace("data:image/jpeg;base64,", "");
+					$scope.EventObj[field] = fileObj;
+				};
+
+				for (var i = 0; i < $files.length; i++) {
+					var $file = $files[i];
+					fileObj['name'] = $file.name;
+					reader.readAsDataURL($file);
+				}
+			};
+
+
+			$scope.withoutimezone = function (date) {
+				x = new Date();
+				wot = x.getTimezoneOffset() / 60;
+				HH = $filter('date')(date, 'HH');
+				ret = Number(HH) + Number(wot);
+				if (ret < 0) {
+					ret = 24 + ret;
+				}
+				if (String(ret).length == 1) {
+					ret = "0" + ret;
+				}
+				return String(ret) + ':' + $filter('date')(date, 'mm');
+			};
+
+			$scope.setThisEditableDate = function (date) {
+				DateObj.getDate(date.id).then(function (date) {
+					$scope.editDate = date;
+					$scope.editDate.startTime = $scope.withoutimezone(date.start_date);
+					$scope.editDate.endTime = $scope.withoutimezone(date.end_date);
+				});
+				DateObj.getOptions(date.id).then(function (options) {
+					$scope.editDateOptions = options.actions.PUT;
+				});
+				//$scope.editDate = date;
+			};
+
+			$scope.removeDate = function ($index, $pk) {
+				DateObj.removeDate($pk).then(function () {
+					$scope.EventObj.dates.splice($index, 1);
+				});
+			};
+
+			/* datepicker */
+			$scope.today = function () {
+				$scope.dt = new Date();
+			};
+			$scope.today();
+
+			$scope.showWeeks = true;
+
+			$scope.dateOptions = {
+				'year-format': "'yyyy'",
+				'starting-day': 1
+			};
+
+			$scope.minDate = new Date();
+			$scope.maxDate = new Date();
+			$scope.maxDate.setDate($scope.maxDate.getDate() + 365);
+
+			/* end of datepicker */
+
+
+		}])
+
+	.controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', '$http', 'Streams' , '$state' , '$fb','$photoview',
+		function EventsCtrl($scope, titleService, $location, $stateParams, Events, $http, Streams, $state , $fb , $photoview) {
+			titleService.setTitle('Event Details');
+			$scope.stateParams = $stateParams;
+			$scope.reloadEvent = function () {
+				// get event data from url id ::
+				Events.getDetails($stateParams.eventId).then(function (event) {
+					$scope.EventObj = event;
+					//TO DO - paginator
+					$showcount = 12;
+
+					$scope.showMore = function (j) {
+						if (isNaN(j)){
+							j = j.index;
+						}
+						var maxPhotos = Math.min($scope.Albums[j].photos.length, $scope.Albums[j].showphotos.length + $showcount);
+						for (var i = $scope.Albums[j].showphotos.length; i < maxPhotos; i++) {
+							$scope.Albums[j].showphotos.push($scope.Albums[j].photos[i]);
+						}
+						if ($scope.Albums[j].showphotos.length == $scope.Albums[j].photos.length) {
+							$scope.Albums[j].hasMoreEvents = false;
+						} else {
+							$scope.Albums[j].hasMoreEvents = true;
+						}
+
+					};
+
+
+					$scope.Albums = event.albums;
+					for (z = 0; z < $scope.Albums.length; z++) {
+						$scope.Albums[z].all = $scope.Albums[z].photos.length;
+						$scope.Albums[z].showed = 0;
+						$scope.Albums[z].index = z;
+						$scope.Albums[z].showphotos = [];
+						$scope.showMore(z);
+					}
+
+
+					var subscription = {
+						'profiles': [],
+						'events': [event.slug]
+					};
+					Streams.send_subscribe(subscription);
+					Streams.send_fetch_latest();
+
+					// display photo::
+					var p = $state.params;
+					if (p && p.Album) {
+						if( p.Photo){// open photoviewer ; show photo
+							$photoview.setup( $scope, '/#/events/' + $scope.stateParams.eventId,$scope.Albums[p.Album], p.Photo);
+						} else {// scroll to album with delay
+							setTimeout(function(){
+								$('html, body').animate({scrollTop:$('#accordion').find('.panel-default').eq(p.Album).offset().top}, 1500);
+							},100);
+						}
+					}
+				});
+			};
+
+			$('.schedule-dropdown-menu').click(function (e) {
+				e.stopPropagation();
 			});
-			//$scope.EventObj.$save();
-		};
+
+			$scope.Album = {photos: []};
+
+			$http.get('/api/current-user/').then(function (response) {
+				if (response.data.user == null) {
+					//$("#uploadphotolink").hide();
+				}
+			});
+
+			createImageObj = function ($file) {
+				var fileObj = {};
+				var reader = new FileReader();
+				reader.onloadend = function (evt) {
+					fileObj['name'] = $file.name;
+					fileObj['file'] = evt.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+				};
+				reader.readAsDataURL($file);
+				return fileObj;
+			};
+
+			$scope.onMultipleFilesSelect = function ($files, field) {
+				//$files: an array of files selected, each file has name, size, and type.
+				for (var i = 0; i < $files.length; i++) {
+					var $file = $files[i];
+					$scope.Album.photos.push(createImageObj($file));
+				}
+			};
+
+			$scope.savePhotos = function () {
+				if ($scope.form.$invalid) {
+					return;
+				}
+				for (var i = 0; i < $scope.Album.photos.length; i++) {
+					$scope.Album.photos[i]['event_date'] = $scope.Album.id;
+				}
+				Events.uploadPhotos($scope.Album.photos).then(function (photos) {
+					$(".modal:visible").find(".close").click();
+					$scope.Album = {photos: []};
+				}, function (error) {
+					$scope.errors = error.data;
+				});
+			};
+
+			$scope.FollowUser = function () {
+				$http.get('/api/current-user/').then(function (response) {
+					if (response.data.user !== null) {
+						Events.followUser($scope.EventObj.profile.slug).then(function (data) {
+							console.log('srv_following:', data.srv_following);
+							$scope.EventObj.profile.srv_following = data.srv_following;
+							$scope.EventObj.profile.srv_followersCount = data.srv_followersCount;
+						});
+					} else {
+						$(".navbar-nav a").eq(1).click();
+					}
+				});
+			};
+
+			$scope.Follow = function () {
+				$http.get('/api/current-user/').then(function (response) {
+					if (response.data.user == null) {
+						$(".navbar-nav a").eq(1).click();
+					} else {
+						Events.follow($scope.EventObj).then(function (data) {
+							$scope.EventObj.srv_following = data.srv_following;
+							$scope.EventObj.srv_followersCount = data.srv_followersCount;
+						});
+					}
+				});
+			};
+
+			$scope.reloadEvent();
+
+
+			$scope.selectPhoto = function () {
+				// select photo by click in html
+				$photoview.setup( $scope, '/#/events/' + $scope.stateParams.eventId,this.$parent.album, this.$index , $scope.EventObj);
+				//$scope.showPhoto(this.$parent.album.index, this.$index);
+			};
+
+
+
+
+			// ------>
+		}])
+
+	.controller('EventsMyCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', function EventsCtrl($scope, $state, titleService, $stateParams, Events) {
+		titleService.setTitle('My Events');
+		$scope.stateParams = $stateParams;
+		Events.getEvents({own_events: true}).then(function (events) {
+			$scope.myEvents = events; // TODO: must be EventObj
+		}); // TODO: must be EventObj
 
 		$scope.removeEvent = function (event) {
 			Events.removeEvent(event).then(function () {
 				$state.transitionTo('events');
-				//$('.xa-icon-nav-events').click();
 			});
 		};
-
-		$scope.checkShortLink = function (value) {
-			Events.checkShortLink({search_text: value}).then(function (response) {
-				$scope.EventObj.short_link_available = response.response;
-			});
-		};
-
-		$scope.addDate = function () {
-			$scope.editDate = {event: $scope.EventObj.id};
-			$scope.editDate.start_date = new Date();
-			$scope.editDate.startTime = "11:00";
-			$scope.editDate.endTime = "16:00";
-			DateObj.getOptions(null).then(function (options) {
-				$scope.editDateOptions = options.actions.POST;
-			});
-		};
-
-		$scope.copyLastDate = function () {
-
-			DateObj.getLastDate($scope.EventObj.id).then(function (date) {
-				date = date[0];
-				delete date.id;
-				$scope.editDate = date;
-				$scope.editDate.startTime = $filter('date')(date.start_date, 'HH:mm');
-				$scope.editDate.endTime = $filter('date')(date.end_date, 'HH:mm');
-			});
-
-
-		};
-
-		$scope.saveDateConfirm = function () {
-			//Resave lan/lon
-			$(".modal:visible").find(".close").click();
-		};
-
-		$scope.backDateEdit = function () {
-			$(".el_fields,.to_confirm").show();
-			$(".el_confirm,.back_confirm").hide();
-		};
-
-
-		$scope.showConfirm = function () {
-			$(".el_fields,.to_confirm").hide();
-			$(".el_confirm,.back_confirm").show();
-
-			adr = $scope.editDate.country + ", " + $scope.editDate.city + ", " + $scope.editDate.address_1;
-			//alert(adr);
-
-		};
-
-		$scope.saveDate = function () {
-			var has_errors = false;
-			$scope.errors = {};
-			if ($scope.editDate.startTime === undefined) {
-				$scope.errors.start_time = ["Start time is required"];
-				has_errors = true;
-			}
-			if ($scope.editDate.endTime === undefined) {
-				$scope.errors.end_time = ["End time is required"];
-				has_errors = true;
-			}
-			if (has_errors === false) {
-				// no errors so far?
-				var date = new Date($scope.editDate.start_date);
-				var start_time = $scope.editDate.startTime.split(":");
-				var end_time = $scope.editDate.endTime.split(":");
-				var start_date = new Date(date);
-				start_date.setHours(start_time[0]);
-				start_date.setMinutes(start_time[1]);
-				var end_date = new Date(date);
-				end_date.setHours(end_time[0]);
-				end_date.setMinutes(end_time[1]);
-				$scope.editDate.start_date = start_date;
-				$scope.editDate.end_date = end_date;
-
-				$scope.editDate.offset = end_date.getTimezoneOffset();
-				if (start_date.getTime() > end_date.getTime()) {
-					$scope.errors.end_time = ["Event must ends after it begins"];
-					has_errors = true;
-				}
-			}
-			if (has_errors) {
-				return;
-			}
-			if ($scope.editDate.id !== undefined) {
-				DateObj.saveDate($scope.editDate).then(function (date) {
-					$scope.reloadEvent();
-					//$(".modal:visible").find(".close").click();
-					$scope.showConfirm();
-				}, function (error) {
-					$scope.errors = error.data;
-				});
-			} else {
-				DateObj.createDate($scope.editDate).then(function (date) {
-					$scope.reloadEvent();
-					//$(".modal:visible").find(".close").click();
-					$scope.showConfirm();
-				}, function (error) {
-					$scope.errors = error.data;
-				});
-			}
-
-		};
-
-		$scope.onFileSelect = function ($files, field) {
-			//$files: an array of files selected, each file has name, size, and type.
-			var fileObj = {};
-			var reader = new FileReader();
-			reader.onloadend = function (evt) {
-				fileObj['file'] = evt.target.result.replace("data:image/jpeg;base64,", "");
-				$scope.EventObj[field] = fileObj;
-			};
-
-			for (var i = 0; i < $files.length; i++) {
-				var $file = $files[i];
-				fileObj['name'] = $file.name;
-				reader.readAsDataURL($file);
-			}
-		};
-
-
-		$scope.withoutimezone = function (date) {
-			x = new Date();
-			wot = x.getTimezoneOffset() / 60;
-			HH = $filter('date')(date, 'HH');
-			ret = Number(HH) + Number(wot);
-			if (ret < 0) {
-				ret = 24 + ret;
-			}
-			if (String(ret).length == 1) {
-				ret = "0" + ret;
-			}
-			return String(ret) + ':' + $filter('date')(date, 'mm');
-		};
-
-		$scope.setThisEditableDate = function (date) {
-			DateObj.getDate(date.id).then(function (date) {
-				$scope.editDate = date;
-				$scope.editDate.startTime = $scope.withoutimezone(date.start_date);
-				$scope.editDate.endTime = $scope.withoutimezone(date.end_date);
-			});
-			DateObj.getOptions(date.id).then(function (options) {
-				$scope.editDateOptions = options.actions.PUT;
-			});
-			//$scope.editDate = date;
-		};
-
-		$scope.removeDate = function ($index, $pk) {
-			DateObj.removeDate($pk).then(function () {
-				$scope.EventObj.dates.splice($index, 1);
-			});
-		};
-
-		/* datepicker */
-		$scope.today = function () {
-			$scope.dt = new Date();
-		};
-		$scope.today();
-
-		$scope.showWeeks = true;
-
-		$scope.dateOptions = {
-			'year-format': "'yyyy'",
-			'starting-day': 1
-		};
-
-		$scope.minDate = new Date();
-		$scope.maxDate = new Date();
-		$scope.maxDate.setDate($scope.maxDate.getDate() + 365);
-
-		/* end of datepicker */
-
-
 	}])
 
-.controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', '$http', 'Streams' , '$state' , '$fb','$photoview',
-	function EventsCtrl($scope, titleService, $location, $stateParams, Events, $http, Streams, $state , $fb , $photoview) {
-		titleService.setTitle('Event Details');
-		$scope.stateParams = $stateParams;
-		$scope.reloadEvent = function () {
-			// get event data from url id ::
-			Events.getDetails($stateParams.eventId).then(function (event) {
-				$scope.EventObj = event;
-				//TO DO - paginator
-				$showcount = 12;
-
-				$scope.showMore = function (j) {
-					if (isNaN(j)){
-						j = j.index;
-					}
-					var maxPhotos = Math.min($scope.Albums[j].photos.length, $scope.Albums[j].showphotos.length + $showcount);
-					for (var i = $scope.Albums[j].showphotos.length; i < maxPhotos; i++) {
-						$scope.Albums[j].showphotos.push($scope.Albums[j].photos[i]);
-					}
-					if ($scope.Albums[j].showphotos.length == $scope.Albums[j].photos.length) {
-						$scope.Albums[j].hasMoreEvents = false;
-					} else {
-						$scope.Albums[j].hasMoreEvents = true;
-					}
-
-				};
-
-
-				$scope.Albums = event.albums;
-				for (z = 0; z < $scope.Albums.length; z++) {
-					$scope.Albums[z].all = $scope.Albums[z].photos.length;
-					$scope.Albums[z].showed = 0;
-					$scope.Albums[z].index = z;
-					$scope.Albums[z].showphotos = [];
-					$scope.showMore(z);
-				}
-
-
-				var subscription = {
-					'profiles': [],
-					'events': [event.slug]
-				};
-				Streams.send_subscribe(subscription);
-				Streams.send_fetch_latest();
-
-				// display photo::
-				var p = $state.params;
-				if (p && p.Album) {
-					if( p.Photo){// open photoviewer ; show photo
-						$photoview.setup( $scope, '/#/events/' + $scope.stateParams.eventId,$scope.Albums[p.Album], p.Photo);
-					} else {// scroll to album with delay
-						setTimeout(function(){// call focus on delay
-							$('html, body').animate({scrollTop:$('#accordion').find('.panel-default').eq(p.Album).offset().top}, 1500);
-						},100);
-					}
-				}
-			});
+	.directive('bxSlideSchedule', [function () {
+		// attr.$observe('rpTooltip', function(value) {
+		// });
+		return function (scope, element, attr) {
+			element.mouseenter(function () {
+				$(element).find(".event-schedule-overlay-wrapper ul").slideDown(150);
+			})
+				.mouseleave(function () {
+					$(element).find(".event-schedule-overlay-wrapper ul").slideUp(150);
+				});
 		};
-
-		$('.schedule-dropdown-menu').click(function (e) {
-			e.stopPropagation();
-		});
-
-		$scope.Album = {photos: []};
-
-		$http.get('/api/current-user/').then(function (response) {
-			if (response.data.user == null) {
-				//$("#uploadphotolink").hide();
-			}
-		});
-
-		createImageObj = function ($file) {
-			var fileObj = {};
-			var reader = new FileReader();
-			reader.onloadend = function (evt) {
-				fileObj['name'] = $file.name;
-				fileObj['file'] = evt.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
-			};
-			reader.readAsDataURL($file);
-			return fileObj;
-		};
-
-		$scope.onMultipleFilesSelect = function ($files, field) {
-			//$files: an array of files selected, each file has name, size, and type.
-			for (var i = 0; i < $files.length; i++) {
-				var $file = $files[i];
-				$scope.Album.photos.push(createImageObj($file));
-			}
-		};
-
-		$scope.savePhotos = function () {
-			if ($scope.form.$invalid) {
-				return;
-			}
-			for (var i = 0; i < $scope.Album.photos.length; i++) {
-				$scope.Album.photos[i]['event_date'] = $scope.Album.id;
-			}
-			Events.uploadPhotos($scope.Album.photos).then(function (photos) {
-				$(".modal:visible").find(".close").click();
-				$scope.Album = {photos: []};
-			}, function (error) {
-				$scope.errors = error.data;
-			});
-		};
-
-		$scope.FollowUser = function () {
-			$http.get('/api/current-user/').then(function (response) {
-				if (response.data.user !== null) {
-					Events.followUser($scope.EventObj.profile.slug).then(function (data) {
-						console.log('srv_following:', data.srv_following);
-						$scope.EventObj.profile.srv_following = data.srv_following;
-						$scope.EventObj.profile.srv_followersCount = data.srv_followersCount;
-					});
-				} else {
-					$(".navbar-nav a").eq(1).click();
-				}
-			});
-		};
-
-		$scope.Follow = function () {
-			$http.get('/api/current-user/').then(function (response) {
-				if (response.data.user == null) {
-					$(".navbar-nav a").eq(1).click();
-				} else {
-					Events.follow($scope.EventObj).then(function (data) {
-						$scope.EventObj.srv_following = data.srv_following;
-						$scope.EventObj.srv_followersCount = data.srv_followersCount;
-					});
-				}
-			});
-		};
-
-		$scope.reloadEvent();
-
-
-		$scope.selectPhoto = function () {
-			// select photo by click in html
-			$photoview.setup( $scope, '/#/events/' + $scope.stateParams.eventId,this.$parent.album, this.$index , $scope.EventObj);
-			//$scope.showPhoto(this.$parent.album.index, this.$index);
-		};
-
-
-
-
-		// ------>
 	}])
+	.directive('bxEventDetailedTextMobileToggle', [function () {
+		// attr.$observe('rpTooltip', function(value) {
+		// });
+		return function (scope, element, attr) {
+			$buttonElement = $(element).find(".btn.visible-xs");
+			$pElement = $(element).find("p");
+			$buttonElement.click(function () {
+				if ($pElement.is(":visible")) {
+					$buttonElement.html("show description");
+				}
+				else {
+					$buttonElement.html("hide description");
+				}
+				$pElement.slideToggle(150);
 
-.controller('EventsMyCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', function EventsCtrl($scope, $state, titleService, $stateParams, Events) {
-	titleService.setTitle('My Events');
-	$scope.stateParams = $stateParams;
-	Events.getEvents({own_events: true}).then(function (events) {
-		$scope.myEvents = events; // TODO: must be EventObj
-	}); // TODO: must be EventObj
-
-	$scope.removeEvent = function (event) {
-		Events.removeEvent(event).then(function () {
-			$state.transitionTo('events');
-		});
-	};
-}])
-
-.directive('bxSlideSchedule', [function () {
-	// attr.$observe('rpTooltip', function(value) {
-	// });
-	return function (scope, element, attr) {
-		element.mouseenter(function () {
-			$(element).find(".event-schedule-overlay-wrapper ul").slideDown(150);
-		})
-			.mouseleave(function () {
-				$(element).find(".event-schedule-overlay-wrapper ul").slideUp(150);
 			});
-	};
-}])
-.directive('bxEventDetailedTextMobileToggle', [function () {
-	// attr.$observe('rpTooltip', function(value) {
-	// });
-	return function (scope, element, attr) {
-		$buttonElement = $(element).find(".btn.visible-xs");
-		$pElement = $(element).find("p");
-		$buttonElement.click(function () {
-			if ($pElement.is(":visible")) {
-				$buttonElement.html("show description");
-			}
-			else {
-				$buttonElement.html("hide description");
-			}
-			$pElement.slideToggle(150);
-
-		});
-	};
-}])
-.directive('bxTabEventDetails', [function () {
-	// attr.$observe('rpTooltip', function(value) {
-	// });
-	return function (scope, element, attr) {
-		$("body").find('a[data-type="tab"]').tab('show');
-	};
-}])
+		};
+	}])
+	.directive('bxTabEventDetails', [function () {
+		// attr.$observe('rpTooltip', function(value) {
+		// });
+		return function (scope, element, attr) {
+			$("body").find('a[data-type="tab"]').tab('show');
+		};
+	}]);
