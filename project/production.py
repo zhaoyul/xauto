@@ -21,8 +21,8 @@ DATABASES = {
     }
 }
 
-STATIC_ROOT = '/var/www/xauto.dev.milosolutions.com/static'
-MEDIA_ROOT = '/var/www/xauto.dev.milosolutions.com/media'
+#STATIC_ROOT = '/var/www/xauto.dev.milosolutions.com/static'
+#MEDIA_ROOT = '/var/www/xauto.dev.milosolutions.com/media'
 
 # AWS Storage setttings
 DEFAULT_FILE_STORAGE = 'project.s3utils.MediaRootS3BotoStorage'
