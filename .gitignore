@@ -39,7 +39,6 @@ Thumbs.db
 .idea
 .project
 .pydevproject
-project/media/contest
 .settings/
 # Virtualenv files #
 ######################
