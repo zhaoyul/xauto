@@ -1,4 +1,4 @@
-angular.module('templates-app', ['account/account-change-pswd.tpl.html', 'account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos-by-date.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'account/partial_edit_account.tpl.html', 'account/timezones.tpl.html', 'events/date-photosmanage.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_edit_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'events/timezones.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html']);
+angular.module('templates-app', ['account/account-change-pswd.tpl.html', 'account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos-by-date.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'account/partial_edit_account.tpl.html', 'account/timezones.tpl.html', 'events/date-photosmanage.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_edit_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'events/timezones.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html', 'templates/photoviewer.tpl.html']);
 
 angular.module("account/account-change-pswd.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-change-pswd.tpl.html",
@@ -685,49 +685,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "            </form>\n" +
     "        </div><!-- /.modal-content -->\n" +
     "    </div><!-- /.modal-dialog -->\n" +
-    "</div><!-- /.modal -->\n" +
-    "\n" +
-    "<!-- photo viewer -->\n" +
-    "<div photoviewercontent ng-hide=\"currentPhoto == null\" style=\"position: fixed;top:0px ; left:0px;width: 100%;height: 100%;z-index: 10001;\">\n" +
-    "    <div style=\"background-image: url('/static/assets/img/colorbox/overlay.png');opacity: 0.75;width: 100%;height: 100%;\"></div>\n" +
-    "    <div class=\"photoback\" style=\"position: absolute;top:0px;left:0px;bottom:0px; right:0px;overflow: auto\">\n" +
-    "        <div class=\"photoviewer\" style=\"position: absolute;top:0px;left:0px;background-color: #e9e9e9;\" ng-keypress=\"keyChangePhoto()\">\n" +
-    "            <div class=\"imgcontainer\" style=\"position: absolute;top:0px;left:0px;background-color: #000000\">\n" +
-    "                <img src=\"{{currentPhoto.image}}\" style=\"position:absolute;top:0px;left:0px;\" />\n" +
-    "                <div ng-click=\"nextPhoto()\" class=\"nextphoto\"></div>\n" +
-    "                <div ng-click=\"prevPhoto()\" class=\"prevphoto\"></div>\n" +
-    "            </div>\n" +
-    "            <div class=\"rightwrap\">\n" +
-    "                <div class=\"close\" ng-click=\"closePhoto()\"></div>\n" +
-    "                <div class=\"eventtitle\">\n" +
-    "                    <div class=\"title\">{{EventObj.title}}</div>\n" +
-    "                    <div class=\"follow\" ng-click=\"Follow()\">\n" +
-    "                        <div class=\"followcount\">{{EventObj.srv_followersCount}}</div>\n" +
-    "                        <a href=\"\" ng-click=\"\" class=\"followicon\">\n" +
-    "                            <i style=\"width: 28px;height: 18px;margin-top: 2px ; margin-left: 10px\" ng-class=\"{'xa-icon-xauto-white': !EventObj.srv_following ,'xa-icon-xauto-colored': EventObj.srv_following}\"></i>\n" +
-    "                        </a>\n" +
-    "                    </div>\n" +
-    "                </div>\n" +
-    "                <div class=\"author\">\n" +
-    "                    <img class=\"userimg\" src=\"{{EventObj.author_photo}}\"/>\n" +
-    "                    <div class=\"name\">{{EventObj.author_name}}</div>\n" +
-    "                    <div ng-hide=\"EventObj.profile.srv_following\" class=\"follow\" ng-click=\"FollowUser()\">Follow Me</div>\n" +
-    "                    <div ng-show=\"EventObj.profile.srv_following\" class=\"follow\" ng-click=\"FollowUser()\">Following</div>\n" +
-    "                </div>\n" +
-    "                <div class=\"social\">\n" +
-    "                    <div class=\"links\">\n" +
-    "                        <a href=\"\" class=\"social1\" ng-click=\"social_tw(currentPhoto)\"></a>\n" +
-    "                        <a href=\"\" class=\"social2\" ng-click=\"social_fb(currentPhoto)\"></a>\n" +
-    "                        <a href=\"\" class=\"social3\" ng-click=\"social_p(currentPhoto)\"></a>\n" +
-    "                        <a href=\"\" class=\"social4\" ng-click=\"social_tu(currentPhoto)\"></a>\n" +
-    "                        <a href=\"\" class=\"social5\" ng-click=\"social_pl(currentPhoto)\"></a>\n" +
-    "                        <div class=\"clear\"></div>\n" +
-    "                    </div>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "</div>");
+    "</div><!-- /.modal -->");
 }]);
 
 angular.module("events/event-edit.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -838,7 +796,7 @@ angular.module("events/events-my.tpl.html", []).run(["$templateCache", function(
 angular.module("events/events.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("events/events.tpl.html",
     "<div class=\"row page-title-container\">\n" +
-    "  <div class=\"col-xs-12 col-sm-6 hidden-xs\">\n" +
+    "  <div class=\"col-xs-12 col-sm-6 hidden-xs\" ng-hide=\"isMobile\">\n" +
     "    <a href=\"#/events/add\" class=\"btn btn-primary btn-lg\"><i class=\"xa-icon-plus\"></i> Add Event</a>\n" +
     "  </div>\n" +
     "  <div class=\"col-xs-12 col-sm-6\">\n" +
@@ -961,9 +919,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "      <!--  -->\n" +
     "    </li>\n" +
     "  </ul>\n" +
-    "    <div class=\"col-xs-12 col-sm-6 hidden-xs\">\n" +
-    "        <a ng-show=\"hasMoreEvents\" ng-click=\"showMore()\" class=\"btn btn-primary btn-lg\"><i class=\"xa-icon-plus\"></i>Show more</a>\n" +
-    "    </div>\n" +
+    "    <a ng-show=\"hasMoreEvents\" ng-click=\"showMore()\" class=\"btn btn-info showmorespan\">Show more</a>\n" +
     "</div>\n" +
     "\n" +
     "\n" +
@@ -1474,9 +1430,7 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "    </ul>\n" +
     "\n" +
     "  </div>\n" +
-    "  <div class=\"col-xs-12 col-sm-6 hidden-xs\">\n" +
-    "        <a ng-show=\"hasMoreProfiles\" ng-click=\"showMore()\" class=\"btn btn-primary btn-lg\"><i class=\"xa-icon-plus\"></i>Show more</a>\n" +
-    "    </div>\n" +
+    "    <a ng-show=\"hasMoreProfiles\" ng-click=\"showMore()\" class=\"btn btn-info showmorespan\">Show more</a>\n" +
     "</div>\n" +
     "");
 }]);
@@ -1647,4 +1601,49 @@ angular.module("stream/stream.tpl.html", []).run(["$templateCache", function($te
     "</div> -->\n" +
     "<ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>\n" +
     "");
+}]);
+
+angular.module("templates/photoviewer.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/photoviewer.tpl.html",
+    "<!-- photo viewer  -->\n" +
+    "<div ng-controller=\"photoviewer\" class=\"photoviewer\" style=\"display:none;position: fixed;top:0px ; left:0px;width: 100%;height: 100%;z-index: 10001;\">\n" +
+    "    <div style=\"background-image: url('/static/assets/img/colorbox/overlay.png');opacity: 0.75;width: 100%;height: 100%;\"></div>\n" +
+    "    <div class=\"photoback\" style=\"position: absolute;top:0px;left:0px;bottom:0px; right:0px;overflow: auto\">\n" +
+    "        <div class=\"photoviewercontent\" style=\"position: absolute;top:0px;left:0px;background-color: #e9e9e9;\" ng-keypress=\"keyChangePhoto()\">\n" +
+    "            <div class=\"imgcontainer\" style=\"position: absolute;top:0px;left:0px;background-color: #000000\">\n" +
+    "                <img src=\"{{photoURL}}\" style=\"position:absolute;top:0px;left:0px;\" />\n" +
+    "                <div ng-click=\"nextPhoto()\" class=\"nextphoto\"></div>\n" +
+    "                <div ng-click=\"prevPhoto()\" class=\"prevphoto\"></div>\n" +
+    "            </div>\n" +
+    "            <div class=\"rightwrap\">\n" +
+    "                <div class=\"close\" ng-click=\"closePhoto()\"></div>\n" +
+    "                <div class=\"eventtitle\" ng-show=\"EventObj\">\n" +
+    "                    <div class=\"title\">{{EventObj.title}}</div>\n" +
+    "                    <div class=\"follow\" ng-click=\"Follow()\">\n" +
+    "                        <div class=\"followcount\">{{EventObj.srv_followersCount}}</div>\n" +
+    "                        <a href=\"\" ng-click=\"\" class=\"followicon\">\n" +
+    "                            <i style=\"width: 28px;height: 18px;margin-top: 2px ; margin-left: 10px\" ng-class=\"{'xa-icon-xauto-white': !EventObj.srv_following ,'xa-icon-xauto-colored': EventObj.srv_following}\"></i>\n" +
+    "                        </a>\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "                <div class=\"author\">\n" +
+    "                    <img class=\"userimg\" src=\"{{EventObj.author_photo}}\"/>\n" +
+    "                    <div class=\"name\">{{EventObj.author_name}}</div>\n" +
+    "                    <div ng-hide=\"EventObj.profile.srv_following\" class=\"follow\" ng-click=\"FollowUser()\">Follow Me</div>\n" +
+    "                    <div ng-show=\"EventObj.profile.srv_following\" class=\"follow\" ng-click=\"FollowUser()\">Following</div>\n" +
+    "                </div>\n" +
+    "                <div class=\"social\">\n" +
+    "                    <div class=\"links\">\n" +
+    "                        <a href=\"\" class=\"social1\" ng-click=\"social_tw(currentPhoto)\"></a>\n" +
+    "                        <a href=\"\" class=\"social2\" ng-click=\"social_fb(currentPhoto)\"></a>\n" +
+    "                        <a href=\"\" class=\"social3\" ng-click=\"social_p(currentPhoto)\"></a>\n" +
+    "                        <a href=\"\" class=\"social4\" ng-click=\"social_tu(currentPhoto)\"></a>\n" +
+    "                        <a href=\"\" class=\"social5\" ng-click=\"social_pl(currentPhoto)\"></a>\n" +
+    "                        <div class=\"clear\"></div>\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "</div>");
 }]);
