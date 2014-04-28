@@ -7,15 +7,10 @@ from django.db import models
 class Migration(DataMigration):
 
     def add_cur(self, orm, country, country_code, currency, symbol):
-        try:
-            c = orm.Currency()
-            c.country = country
-            c.country_code = country_code
-            c.currency = currency
-            c.symbol = symbol
-            c.save()
-        except:
-            pass
+        orm.Currency.objects.get_or_create(country=country,
+                                           country_code=country_code,
+                                           currency=currency,
+                                           symbol=symbol)
 
     def forwards(self, orm):
         #orm.Currency.objects.all().delete()
