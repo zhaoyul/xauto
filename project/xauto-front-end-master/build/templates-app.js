@@ -1,4 +1,4 @@
-angular.module('templates-app', ['account/account-change-pswd.tpl.html', 'account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos-by-date.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'account/partial_edit_account.tpl.html', 'account/timezones.tpl.html', 'events/date-photosmanage.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_edit_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'events/timezones.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html', 'templates/photoviewer.tpl.html']);
+angular.module('templates-app', ['account/account-change-pswd.tpl.html', 'account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos-by-date.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'account/partial_edit_account.tpl.html', 'account/timezones.tpl.html', 'events/date-photosmanage.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_date.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_edit_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'events/timezones.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html', 'templates/photoviewer.tpl.html']);
 
 angular.module("account/account-change-pswd.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-change-pswd.tpl.html",
@@ -707,37 +707,6 @@ angular.module("events/event-edit.tpl.html", []).run(["$templateCache", function
     "</div>\n" +
     "\n" +
     "\n" +
-    "<div class=\"modal fade\" id=\"dateModal\" data-backdrop=\"static\">\n" +
-    "  <div class=\"modal-dialog\">\n" +
-    "    <div class=\"modal-content\">\n" +
-    "      <div class=\"modal-header\">\n" +
-    "        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n" +
-    "        <h4 class=\"modal-title\" ng-hide=\"editDate.id\">Add Event Date</h4>\n" +
-    "        <h4 class=\"modal-title\" ng-show=\"editDate.id\">Edit Event Date</h4>\n" +
-    "      </div>\n" +
-    "      <form name=\"dateform\" class=\"form-horizontal\" role=\"form\" ng-submit=\"saveDate()\" novalidate>\n" +
-    "        <div class=\"modal-body\">\n" +
-    "          <ng-include src=\"'events/partial_form_date.tpl.html'\"></ng-include>\n" +
-    "        </div>\n" +
-    "        <div class=\"modal-footer\">\n" +
-    "          <div class=\"to_confirm\">\n" +
-    "          <button ng-hide=\"editDate.id\" type=\"button\" class=\"btn btn-info pull-left\" ng-click=\"copyLastDate()\">Copy Last Date</button>\n" +
-    "          <!-- <button type=\"reset\" class=\"btn btn-default\" ng-click=\"resetDate()\">Close</button> -->\n" +
-    "          <button ng-hide=\"editDate.id\" type=\"submit\" class=\"btn btn-primary\">Add Date!</button>\n" +
-    "          <button ng-show=\"editDate.id\" type=\"sumbit\" class=\"btn btn-primary\">Save</button>\n" +
-    "          </div>\n" +
-    "            <div class=\"back_confirm\">\n" +
-    "                <a href=\"\" class=\"pull-left backlink\" ng-click=\"backDateEdit()\">< Back</a>\n" +
-    "                <input type=\"button\" value=\"Confirm\" class=\"btn btn-primary pull-right\" ng-click=\"saveDateConfirm()\">\n" +
-    "             </div>\n" +
-    "        </div>\n" +
-    "      </form>\n" +
-    "    </div><!-- /.modal-content -->\n" +
-    "  </div><!-- /.modal-dialog -->\n" +
-    "</div><!-- /.modal -->\n" +
-    "\n" +
-    "\n" +
-    "\n" +
     "<!-- select photo -->\n" +
     "<div class=\"modal fade\" id=\"selphotoModal\" data-backdrop=\"static\">\n" +
     "  <div class=\"modal-dialog\">\n" +
@@ -926,6 +895,31 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "");
 }]);
 
+angular.module("events/partial_add_date.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("events/partial_add_date.tpl.html",
+    "<div class=\"modal-header\">\n" +
+    "    <button type=\"button\" class=\"close\" ng-click=\"dismiss()\">&times;</button>\n" +
+    "    <h4 class=\"modal-title\" ng-hide=\"editDate.id\">Add Event Date</h4>\n" +
+    "    <h4 class=\"modal-title\" ng-show=\"editDate.id\">Edit Event Date</h4>\n" +
+    "</div>\n" +
+    "<form name=\"dateform\" class=\"form-horizontal\" role=\"form\" ng-submit=\"saveDate()\" novalidate>\n" +
+    "    <div class=\"modal-body\">\n" +
+    "        <ng-include src=\"'events/partial_form_date.tpl.html'\"></ng-include>\n" +
+    "    </div>\n" +
+    "    <div class=\"modal-footer\">\n" +
+    "      <div class=\"to_confirm\">\n" +
+    "        <button ng-hide=\"editDate.id\" type=\"button\" class=\"btn btn-info pull-left\" ng-click=\"copyLastDate()\">Copy Last Date</button>\n" +
+    "        <button ng-hide=\"editDate.id\" type=\"submit\" class=\"btn btn-primary\">Add Date!</button>\n" +
+    "        <button ng-show=\"editDate.id\" type=\"submit\" class=\"btn btn-primary\">Save</button>\n" +
+    "      </div>\n" +
+    "      <div class=\"back_confirm\">\n" +
+    "        <a href=\"\" class=\"pull-left backlink\" ng-click=\"backDateEdit()\">< Back</a>\n" +
+    "        <input type=\"button\" value=\"Confirm\" class=\"btn btn-primary pull-right\" ng-click=\"saveDateConfirm()\">\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "</form>");
+}]);
+
 angular.module("events/partial_add_event_form.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("events/partial_add_event_form.tpl.html",
     "\n" +
@@ -1035,7 +1029,8 @@ angular.module("events/partial_edit_event_form.tpl.html", []).run(["$templateCac
     "  <div class=\"form-group\">\n" +
     "\n" +
     "    <div class=\"col-lg-offset-3 col-lg-9\">\n" +
-    "      <button class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#dateModal\" ng-click=\"addDate()\"><i class=\"icon-calendar\"></i> Add Date</button>\n" +
+    "      <button class=\"btn btn-primary\" ui-sref=\"eventEdit.addDate\"><i class=\"icon-calendar\"></i> Add Date</button>\n" +
+    "      <button class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#dateModal\" ng-click=\"addDate()\"><i class=\"icon-calendar\"></i> Add Date Old</button>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
@@ -1283,6 +1278,7 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "    </div>\n" +
     "  </div>\n" +
     "</div>\n" +
+    "\n" +
     "<div class=\"el_confirm\">\n" +
     "     <h2 id=\"e_name\">{{ EventObj.title }}</h2>\n" +
     "     <div class=\"loc_adr_dates\">\n" +
@@ -1551,7 +1547,7 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "        <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"item in stream\">\n" +
     "            <div class=\"inner\">\n" +
     "                <div class=\"stream-picture\">\n" +
-    "                     <div bx-stream-photo=\"{{item.image}}\" class=\"inner\"></div>\n" +
+    "                     <div bx-stream-photo=\"{{item.image}}\" class=\"inner\" ng-click=\"selectImage()\"></div>\n" +
     "                     <ul class=\"stream-action-links\">\n" +
     "                        <li ng-hide=\"item.favorited\" class=\"action-favorite\">\n" +
     "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Favorite!\"\n" +
@@ -1628,9 +1624,9 @@ angular.module("templates/photoviewer.tpl.html", []).run(["$templateCache", func
     "                </div>\n" +
     "                <div class=\"author\">\n" +
     "                    <img class=\"userimg\" src=\"{{EventObj.author_photo}}\"/>\n" +
-    "                    <div class=\"name\">{{EventObj.author_name}}</div>\n" +
-    "                    <div ng-hide=\"EventObj.profile.srv_following\" class=\"follow\" ng-click=\"FollowUser()\">Follow Me</div>\n" +
-    "                    <div ng-show=\"EventObj.profile.srv_following\" class=\"follow\" ng-click=\"FollowUser()\">Following</div>\n" +
+    "                    <div class=\"name\">{{Profile.name}}</div>\n" +
+    "                    <div ng-hide=\"Profile.srv_following\" class=\"follow\" ng-click=\"FollowUser()\">Follow Me</div>\n" +
+    "                    <div ng-show=\"Profile.srv_following\" class=\"follow\" ng-click=\"FollowUser()\">Following</div>\n" +
     "                </div>\n" +
     "                <div class=\"social\">\n" +
     "                    <div class=\"links\">\n" +

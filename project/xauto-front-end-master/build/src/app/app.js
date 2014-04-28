@@ -344,11 +344,18 @@ angular.module( 'blvdx', [
 ).service('$photoview' , function(){
 	var element = $('.photoviewer');
 	var pV = {currentScope:null,baseURL:null,photos:null,index:0,isVisible:false,
-		setup : function (scope , baseURL , album, startIndex , EventObj ){
+		// current scope;
+		// base url for append image;
+		// album object {photos:[imgs]}
+		// start image num
+		// user profile data
+		// event data object; {title:string , }
+		setup : function (scope , baseURL , album, startIndex ,Profile, EventObj ){
 			//this.currentScope = scope;
 			this.baseURL = baseURL;
 			this.album = album;
 			this.displayScope.EventObj = EventObj;
+			this.displayScope.Profile = Profile;
 			this.currentScope = scope;
 			// on image change :: hide
 			if(!this.isVisible){
@@ -513,7 +520,7 @@ angular.module( 'blvdx', [
 	return pV;
 
 
-}).controller('photoviewer', function($scope , $photoview){
+}).controller('photoviewer', function($scope , $photoview , $http,Profiles,$fb){
 	//
 	$photoview.displayScope = $scope;
 	// ------> display photo viewer ::
@@ -538,7 +545,9 @@ angular.module( 'blvdx', [
 	$scope.setPhoto = function () {
 		$scope.photo = $photoview.album.photos[$photoview.index];
 		$scope.photoURL = $scope.photo.image;
-		window.location.href = $photoview.baseURL  + "/" + $photoview.album.index + "/" + $photoview.index + "/";
+		if($photoview.baseURL){
+			window.location.href = $photoview.baseURL  + "/" + $photoview.album.index + "/" + $photoview.index + "/";
+		}
 	};
 	$scope.showPhoto = function () {
 		$(document).on('keydown', $scope.keyChangePhoto);
@@ -548,7 +557,9 @@ angular.module( 'blvdx', [
 	$scope.closePhoto = function () {
 		$('.photoviewer').css('display','none');
 		$(document).off('keydown', $scope.keyChangePhoto);
-		window.location.href = $photoview.baseURL;
+		if($photoview.baseURL){
+			window.location.href = $photoview.baseURL;
+		}
 		$photoview.isVisible = false;
 	};
 
@@ -576,7 +587,17 @@ angular.module( 'blvdx', [
 		$photoview.currentScope.Follow();
 	};
 	$scope.FollowUser = function (){
-		$photoview.currentScope.FollowUser();
+		//$photoview.currentScope.FollowUser();
+		$http.get('/api/current-user/').then(function (response) {
+			if (response.data.user !== null) {
+				Profiles.Follow($scope.Profile.slug).then(function (data) {
+					$scope.Profile.srv_following = data.srv_following;
+					$scope.Profile.srv_followersCount = data.srv_followersCount;
+				});
+			} else {
+				$(".navbar-nav a").eq(1).click();
+			}
+		});
 	};
 
 

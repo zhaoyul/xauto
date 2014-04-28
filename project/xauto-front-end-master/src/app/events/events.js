@@ -584,12 +584,11 @@ angular.module('blvdx.events', [
 					$scope.errors = error.data;
 				});
 			};
-
+			/*
 			$scope.FollowUser = function () {
 				$http.get('/api/current-user/').then(function (response) {
 					if (response.data.user !== null) {
 						Events.followUser($scope.EventObj.profile.slug).then(function (data) {
-							console.log('srv_following:', data.srv_following);
 							$scope.EventObj.profile.srv_following = data.srv_following;
 							$scope.EventObj.profile.srv_followersCount = data.srv_followersCount;
 						});
@@ -598,7 +597,7 @@ angular.module('blvdx.events', [
 					}
 				});
 			};
-
+			*/
 			$scope.Follow = function () {
 				$http.get('/api/current-user/').then(function (response) {
 					if (response.data.user == null) {

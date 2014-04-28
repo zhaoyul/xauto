@@ -80,7 +80,7 @@ angular.module( 'blvdx.stream', [
   });
 }])
 
-.controller( 'StreamListCtrl', ['$scope', 'titleService', 'Streams', '$http', function StreamCtrl( $scope, titleService, Streams, $http) {
+.controller( 'StreamListCtrl', ['$scope', 'titleService', 'Streams', '$http','$photoview', function StreamCtrl( $scope, titleService, Streams, $http , $photoview) {
   titleService.setTitle( 'Stream' );
   $scope.stream = [];
   $scope.$watch("$parent.stream", function(){
@@ -160,6 +160,11 @@ angular.module( 'blvdx.stream', [
     }
     Streams.send_fetch_more(offset);
   };
+
+  $scope.selectImage = function(){
+	  $photoview.setup($scope,null,{photos:$scope.stream},this.$index,$scope.$parent.$parent.Profile);
+	  console.log($scope,this);
+  }
 
 }])
 

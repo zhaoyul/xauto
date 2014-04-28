@@ -21,9 +21,9 @@
                 </div>
                 <div class="author">
                     <img class="userimg" src="{{EventObj.author_photo}}"/>
-                    <div class="name">{{EventObj.author_name}}</div>
-                    <div ng-hide="EventObj.profile.srv_following" class="follow" ng-click="FollowUser()">Follow Me</div>
-                    <div ng-show="EventObj.profile.srv_following" class="follow" ng-click="FollowUser()">Following</div>
+                    <div class="name">{{Profile.name}}</div>
+                    <div ng-hide="Profile.srv_following" class="follow" ng-click="FollowUser()">Follow Me</div>
+                    <div ng-show="Profile.srv_following" class="follow" ng-click="FollowUser()">Following</div>
                 </div>
                 <div class="social">
                     <div class="links">
