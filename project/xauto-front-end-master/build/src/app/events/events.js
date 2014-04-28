@@ -69,6 +69,65 @@ angular.module('blvdx.events', [
                     }
                 }
             })
+            .state('eventEdit.addDate', {
+                url: '/dates/add',
+                onEnter: function($stateParams, $state, $modal){
+                    $modal.open({
+                        templateUrl: "events/partial_add_date.tpl.html",
+                        controller: ['$scope', 'DateObj', function($scope, DateObj) {
+
+                            // initialization
+                            $scope.editDate = {event: $stateParams.eventId};
+                            $scope.editDate.start_date = new Date();
+                            $scope.editDate.startTime = "11:00";
+                            $scope.editDate.endTime = "16:00";
+                            DateObj.getOptions(null).then(function (options) {
+                                $scope.editDateOptions = options.actions.POST;
+                            });
+
+                            /* datepicker */
+                            $scope.today = function () {
+                                $scope.dt = new Date();
+                            };
+                            $scope.today();
+
+                            $scope.showWeeks = true;
+
+                            $scope.dateOptions = {
+                                'year-format': "'yyyy'",
+                                'starting-day': 1
+                            };
+
+                            $scope.minDate = new Date();
+                            $scope.maxDate = new Date();
+                            $scope.maxDate.setDate($scope.maxDate.getDate() + 365);
+
+                            /* end of datepicker */
+
+                          $scope.dismiss = function() {
+                            console.log('dismiss called');
+                            $scope.$dismiss();
+                          };
+
+                          $scope.save = function() {
+                            item.update().then(function() {
+                              $scope.$close(true);
+                            });
+                          };
+                        }]
+                    }).result.then(
+                        function(result) {
+                            console.log('closed modal');
+                            console.log('id: ' + $stateParams.eventId);
+                            return $state.transitionTo('eventEdit', {eventId: $stateParams.eventId});
+                        },
+                        function(result) {
+                            console.log('dismissed modal');
+                            console.log('id: ' + $stateParams.eventId);
+                            return $state.transitionTo('eventEdit', {eventId: $stateParams.eventId});
+                    });
+                }
+            })
             .state('eventDetails', {
                 url: '/events/:eventId',
                 views: {
@@ -212,7 +271,6 @@ angular.module('blvdx.events', [
                         $(".navbar-nav a").eq(1).click();
                     }
                 });
-
             };
 
             app_scope = AppScope.getScope();
@@ -288,7 +346,6 @@ angular.module('blvdx.events', [
                 });
             };
 
-
             $scope.selimg = function (entry) {
                 Events.selimg($scope.eventId, entry).then(function (imgs) {
                     $(".modal:visible").find(".close").click();
@@ -317,16 +374,6 @@ angular.module('blvdx.events', [
                 });
             };
 
-            $scope.addDate = function () {
-                $scope.editDate = {event: $scope.EventObj.id};
-                $scope.editDate.start_date = new Date();
-                $scope.editDate.startTime = "11:00";
-                $scope.editDate.endTime = "16:00";
-                DateObj.getOptions(null).then(function (options) {
-                    $scope.editDateOptions = options.actions.POST;
-                });
-            };
-
             $scope.copyLastDate = function () {
 
                 DateObj.getLastDate($scope.EventObj.id).then(function (date) {
@@ -336,8 +383,6 @@ angular.module('blvdx.events', [
                     $scope.editDate.startTime = $filter('date')(date.start_date, 'HH:mm');
                     $scope.editDate.endTime = $filter('date')(date.end_date, 'HH:mm');
                 });
-
-
             };
 
             $scope.saveDateConfirm = function () {
@@ -430,7 +475,6 @@ angular.module('blvdx.events', [
                 }
             };
 
-
             $scope.withoutimezone = function (date) {
                 x = new Date();
                 wot = x.getTimezoneOffset() / 60;
@@ -462,26 +506,6 @@ angular.module('blvdx.events', [
                     $scope.EventObj.dates.splice($index, 1);
                 });
             };
-
-            /* datepicker */
-            $scope.today = function () {
-                $scope.dt = new Date();
-            };
-            $scope.today();
-
-            $scope.showWeeks = true;
-
-            $scope.dateOptions = {
-                'year-format': "'yyyy'",
-                'starting-day': 1
-            };
-
-            $scope.minDate = new Date();
-            $scope.maxDate = new Date();
-            $scope.maxDate.setDate($scope.maxDate.getDate() + 365);
-
-            /* end of datepicker */
-
 
         }])
 
