@@ -176,6 +176,7 @@ class EventDetailsSerializer(serializers.ModelSerializer):
             return obj.thumb_url(1500,290)
 
     def get_gotolink(self, obj):
+        print 'getgoto called'
         near = obj.get_nearest_date()
         if near:
             if near.latitude and near.longitude:
