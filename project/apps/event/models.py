@@ -155,6 +155,9 @@ class Event(TimestampedModel):
         related_name='followed_events', null=True, blank=True,
         verbose_name='Event followed by')
 
+    class Meta:
+        ordering = ['-created']
+
     # Short link must be validated for case-insensitive unique
     def clean(self):
         self.short_link = self.short_link.lower()

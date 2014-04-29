@@ -909,8 +909,8 @@ angular.module("events/partial_add_date.tpl.html", []).run(["$templateCache", fu
     "    <div class=\"modal-footer\">\n" +
     "      <div class=\"to_confirm\">\n" +
     "        <button ng-hide=\"editDate.id\" type=\"button\" class=\"btn btn-info pull-left\" ng-click=\"copyLastDate()\">Copy Last Date</button>\n" +
-    "        <button ng-hide=\"editDate.id\" type=\"submit\" class=\"btn btn-primary\">Add Date!</button>\n" +
-    "        <button ng-show=\"editDate.id\" type=\"submit\" class=\"btn btn-primary\">Save</button>\n" +
+    "        <button ng-hide=\"editDate.id\" type=\"submit\" ng-click=\"addDate()\" class=\"btn btn-primary\">Add Date!</button>\n" +
+    "        <button ng-show=\"editDate.id\" type=\"submit\" ng-click=\"addDate()\" class=\"btn btn-primary\">Save</button>\n" +
     "      </div>\n" +
     "      <div class=\"back_confirm\">\n" +
     "        <a href=\"\" class=\"pull-left backlink\" ng-click=\"backDateEdit()\">< Back</a>\n" +
@@ -1029,8 +1029,8 @@ angular.module("events/partial_edit_event_form.tpl.html", []).run(["$templateCac
     "  <div class=\"form-group\">\n" +
     "\n" +
     "    <div class=\"col-lg-offset-3 col-lg-9\">\n" +
-    "      <button class=\"btn btn-primary\" ui-sref=\"eventEdit.addDate\"><i class=\"icon-calendar\"></i> Add Date</button>\n" +
-    "      <button class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#dateModal\" ng-click=\"addDate()\"><i class=\"icon-calendar\"></i> Add Date Old</button>\n" +
+    "        <button class=\"btn btn-primary\" ng-click=\"setNewDate()\" data-toggle=\"modal\"\n" +
+    "                data-target=\"#dateModal\" ><i class=\"icon-calendar\"></i> Add Date</button>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
@@ -1051,13 +1051,12 @@ angular.module("events/partial_edit_event_form.tpl.html", []).run(["$templateCac
     "            <a href=\"#/eventdates/{{date.id}}/photosmanage\" class=\"btn btn-primary btn-sm\">Manage photos</a>\n" +
     "\n" +
     "            <button\n" +
+    "              ng-click=\"setThisEditableDate(date)\"\n" +
     "              class=\"btn btn-primary btn-sm\"\n" +
     "              data-toggle=\"modal\"\n" +
     "              data-target=\"#dateModal\"\n" +
-    "              ng-click=\"setThisEditableDate(date)\"\n" +
-    "              >\n" +
-    "                Edit\n" +
-    "            </button>\n" +
+    "              >Edit\n" +
+    "            </button><!-- ui-sref=\"eventEdit.addDate\" -->\n" +
     "\n" +
     "            <button type=\"button\" class=\"btn btn-danger btn-sm\" ng-click=\"removeDate($index, date.id)\">Delete</button>\n" +
     "            <!-- <ng-include src=\"'events/partial_form_date.tpl.html'\"></ng-include> -->\n" +

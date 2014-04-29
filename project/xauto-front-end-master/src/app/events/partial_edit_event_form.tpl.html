@@ -47,8 +47,8 @@
   <div class="form-group">
 
     <div class="col-lg-offset-3 col-lg-9">
-      <button class="btn btn-primary" ui-sref="eventEdit.addDate"><i class="icon-calendar"></i> Add Date</button>
-      <button class="btn btn-primary" data-toggle="modal" data-target="#dateModal" ng-click="addDate()"><i class="icon-calendar"></i> Add Date Old</button>
+        <button class="btn btn-primary" ng-click="setNewDate()" data-toggle="modal"
+                data-target="#dateModal" ><i class="icon-calendar"></i> Add Date</button>
     </div>
   </div>
 
@@ -69,13 +69,12 @@
             <a href="#/eventdates/{{date.id}}/photosmanage" class="btn btn-primary btn-sm">Manage photos</a>
 
             <button
+              ng-click="setThisEditableDate(date)"
               class="btn btn-primary btn-sm"
               data-toggle="modal"
               data-target="#dateModal"
-              ng-click="setThisEditableDate(date)"
-              >
-                Edit
-            </button>
+              >Edit
+            </button><!-- ui-sref="eventEdit.addDate" -->
 
             <button type="button" class="btn btn-danger btn-sm" ng-click="removeDate($index, date.id)">Delete</button>
             <!-- <ng-include src="'events/partial_form_date.tpl.html'"></ng-include> -->
