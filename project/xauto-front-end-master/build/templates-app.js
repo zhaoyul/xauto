@@ -595,8 +595,8 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                            <div class=\"col-xs-12 col-sm-8\">\n" +
     "                                <ul class=\"event-details-navbar-items pull-right\">\n" +
     "                                    <li class=\"disabled\">\n" +
-    "                                        <a ng-show=\"{{EventObj.gotolink}}\" href=\"{{EventObj.gotolink}}\">\n" +
-    "                                        <a ng-hide=\"!{{EventObj.gotolink}}\" href=\"\" ng-click=\"\" title=\"Sorry! No location is set for this event.\">\n" +
+    "                                        <a ng-show=\"EventObj.gotolink\" href=\"{{EventObj.gotolink}}\">\n" +
+    "                                        <a ng-hide=\"!EventObj.gotolink\" href=\"\" ng-click=\"\" title=\"Sorry! No location is set for this event.\">\n" +
     "                                            <i class=\"xa-icon-event-details-goto\"></i>\n" +
     "                                            Go to\n" +
     "                                        </a>\n" +
