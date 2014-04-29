@@ -568,6 +568,10 @@ angular.module('blvdx.events', [
 	.controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', '$http', 'Streams' , '$state' , '$fb','$photoview',
 		function EventsCtrl($scope, titleService, $location, $stateParams, Events, $http, Streams, $state , $fb , $photoview) {
 			titleService.setTitle('Event Details');
+            $scope.go = function ( path ) {
+              $location.path( path );
+            };
+
 			$scope.stateParams = $stateParams;
 			$scope.reloadEvent = function () {
 				// get event data from url id ::

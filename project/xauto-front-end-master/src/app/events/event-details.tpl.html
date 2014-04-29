@@ -87,9 +87,9 @@
                             <div class="col-xs-12 col-sm-8">
                                 <ul class="event-details-navbar-items pull-right">
                                     <li>
-                                        <button ng-click="go(EventObj.gotolink);">Go to</button>
-                                        <a href="{{EventObj.gotolink}}">
-                                            <i clasks="xa-icon-event-details-goto"></i>
+                                        <a ng-show="{{EventObj.gotolink}}" href="{{EventObj.gotolink}}" title="Sorry! No location is set for this event.">
+                                        <a ng-hide="{{EventObj.gotolink}}" href="" ng-click="">
+                                            <i class="xa-icon-event-details-goto"></i>
                                             Go to
                                         </a>
                                     </li>
