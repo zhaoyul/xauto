@@ -86,9 +86,10 @@
                             </div>
                             <div class="col-xs-12 col-sm-8">
                                 <ul class="event-details-navbar-items pull-right">
-                                    <li ng-show="EventObj.gotolink">
+                                    <li>
+                                        <button ng-click="go(EventObj.gotolink);">Go to</button>
                                         <a href="{{EventObj.gotolink}}">
-                                            <i class="xa-icon-event-details-goto"></i>
+                                            <i clasks="xa-icon-event-details-goto"></i>
                                             Go to
                                         </a>
                                     </li>

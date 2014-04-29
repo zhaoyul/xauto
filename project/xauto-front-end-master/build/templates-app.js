@@ -594,9 +594,10 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                            </div>\n" +
     "                            <div class=\"col-xs-12 col-sm-8\">\n" +
     "                                <ul class=\"event-details-navbar-items pull-right\">\n" +
-    "                                    <li ng-show=\"EventObj.gotolink\">\n" +
+    "                                    <li>\n" +
+    "                                        <button ng-click=\"go(EventObj.gotolink);\">Go to</button>\n" +
     "                                        <a href=\"{{EventObj.gotolink}}\">\n" +
-    "                                            <i class=\"xa-icon-event-details-goto\"></i>\n" +
+    "                                            <i clasks=\"xa-icon-event-details-goto\"></i>\n" +
     "                                            Go to\n" +
     "                                        </a>\n" +
     "                                    </li>\n" +
