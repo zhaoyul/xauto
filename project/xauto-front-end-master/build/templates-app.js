@@ -907,19 +907,21 @@ angular.module("events/partial_add_date.tpl.html", []).run(["$templateCache", fu
     "    <h4 class=\"modal-title\" ng-show=\"editDate.id\">Edit Event Date</h4>\n" +
     "</div>\n" +
     "<form name=\"dateform\" class=\"form-horizontal\" role=\"form\" ng-submit=\"saveDate()\" novalidate>\n" +
-    "    <div class=\"modal-body\">\n" +
+    "    <div class=\"modal-body date-modal-content-fix\">\n" +
     "        <ng-include src=\"'events/partial_form_date.tpl.html'\"></ng-include>\n" +
     "    </div>\n" +
-    "    <div class=\"modal-footer\">\n" +
+    "    <div class=\"modal-footer date-modal-footer-fix\">\n" +
     "      <div class=\"to_confirm\">\n" +
-    "        <button ng-hide=\"editDate.id\" type=\"button\" class=\"btn btn-info pull-left\" ng-click=\"copyLastDate()\">Copy Last Date</button>\n" +
-    "        <button ng-hide=\"editDate.id\" type=\"submit\" ng-click=\"addDate()\" class=\"btn btn-primary\" data-toggle=\"modal\">Add Date!</button>\n" +
-    "        <button ng-show=\"editDate.id\" type=\"submit\" ng-click=\"addDate()\" class=\"btn btn-primary\">Save</button>\n" +
+    "        <button ng-hide=\"confirmScreen\" type=\"button\" class=\"btn btn-info pull-left\" ng-click=\"copyLastDate()\">Copy Last Date</button>\n" +
+    "        <button ng-hide=\"confirmScreen\" type=\"submit\" ng-click=\"addDate()\" class=\"btn btn-primary\" data-toggle=\"modal\">Add Date!</button>\n" +
+    "        <button ng-show=\"confirmScreen\" type=\"submit\" ng-click=\"saveDate()\" value=\"Confirm\" data-toggle=\"modal\" data-target=\"#dateModal\"  class=\"btn btn-primary\">Confirm</button>\n" +
+    "        <div ng-show=\"confirmScreen\" class=\"pull-left date-modal-back-btn\" ng-click=\"backConfirm()\">&lt; Back</div>\n" +
     "      </div>\n" +
+    "          <!--\n" +
     "      <div class=\"back_confirm\">\n" +
-    "        <a href=\"\" class=\"pull-left backlink\" ng-click=\"backDateEdit()\">< Back</a>\n" +
+    "        <a href=\"\" class=\"pull-left backlink\" ng-click=\"backDateEdit()\">Back</a>\n" +
     "        <input type=\"button\" value=\"Confirm\" class=\"btn btn-primary pull-right\" data-toggle=\"modal\" data-target=\"#dateModal\" ng-click=\"saveDateConfirm()\">\n" +
-    "      </div>\n" +
+    "      </div>-->\n" +
     "    </div>\n" +
     "</form>");
 }]);
@@ -1281,13 +1283,13 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "    </div>\n" +
     "  </div>\n" +
     "</div>\n" +
-    "\n" +
     "<div class=\"el_confirm\" ng-show=\"confirmScreen\">\n" +
     "     <h2 id=\"e_name\">{{ EventObj.title }}</h2>\n" +
     "     <div class=\"loc_adr_dates\">\n" +
     "        <div class=\"loc\">\n" +
     "            <p><span>Location Name:</span><b>{{ editDate.location_name }}</b></p><div class=\"clear\"></div>\n" +
-    "            <p><span>Address:</span><b>{{ editDate.address_1 }}</b></p><div class=\"clear\"></div>\n" +
+    "            <p><span>Address:</span><b>{{ editDate.address_1  }} {{ editDate.address_2  }}\n" +
+    "            <br/>{{editDate.city}} , {{editDate.zip}}</b></p><div class=\"clear\"></div>\n" +
     "        </div>\n" +
     "        <div class=\"dates\">\n" +
     "            <div class=\"dt\">\n" +
@@ -1306,14 +1308,14 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "     <div class=\"feature_prices\">\n" +
     "        <div class=\"feature\">\n" +
     "        <p>Feature Headline:</p>\n" +
-    "        <b>Porsche Drive</b>\n" +
+    "        <b>{{editDate.feature_headline}}</b>\n" +
     "        <p>Feature detail:</p>\n" +
-    "        <b>get there early!</b>\n" +
+    "        <b>{{editDate.feature_detail}}</b>\n" +
     "        </div>\n" +
     "        <div class=\"prices\">\n" +
     "            <div class=\"wrap\">\n" +
-    "            <p>Attend:<b>FREE</b></p>\n" +
-    "            <p>Exhibit:<b>$50-$65</b></p>\n" +
+    "            <p>Attend:<b>{{editDate.attend_free? 'FREE' : editDate.attend_price_from + '-' +editDate.attend_price_to}}</b></p>\n" +
+    "            <p>Exhibit:<b>{{editDate.exhibit_free?'FREE' : editDate.exhibit_price_from + '-' + editDate.exhibit_price_to}}</b></p>\n" +
     "            </div>\n" +
     "        </div>\n" +
     "        <div class=\"clear\"></div>\n" +

@@ -6,6 +6,7 @@ angular.module('blvdx.events', [
 		'security.authorization',
 		'titleService',
 		'social',
+        'maps',
 		'angularFileUpload'
 	])
 
@@ -72,18 +73,18 @@ angular.module('blvdx.events', [
 
             .state('eventEdit.addDate', {
                 url: '/dates/',
-                onEnter: function($stateParams, $state, $modal , $dateproxy){
+                onEnter: function($stateParams, $state, $modal , $dateproxy,$gmaps){
                     $modal.open({
                         templateUrl: "events/partial_add_date.tpl.html",
                         controller: ['$scope', 'DateObj', function($scope, DateObj) {
                             // initialization
                             $scope.confirmScreen = false;
-
                             if($dateproxy.editDate){
                                 $scope.editDate = $dateproxy.editDate;
                                 $scope.editDateOptions = $dateproxy.editDateOptions;
+
                             } else {
-                                $scope.editDate = {event: $stateParams.eventId};
+                                $scope.editDate = {event: $stateParams.eventId , country_short:null,shared:[]};
                                 $scope.editDate.start_date = new Date();
                                 $scope.editDate.startTime = "11:00";
                                 $scope.editDate.endTime = "16:00";
@@ -159,18 +160,38 @@ angular.module('blvdx.events', [
                             return has_errors;
                         };
                         // save date btn ::
+                        $scope.hasMap = false;
                         $scope.addDate = function () {
                             if($scope.verify()){
                                 return;
                             }
-                            console.log('proceed to confirm');
+                            console.log('proceed to confirm:',$scope.editDate,$dateproxy.EventObj);
+                            $scope.EventObj = $dateproxy.EventObj;
                             $scope.confirmScreen = true;
+                            // run map ::
+                            var opt = {zoom:3};
+                            if($scope.editDate.latitude && $scope.editDate.longitude){
+                                opt.zoom = 12;
+                            }
+                            if($scope.hasMap){
+                                $gmaps.moveTo($scope.editDate.latitude , $scope.editDate.longitude,opt.zoom);
+                                $gmaps.update();
+                            } else {
+                                $gmaps.showMap($scope.editDate.latitude , $scope.editDate.longitude,$('.map')[0],opt);
+                            }
+                            $scope.hasMap = true;
+
+                        };
+
+                        $scope.backConfirm = function (){
+                            $scope.confirmScreen = false;
                         };
 
                         $scope.saveDate = function (){
                             $dateproxy.editDate = $scope.editDate;
                             $dateproxy.editDateOptions = $scope.editDateOptions;
-                            $scope.dismiss();
+                            $scope.$dismiss();
+                            $dateproxy.dateComplete();
                         };
 
                         $scope.copyLastDate = function () {
@@ -181,8 +202,6 @@ angular.module('blvdx.events', [
                                 $scope.editDate.startTime = $filter('date')(date.start_date, 'HH:mm');
                                 $scope.editDate.endTime = $filter('date')(date.end_date, 'HH:mm');
                             });
-
-
                         };
                         }]
                     }).result.then(
@@ -347,8 +366,8 @@ angular.module('blvdx.events', [
 			};
 		}])
 
-    .service('$dateproxy',function(){
-        return {isSet:false,EventObj:null};
+    .service('$dateproxy',function($rootScope){
+        return {isSet:false,EventObj:null,savedate:'Modal.CloseDatePopup',dateComplete:function(){$rootScope.$broadcast(this.savedate)}};
     })
 	.controller('EventAddCtrl', ['$scope', '$state', 'titleService', 'Events', '$upload','$dateproxy',
 		function EventsCtrl($scope, $state, titleService, Events, $upload,$dateproxy) {
@@ -477,26 +496,26 @@ angular.module('blvdx.events', [
                 $state.transitionTo('eventEdit.addDate', {eventId: $scope.eventId});
             };
 
-			$scope.saveDate = function () {
+            $scope.$on($dateproxy.savedate,function () {
 				if ($dateproxy.editDate.id !== undefined) {
-					DateObj.saveDate($scope.editDate).then(function (date) {
+					DateObj.saveDate($dateproxy.editDate).then(function (date) {
 						$scope.reloadEvent();
 						//$(".modal:visible").find(".close").click();
-						$scope.showConfirm();
+						//$scope.showConfirm();
 					}, function (error) {
 						$scope.errors = error.data;
 					});
 				} else {
-					DateObj.createDate($scope.editDate).then(function (date) {
+					DateObj.createDate($dateproxy.editDate).then(function (date) {
 						$scope.reloadEvent();
 						//$(".modal:visible").find(".close").click();
-						$scope.showConfirm();
+						//$scope.showConfirm();
 					}, function (error) {
 						$scope.errors = error.data;
 					});
 				}
+			});
 
-			};
 
 			$scope.onFileSelect = function ($files, field) {
 				//$files: an array of files selected, each file has name, size, and type.
@@ -535,6 +554,7 @@ angular.module('blvdx.events', [
 					$scope.editDate.startTime = $scope.withoutimezone(date.start_date);
 					$scope.editDate.endTime = $scope.withoutimezone(date.end_date);
                     $dateproxy.editDate = $scope.editDate;
+                    // open date editor
                     $state.transitionTo('eventEdit.addDate', {eventId: $scope.eventId});
 				});
 				DateObj.getOptions(date.id).then(function (options) {
