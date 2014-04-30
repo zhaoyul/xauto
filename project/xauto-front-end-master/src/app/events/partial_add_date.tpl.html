@@ -10,12 +10,12 @@
     <div class="modal-footer">
       <div class="to_confirm">
         <button ng-hide="editDate.id" type="button" class="btn btn-info pull-left" ng-click="copyLastDate()">Copy Last Date</button>
-        <button ng-hide="editDate.id" type="submit" ng-click="addDate()" class="btn btn-primary">Add Date!</button>
+        <button ng-hide="editDate.id" type="submit" ng-click="addDate()" class="btn btn-primary" data-toggle="modal">Add Date!</button>
         <button ng-show="editDate.id" type="submit" ng-click="addDate()" class="btn btn-primary">Save</button>
       </div>
       <div class="back_confirm">
         <a href="" class="pull-left backlink" ng-click="backDateEdit()">< Back</a>
-        <input type="button" value="Confirm" class="btn btn-primary pull-right" ng-click="saveDateConfirm()">
+        <input type="button" value="Confirm" class="btn btn-primary pull-right" data-toggle="modal" data-target="#dateModal" ng-click="saveDateConfirm()">
       </div>
     </div>
 </form>

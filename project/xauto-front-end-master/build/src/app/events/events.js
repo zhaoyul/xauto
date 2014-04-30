@@ -77,6 +77,8 @@ angular.module('blvdx.events', [
                         templateUrl: "events/partial_add_date.tpl.html",
                         controller: ['$scope', 'DateObj', function($scope, DateObj) {
                             // initialization
+                            $scope.confirmScreen = false;
+
                             if($dateproxy.editDate){
                                 $scope.editDate = $dateproxy.editDate;
                                 $scope.editDateOptions = $dateproxy.editDateOptions;
@@ -161,11 +163,15 @@ angular.module('blvdx.events', [
                             if($scope.verify()){
                                 return;
                             }
+                            console.log('proceed to confirm');
+                            $scope.confirmScreen = true;
+                        };
+
+                        $scope.saveDate = function (){
                             $dateproxy.editDate = $scope.editDate;
                             $dateproxy.editDateOptions = $scope.editDateOptions;
                             $scope.dismiss();
                         };
-
 
                         $scope.copyLastDate = function () {
                             DateObj.getLastDate($dateproxy.EventObj.id).then(function (date) {
@@ -569,9 +575,8 @@ angular.module('blvdx.events', [
 		function EventsCtrl($scope, titleService, $location, $stateParams, Events, $http, Streams, $state , $fb , $photoview) {
 			titleService.setTitle('Event Details');
             $scope.go = function ( path ) {
-              $location.path( path );
+                $location.path( path );
             };
-
 			$scope.stateParams = $stateParams;
 			$scope.reloadEvent = function () {
 				// get event data from url id ::

@@ -913,12 +913,12 @@ angular.module("events/partial_add_date.tpl.html", []).run(["$templateCache", fu
     "    <div class=\"modal-footer\">\n" +
     "      <div class=\"to_confirm\">\n" +
     "        <button ng-hide=\"editDate.id\" type=\"button\" class=\"btn btn-info pull-left\" ng-click=\"copyLastDate()\">Copy Last Date</button>\n" +
-    "        <button ng-hide=\"editDate.id\" type=\"submit\" ng-click=\"addDate()\" class=\"btn btn-primary\">Add Date!</button>\n" +
+    "        <button ng-hide=\"editDate.id\" type=\"submit\" ng-click=\"addDate()\" class=\"btn btn-primary\" data-toggle=\"modal\">Add Date!</button>\n" +
     "        <button ng-show=\"editDate.id\" type=\"submit\" ng-click=\"addDate()\" class=\"btn btn-primary\">Save</button>\n" +
     "      </div>\n" +
     "      <div class=\"back_confirm\">\n" +
     "        <a href=\"\" class=\"pull-left backlink\" ng-click=\"backDateEdit()\">< Back</a>\n" +
-    "        <input type=\"button\" value=\"Confirm\" class=\"btn btn-primary pull-right\" ng-click=\"saveDateConfirm()\">\n" +
+    "        <input type=\"button\" value=\"Confirm\" class=\"btn btn-primary pull-right\" data-toggle=\"modal\" data-target=\"#dateModal\" ng-click=\"saveDateConfirm()\">\n" +
     "      </div>\n" +
     "    </div>\n" +
     "</form>");
@@ -1119,7 +1119,7 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
 
 angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("events/partial_form_date.tpl.html",
-    "<div class=\"el_fields\">\n" +
+    "<div class=\"el_fields\" ng-hide=\"confirmScreen\">\n" +
     "  <div class=\"partial-form-date\">\n" +
     "      <div class=\"form-group\" ng-class=\"{'has-error': form.location_name.$invalid || errors.location_name}\">\n" +
     "        <label class=\"col-lg-3 control-label\">Location Name</label>\n" +
@@ -1282,7 +1282,7 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "  </div>\n" +
     "</div>\n" +
     "\n" +
-    "<div class=\"el_confirm\">\n" +
+    "<div class=\"el_confirm\" ng-show=\"confirmScreen\">\n" +
     "     <h2 id=\"e_name\">{{ EventObj.title }}</h2>\n" +
     "     <div class=\"loc_adr_dates\">\n" +
     "        <div class=\"loc\">\n" +
