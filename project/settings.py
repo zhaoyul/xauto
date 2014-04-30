@@ -412,6 +412,7 @@ COUNTRIES_OVERRIDE = {
 
 
 TOS_URL = u'#'
+GOTO_BUTTON_URL=u'http://maps.apple.com/?q={lat},{lon}'
 
 try:
     from settings_local import *
