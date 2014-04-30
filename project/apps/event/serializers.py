@@ -176,11 +176,10 @@ class EventDetailsSerializer(serializers.ModelSerializer):
             return obj.thumb_url(1500,290)
 
     def get_gotolink(self, obj):
-        print 'getgoto called'
         near = obj.get_nearest_date()
         if near:
             if near.latitude and near.longitude:
-                return "https://maps.google.com/?q="+str(near.latitude)+","+str(near.longitude)
+                return settings.GOTO_BUTTON_URL.format(lat=near.latitude, lon=near.longitude)
         return ""
 
     def srv_followers_count(self, obj):
