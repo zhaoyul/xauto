@@ -163,6 +163,7 @@ class EventViewSet(ModelViewSet):
             obj.main_image = imageObj
 
 
+# TODO: Only event creator should be able to save date!
 class EventDateViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = EventDateSerializer

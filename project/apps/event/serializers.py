@@ -64,11 +64,19 @@ class AlbumSerializer(serializers.ModelSerializer):
 class EventModelSerializer(serializers.ModelSerializer):
 
     dates = EventDateSerializer(source='event_dates', read_only=True)
+    can_edit = serializers.SerializerMethodField('get_can_edit')
 
     class Meta:
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'short_link',
-            'main_image', 'author', 'dates', 'slug')
+            'main_image', 'author', 'dates', 'slug', 'can_edit')
+
+    def get_can_edit(self, obj):
+        view = self.context['view']
+        user = view.request.user
+        if user.is_staff or obj.author == user:
+            return True
+        return False
 
 
 class EventSerializer(serializers.ModelSerializer):
