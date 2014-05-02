@@ -8959,7 +8959,6 @@ ul.event-details-actions > li > a.btn i {
 .el_confirm .map {
   height: 246px;
   clear: both;
-  background-color: #000099;
 }
 
 .el_confirm .feature_prices .feature {
@@ -9269,4 +9268,9 @@ ul.stream-list > li:hover ul.stream-action-links {
 
 .additional label {
   font-size: 7.5pt;
+}
+
+.albumShare {
+  float: right;
+  cursor: pointer;
 }

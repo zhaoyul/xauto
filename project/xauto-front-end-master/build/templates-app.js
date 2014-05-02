@@ -912,7 +912,7 @@ angular.module("events/partial_add_date.tpl.html", []).run(["$templateCache", fu
     "    </div>\n" +
     "    <div class=\"modal-footer date-modal-footer-fix\">\n" +
     "      <div class=\"to_confirm\">\n" +
-    "        <button ng-hide=\"confirmScreen\" type=\"button\" class=\"btn btn-info pull-left\" ng-click=\"copyLastDate()\">Copy Last Date</button>\n" +
+    "        <button ng-hide=\"editConfirm()\" type=\"button\" class=\"btn btn-info pull-left\" ng-click=\"copyLastDate()\">Copy Last Date</button>\n" +
     "        <button ng-hide=\"confirmScreen\" type=\"submit\" ng-click=\"addDate()\" class=\"btn btn-primary\" data-toggle=\"modal\">Add Date!</button>\n" +
     "        <button ng-show=\"confirmScreen\" type=\"submit\" ng-click=\"saveDate()\" value=\"Confirm\" data-toggle=\"modal\" data-target=\"#dateModal\"  class=\"btn btn-primary\">Confirm</button>\n" +
     "        <div ng-show=\"confirmScreen\" class=\"pull-left date-modal-back-btn\" ng-click=\"backConfirm()\">&lt; Back</div>\n" +
@@ -1088,6 +1088,7 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
     "        <a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#album-{{album.id}}\" onClick=\"return false\">\n" +
     "          {{album.date}} - {{album.feature_headline}}\n" +
     "        </a>\n" +
+    "        <div class=\"albumShare\" href=\"#\" tooltip-placement=\"left\" tooltip=\"Share\" ng-click=\"shareAlbum(album.id)\"><i class=\"icon-share\"></i></div>\n" +
     "      </h4>\n" +
     "    </div>\n" +
     "    <div id=\"album-{{album.id}}\" class=\"panel-collapse collapse in\" ng-class=\"{in:album.active}\" >\n" +
@@ -1566,7 +1567,7 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "                          </a>\n" +
     "                        </li>\n" +
     "                        <li class=\"action-share\">\n" +
-    "                            <a href=\"#\" tooltip-placement=\"left\" tooltip=\"Share\"><i class=\"icon-share\"></i></a>\n" +
+    "                            <a href=\"#\" tooltip-placement=\"left\" tooltip=\"Share\"  ng-click=\"selectImage()\"><i class=\"icon-share\"></i></a>\n" +
     "                        </li>\n" +
     "                        <li ng-hide=\"item.reported\" class=\"action-report\">\n" +
     "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Report\"\n" +

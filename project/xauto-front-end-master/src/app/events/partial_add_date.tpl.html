@@ -9,7 +9,7 @@
     </div>
     <div class="modal-footer date-modal-footer-fix">
       <div class="to_confirm">
-        <button ng-hide="confirmScreen" type="button" class="btn btn-info pull-left" ng-click="copyLastDate()">Copy Last Date</button>
+        <button ng-hide="editConfirm()" type="button" class="btn btn-info pull-left" ng-click="copyLastDate()">Copy Last Date</button>
         <button ng-hide="confirmScreen" type="submit" ng-click="addDate()" class="btn btn-primary" data-toggle="modal">Add Date!</button>
         <button ng-show="confirmScreen" type="submit" ng-click="saveDate()" value="Confirm" data-toggle="modal" data-target="#dateModal"  class="btn btn-primary">Confirm</button>
         <div ng-show="confirmScreen" class="pull-left date-modal-back-btn" ng-click="backConfirm()">&lt; Back</div>

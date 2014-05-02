@@ -1,7 +1,7 @@
 angular.module('blvdx.events', [
 		'resources.events',
 		'ui.router',
-		// 'placeholders',
+		//'placeholders',
 		'ui.bootstrap',
 		'security.authorization',
 		'titleService',
@@ -82,7 +82,7 @@ angular.module('blvdx.events', [
                             if($dateproxy.editDate){
                                 $scope.editDate = $dateproxy.editDate;
                                 $scope.editDateOptions = $dateproxy.editDateOptions;
-
+                                $scope.edit = true;
                             } else {
 
                                 $scope.editDate = {event:$dateproxy.EventObj.id};// $stateParams.eventId};
@@ -93,6 +93,10 @@ angular.module('blvdx.events', [
                                     $scope.editDateOptions = options.actions.POST;
                                 });
                             }
+
+                            $scope.editConfirm = function(){
+                                return $scope.edit || $scope.confirmScreen;
+                            };
 
 
                             /* datepicker */
@@ -139,7 +143,6 @@ angular.module('blvdx.events', [
                                 $scope.errors.country = ["Country is required"];
                                 has_errors = true;
                             }
-                            console.log($scope.editDate,$scope.editDate.currency)
                             if($scope.editDate.currency === undefined){
                                 $scope.errors.currency = true;
                             }
@@ -663,10 +666,10 @@ angular.module('blvdx.events', [
 					var p = $state.params;
 					if (p && p.Album) {
 						if( p.Photo){// open photoviewer ; show photo
-							$photoview.setup( $scope, '/#/events/' + $scope.stateParams.eventId,$scope.Albums[p.Album], p.Photo);
+							$photoview.setup( $scope, '/#/events/' + $scope.stateParams.eventId,$scope.Albums[p.Album], p.Photo , $scope.EventObj.profile , $scope.EventObj);
 						} else {// scroll to album with delay
 							setTimeout(function(){
-								$('html, body').animate({scrollTop:$('#accordion').find('.panel-default').eq(p.Album).offset().top}, 1500);
+								$('html, body').animate({scrollTop:$('#accordion').find('.panel-default').eq(p.Album - 1).offset().top - 60}, 1500);
 							},100);
 						}
 					}
@@ -750,11 +753,12 @@ angular.module('blvdx.events', [
 
 			$scope.selectPhoto = function () {
 				// select photo by click in html
-				$photoview.setup( $scope, '/#/events/' + $scope.stateParams.eventId,this.$parent.album, this.$index , $scope.EventObj);
-				//$scope.showPhoto(this.$parent.album.index, this.$index);
+				$photoview.setup( $scope, '/#/events/' + $scope.stateParams.eventId,this.$parent.album, this.$index ,$scope.EventObj.profile, $scope.EventObj);
 			};
 
-
+            $scope.shareAlbum = function (id){
+                $state.transitionTo('eventDetails.Album', {eventId: $scope.stateParams.eventId , Album:id});
+            };
 
 
 			// ------>
