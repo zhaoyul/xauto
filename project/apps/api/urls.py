@@ -21,7 +21,7 @@ urlpatterns = patterns('',
     url(r'^configuration/$', ConfigurationView.as_view(), name='configuration'),
     url(r'^events/list/$', EventsListView.as_view(), name='events-list'),
 
-    url(r'^lastdate/$',LastDateView.as_view(),
+    url(r'^events/(?P<pk>\d+)/lastdate/$',LastDateView.as_view(),
         name='date-photosmanage'),
 
     url(r'^eventdates/(?P<id>\d+)/photosmanage/$', EventDatePhotoManageView.as_view(),
@@ -34,8 +34,6 @@ urlpatterns = patterns('',
 
     url(r'^events/(?P<slug>[-\w]+)/selphotoModal/$', EventAllImagesView.as_view(),
         name='event-follow'),
-
-
 
     url(r'^register/$', RegistrationView.as_view(), name='profiles-register'),
     url(r'^activate/(?P<activation_key>\w+)/$',

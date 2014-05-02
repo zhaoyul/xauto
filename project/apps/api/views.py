@@ -14,7 +14,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.core.files.base import ContentFile
 from django.conf import settings
-from rest_framework.generics import (ListAPIView, RetrieveAPIView)
+from rest_framework.generics import (ListAPIView, RetrieveAPIView, GenericAPIView)
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
@@ -175,21 +175,19 @@ class EventDateViewSet(ModelViewSet):
         obj.end_date -= delta
 
 
-class LastDateView(ListAPIView):
+class LastDateView(RetrieveAPIView):
     """
     Copy last date button
     """
     permission_classes = (IsAuthenticated,)
     serializer_class = EventDateSerializer
-    model = EventDate
+    model = Event
 
-    def get_queryset(self):
-        user = self.request.user
-        id = self.request.GET.get("id")
-        ev = Event.objects.get(id=id,author__user=user)
-
-        queryset = EventDate.objects.filter(event=ev).order_by("-end_date").order_by("-id")
-        return queryset
+    def retrieve(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        date = self.object.get_latest_date()
+        serializer = self.get_serializer(date)
+        return Response(serializer.data)
 
 
 class EventAllImagesView(APIView):

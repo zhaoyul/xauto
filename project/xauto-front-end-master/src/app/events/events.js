@@ -73,10 +73,10 @@ angular.module('blvdx.events', [
 
             .state('eventEdit.addDate', {
                 url: '/dates/',
-                onEnter: function($stateParams, $state, $modal , $dateproxy,$gmaps){
+                onEnter: function($stateParams, $state, $modal , $dateproxy, $gmaps, $filter){
                     $modal.open({
                         templateUrl: "events/partial_add_date.tpl.html",
-                        controller: ['$scope', 'DateObj', function($scope, DateObj) {
+                        controller: ['$scope', 'DateObj', 'Events', '$filter', function($scope, DateObj, Events, $filter) {
                             // initialization
                             $scope.confirmScreen = false;
                             if($dateproxy.editDate){
@@ -195,12 +195,13 @@ angular.module('blvdx.events', [
                         };
 
                         $scope.copyLastDate = function () {
-                            DateObj.getLastDate($dateproxy.EventObj.id).then(function (date) {
-                                date = date[0];
-                                delete date.id;
-                                $scope.editDate = date;
-                                $scope.editDate.startTime = $filter('date')(date.start_date, 'HH:mm');
-                                $scope.editDate.endTime = $filter('date')(date.end_date, 'HH:mm');
+                            Events.getLastDate($dateproxy.EventObj).then(function (date) {
+                                console.log(date);
+                                var new_date = date;
+                                delete new_date.id;
+                                $scope.editDate = new_date;
+                                $scope.editDate.startTime = $filter('date')(new_date.start_date, 'HH:mm');
+                                $scope.editDate.endTime = $filter('date')(new_date.end_date, 'HH:mm');
                             });
                         };
                         }]

@@ -61,6 +61,10 @@ angular.module('resources.events', ['restangular'])
     return Restangular.all('pictures').customPOST(photo, 'upload');
   };
 
+  Events.getLastDate = function (event) {
+      return Restangular.one('events', event.id).one('lastdate').get();
+  };
+
   return Events;
 }])
 
@@ -69,10 +73,6 @@ angular.module('resources.events', ['restangular'])
 
   DateObj.getDate = function (pk) {
       return Restangular.one('dates', pk).get();
-  };
-
-  DateObj.getLastDate = function (eventId) {
-      return Restangular.one('lastdate').customGET("",{id:eventId});
   };
 
   DateObj.saveDate = function (date) {
