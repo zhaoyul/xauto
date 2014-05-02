@@ -1251,7 +1251,7 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "      <input type=\"text\" class=\"form-control\" placeholder=\"High\" ng-disabled=\"editDate.attend_free\" ng-model=\"editDate.attend_price_to\">\n" +
     "    </div>\n" +
     "    <div class=\"col-lg-2\" ng-class=\"{'has-error': dateform.currency.$invalid|| errors.currency}\">\n" +
-    "      <select required name=\"currency\" class=\"form-control\" ng-model=\"editDate.currency\" ng-options=\"x.value as x.display_name for x in editDateOptions.currency.choices\">\n" +
+    "      <select name=\"currency\" class=\"form-control\" ng-model=\"editDate.currency\" ng-options=\"x.value as x.display_name for x in editDateOptions.currency.choices\">\n" +
     "      </select>\n" +
     "    </div>\n" +
     "  </div>\n" +
@@ -1268,17 +1268,17 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "      <input type=\"text\" class=\"form-control\" placeholder=\"High\" ng-disabled=\"editDate.exhibit_free\" ng-model=\"editDate.exhibit_price_to\">\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\" ng-class=\"{'has-error': dateform.feature_headline.$invalid}\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': errors.feature_headline}\">\n" +
     "    <label class=\"col-lg-3 control-label\">Feature Headline</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input name=\"feature_headline\" type=\"text\" class=\"form-control\" ng-model=\"editDate.feature_headline\" required=\"required\">\n" +
+    "      <input name=\"feature_headline\" type=\"text\" class=\"form-control\" ng-model=\"editDate.feature_headline\">\n" +
     "      <span class=\"help-block\" ng-show=\"errors.feature_headline\" ng-repeat=\"error in errors.feature_headline\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\" ng-class=\"{'has-error': dateform.feature_detail.$invalid}\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': errors.feature_detail}\">\n" +
     "    <label class=\"col-lg-3 control-label\">Feature Detail</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <textarea name=\"feature_detail\" class=\"form-control\" ng-model=\"editDate.feature_detail\" required=\"required\"></textarea>\n" +
+    "      <textarea name=\"feature_detail\" class=\"form-control\" ng-model=\"editDate.feature_detail\"></textarea>\n" +
     "      <span class=\"help-block\" ng-show=\"errors.feature_detail\" ng-repeat=\"error in errors.feature_detail\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +

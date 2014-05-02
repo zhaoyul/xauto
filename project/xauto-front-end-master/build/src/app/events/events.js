@@ -84,7 +84,8 @@ angular.module('blvdx.events', [
                                 $scope.editDateOptions = $dateproxy.editDateOptions;
 
                             } else {
-                                $scope.editDate = {event: $stateParams.eventId , country_short:null,shared:[]};
+
+                                $scope.editDate = {event:$dateproxy.EventObj.id};// $stateParams.eventId};
                                 $scope.editDate.start_date = new Date();
                                 $scope.editDate.startTime = "11:00";
                                 $scope.editDate.endTime = "16:00";
@@ -134,6 +135,20 @@ angular.module('blvdx.events', [
                                 $scope.errors.end_time = ["End time is required"];
                                 has_errors = true;
                             }
+                            if ($scope.editDate.country === undefined) {
+                                $scope.errors.country = ["Country is required"];
+                                has_errors = true;
+                            }
+                            console.log($scope.editDate,$scope.editDate.currency)
+                            if($scope.editDate.currency === undefined){
+                                $scope.errors.currency = true;
+                            }
+                            if(!$scope.editDate.feature_headline){
+                                $scope.errors.feature_headline = true;
+                            }
+                            if(!$scope.editDate.feature_detail){
+                                $scope.errors.feature_detail = true;
+                            }
                             if (has_errors === false) {
                                 // no errors so far?
                                 var date = new Date($scope.editDate.start_date);
@@ -165,13 +180,13 @@ angular.module('blvdx.events', [
                             if($scope.verify()){
                                 return;
                             }
-                            console.log('proceed to confirm:',$scope.editDate,$dateproxy.EventObj);
                             $scope.EventObj = $dateproxy.EventObj;
                             $scope.confirmScreen = true;
                             // run map ::
                             var opt = {zoom:3};
-                            if($scope.editDate.latitude && $scope.editDate.longitude){
-                                opt.zoom = 12;
+                            var hasPosition = $scope.editDate.latitude && $scope.editDate.longitude;
+                            if(hasPosition){
+                                opt.zoom = 10;
                             }
                             if($scope.hasMap){
                                 $gmaps.moveTo($scope.editDate.latitude , $scope.editDate.longitude,opt.zoom);
@@ -179,7 +194,11 @@ angular.module('blvdx.events', [
                             } else {
                                 $gmaps.showMap($scope.editDate.latitude , $scope.editDate.longitude,$('.map')[0],opt);
                             }
+
                             $scope.hasMap = true;
+                            if(hasPosition){
+                                $gmaps.addSingleMarker($scope.editDate.latitude , $scope.editDate.longitude);
+                            }
 
                         };
 

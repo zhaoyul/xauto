@@ -77,7 +77,23 @@ angular.module('maps', []).service('$gmaps' , function (){
                 }
             },50);
 
+        },
+        //////////////////////////////////////////////////
+        //////////////////////////////////////////////////
+        // -----------------------> MARKERS
+
+        addSingleMarker:function(lat ,long){
+            if(this.marker == null){
+                this.marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(lat,long),
+                    map: this.map,
+                    title: 'Event position !'
+                });
+            } else {
+                this.marker.setPosition(new google.maps.LatLng(lat,long));
+            }
         }
+
     };
 
 
