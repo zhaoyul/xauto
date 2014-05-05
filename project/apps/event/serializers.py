@@ -64,11 +64,19 @@ class AlbumSerializer(serializers.ModelSerializer):
 class EventModelSerializer(serializers.ModelSerializer):
 
     dates = EventDateSerializer(source='event_dates', read_only=True)
+    can_edit = serializers.SerializerMethodField('get_can_edit')
 
     class Meta:
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'short_link',
-            'main_image', 'author', 'dates', 'slug')
+            'main_image', 'author', 'dates', 'slug', 'can_edit')
+
+    def get_can_edit(self, obj):
+        view = self.context['view']
+        user = view.request.user
+        if user.is_staff or obj.author == user:
+            return True
+        return False
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -179,7 +187,7 @@ class EventDetailsSerializer(serializers.ModelSerializer):
         near = obj.get_nearest_date()
         if near:
             if near.latitude and near.longitude:
-                return "https://maps.google.com/?q="+str(near.latitude)+","+str(near.longitude)
+                return settings.GOTO_BUTTON_URL.format(lat=near.latitude, lon=near.longitude)
         return ""
 
     def srv_followers_count(self, obj):

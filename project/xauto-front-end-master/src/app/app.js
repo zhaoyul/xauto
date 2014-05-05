@@ -587,7 +587,6 @@ angular.module( 'blvdx', [
 		$photoview.currentScope.Follow();
 	};
 	$scope.FollowUser = function (){
-		//$photoview.currentScope.FollowUser();
 		$http.get('/api/current-user/').then(function (response) {
 			if (response.data.user !== null) {
 				Profiles.Follow($scope.Profile.slug).then(function (data) {
@@ -608,7 +607,7 @@ angular.module( 'blvdx', [
 	};
 
 	$scope.social_fb = function (obj) {
-		$fb.sharePhoto($scope.photo.event_name,window.location.href,window.location.host + $scope.photoURL,$scope.photo.caption,$photoview.EventObj.about);
+		$fb.sharePhoto($scope.photo.event_name,window.location.href,window.location.host + $scope.photoURL,$scope.photo.caption,($photoview.EventObj? $photoview.EventObj.about : ""));
 	};
 
 	$scope.social_p = function (obj) {

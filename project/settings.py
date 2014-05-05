@@ -27,7 +27,7 @@ DATABASES = {
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'Europe/Warsaw'
+TIME_ZONE = 'America/Los_Angeles'
 USE_TZ = True
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -152,6 +152,7 @@ INSTALLED_APPS = [
     'xauto_lib',
     'storages',
     'socket_streamer',
+    'timezone_field',
 ]
 
 #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -412,6 +413,7 @@ COUNTRIES_OVERRIDE = {
 
 
 TOS_URL = u'#'
+GOTO_BUTTON_URL=u'http://maps.apple.com/?q={lat},{lon}'
 
 try:
     from settings_local import *

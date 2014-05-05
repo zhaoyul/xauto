@@ -2,7 +2,7 @@ angular.module('social', []).service('$fb' , function (){
 	var instance = {
 		init:function() {
 			FB.init({
-				appId      : '147371755288305',
+				appId      : '1394880617455803',
 				status     : true,
 				xfbml      : true,
 				cookie: true

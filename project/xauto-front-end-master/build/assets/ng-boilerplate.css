@@ -8854,6 +8854,23 @@ ul.event-details-actions > li > a.btn i {
   line-height: 1.5em;
 }
 
+/* fixes for modal */
+
+.date-modal-content-fix {
+  padding-bottom: 0px;
+}
+
+.date-modal-footer-fix {
+  margin-top: 0px;
+}
+
+.date-modal-back-btn {
+  margin-top: 5px;
+  font-size: 18px;
+  color: #c5c5c5;
+  cursor: pointer;
+}
+
 .free-label {
   padding-right: 7px;
   margin: 0 -24px;
@@ -8868,12 +8885,9 @@ ul.event-details-actions > li > a.btn i {
   margin: 10px;
 }
 
-.el_confirm {
-  display: none;
-}
-
 .el_confirm #e_name {
-  margin: 0 0 130px 0;
+  height: 80px;
+  margin: 0 0 30px 0;
   font-size: 32pt;
   color: #dbdbdb;
 }
@@ -8954,23 +8968,31 @@ ul.event-details-actions > li > a.btn i {
 
 .el_confirm .feature_prices .feature p {
   margin: 40px 0 0 0;
+  font-size: 14px;
+}
+
+.el_confirm .feature_prices .feature b {
+  font-size: 18px;
 }
 
 .el_confirm .feature_prices .prices {
   float: left;
   width: 50%;
+  height: 240px;
+  background-color: #e7e7e7;
 }
 
 .el_confirm .feature_prices .prices p {
-  margin: 40px 0 0 0;
+  margin: 50px 0 0 40px;
+  font-size: 14px;
+}
+
+.el_confirm .feature_prices .prices p b {
+  font-size: 18px;
 }
 
 .clear {
   clear: both;
-}
-
-.back_confirm {
-  display: none;
 }
 
 .backlink {
@@ -9246,4 +9268,9 @@ ul.stream-list > li:hover ul.stream-action-links {
 
 .additional label {
   font-size: 7.5pt;
+}
+
+.albumShare {
+  float: right;
+  cursor: pointer;
 }

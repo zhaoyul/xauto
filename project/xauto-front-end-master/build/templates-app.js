@@ -594,8 +594,12 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                            </div>\n" +
     "                            <div class=\"col-xs-12 col-sm-8\">\n" +
     "                                <ul class=\"event-details-navbar-items pull-right\">\n" +
-    "                                    <li ng-show=\"EventObj.gotolink\">\n" +
-    "                                        <a href=\"{{EventObj.gotolink}}\">\n" +
+    "                                    <li>\n" +
+    "                                        <a ng-if=\"EventObj.gotolink\" href=\"{{EventObj.gotolink}}\">\n" +
+    "                                           <i class=\"xa-icon-event-details-goto\"></i>\n" +
+    "                                            Go to\n" +
+    "                                        </a>\n" +
+    "                                        <a ng-if=\"!EventObj.gotolink\" href=\"\" ng-click=\"\" title=\"Sorry! No location is set for this event.\">\n" +
     "                                            <i class=\"xa-icon-event-details-goto\"></i>\n" +
     "                                            Go to\n" +
     "                                        </a>\n" +
@@ -903,19 +907,21 @@ angular.module("events/partial_add_date.tpl.html", []).run(["$templateCache", fu
     "    <h4 class=\"modal-title\" ng-show=\"editDate.id\">Edit Event Date</h4>\n" +
     "</div>\n" +
     "<form name=\"dateform\" class=\"form-horizontal\" role=\"form\" ng-submit=\"saveDate()\" novalidate>\n" +
-    "    <div class=\"modal-body\">\n" +
+    "    <div class=\"modal-body date-modal-content-fix\">\n" +
     "        <ng-include src=\"'events/partial_form_date.tpl.html'\"></ng-include>\n" +
     "    </div>\n" +
-    "    <div class=\"modal-footer\">\n" +
+    "    <div class=\"modal-footer date-modal-footer-fix\">\n" +
     "      <div class=\"to_confirm\">\n" +
-    "        <button ng-hide=\"editDate.id\" type=\"button\" class=\"btn btn-info pull-left\" ng-click=\"copyLastDate()\">Copy Last Date</button>\n" +
-    "        <button ng-hide=\"editDate.id\" type=\"submit\" class=\"btn btn-primary\">Add Date!</button>\n" +
-    "        <button ng-show=\"editDate.id\" type=\"submit\" class=\"btn btn-primary\">Save</button>\n" +
+    "        <button ng-hide=\"editConfirm()\" type=\"button\" class=\"btn btn-info pull-left\" ng-click=\"copyLastDate()\">Copy Last Date</button>\n" +
+    "        <button ng-hide=\"confirmScreen\" type=\"submit\" ng-click=\"addDate()\" class=\"btn btn-primary\" data-toggle=\"modal\">Add Date!</button>\n" +
+    "        <button ng-show=\"confirmScreen\" type=\"submit\" ng-click=\"saveDate()\" value=\"Confirm\" data-toggle=\"modal\" data-target=\"#dateModal\"  class=\"btn btn-primary\">Confirm</button>\n" +
+    "        <div ng-show=\"confirmScreen\" class=\"pull-left date-modal-back-btn\" ng-click=\"backConfirm()\">&lt; Back</div>\n" +
     "      </div>\n" +
+    "          <!--\n" +
     "      <div class=\"back_confirm\">\n" +
-    "        <a href=\"\" class=\"pull-left backlink\" ng-click=\"backDateEdit()\">< Back</a>\n" +
-    "        <input type=\"button\" value=\"Confirm\" class=\"btn btn-primary pull-right\" ng-click=\"saveDateConfirm()\">\n" +
-    "      </div>\n" +
+    "        <a href=\"\" class=\"pull-left backlink\" ng-click=\"backDateEdit()\">Back</a>\n" +
+    "        <input type=\"button\" value=\"Confirm\" class=\"btn btn-primary pull-right\" data-toggle=\"modal\" data-target=\"#dateModal\" ng-click=\"saveDateConfirm()\">\n" +
+    "      </div>-->\n" +
     "    </div>\n" +
     "</form>");
 }]);
@@ -1029,8 +1035,8 @@ angular.module("events/partial_edit_event_form.tpl.html", []).run(["$templateCac
     "  <div class=\"form-group\">\n" +
     "\n" +
     "    <div class=\"col-lg-offset-3 col-lg-9\">\n" +
-    "      <button class=\"btn btn-primary\" ui-sref=\"eventEdit.addDate\"><i class=\"icon-calendar\"></i> Add Date</button>\n" +
-    "      <button class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#dateModal\" ng-click=\"addDate()\"><i class=\"icon-calendar\"></i> Add Date Old</button>\n" +
+    "        <button class=\"btn btn-primary\" ng-click=\"setNewDate()\" data-toggle=\"modal\"\n" +
+    "                data-target=\"#dateModal\" ><i class=\"icon-calendar\"></i> Add Date</button>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
@@ -1051,13 +1057,12 @@ angular.module("events/partial_edit_event_form.tpl.html", []).run(["$templateCac
     "            <a href=\"#/eventdates/{{date.id}}/photosmanage\" class=\"btn btn-primary btn-sm\">Manage photos</a>\n" +
     "\n" +
     "            <button\n" +
+    "              ng-click=\"setThisEditableDate(date)\"\n" +
     "              class=\"btn btn-primary btn-sm\"\n" +
     "              data-toggle=\"modal\"\n" +
     "              data-target=\"#dateModal\"\n" +
-    "              ng-click=\"setThisEditableDate(date)\"\n" +
-    "              >\n" +
-    "                Edit\n" +
-    "            </button>\n" +
+    "              >Edit\n" +
+    "            </button><!-- ui-sref=\"eventEdit.addDate\" -->\n" +
     "\n" +
     "            <button type=\"button\" class=\"btn btn-danger btn-sm\" ng-click=\"removeDate($index, date.id)\">Delete</button>\n" +
     "            <!-- <ng-include src=\"'events/partial_form_date.tpl.html'\"></ng-include> -->\n" +
@@ -1083,6 +1088,7 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
     "        <a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#album-{{album.id}}\" onClick=\"return false\">\n" +
     "          {{album.date}} - {{album.feature_headline}}\n" +
     "        </a>\n" +
+    "        <div class=\"albumShare\" href=\"#\" tooltip-placement=\"left\" tooltip=\"Share\" ng-click=\"shareAlbum(album.id)\"><i class=\"icon-share\"></i></div>\n" +
     "      </h4>\n" +
     "    </div>\n" +
     "    <div id=\"album-{{album.id}}\" class=\"panel-collapse collapse in\" ng-class=\"{in:album.active}\" >\n" +
@@ -1116,7 +1122,7 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
 
 angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("events/partial_form_date.tpl.html",
-    "<div class=\"el_fields\">\n" +
+    "<div class=\"el_fields\" ng-hide=\"confirmScreen\">\n" +
     "  <div class=\"partial-form-date\">\n" +
     "      <div class=\"form-group\" ng-class=\"{'has-error': form.location_name.$invalid || errors.location_name}\">\n" +
     "        <label class=\"col-lg-3 control-label\">Location Name</label>\n" +
@@ -1246,7 +1252,7 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "      <input type=\"text\" class=\"form-control\" placeholder=\"High\" ng-disabled=\"editDate.attend_free\" ng-model=\"editDate.attend_price_to\">\n" +
     "    </div>\n" +
     "    <div class=\"col-lg-2\" ng-class=\"{'has-error': dateform.currency.$invalid|| errors.currency}\">\n" +
-    "      <select required name=\"currency\" class=\"form-control\" ng-model=\"editDate.currency\" ng-options=\"x.value as x.display_name for x in editDateOptions.currency.choices\">\n" +
+    "      <select name=\"currency\" class=\"form-control\" ng-model=\"editDate.currency\" ng-options=\"x.value as x.display_name for x in editDateOptions.currency.choices\">\n" +
     "      </select>\n" +
     "    </div>\n" +
     "  </div>\n" +
@@ -1263,28 +1269,28 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "      <input type=\"text\" class=\"form-control\" placeholder=\"High\" ng-disabled=\"editDate.exhibit_free\" ng-model=\"editDate.exhibit_price_to\">\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\" ng-class=\"{'has-error': dateform.feature_headline.$invalid}\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': errors.feature_headline}\">\n" +
     "    <label class=\"col-lg-3 control-label\">Feature Headline</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <input name=\"feature_headline\" type=\"text\" class=\"form-control\" ng-model=\"editDate.feature_headline\" required=\"required\">\n" +
+    "      <input name=\"feature_headline\" type=\"text\" class=\"form-control\" ng-model=\"editDate.feature_headline\">\n" +
     "      <span class=\"help-block\" ng-show=\"errors.feature_headline\" ng-repeat=\"error in errors.feature_headline\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\" ng-class=\"{'has-error': dateform.feature_detail.$invalid}\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': errors.feature_detail}\">\n" +
     "    <label class=\"col-lg-3 control-label\">Feature Detail</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <textarea name=\"feature_detail\" class=\"form-control\" ng-model=\"editDate.feature_detail\" required=\"required\"></textarea>\n" +
+    "      <textarea name=\"feature_detail\" class=\"form-control\" ng-model=\"editDate.feature_detail\"></textarea>\n" +
     "      <span class=\"help-block\" ng-show=\"errors.feature_detail\" ng-repeat=\"error in errors.feature_detail\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "</div>\n" +
-    "\n" +
-    "<div class=\"el_confirm\">\n" +
+    "<div class=\"el_confirm\" ng-show=\"confirmScreen\">\n" +
     "     <h2 id=\"e_name\">{{ EventObj.title }}</h2>\n" +
     "     <div class=\"loc_adr_dates\">\n" +
     "        <div class=\"loc\">\n" +
     "            <p><span>Location Name:</span><b>{{ editDate.location_name }}</b></p><div class=\"clear\"></div>\n" +
-    "            <p><span>Address:</span><b>{{ editDate.address_1 }}</b></p><div class=\"clear\"></div>\n" +
+    "            <p><span>Address:</span><b>{{ editDate.address_1  }} {{ editDate.address_2  }}\n" +
+    "            <br/>{{editDate.city}} , {{editDate.zip}}</b></p><div class=\"clear\"></div>\n" +
     "        </div>\n" +
     "        <div class=\"dates\">\n" +
     "            <div class=\"dt\">\n" +
@@ -1303,14 +1309,14 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "     <div class=\"feature_prices\">\n" +
     "        <div class=\"feature\">\n" +
     "        <p>Feature Headline:</p>\n" +
-    "        <b>Porsche Drive</b>\n" +
+    "        <b>{{editDate.feature_headline}}</b>\n" +
     "        <p>Feature detail:</p>\n" +
-    "        <b>get there early!</b>\n" +
+    "        <b>{{editDate.feature_detail}}</b>\n" +
     "        </div>\n" +
     "        <div class=\"prices\">\n" +
     "            <div class=\"wrap\">\n" +
-    "            <p>Attend:<b>FREE</b></p>\n" +
-    "            <p>Exhibit:<b>$50-$65</b></p>\n" +
+    "            <p>Attend:<b>{{editDate.attend_free? 'FREE' : editDate.attend_price_from + '-' +editDate.attend_price_to}}</b></p>\n" +
+    "            <p>Exhibit:<b>{{editDate.exhibit_free?'FREE' : editDate.exhibit_price_from + '-' + editDate.exhibit_price_to}}</b></p>\n" +
     "            </div>\n" +
     "        </div>\n" +
     "        <div class=\"clear\"></div>\n" +
@@ -1561,7 +1567,7 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "                          </a>\n" +
     "                        </li>\n" +
     "                        <li class=\"action-share\">\n" +
-    "                            <a href=\"#\" tooltip-placement=\"left\" tooltip=\"Share\"><i class=\"icon-share\"></i></a>\n" +
+    "                            <a href=\"#\" tooltip-placement=\"left\" tooltip=\"Share\"  ng-click=\"selectImage()\"><i class=\"icon-share\"></i></a>\n" +
     "                        </li>\n" +
     "                        <li ng-hide=\"item.reported\" class=\"action-report\">\n" +
     "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Report\"\n" +

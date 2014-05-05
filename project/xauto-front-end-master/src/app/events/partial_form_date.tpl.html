@@ -1,4 +1,4 @@
-<div class="el_fields">
+<div class="el_fields" ng-hide="confirmScreen">
   <div class="partial-form-date">
       <div class="form-group" ng-class="{'has-error': form.location_name.$invalid || errors.location_name}">
         <label class="col-lg-3 control-label">Location Name</label>
@@ -128,7 +128,7 @@
       <input type="text" class="form-control" placeholder="High" ng-disabled="editDate.attend_free" ng-model="editDate.attend_price_to">
     </div>
     <div class="col-lg-2" ng-class="{'has-error': dateform.currency.$invalid|| errors.currency}">
-      <select required name="currency" class="form-control" ng-model="editDate.currency" ng-options="x.value as x.display_name for x in editDateOptions.currency.choices">
+      <select name="currency" class="form-control" ng-model="editDate.currency" ng-options="x.value as x.display_name for x in editDateOptions.currency.choices">
       </select>
     </div>
   </div>
@@ -145,28 +145,28 @@
       <input type="text" class="form-control" placeholder="High" ng-disabled="editDate.exhibit_free" ng-model="editDate.exhibit_price_to">
     </div>
   </div>
-  <div class="form-group" ng-class="{'has-error': dateform.feature_headline.$invalid}">
+  <div class="form-group" ng-class="{'has-error': errors.feature_headline}">
     <label class="col-lg-3 control-label">Feature Headline</label>
     <div class="col-lg-9">
-      <input name="feature_headline" type="text" class="form-control" ng-model="editDate.feature_headline" required="required">
+      <input name="feature_headline" type="text" class="form-control" ng-model="editDate.feature_headline">
       <span class="help-block" ng-show="errors.feature_headline" ng-repeat="error in errors.feature_headline">{{error}}</span>
     </div>
   </div>
-  <div class="form-group" ng-class="{'has-error': dateform.feature_detail.$invalid}">
+  <div class="form-group" ng-class="{'has-error': errors.feature_detail}">
     <label class="col-lg-3 control-label">Feature Detail</label>
     <div class="col-lg-9">
-      <textarea name="feature_detail" class="form-control" ng-model="editDate.feature_detail" required="required"></textarea>
+      <textarea name="feature_detail" class="form-control" ng-model="editDate.feature_detail"></textarea>
       <span class="help-block" ng-show="errors.feature_detail" ng-repeat="error in errors.feature_detail">{{error}}</span>
     </div>
   </div>
 </div>
-
-<div class="el_confirm">
+<div class="el_confirm" ng-show="confirmScreen">
      <h2 id="e_name">{{ EventObj.title }}</h2>
      <div class="loc_adr_dates">
         <div class="loc">
             <p><span>Location Name:</span><b>{{ editDate.location_name }}</b></p><div class="clear"></div>
-            <p><span>Address:</span><b>{{ editDate.address_1 }}</b></p><div class="clear"></div>
+            <p><span>Address:</span><b>{{ editDate.address_1  }} {{ editDate.address_2  }}
+            <br/>{{editDate.city}} , {{editDate.zip}}</b></p><div class="clear"></div>
         </div>
         <div class="dates">
             <div class="dt">
@@ -185,14 +185,14 @@
      <div class="feature_prices">
         <div class="feature">
         <p>Feature Headline:</p>
-        <b>Porsche Drive</b>
+        <b>{{editDate.feature_headline}}</b>
         <p>Feature detail:</p>
-        <b>get there early!</b>
+        <b>{{editDate.feature_detail}}</b>
         </div>
         <div class="prices">
             <div class="wrap">
-            <p>Attend:<b>FREE</b></p>
-            <p>Exhibit:<b>$50-$65</b></p>
+            <p>Attend:<b>{{editDate.attend_free? 'FREE' : editDate.attend_price_from + '-' +editDate.attend_price_to}}</b></p>
+            <p>Exhibit:<b>{{editDate.exhibit_free?'FREE' : editDate.exhibit_price_from + '-' + editDate.exhibit_price_to}}</b></p>
             </div>
         </div>
         <div class="clear"></div>

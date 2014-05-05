@@ -14,6 +14,7 @@ from django_countries.fields import CountryField
 from account.models import UserProfile
 from xauto_lib.models import TimestampedModel
 from multiuploader.models import MultiuploaderImage
+from timezone_field import TimeZoneField
 
 from datetime import timedelta
 
@@ -61,6 +62,7 @@ class EventDate(TimestampedModel):
                               verbose_name='Your Event')
 
     timezone = models.CharField(max_length=30, null=False, blank=False, default="0.0")
+    #timezone_new = TimeZoneField(default='America/Los_Angeles')
     start_date = models.DateTimeField(null=True, blank=False)
     end_date = models.DateTimeField(null=True, blank=True)
     feature_headline = models.CharField(max_length=100)
@@ -155,6 +157,9 @@ class Event(TimestampedModel):
         related_name='followed_events', null=True, blank=True,
         verbose_name='Event followed by')
 
+    class Meta:
+        ordering = ['-created']
+
     # Short link must be validated for case-insensitive unique
     def clean(self):
         self.short_link = self.short_link.lower()
@@ -173,6 +178,9 @@ class Event(TimestampedModel):
         if nearest_dates.count() > 0:
             return nearest_dates[0]
         return None
+
+    def get_latest_date(self):
+        return self.event_dates.all().last()
 
     def is_live_streaming(self, user=None):
         try:
