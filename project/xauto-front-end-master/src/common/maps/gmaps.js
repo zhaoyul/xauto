@@ -3,6 +3,7 @@ angular.module('maps', []).service('$gmaps' , function (){
     mapview.style.width = mapview.style.height = '100%';
 
     var instance = {
+        geocoder : null,
         displayed:false,
         view:mapview,
         map:null,
@@ -59,9 +60,11 @@ angular.module('maps', []).service('$gmaps' , function (){
 
 
         moveTo:function(lat , long , zoom){
-            this.position.lat = lat;
-            this.position.long = long;
-            var point = new google.maps.LatLng(lat , long);
+            this.moveToLocation(new google.maps.LatLng(lat , long),zoom);
+        },
+        moveToLocation:function(point , zoom){
+            this.position.lat = point.lat();
+            this.position.long = point.lng();
             if(this.initialized){
                 this.map.setCenter(point);
                 if(zoom){
@@ -83,15 +86,39 @@ angular.module('maps', []).service('$gmaps' , function (){
         // -----------------------> MARKERS
 
         addSingleMarker:function(lat ,long){
+            this.addSingleMarkerPos(new google.maps.LatLng(lat,long));
+        },
+        addSingleMarkerPos:function (position){
             if(this.marker == null){
                 this.marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(lat,long),
+                    position: position,
                     map: this.map,
                     title: 'Event position !'
                 });
             } else {
-                this.marker.setPosition(new google.maps.LatLng(lat,long));
+                this.marker.setPosition(position);
             }
+        },
+
+
+
+        //////////////////////////////////////////////////
+        //////////////////////////////////////////////////
+        // -----------------------> GEOCODER
+
+        getLocation:function(address){
+            console.log('find:',address);
+            var delegate = this;
+            this.geocoder.geocode( { 'address': address}, function(results, status) {//this.geocoder;
+                console.log(results,status);
+                if (status == google.maps.GeocoderStatus.OK) {
+                    delegate.moveToLocation(results[0].geometry.location , 10) ;//.map.setCenter(results[0].geometry.location);
+                    delegate.addSingleMarker(results[0].geometry.location);
+                } else {
+                    delegate.moveTo(0,0 , 3) ;
+                    //alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
         }
 
     };
@@ -103,6 +130,7 @@ angular.module('maps', []).service('$gmaps' , function (){
         if(instance.displayPromise){
             instance.showMap(instance.displayPromise.lat,instance.displayPromise.long,instance.displayPromise.container,instance.displayPromise.showMarker,instance.displayPromise.mapOptions);
         }
+        instance.geocoder = new google.maps.Geocoder();
     };
     $(document).ready(function(){
         var script = document.createElement('script');
