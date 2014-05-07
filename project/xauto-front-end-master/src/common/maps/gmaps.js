@@ -78,7 +78,7 @@ angular.module('maps', []).service('$gmaps' , function (){
                 if(delegate.displayed){
                     google.maps.event.trigger(delegate.map, 'resize');
                 }
-            },50);
+            },150);
 
         },
         //////////////////////////////////////////////////
@@ -112,7 +112,7 @@ angular.module('maps', []).service('$gmaps' , function (){
             this.geocoder.geocode( { 'address': address}, function(results, status) {//this.geocoder;
                 console.log(results,status);
                 if (status == google.maps.GeocoderStatus.OK) {
-                    delegate.moveToLocation(results[0].geometry.location , 10) ;//.map.setCenter(results[0].geometry.location);
+                    delegate.moveToLocation(results[0].geometry.location , 12) ;//.map.setCenter(results[0].geometry.location);
                     delegate.addSingleMarker(results[0].geometry.location);
                 } else {
                     delegate.moveTo(0,0 , 3) ;

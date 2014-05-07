@@ -73,186 +73,10 @@ angular.module('blvdx.events', [
 
             .state('eventEdit.addDate', {
                 url: '/dates/',
-                onEnter: function($stateParams, $state, $modal , $dateproxy, $gmaps, $filter){
+                onEnter: function($modal,$stateParams,$state){
                     $modal.open({
                         templateUrl: "events/partial_add_date.tpl.html",
-                        controller: ['$scope', 'DateObj', 'Events', '$filter', function($scope, DateObj, Events, $filter) {
-                            // initialization
-                            $scope.confirmScreen = false;
-                            if($dateproxy.editDate){
-                                $scope.editDate = $dateproxy.editDate;
-                                $scope.editDateOptions = $dateproxy.editDateOptions;
-                                $scope.edit = true;
-                            } else {
-
-                                $scope.editDate = {event:$dateproxy.EventObj.id};// $stateParams.eventId};
-                                $scope.editDate.start_date = new Date();
-                                $scope.editDate.startTime = "11:00";
-                                $scope.editDate.endTime = "16:00";
-                                DateObj.getOptions(null).then(function (options) {
-                                    $scope.editDateOptions = options.actions.POST;
-                                });
-                            }
-
-                            $scope.editConfirm = function(){
-                                return $scope.edit || $scope.confirmScreen;
-                            };
-
-
-                            /* datepicker */
-                            $scope.today = function () {
-                                $scope.dt = new Date();
-                            };
-                            $scope.today();
-
-                            $scope.showWeeks = true;
-
-                            $scope.dateOptions = {
-                                'year-format': "'yyyy'",
-                                'starting-day': 1
-                            };
-
-                            $scope.minDate = new Date();
-                            $scope.maxDate = new Date();
-                            $scope.maxDate.setDate($scope.maxDate.getDate() + 365);
-
-                            /* end of datepicker*/
-
-                          $scope.dismiss = function() {
-                            $scope.$dismiss();
-                          };
-
-                          $scope.save = function() {
-                            item.update().then(function() {
-                              $scope.$close(true);
-                            });
-                          };
-
-                        $scope.verify = function (){
-                            var has_errors = false;
-                            $scope.errors = {};
-                            if ($scope.editDate.startTime === undefined) {
-                                $scope.errors.start_time = ["Start time is required"];
-                                has_errors = true;
-                            }
-                            if ($scope.editDate.endTime === undefined) {
-                                $scope.errors.end_time = ["End time is required"];
-                                has_errors = true;
-                            }
-                            if ($scope.editDate.country === undefined) {
-                                $scope.errors.country = ["Country is required"];
-                                has_errors = true;
-                            }
-                            if($scope.editDate.currency === undefined){
-                                $scope.errors.currency = true;
-                                has_errors = true;
-                            }
-                            if(!$scope.editDate.feature_headline){
-                                $scope.errors.feature_headline = true;
-                                has_errors = true;
-                            }
-                            if(!$scope.editDate.feature_detail){
-                                $scope.errors.feature_detail = true;
-                                has_errors = true;
-                            }
-                            if (has_errors === false) {
-                                // no errors so far?
-                                var date = new Date($scope.editDate.start_date);
-                                var start_time = $scope.editDate.startTime.split(":");
-                                var end_time = $scope.editDate.endTime.split(":");
-                                var start_date = new Date(date);
-                                start_date.setHours(start_time[0]);
-                                start_date.setMinutes(start_time[1]);
-                                var end_date = new Date(date);
-                                end_date.setHours(end_time[0]);
-                                end_date.setMinutes(end_time[1]);
-                                $scope.editDate.start_date = start_date;
-                                $scope.editDate.end_date = end_date;
-
-                                $scope.editDate.offset = end_date.getTimezoneOffset();
-                                if (start_date.getTime() > end_date.getTime()) {
-                                    $scope.errors.end_time = ["Event must ends after it begins"];
-                                    has_errors = true;
-                                }
-                            }
-                            if(has_errors){
-                                console.log('validate errors :',$scope.errors);
-                            }
-                            return has_errors;
-                        };
-                        // save date btn ::
-                        $scope.hasMap = false;
-                        $scope.addDate = function () {
-                            if($scope.verify()){
-                                return;
-                            }
-                            $scope.EventObj = $dateproxy.EventObj;
-                            $scope.confirmScreen = true;
-                            // run map ::
-                            var opt = {zoom:3};
-                            var hasPosition = $scope.editDate.latitude && $scope.editDate.longitude;
-                            if(hasPosition){
-                                opt.zoom = 10;
-                            }
-                            if($scope.hasMap){
-                                $gmaps.moveTo($scope.editDate.latitude , $scope.editDate.longitude,opt.zoom);
-                                $gmaps.update();
-                            } else {
-                                $gmaps.showMap($scope.editDate.latitude , $scope.editDate.longitude,$('.map')[0],opt);
-                            }
-
-                            $scope.hasMap = true;
-                            if(hasPosition){
-                                $gmaps.addSingleMarker($scope.editDate.latitude , $scope.editDate.longitude);
-                            } else {
-                                var adrstr = '';
-                                var types = ['country','address_1','address_2','city','location_name','zip','state'];
-                                for(var t in types){
-                                    var txt = $scope.editDate[types[t]];
-                                    if(txt){
-                                        adrstr += txt + ' ';
-                                    }
-                                }
-                                $gmaps.getLocation(adrstr);
-                            }
-
-                        };
-
-                        $scope.checkGeoCoords = function () {
-                            // verify geolocation ::
-                            if(isNaN($scope.editDate.latitude) || isNaN($scope.editDate)){
-                                var p = $gmaps.position;
-                                if(p.lat && p.long){
-                                    $scope.editDate.latitude = p.lat;
-                                    $scope.editDate.longitude = p.long;
-                                }
-                            }
-                        };
-
-                        $scope.backConfirm = function (){
-                            $scope.checkGeoCoords();
-                            $scope.confirmScreen = false;
-                        };
-
-                        $scope.saveDate = function (){
-                            $scope.checkGeoCoords();
-                            // save && send ::
-                            $dateproxy.editDate = $scope.editDate;
-                            $dateproxy.editDateOptions = $scope.editDateOptions;
-                            $scope.$dismiss();
-                            $dateproxy.dateComplete();
-                        };
-
-                        $scope.copyLastDate = function () {
-                            Events.getLastDate($dateproxy.EventObj).then(function (date) {
-                                var new_date = date;
-                                delete new_date.id;
-                                $scope.editDate = new_date;
-                                $scope.editDate.startTime = $filter('date')(new_date.start_date, 'HH:mm');
-                                $scope.editDate.endTime = $filter('date')(new_date.end_date, 'HH:mm');
-                            });
-                        };
-                        }]
+                        controller: 'eventDetilesPopup'
                     }).result.then(
                         function(result) {
                             console.log('closed modal');
@@ -283,6 +107,188 @@ angular.module('blvdx.events', [
 			});
 	}])
 
+    .controller('eventDetilesPopup',function($scope, DateObj, Events, $filter ,$stateParams ,  $dateproxy, $gmaps) {
+        // initialization params ::
+        $scope.confirmScreen = false;
+        $scope.hasMap = false;
+        // check if edit or add ::
+        if($dateproxy.editDate){// load event data ::
+            $scope.editDate = $dateproxy.editDate;
+            $scope.editDateOptions = $dateproxy.editDateOptions;
+            $scope.edit = true;
+        } else {
+            // create new date ::
+            $scope.editDate = {event:$dateproxy.EventObj.id};// <= use ID:int , not event name
+            $scope.editDate.start_date = new Date();
+            $scope.editDate.startTime = "11:00";
+            $scope.editDate.endTime = "16:00";
+            DateObj.getOptions(null).then(function (options) {
+                $scope.editDateOptions = options.actions.POST;
+            });
+        }
+
+        // verification for 'copy last date';
+        $scope.editConfirm = function(){
+            return $scope.edit || $scope.confirmScreen;
+        };
+
+
+        /* datepicker */
+        $scope.today = function () {
+            $scope.dt = new Date();
+        };
+        $scope.today();
+
+        $scope.showWeeks = true;
+
+        $scope.dateOptions = {
+            'year-format': "'yyyy'",
+            'starting-day': 1
+        };
+
+        $scope.minDate = new Date();
+        $scope.maxDate = new Date();
+        $scope.maxDate.setDate($scope.maxDate.getDate() + 365);
+
+        /* end of datepicker*/
+
+        // close popup ::
+        $scope.dismiss = function() {
+            $scope.$dismiss();
+        };
+
+        // verify user data ::
+        // return true if all fine or store errors in $scope.errors
+        $scope.verify = function (){
+            var has_errors = false;
+            $scope.errors = {};
+            if ($scope.editDate.startTime === undefined) {
+                $scope.errors.start_time = ["Start time is required"];
+                has_errors = true;
+            }
+            if ($scope.editDate.endTime === undefined) {
+                $scope.errors.end_time = ["End time is required"];
+                has_errors = true;
+            }
+            if ($scope.editDate.country === undefined) {
+                $scope.errors.country = ["Country is required"];
+                has_errors = true;
+            }
+            if($scope.editDate.currency === undefined){
+                $scope.errors.currency = true;
+                has_errors = true;
+            }
+            if(!$scope.editDate.feature_headline){
+                $scope.errors.feature_headline = true;
+                has_errors = true;
+            }
+            if(!$scope.editDate.feature_detail){
+                $scope.errors.feature_detail = true;
+                has_errors = true;
+            }
+            if (has_errors === false) {
+                // no errors so far?
+                var date = new Date($scope.editDate.start_date);
+                var start_time = $scope.editDate.startTime.split(":");
+                var end_time = $scope.editDate.endTime.split(":");
+                var start_date = new Date(date);
+                start_date.setHours(start_time[0]);
+                start_date.setMinutes(start_time[1]);
+                var end_date = new Date(date);
+                end_date.setHours(end_time[0]);
+                end_date.setMinutes(end_time[1]);
+                $scope.editDate.start_date = start_date;
+                $scope.editDate.end_date = end_date;
+
+                $scope.editDate.offset = end_date.getTimezoneOffset();
+                if (start_date.getTime() > end_date.getTime()) {
+                    $scope.errors.end_time = ["Event must ends after it begins"];
+                    has_errors = true;
+                }
+            }
+            /* debug support
+            if(has_errors){
+                console.log('validate errors :',$scope.errors);
+            }*/
+            return has_errors;
+        };
+
+        // proceed to confirm screen ::
+        // show second view with maps
+        $scope.addDate = function () {
+            if($scope.verify()){// verify params first
+                return;
+            }
+
+            // change view ::
+            $scope.confirmScreen = true;
+            // run map ::
+            var hasPosition = $scope.editDate.latitude && $scope.editDate.longitude;
+            if($scope.hasMap){// move map to location or set default
+
+
+            } else {// initialize if display map first time
+                $gmaps.showMap($scope.editDate.latitude || 0 , $scope.editDate.longitude || 0,$('.map')[0],3);
+            }
+            // now it has map initialized::
+            $scope.hasMap = true;
+            if(hasPosition){// if user add lat and long
+                $gmaps.moveTo($scope.editDate.latitude || 0 , $scope.editDate.longitude || 0,3);
+                $gmaps.addSingleMarker($scope.editDate.latitude , $scope.editDate.longitude , 12);
+                $gmaps.update();
+            } else {
+                // use geocoder ::
+                var adrstr = '';
+                var types = ['country','address_1','address_2','city','location_name','zip','state'];// params with data
+                for(var t in types){
+                    var txt = $scope.editDate[types[t]];
+                    if(txt){
+                        adrstr += txt + ' ';
+                    }
+                }
+                $gmaps.getLocation(adrstr);
+            }
+
+        };
+
+        // update geocoord from gmaps
+        $scope.checkGeoCoords = function () {
+            // verify geolocation ::
+            if(isNaN($scope.editDate.latitude) || isNaN($scope.editDate)){
+                var p = $gmaps.position;
+                if(p.lat && p.long){
+                    $scope.editDate.latitude = p.lat;
+                    $scope.editDate.longitude = p.long;
+                }
+            }
+        };
+
+        // back to edit screen
+        $scope.backConfirm = function (){
+            $scope.checkGeoCoords();
+            $scope.confirmScreen = false;
+        };
+
+        // apply data and save
+        $scope.saveDate = function (){
+            $scope.checkGeoCoords();
+            // save && send ::
+            $dateproxy.editDate = $scope.editDate;
+            $dateproxy.editDateOptions = $scope.editDateOptions;
+            $scope.$dismiss();
+            $dateproxy.dateComplete();
+        };
+        // load last saved date and display on edit screen
+        $scope.copyLastDate = function () {
+            Events.getLastDate($dateproxy.EventObj).then(function (date) {
+                var new_date = date;
+                delete new_date.id;
+                $scope.editDate = new_date;
+                $scope.editDate.startTime = $filter('date')(new_date.start_date, 'HH:mm');
+                $scope.editDate.endTime = $filter('date')(new_date.end_date, 'HH:mm');
+            });
+        };
+    })
 
 	.controller('eventDatesPhotosmanageCtrl', ['$scope', 'titleService', '$stateParams', 'Events', 'AppScope',
 		function eventDatesPhotosmanageCtrl($scope, titleService, $stateParams, Events, AppScope) {
