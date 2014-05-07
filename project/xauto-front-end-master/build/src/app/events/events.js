@@ -398,7 +398,7 @@ angular.module('blvdx.events', [
 
 
 			$scope.Follow = function (event) {
-				$http.get('/api/current-user/').then(function (response) {
+				$http.get('/app/api/current-user/').then(function (response) {
 					if (response.data.user !== null) {
 						Events.follow(event).then(function (data) {
 							event.srv_following = data.srv_following;
@@ -714,7 +714,7 @@ angular.module('blvdx.events', [
 
 			$scope.Album = {photos: []};
 
-			$http.get('/api/current-user/').then(function (response) {
+			$http.get('/app/api/current-user/').then(function (response) {
 				if (response.data.user == null) {
 					//$("#uploadphotolink").hide();
 				}
@@ -768,7 +768,7 @@ angular.module('blvdx.events', [
 			};
 			*/
 			$scope.Follow = function () {
-				$http.get('/api/current-user/').then(function (response) {
+				$http.get('/app/api/current-user/').then(function (response) {
 					if (response.data.user == null) {
 						$(".navbar-nav a").eq(1).click();
 					} else {
