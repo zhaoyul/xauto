@@ -10,3 +10,5 @@ SOCKET_STREAMER_FULL_URL = "http://localhost:%i%s" % (SOCKET_STREAMER_PORT, SOCK
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 STATIC_URL = '/app/static/'
+
+ROOT_URLCONF = 'project.dev_urls'

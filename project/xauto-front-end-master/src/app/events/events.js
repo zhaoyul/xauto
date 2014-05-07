@@ -1,5 +1,6 @@
 angular.module('blvdx.events', [
 		'resources.events',
+        'resources.accounts',
 		'ui.router',
 		//'placeholders',
 		'ui.bootstrap',
@@ -314,8 +315,8 @@ angular.module('blvdx.events', [
 	})
 
 
-	.controller('EventsCtrl', ['$scope', '$geolocation', 'titleService', 'Events', '$http', 'AppScope',
-		function EventsCtrl($scope, $geolocation, titleService, Events, $http, AppScope) {
+	.controller('EventsCtrl', ['$scope', '$geolocation', 'titleService', 'Events', 'Accounts', '$http', 'AppScope',
+		function EventsCtrl($scope, $geolocation, titleService, Events, Accounts, $http, AppScope) {
 			titleService.setTitle('All events');
 
 			// contain events data ::
@@ -398,8 +399,9 @@ angular.module('blvdx.events', [
 
 
 			$scope.Follow = function (event) {
-				$http.get('/app/api/current-user/').then(function (response) {
-					if (response.data.user !== null) {
+                //$http.get('/app/api/current-user/').then(function (response) {
+				Accounts.getCurrentUser().then(function (response) {
+					if (response.user !== null) {
 						Events.follow(event).then(function (data) {
 							event.srv_following = data.srv_following;
 							event.srv_followersCount = data.srv_followersCount;
@@ -646,8 +648,8 @@ angular.module('blvdx.events', [
 			/* end of datepicker */
 		}])
 
-	.controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', '$http', 'Streams' , '$state' , '$fb','$photoview',
-		function EventsCtrl($scope, titleService, $location, $stateParams, Events, $http, Streams, $state , $fb , $photoview) {
+	.controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', 'Accounts', '$http', 'Streams' , '$state' , '$fb','$photoview',
+		function EventsCtrl($scope, titleService, $location, $stateParams, Events, Accounts, $http, Streams, $state , $fb , $photoview) {
 			titleService.setTitle('Event Details');
             $scope.go = function ( path ) {
                 $location.path( path );
@@ -714,8 +716,9 @@ angular.module('blvdx.events', [
 
 			$scope.Album = {photos: []};
 
-			$http.get('/app/api/current-user/').then(function (response) {
-				if (response.data.user == null) {
+            //$http.get('/app/api/current-user/').then(function (response) {
+			Accounts.getCurrentUser().then(function (response) {
+				if (response.user == null) {
 					//$("#uploadphotolink").hide();
 				}
 			});
@@ -753,23 +756,11 @@ angular.module('blvdx.events', [
 					$scope.errors = error.data;
 				});
 			};
-			/*
-			$scope.FollowUser = function () {
-				$http.get('/api/current-user/').then(function (response) {
-					if (response.data.user !== null) {
-						Events.followUser($scope.EventObj.profile.slug).then(function (data) {
-							$scope.EventObj.profile.srv_following = data.srv_following;
-							$scope.EventObj.profile.srv_followersCount = data.srv_followersCount;
-						});
-					} else {
-						$(".navbar-nav a").eq(1).click();
-					}
-				});
-			};
-			*/
+
 			$scope.Follow = function () {
-				$http.get('/app/api/current-user/').then(function (response) {
-					if (response.data.user == null) {
+				//$http.get('/app/api/current-user/').then(function (response) {
+                Accounts.getCurrentUser().then(function (response) {
+					if (response.user == null) {
 						$(".navbar-nav a").eq(1).click();
 					} else {
 						Events.follow($scope.EventObj).then(function (data) {

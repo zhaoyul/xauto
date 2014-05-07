@@ -4,6 +4,10 @@ angular.module('resources.accounts', ['restangular'])
 
       var Accounts = {};
 
+      Accounts.getCurrentUser = function() {
+          return Restangular.one('current-user').get();
+      };
+
       Accounts.getAccount = function (slug) {
           return Restangular.one('profiles', slug).get();
       };
@@ -18,6 +22,10 @@ angular.module('resources.accounts', ['restangular'])
 
       Accounts.login = function (account) {
           return Restangular.all('login').post(account);
+      };
+
+      Accounts.logout = function (account) {
+          return Restangular.all('logout').post();
       };
 
       Accounts.changePassword = function (account, token) {

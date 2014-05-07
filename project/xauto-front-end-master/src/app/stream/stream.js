@@ -19,7 +19,8 @@ angular.module( 'blvdx.stream', [
   'security.authorization',
   'resources.streams',
   'resources.events',
-  'resources.users'
+  'resources.users',
+  'resources.accounts'
 ])
 
 /**
@@ -42,13 +43,14 @@ angular.module( 'blvdx.stream', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'StreamCtrl', ['$scope', '$state', 'titleService', 'Streams', '$http', 'Events', '$q', 'Profiles', function StreamCtrl( $scope, $state, titleService, Streams, $http, Events, $q, Profiles) {
+.controller( 'StreamCtrl', ['$scope', '$state', 'titleService', 'Streams', '$http', 'Events', 'Accounts', '$q', 'Profiles', function StreamCtrl( $scope, $state, titleService, Streams, $http, Events, Accounts, $q, Profiles) {
   titleService.setTitle( 'Stream' );
 
   // always reqest latest user data
-  $http.get('/app/api/current-user/').then(function(response) {
-    if(response.data.user !== null) {
-      Streams.send_subscribe(response.data.user.following);
+  //$http.get('/app/api/current-user/').then(function(response) {
+  Accounts.getCurrentUser().then(function(response) {
+    if(response.user !== null) {
+      Streams.send_subscribe(response.user.following);
       Streams.send_fetch_latest();
 
     } else{
@@ -92,8 +94,9 @@ angular.module( 'blvdx.stream', [
 
   $scope.Favorite = function(entry,type) {
 
-        $http.get('/app/api/current-user/').then(function(response) {
-            if(response.data.user == null) {
+        //$http.get('/app/api/current-user/').then(function(response) {
+        Accounts.getCurrentUser().then(function(response) {
+            if(response.user == null) {
                  $(".navbar-nav a").eq(1).click();
             }else{
                      if(!type){
@@ -116,15 +119,15 @@ angular.module( 'blvdx.stream', [
   };
 
   $scope.Report = function(entry) {
-         $http.get('/app/api/current-user/').then(function(response) {
-            if(response.data.user == null) {
+         //$http.get('/app/api/current-user/').then(function(response) {
+         Accounts.getCurrentUser().then(function(response) {
+            if(response.user == null) {
                  $(".navbar-nav a").eq(1).click();
             }else{
                      Streams.send_report(entry.id);
                      entry.reported = true;
                  }
         });
-
   };
 
   $scope.$on("prepend_entry", function(event, data){

@@ -587,8 +587,9 @@ angular.module( 'blvdx', [
 		$photoview.currentScope.Follow();
 	};
 	$scope.FollowUser = function (){
-		$http.get('/app/api/current-user/').then(function (response) {
-			if (response.data.user !== null) {
+        //$http.get('/app/api/current-user/').then(function (response) {
+		Accounts.getCurrentUser().then(function (response) {
+			if (response.user !== null) {
 				Profiles.Follow($scope.Profile.slug).then(function (data) {
 					$scope.Profile.srv_following = data.srv_following;
 					$scope.Profile.srv_followersCount = data.srv_followersCount;
@@ -598,8 +599,6 @@ angular.module( 'blvdx', [
 			}
 		});
 	};
-
-
 
 	// ------> SOCIAL BUTTONS
 	$scope.social_tw = function (obj) {

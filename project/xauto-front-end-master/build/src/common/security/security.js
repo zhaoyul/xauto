@@ -138,10 +138,15 @@ angular.module('security.service', [
 
     // Logout the current user and redirect
     logout: function(redirectTo) {
-      $http.post('/app/api/logout/').then(function() {
+      Accounts.logout().then(function() {
         service.currentUser = null;
         redirect(redirectTo);
       });
+
+//      $http.post('/app/api/logout/').then(function() {
+//        service.currentUser = null;
+//        redirect(redirectTo);
+//      });
     },
 
     // Ask the backend to see if a user is already authenticated - this may be from a previous session.
@@ -149,10 +154,15 @@ angular.module('security.service', [
       if ( service.isAuthenticated() ) {
         return $q.when(service.currentUser);
       } else {
-        return $http.get('/app/api/current-user/').then(function(response) {
-          service.currentUser = response.data.user;
+        return Accounts.getCurrentUser().then(function(response) {
+          service.currentUser = response.user;
           return service.currentUser;
         });
+
+//        return $http.get('/app/api/current-user/').then(function(response) {
+//          service.currentUser = response.data.user;
+//          return service.currentUser;
+//        });
       }
     },
 
