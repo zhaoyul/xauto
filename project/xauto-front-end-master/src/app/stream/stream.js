@@ -46,7 +46,7 @@ angular.module( 'blvdx.stream', [
   titleService.setTitle( 'Stream' );
 
   // always reqest latest user data
-  $http.get('/api/current-user/').then(function(response) {
+  $http.get('/app/api/current-user/').then(function(response) {
     if(response.data.user !== null) {
       Streams.send_subscribe(response.data.user.following);
       Streams.send_fetch_latest();

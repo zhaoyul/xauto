@@ -587,7 +587,7 @@ angular.module( 'blvdx', [
 		$photoview.currentScope.Follow();
 	};
 	$scope.FollowUser = function (){
-		$http.get('/api/current-user/').then(function (response) {
+		$http.get('/app/api/current-user/').then(function (response) {
 			if (response.data.user !== null) {
 				Profiles.Follow($scope.Profile.slug).then(function (data) {
 					$scope.Profile.srv_following = data.srv_following;

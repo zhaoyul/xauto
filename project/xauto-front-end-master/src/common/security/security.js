@@ -138,7 +138,7 @@ angular.module('security.service', [
 
     // Logout the current user and redirect
     logout: function(redirectTo) {
-      $http.post('/api/logout/').then(function() {
+      $http.post('/app/api/logout/').then(function() {
         service.currentUser = null;
         redirect(redirectTo);
       });
