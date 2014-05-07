@@ -8,3 +8,5 @@ SOCKET_STREAMER_PORT = 49002
 SOCKET_STREAMER_FULL_URL = "http://localhost:%i%s" % (SOCKET_STREAMER_PORT, SOCKET_STREAMER_URL)
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+STATIC_URL = '/app/static/'

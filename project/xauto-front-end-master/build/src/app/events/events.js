@@ -145,12 +145,15 @@ angular.module('blvdx.events', [
                             }
                             if($scope.editDate.currency === undefined){
                                 $scope.errors.currency = true;
+                                has_errors = true;
                             }
                             if(!$scope.editDate.feature_headline){
                                 $scope.errors.feature_headline = true;
+                                has_errors = true;
                             }
                             if(!$scope.editDate.feature_detail){
                                 $scope.errors.feature_detail = true;
+                                has_errors = true;
                             }
                             if (has_errors === false) {
                                 // no errors so far?
@@ -173,7 +176,7 @@ angular.module('blvdx.events', [
                                 }
                             }
                             if(has_errors){
-                                console.log($scope.errors);
+                                console.log('validate errors :',$scope.errors);
                             }
                             return has_errors;
                         };
@@ -201,15 +204,39 @@ angular.module('blvdx.events', [
                             $scope.hasMap = true;
                             if(hasPosition){
                                 $gmaps.addSingleMarker($scope.editDate.latitude , $scope.editDate.longitude);
+                            } else {
+                                var adrstr = '';
+                                var types = ['country','address_1','address_2','city','location_name','zip','state'];
+                                for(var t in types){
+                                    var txt = $scope.editDate[types[t]];
+                                    if(txt){
+                                        adrstr += txt + ' ';
+                                    }
+                                }
+                                $gmaps.getLocation(adrstr);
                             }
 
                         };
 
+                        $scope.checkGeoCoords = function () {
+                            // verify geolocation ::
+                            if(isNaN($scope.editDate.latitude) || isNaN($scope.editDate)){
+                                var p = $gmaps.position;
+                                if(p.lat && p.long){
+                                    $scope.editDate.latitude = p.lat;
+                                    $scope.editDate.longitude = p.long;
+                                }
+                            }
+                        };
+
                         $scope.backConfirm = function (){
+                            $scope.checkGeoCoords();
                             $scope.confirmScreen = false;
                         };
 
                         $scope.saveDate = function (){
+                            $scope.checkGeoCoords();
+                            // save && send ::
                             $dateproxy.editDate = $scope.editDate;
                             $dateproxy.editDateOptions = $scope.editDateOptions;
                             $scope.$dismiss();
@@ -218,7 +245,6 @@ angular.module('blvdx.events', [
 
                         $scope.copyLastDate = function () {
                             Events.getLastDate($dateproxy.EventObj).then(function (date) {
-                                console.log(date);
                                 var new_date = date;
                                 delete new_date.id;
                                 $scope.editDate = new_date;
@@ -443,7 +469,7 @@ angular.module('blvdx.events', [
 		}])
 
 	.controller('EventEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', 'DateObj', '$upload', '$filter','$dateproxy',
-		function EventEditCtrl($scope, $state, titleService, $stateParams, Events, DateObj, $upload, $filter,$dateproxy) {
+		function EventEditCtrl($scope, $state, titleService, $stateParams, Events, DateObj, $upload, $filter, $dateproxy) {
 
 			titleService.setTitle('Edit Event');
 			$scope.eventId = $stateParams.eventId;
@@ -664,8 +690,8 @@ angular.module('blvdx.events', [
 
 					// display photo::
 					var p = $state.params;
-					if (p && p.Album) {
-						if( p.Photo){// open photoviewer ; show photo
+					if (p && p.Album && !isNaN(p.Album)) {
+						if( p.Photo ){// open photoviewer ; show photo
 							$photoview.setup( $scope, '/#/events/' + $scope.stateParams.eventId,$scope.Albums[p.Album], p.Photo , $scope.EventObj.profile , $scope.EventObj);
 						} else {// scroll to album with delay
 							setTimeout(function(){
