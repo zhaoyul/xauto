@@ -12,12 +12,12 @@ ADMINS = (
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/home/miloweb/www/xauto.dev.milosolutions.com/xauto.db',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', 
+        'NAME': 'xauto',
+        'USER': 'xauto',      
+        'PASSWORD': 'W64qgiuoC',
+        'HOST': '127.0.0.1',
+        'PORT': '',         
     }
 }
 
@@ -32,8 +32,9 @@ AWS_STORAGE_BUCKET_NAME = 'xauto'
 AWS_CALLING_FORMAT = CallingFormat.SUBDOMAIN
 
 MEDIA_URL = 'http://xauto.s3.amazonaws.com/media/'
+STATIC_URL = '/app/static/'
 
-ALLOWED_HOSTS = ['xauto.dev.milosolutions.com', 'www.xauto.dev.milosolutions.com']
+ALLOWED_HOSTS = ['xauto.co', 'xauto.dev.milosolutions.com', 'www.xauto.dev.milosolutions.com', '54.187.65.140']
 
 COMPRESS_ENABLED = True
 
@@ -62,4 +63,5 @@ LOGGING = {
 SOCKET_STREAMER_URL = "/photostream"
 SOCKET_STREAMER_PORT = 8449
 SOCKET_STREAMER_FULL_URL = "http://xauto.dev.milosolutions.com:%i%s" % (SOCKET_STREAMER_PORT, SOCKET_STREAMER_URL)
+FORCE_SCRIPT_NAME = '/app'
 
