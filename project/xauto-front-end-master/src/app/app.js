@@ -24,7 +24,7 @@ angular.module( 'blvdx', [
   $httpProvider.defaults.xsrfCookieName = 'csrftoken';
   $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-  RestangularProvider.setBaseUrl('/api');
+  RestangularProvider.setBaseUrl('/app/api');
   RestangularProvider.setRequestSuffix('/');
 
 
