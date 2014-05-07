@@ -92,7 +92,7 @@ angular.module( 'blvdx.stream', [
 
   $scope.Favorite = function(entry,type) {
 
-        $http.get('/api/current-user/').then(function(response) {
+        $http.get('/app/api/current-user/').then(function(response) {
             if(response.data.user == null) {
                  $(".navbar-nav a").eq(1).click();
             }else{
@@ -116,7 +116,7 @@ angular.module( 'blvdx.stream', [
   };
 
   $scope.Report = function(entry) {
-         $http.get('/api/current-user/').then(function(response) {
+         $http.get('/app/api/current-user/').then(function(response) {
             if(response.data.user == null) {
                  $(".navbar-nav a").eq(1).click();
             }else{
