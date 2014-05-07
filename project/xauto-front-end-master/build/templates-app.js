@@ -913,7 +913,7 @@ angular.module("events/partial_add_date.tpl.html", []).run(["$templateCache", fu
     "    <div class=\"modal-footer date-modal-footer-fix\">\n" +
     "      <div class=\"to_confirm\">\n" +
     "        <button ng-hide=\"editConfirm()\" type=\"button\" class=\"btn btn-info pull-left\" ng-click=\"copyLastDate()\">Copy Last Date</button>\n" +
-    "        <button ng-hide=\"confirmScreen\" type=\"submit\" ng-click=\"addDate()\" class=\"btn btn-primary\" data-toggle=\"modal\">Add Date!</button>\n" +
+    "        <button ng-hide=\"confirmScreen\" type=\"submit\" ng-click=\"addDate()\" class=\"btn btn-primary\" data-toggle=\"modal\">{{editDate.id ? 'Edit Date!':'Add Date!'}}</button>\n" +
     "        <button ng-show=\"confirmScreen\" type=\"submit\" ng-click=\"saveDate()\" value=\"Confirm\" data-toggle=\"modal\" data-target=\"#dateModal\"  class=\"btn btn-primary\">Confirm</button>\n" +
     "        <div ng-show=\"confirmScreen\" class=\"pull-left date-modal-back-btn\" ng-click=\"backConfirm()\">&lt; Back</div>\n" +
     "      </div>\n" +
