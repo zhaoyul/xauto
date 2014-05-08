@@ -40,6 +40,7 @@ COMPRESS_ENABLED = True
 
 INSTALLED_APPS = INSTALLED_APPS + [
     'gunicorn',
+    'raven.contrib.django.raven_compat'
 ]
 
 LOGGING = {
@@ -65,3 +66,6 @@ SOCKET_STREAMER_PORT = 8449
 SOCKET_STREAMER_FULL_URL = "http://xauto.dev.milosolutions.com:%i%s" % (SOCKET_STREAMER_PORT, SOCKET_STREAMER_URL)
 FORCE_SCRIPT_NAME = '/app'
 
+RAVEN_CONFIG = {
+    'dsn': 'http://2a91590df3aa44e08cc77b872966135a:84b8a3e6f29d48d1a5b1b3a382fac0a7@sentry.milosolutions.com/15',
+}
