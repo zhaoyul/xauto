@@ -54,16 +54,19 @@ class EventsListView(ListAPIView):
 
         user = self.request.user
 
-        if len(search_text)>=1:
-            queryset = Event.objects.filter((Q(title__contains=search_text) | Q(event_dates__city__contains=search_text) | Q(event_dates__state__contains=search_text))).distinct()
+        if len(search_text) >= 1:
+            queryset = Event.objects.filter((Q(title__icontains=search_text) | Q(event_dates__city__icontains=search_text) | Q(event_dates__state__icontains=search_text))).distinct()
         else:
             queryset = Event.objects.all()
 
         if own_events == 'true' and user.is_active:
             queryset = queryset.filter(author=user.profile)
 
-        if filter_by == 'following' and user.is_active:
-            queryset = queryset.filter(followed=user.profile)
+        if filter_by == 'following':
+            if not user.is_authenticated():
+                queryset = queryset.none()
+            elif user.is_active:
+                queryset = queryset.filter(followed=user.profile)
 
         if filter_by == 'live':
             queryset = queryset.filter(event_dates__start_date__lt=datetime.now()).filter(
@@ -329,11 +332,11 @@ class UserProfileViewSet(ModelViewSet):
 
         if len(search_text)>=1:
             queryset = UserProfile.objects.filter(
-                Q(name__contains=search_text) |
-                Q(user__first_name__contains=search_text) |
-                Q(user__last_name__contains=search_text) |
-                Q(city__contains=search_text) |
-                Q(state__contains=search_text)
+                Q(name__icontains=search_text) |
+                Q(user__first_name__icontains=search_text) |
+                Q(user__last_name__icontains=search_text) |
+                Q(city__icontains=search_text) |
+                Q(state__icontains=search_text)
             ).distinct()
         else:
             queryset = UserProfile.objects.all()

@@ -31,11 +31,16 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
         model = MultiuploaderImage
 
     def srv_followers_count(self, obj):
-        return obj.event_date.event.followed.count()
-
+        date = obj.event_date
+        if date:
+            return date.event.followed.count()
+        return 0
 
     def get_event_name(self, obj):
-        return obj.event_date.event.title
+        date = obj.event_date
+        if date:
+            return date.event.title
+        return '---'
 
     def get_srv_following(self, obj):
         view = self.context['view']
