@@ -53,10 +53,16 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
         return False
 
     def get_location_name(self, obj):
-        return obj.event_date.location_name
+        date = obj.event_date
+        if date:
+            return date.location_name
+        return '---'
 
     def get_event_date_name(self, obj):
-        return obj.event_date.feature_headline
+        date = obj.event_date
+        if date:
+            return date.feature_headline
+        return '---'
 
     def get_usericon(self, obj):
         return obj.userprofile.get_thumbnail(40,40)
