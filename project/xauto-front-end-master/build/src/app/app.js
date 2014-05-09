@@ -224,7 +224,6 @@ angular.module( 'blvdx', [
         timeout: null,
         //
         startInterval: function (delay, timeout) {
-			console.log('geolocation init1');
             if (typeof delay === "undefined") { delay = 10000; }
             if (typeof timeout === "undefined") { timeout = 15000; }
             if (navigator && navigator.geolocation) {
@@ -232,10 +231,10 @@ angular.module( 'blvdx', [
                     gloc.position = result.coords;
                     gloc.complete = true;
                     gloc.timestamp = result.timestamp;
-					console.log('geolocation set');
+					//console.log('geolocation set');
                     $rootScope.$broadcast(GeolocationEvent.UPDATE, new GeolocationEvent(true, "received"), gloc.position);
                 }, function (result) {
-					console.log('geolocation er:',result);
+					//console.log('geolocation er:',result);
                     if (result.code == 3 && gloc.position != null) {
                         return;
                     }
@@ -255,7 +254,6 @@ angular.module( 'blvdx', [
         },
         // init call :
         start: function (useTimeout) {
-			console.log('geolocation init2');
             if (typeof useTimeout === "undefined") { useTimeout = true; }
             if (gloc.timeout != null) {
                 return;
@@ -268,7 +266,7 @@ angular.module( 'blvdx', [
                     gloc.position = result.coords;
                     gloc.complete = true;
                     gloc.timestamp = result.timestamp;
-					console.log('geolocation set');
+					//console.log('geolocation set');
                     $rootScope.$broadcast(GeolocationEvent.COMPLETE, new GeolocationEvent(true, "complete"), gloc.position);
                 }, function (result) {
                     gloc.abort(false);
@@ -280,7 +278,6 @@ angular.module( 'blvdx', [
                 }
                 return;
             }
-			console.log('geolocation not aviable');
             gloc.aviable = false;
             gloc.error = true;
             $rootScope.$broadcast(GeolocationEvent.ERROR);

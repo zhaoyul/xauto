@@ -8871,6 +8871,12 @@ ul.event-details-actions > li > a.btn i {
   cursor: pointer;
 }
 
+/* autocomplete window :: */
+
+.pac-container {
+  z-index: 10001;
+}
+
 .free-label {
   padding-right: 7px;
   margin: 0 -24px;

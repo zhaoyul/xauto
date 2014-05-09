@@ -133,6 +133,58 @@ angular.module('blvdx.events', [
             return $scope.edit || $scope.confirmScreen;
         };
 
+        // ------> AUTOCOMPLETE ::
+        $scope.hasAutoComplete = false;
+        $scope.fromAutoComplete = false;
+        $scope.locationFocus = function (){
+            if($scope.hasAutoComplete == false){
+                $gmaps.initAutoComplete(document.getElementById('locationInput'),function(){
+                    $scope.fromAutoComplete = true;
+                    var place = $gmaps.autocomplete.getPlace();
+                    var placeDetiles = place.address_components;
+                    for(var i = 0 ; i<placeDetiles.length ; i++){
+                        switch(placeDetiles[i].types[0]){
+                            case 'administrative_area_level_1':
+                                $scope.editDate.state = placeDetiles[i].long_name;
+                                break;
+                            //case 'administrative_area_level_2':
+                               // $scope.editDate.address_2 = placeDetiles[i].long_name;
+                               // break;
+                            case 'administrative_area_level_3':
+                                $scope.editDate.address_2 = placeDetiles[i].long_name;
+                                break;
+                            case 'route':
+                            case 'street_number':
+                                $scope.editDate.address_1 =  placeDetiles[i].long_name + ($scope.editDate.address_1 ? ' '+$scope.editDate.address_1:'');
+                                    break;
+                            case 'postal_code':
+                                $scope.editDate.zip = placeDetiles[i].long_name;
+                                break;
+                            case 'locality':
+                                $scope.editDate.city = placeDetiles[i].long_name;
+                                break;
+                            case 'country':
+                                $scope.editDate.country = placeDetiles[i].short_name;
+                                break;
+                        }
+                    }
+
+
+                    if(place.geometry && place.geometry.location){
+                        $scope.editDate.latitude = place.geometry.location.lat();
+                        $scope.editDate.longitude = place.geometry.location.lng();
+                    }
+
+
+
+                    $scope.$apply();
+                });
+                $scope.hasAutoComplete = true;
+            }
+            console.log('location focus');
+        };
+        // ------>
+
 
         /* datepicker */
         $scope.today = function () {
@@ -225,18 +277,11 @@ angular.module('blvdx.events', [
             $scope.confirmScreen = true;
             // run map ::
             var hasPosition = $scope.editDate.latitude && $scope.editDate.longitude;
-            if($scope.hasMap){// move map to location or set default
+            var zoom = 3;
 
-
-            } else {// initialize if display map first time
-                $gmaps.showMap($scope.editDate.latitude || 0 , $scope.editDate.longitude || 0,$('.map')[0],3);
-            }
-            // now it has map initialized::
-            $scope.hasMap = true;
             if(hasPosition){// if user add lat and long
-                $gmaps.moveTo($scope.editDate.latitude || 0 , $scope.editDate.longitude || 0,3);
-                $gmaps.addSingleMarker($scope.editDate.latitude , $scope.editDate.longitude , 12);
-                $gmaps.update();
+                // mchange zoom
+                zoom = 12;
             } else {
                 // use geocoder ::
                 var adrstr = '';
@@ -249,6 +294,19 @@ angular.module('blvdx.events', [
                 }
                 $gmaps.getLocation(adrstr);
             }
+            console.log('init map:',hasPosition,zoom);
+            if($scope.hasMap){// move map to location or set default
+                $gmaps.moveTo($scope.editDate.latitude || 0 , $scope.editDate.longitude || 0,zoom);
+                if($scope.hasPosition){
+                    $gmaps.addSingleMarker($scope.editDate.latitude , $scope.editDate.longitude);
+                }
+                $gmaps.update();
+            } else {// initialize if display map first time
+                $gmaps.showMap($scope.editDate.latitude || 0 , $scope.editDate.longitude || 0,$('.map')[0],null,zoom);
+                $scope.hasMap = true;
+            }
+
+
 
         };
 

@@ -18,10 +18,10 @@ angular.module('maps', []).service('$gmaps' , function (){
             this.map = new google.maps.Map(mapview, mapOptions);
             this.initialized = true;
         },
-        showMap:function(lat , long , container , mapOptions){
+        showMap:function(lat , long , container , mapOptions,zoom){
             // ------> LOAD VERIFICATION :: if not loaded , create promise
             if(!this.loaded){
-                this.displayPromise = {lat:lat , long:long , container:container , showMarker:showMarker , mapOptions:mapOptions};
+                this.displayPromise = {lat:lat , long:long , container:container , showMarker:showMarker , mapOptions:mapOptions,zoom:zoom};
                 return;
             } else {
                 this.displayPromise = null;
@@ -47,7 +47,7 @@ angular.module('maps', []).service('$gmaps' , function (){
             }
             container.appendChild(mapview);
             google.maps.event.trigger(this.map, 'resize');
-            this.moveTo(lat ,long);
+            this.moveTo(lat ,long , zoom);
             //
             this.displayed = true;
         },
@@ -110,15 +110,35 @@ angular.module('maps', []).service('$gmaps' , function (){
             console.log('find:',address);
             var delegate = this;
             this.geocoder.geocode( { 'address': address}, function(results, status) {//this.geocoder;
-                console.log(results,status);
                 if (status == google.maps.GeocoderStatus.OK) {
-                    delegate.moveToLocation(results[0].geometry.location , 12) ;//.map.setCenter(results[0].geometry.location);
+                    delegate.moveToLocation(results[0].geometry.location , 12);//.map.setCenter(results[0].geometry.location);
                     delegate.addSingleMarker(results[0].geometry.location);
                 } else {
                     delegate.moveTo(0,0 , 3) ;
                     //alert('Geocode was not successful for the following reason: ' + status);
                 }
             });
+        },
+
+        //////////////////////////////////////////////////
+        //////////////////////////////////////////////////
+        // -----------------------> AUTO COMPLETE
+
+        _autoCompletePromise:null,
+        _autoCompleteInitialized:false,
+        initAutoComplete:function(inputElement,changeCallback) {
+            if(this.loaded){
+                this.autocomplete = new google.maps.places.Autocomplete(inputElement,{ types: ['geocode'] });
+                google.maps.event.addListener(this.autocomplete, 'place_changed', changeCallback);
+                if(this._autoCompleteInitialized == false){
+                    $('.pac-container').css({'z-index':10001});
+                    this._autoCompleteInitialized = true;
+                }
+            } else {
+                this._autoCompletePromise = arguments;
+                return;
+            }
+
         }
 
     };
@@ -126,9 +146,14 @@ angular.module('maps', []).service('$gmaps' , function (){
 
     // load ::
     window.sgmapinit = function(){
+        console.log('map loaded');
         instance.loaded = true;
         if(instance.displayPromise){
             instance.showMap(instance.displayPromise.lat,instance.displayPromise.long,instance.displayPromise.container,instance.displayPromise.showMarker,instance.displayPromise.mapOptions);
+        }
+        if(instance._autoCompletePromise){
+            instance.initAutoComplete.apply(instance,instance._autoCompletePromise);
+            instance._autoCompletePromise = null;
         }
         instance.geocoder = new google.maps.Geocoder();
     };

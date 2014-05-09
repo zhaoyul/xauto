@@ -1127,7 +1127,7 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "      <div class=\"form-group\" ng-class=\"{'has-error': form.location_name.$invalid || errors.location_name}\">\n" +
     "        <label class=\"col-lg-3 control-label\">Location Name</label>\n" +
     "        <div class=\"col-lg-9\">\n" +
-    "          <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"editDate.location_name\" name=\"location_name\">\n" +
+    "          <input id=\"locationInput\" ng-focus=\"locationFocus()\" type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"editDate.location_name\" name=\"location_name\">\n" +
     "          <span class=\"help-block\" ng-show=\"errors.location_name\" ng-repeat=\"error in errors.location_name\">{{error}}</span>\n" +
     "        </div>\n" +
     "      </div>\n" +

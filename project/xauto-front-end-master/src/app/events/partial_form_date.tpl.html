@@ -3,7 +3,7 @@
       <div class="form-group" ng-class="{'has-error': form.location_name.$invalid || errors.location_name}">
         <label class="col-lg-3 control-label">Location Name</label>
         <div class="col-lg-9">
-          <input type="text" class="form-control" placeholder="" ng-model="editDate.location_name" name="location_name">
+          <input id="locationInput" ng-focus="locationFocus()" type="text" class="form-control" placeholder="" ng-model="editDate.location_name" name="location_name">
           <span class="help-block" ng-show="errors.location_name" ng-repeat="error in errors.location_name">{{error}}</span>
         </div>
       </div>
