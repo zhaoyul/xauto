@@ -1608,12 +1608,12 @@ angular.module("stream/stream.tpl.html", []).run(["$templateCache", function($te
 angular.module("templates/photoviewer.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/photoviewer.tpl.html",
     "<!-- photo viewer  -->\n" +
-    "<div ng-controller=\"photoviewer\" class=\"photoviewer\" style=\"display:none;position: fixed;top:0px ; left:0px;width: 100%;height: 100%;z-index: 10001;\">\n" +
-    "    <div style=\"background-image: url('/static/assets/img/colorbox/overlay.png');opacity: 0.75;width: 100%;height: 100%;\"></div>\n" +
-    "    <div class=\"photoback\" style=\"position: absolute;top:0px;left:0px;bottom:0px; right:0px;overflow: auto\">\n" +
-    "        <div class=\"photoviewercontent\" style=\"position: absolute;top:0px;left:0px;background-color: #e9e9e9;\" ng-keypress=\"keyChangePhoto()\">\n" +
-    "            <div class=\"imgcontainer\" style=\"position: absolute;top:0px;left:0px;background-color: #000000\">\n" +
-    "                <img src=\"{{photoURL}}\" style=\"position:absolute;top:0px;left:0px;\" />\n" +
+    "<div ng-controller=\"photoviewer\" class=\"photoviewer\">\n" +
+    "    <div class=\"photoviewerbackground\"></div>\n" +
+    "    <div class=\"photoback\">\n" +
+    "        <div class=\"photoviewercontent\" ng-keypress=\"keyChangePhoto()\">\n" +
+    "            <div class=\"imgcontainer\">\n" +
+    "                <img src=\"{{photoURL}}\"/>\n" +
     "                <div ng-click=\"nextPhoto()\" class=\"nextphoto\"></div>\n" +
     "                <div ng-click=\"prevPhoto()\" class=\"prevphoto\"></div>\n" +
     "            </div>\n" +

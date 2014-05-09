@@ -8694,153 +8694,6 @@ ul.event-details-actions > li > a.btn i {
   }
 }
 
-.photoviewer .nextphoto {
-  position: absolute;
-  top: 50%;
-  right: 5px;
-  width: 16px;
-  height: 17px;
-  background-image: url('/static/assets/img/photoview/arrows.png');
-  background-position: 16px 0px;
-}
-
-.photoviewer .prevphoto {
-  position: absolute;
-  top: 50%;
-  left: 5px;
-  width: 16px;
-  height: 17px;
-  background-image: url('/static/assets/img/photoview/arrows.png');
-}
-
-.photoviewer .rightwrap {
-  position: absolute;
-  padding: 0px 0px;
-  background-color: #FFFFFF;
-}
-
-.photoviewer .rightwrap .close {
-  position: absolute;
-  top: 14px;
-  right: 18px;
-  width: 12px;
-  height: 10px;
-  cursor: pointer;
-  background-image: url('/static/assets/img/photoview/close.png');
-}
-
-.photoviewer .rightwrap .eventtitle {
-  height: 90px;
-  padding: 10px 20px 0px 20px;
-  background-color: #E9E9E9;
-}
-
-.photoviewer .rightwrap .eventtitle .title {
-  display: block;
-  width: 255px;
-  padding-top: 8px;
-  padding-bottom: 10px;
-  font-size: 15px;
-  color: #365db8;
-}
-
-.photoviewer .rightwrap .eventtitle .follow {
-  float: right;
-  padding: 4px 10px;
-  background-color: #d1d1d1;
-  border: solid 1px #cccccc;
-  border-radius: 5px;
-}
-
-.photoviewer .rightwrap .eventtitle .follow .followcount {
-  float: left;
-  min-width: 20px;
-  padding: 0px 2px;
-  margin: 4px 0px;
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 16px;
-  color: #ffffff;
-  text-align: center;
-  background-color: #7e2fc0;
-  border-radius: 10px;
-}
-
-.photoviewer .rightwrap .eventtitle .follow .followicon {
-  float: right;
-}
-
-.photoviewer .author {
-  padding: 15px 15px;
-}
-
-.photoviewer .author .name {
-  margin-left: 65px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #1168c3;
-  word-wrap: break-word;
-}
-
-.photoviewer .author .follow {
-  margin-top: 6px;
-  margin-left: 65px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #94be02;
-}
-
-.photoviewer .author .userimg {
-  display: inline;
-  float: left;
-  width: 48px;
-  height: 48px;
-}
-
-.photoviewer .social {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 50px;
-  background-color: #E9E9E9;
-}
-
-.photoviewer .social .links {
-  width: 300px;
-  padding: 11px 0 0 43px;
-}
-
-.photoviewer .social .links a {
-  display: block;
-  float: left;
-  width: 30px;
-  height: 28px;
-  margin: 0 7px;
-  cursor: pointer;
-  background-image: url('/static/assets/img/img_sprite.png');
-}
-
-.photoviewer .social .links a.social1 {
-  background-position: 0 -380px;
-}
-
-.photoviewer .social .links a.social2 {
-  background-position: -40px -380px;
-}
-
-.photoviewer .social .links a.social3 {
-  background-position: -82px -380px;
-}
-
-.photoviewer .social .links a.social4 {
-  background-position: -124px -380px;
-}
-
-.photoviewer .social .links a.social5 {
-  clear: right;
-  background-position: -165px -380px;
-}
-
 .showmorespan {
   width: 100%;
   padding: 6px 0 !important;
@@ -9279,4 +9132,197 @@ ul.stream-list > li:hover ul.stream-action-links {
 .albumShare {
   float: right;
   cursor: pointer;
+}
+
+.photoviewer {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 10001;
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+.photoviewer .photoviewerbackground {
+  width: 100%;
+  height: 100%;
+  background-image: url('/app/static/assets/img/colorbox/overlay.png');
+  opacity: 0.75;
+}
+
+.photoviewer .photoback {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  overflow: auto;
+}
+
+.photoviewer .photoviewercontent {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: #e9e9e9;
+}
+
+.photoviewer .photoviewercontent .imgcontainer {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: #000000;
+}
+
+.photoviewer .photoviewercontent .imgcontainer img {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+.photoviewer .nextphoto {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  width: 16px;
+  height: 17px;
+  background-image: url('/app/static/assets/img/photoview/arrows.png');
+  background-position: 16px 0px;
+}
+
+.photoviewer .prevphoto {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  width: 16px;
+  height: 17px;
+  background-image: url('/app/static/assets/img/photoview/arrows.png');
+}
+
+.photoviewer .rightwrap {
+  position: absolute;
+  padding: 0px 0px;
+  background-color: #FFFFFF;
+}
+
+.photoviewer .rightwrap .close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  width: 12px;
+  height: 10px;
+  cursor: pointer;
+  background-image: url('/app/static/assets/img/photoview/close.png');
+}
+
+.photoviewer .rightwrap .eventtitle {
+  height: 90px;
+  padding: 10px 20px 0px 20px;
+  background-color: #E9E9E9;
+}
+
+.photoviewer .rightwrap .eventtitle .title {
+  display: block;
+  width: 255px;
+  padding-top: 8px;
+  padding-bottom: 10px;
+  font-size: 15px;
+  color: #365db8;
+}
+
+.photoviewer .rightwrap .eventtitle .follow {
+  float: right;
+  padding: 4px 10px;
+  background-color: #d1d1d1;
+  border: solid 1px #cccccc;
+  border-radius: 5px;
+}
+
+.photoviewer .rightwrap .eventtitle .follow .followcount {
+  float: left;
+  min-width: 20px;
+  padding: 0px 2px;
+  margin: 4px 0px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 16px;
+  color: #ffffff;
+  text-align: center;
+  background-color: #7e2fc0;
+  border-radius: 10px;
+}
+
+.photoviewer .rightwrap .eventtitle .follow .followicon {
+  float: right;
+}
+
+.photoviewer .author {
+  padding: 15px 15px;
+}
+
+.photoviewer .author .name {
+  margin-left: 65px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #1168c3;
+  word-wrap: break-word;
+}
+
+.photoviewer .author .follow {
+  margin-top: 6px;
+  margin-left: 65px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #94be02;
+}
+
+.photoviewer .author .userimg {
+  display: inline;
+  float: left;
+  width: 48px;
+  height: 48px;
+}
+
+.photoviewer .social {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #E9E9E9;
+}
+
+.photoviewer .social .links {
+  width: 300px;
+  padding: 11px 0 0 43px;
+}
+
+.photoviewer .social .links a {
+  display: block;
+  float: left;
+  width: 30px;
+  height: 28px;
+  margin: 0 7px;
+  cursor: pointer;
+  background-image: url('/app/static/assets/img/img_sprite.png');
+}
+
+.photoviewer .social .links a.social1 {
+  background-position: 0 -380px;
+}
+
+.photoviewer .social .links a.social2 {
+  background-position: -40px -380px;
+}
+
+.photoviewer .social .links a.social3 {
+  background-position: -82px -380px;
+}
+
+.photoviewer .social .links a.social4 {
+  background-position: -124px -380px;
+}
+
+.photoviewer .social .links a.social5 {
+  clear: right;
+  background-position: -165px -380px;
 }

@@ -351,7 +351,7 @@ angular.module( 'blvdx', [
 			//this.currentScope = scope;
 			this.baseURL = baseURL;
 			this.album = album;
-			this.displayScope.EventObj = EventObj;
+			this.displayScope.EventObj = this.EventObj = EventObj;
 			this.displayScope.Profile = Profile;
 			this.currentScope = scope;
 			// on image change :: hide
@@ -517,7 +517,7 @@ angular.module( 'blvdx', [
 	return pV;
 
 
-}).controller('photoviewer', function($scope , $photoview , $http,Profiles,$fb){
+}).controller('photoviewer', function($scope , $photoview , $http,Profiles,Accounts,$fb){
 	//
 	$photoview.displayScope = $scope;
 	// ------> display photo viewer ::
