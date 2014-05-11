@@ -127,6 +127,7 @@ angular.module('blvdx.events', [
                 $scope.editDateOptions = options.actions.POST;
             });
         }
+        $scope.EventObj = $dateproxy.EventObj;
 
         // verification for 'copy last date';
         $scope.editConfirm = function(){
@@ -158,7 +159,7 @@ angular.module('blvdx.events', [
                                 $scope.editDate.address_1 =  placeDetiles[i].long_name + ($scope.editDate.address_1 ? ' '+$scope.editDate.address_1:'');
                                     break;
                             case 'postal_code':
-                                $scope.editDate.zip = placeDetiles[i].long_name;
+                                $scope.editDate.zipcode = placeDetiles[i].long_name;
                                 break;
                             case 'locality':
                                 $scope.editDate.city = placeDetiles[i].long_name;
@@ -181,7 +182,6 @@ angular.module('blvdx.events', [
                 });
                 $scope.hasAutoComplete = true;
             }
-            console.log('location focus');
         };
         // ------>
 
@@ -277,15 +277,15 @@ angular.module('blvdx.events', [
             $scope.confirmScreen = true;
             // run map ::
             var hasPosition = $scope.editDate.latitude && $scope.editDate.longitude;
-            var zoom = 3;
+            var zoom = 1;
 
             if(hasPosition){// if user add lat and long
                 // mchange zoom
-                zoom = 12;
+                zoom = 14;
             } else {
                 // use geocoder ::
                 var adrstr = '';
-                var types = ['country','address_1','address_2','city','location_name','zip','state'];// params with data
+                var types = ['country','address_1','address_2','city','location_name','zipcode','state'];// params with data
                 for(var t in types){
                     var txt = $scope.editDate[types[t]];
                     if(txt){
@@ -294,7 +294,6 @@ angular.module('blvdx.events', [
                 }
                 $gmaps.getLocation(adrstr);
             }
-            console.log('init map:',hasPosition,zoom);
             if($scope.hasMap){// move map to location or set default
                 $gmaps.moveTo($scope.editDate.latitude || 0 , $scope.editDate.longitude || 0,zoom);
                 if($scope.hasPosition){
@@ -303,6 +302,9 @@ angular.module('blvdx.events', [
                 $gmaps.update();
             } else {// initialize if display map first time
                 $gmaps.showMap($scope.editDate.latitude || 0 , $scope.editDate.longitude || 0,$('.map')[0],null,zoom);
+                if(hasPosition){
+                    $gmaps.addSingleMarker($scope.editDate.latitude , $scope.editDate.longitude);
+                }
                 $scope.hasMap = true;
             }
 
@@ -529,6 +531,7 @@ angular.module('blvdx.events', [
             $scope.setNewDate = function (){
                 $dateproxy.editDate = null;
                 $dateproxy.editDateOptions = null;
+                $dateproxy.EventObj = $scope.EventObj;
                 $state.transitionTo('eventEdit.addDate', {eventId: $scope.eventId});
             }
 
@@ -608,6 +611,7 @@ angular.module('blvdx.events', [
             $scope.setNewDate = function (){
                 $dateproxy.editDate = null;
                 $dateproxy.editDateOptions = null;
+                $dateproxy.EventObj = $scope.EventObj;
                 $state.transitionTo('eventEdit.addDate', {eventId: $scope.eventId});
             };
 
@@ -663,21 +667,32 @@ angular.module('blvdx.events', [
 				return String(ret) + ':' + $filter('date')(date, 'mm');
 			};
 
+
+            $scope.initDateEditAction = {started:false,hasDate:false,hasOptions:false,update:function(){
+                if(this.started && this.hasDate && this.hasOptions){
+                    $state.transitionTo('eventEdit.addDate', {eventId: $scope.eventId});
+                    this.hasDate = this.started = this.hasOptions = false;
+                }
+            }};
 			$scope.setThisEditableDate = function (date) {
-				DateObj.getDate(date.id).then(function (date) {
+                if($scope.initDateEditAction.started ){
+                    return;
+                }
+                $scope.initDateEditAction.started = true;
+                DateObj.getDate(date.id).then(function (date) {
 					$scope.editDate = date;
 					$scope.editDate.startTime = $scope.withoutimezone(date.start_date);
 					$scope.editDate.endTime = $scope.withoutimezone(date.end_date);
                     $dateproxy.editDate = $scope.editDate;
-                    // open date editor
-                    $state.transitionTo('eventEdit.addDate', {eventId: $scope.eventId});
-				});
+                    $scope.initDateEditAction.hasDate = true;
+                    $scope.initDateEditAction.update();
+                });
 				DateObj.getOptions(date.id).then(function (options) {
 					$scope.editDateOptions = options.actions.PUT;
-                    $dateproxy.editDate = $scope.editDateOptions;
-				});
-				//$scope.editDate = date;
-
+                    $dateproxy.editDateOptions = $scope.editDateOptions;
+                    $scope.initDateEditAction.hasOptions = true;
+                    $scope.initDateEditAction.update();
+                });
 			};
 
 			$scope.removeDate = function ($index, $pk) {
@@ -755,13 +770,15 @@ angular.module('blvdx.events', [
 					Streams.send_fetch_latest();
 
 					// display photo::
+                    // proxy for stream ::
+                    $photoview.EventObj = $scope.EventObj;
 					var p = $state.params;
 					if (p && p.Album && !isNaN(p.Album)) {
 						if( p.Photo ){// open photoviewer ; show photo
 							$photoview.setup( $scope, '/#/events/' + $scope.stateParams.eventId,$scope.Albums[p.Album], p.Photo , $scope.EventObj.profile , $scope.EventObj);
 						} else {// scroll to album with delay
 							setTimeout(function(){
-								$('html, body').animate({scrollTop:$('#accordion').find('.panel-default').eq(p.Album - 1).offset().top - 60}, 1500);
+								$('html, body').animate({scrollTop:$('#accordion').find('.panel-default').eq(p.Album - 1).offset().top - 60}, 1000);
 							},100);
 						}
 					}

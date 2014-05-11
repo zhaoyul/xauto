@@ -38,7 +38,7 @@
       <div class="form-group" ng-class="{'has-error': form.zip.$invalid || errors.zip}">
         <label class="col-lg-3 control-label">ZIP/Postal Code</label>
         <div class="col-lg-9">
-          <input type="text" class="form-control" placeholder="" ng-model="editDate.zip" name="zip">
+          <input type="text" class="form-control" placeholder="" ng-model="editDate.zipcode" name="zip">
           <span class="help-block" ng-show="errors.zip" ng-repeat="error in errors.zip">{{error}}</span>
         </div>
       </div>
@@ -128,7 +128,7 @@
       <input type="text" class="form-control" placeholder="High" ng-disabled="editDate.attend_free" ng-model="editDate.attend_price_to">
     </div>
     <div class="col-lg-2" ng-class="{'has-error': dateform.currency.$invalid|| errors.currency}">
-      <select name="currency" class="form-control" ng-model="editDate.currency" ng-options="x.value as x.display_name for x in editDateOptions.currency.choices">
+      <select name="currency" class="form-control selectCurrency" ng-model="editDate.currency" ng-options="x.value as x.display_name for x in editDateOptions.currency.choices">
       </select>
     </div>
   </div>
@@ -165,8 +165,8 @@
      <div class="loc_adr_dates">
         <div class="loc">
             <p><span>Location Name:</span><b>{{ editDate.location_name }}</b></p><div class="clear"></div>
-            <p><span>Address:</span><b>{{ editDate.address_1  }} {{ editDate.address_2  }}
-            <br/>{{editDate.city}} , {{editDate.zip}}</b></p><div class="clear"></div>
+            <p><span>Address:</span><b>{{ editDate.address_2  }} {{ editDate.address_1  }}
+            <br/>{{editDate.city}}  {{editDate.state}} {{editDate.zipcode}}</b></p><div class="clear"></div>
         </div>
         <div class="dates">
             <div class="dt">
