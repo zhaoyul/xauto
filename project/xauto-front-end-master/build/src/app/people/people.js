@@ -53,7 +53,7 @@ angular.module( 'blvdx.people', [
  */
 .controller( 'PeopleCtrl', ['$scope', 'titleService', 'Profiles', 'AppScope', function PeopleCtrl( $scope, titleService, Profiles, AppScope ) {
   titleService.setTitle( 'People' );
-   $scope.radioModel = 'All';
+  $scope.radioModel = 'All';
 
   Profiles.getProfiles({}).then(function (profiles) {
       $scope.profilesPool = profiles;

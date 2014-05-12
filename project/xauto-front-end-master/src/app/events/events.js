@@ -100,12 +100,10 @@ angular.module('blvdx.events', [
 					}
 				}
 			})
-			.state('eventDetails.Photo', {
-				url: '/:Album/:Photo/'
-			})
-			.state('eventDetails.Album', {
-				url: '/:Album/'
+			.state('eventDetails.Focus', {
+				url: '/:focus/'
 			});
+
 	}])
 
     .controller('eventDetilesPopup',function($scope, DateObj, Events, $filter ,$stateParams ,  $dateproxy, $gmaps) {
@@ -772,16 +770,44 @@ angular.module('blvdx.events', [
 					// display photo::
                     // proxy for stream ::
                     $photoview.EventObj = $scope.EventObj;
-					var p = $state.params;
-					if (p && p.Album && !isNaN(p.Album)) {
-						if( p.Photo ){// open photoviewer ; show photo
-							$photoview.setup( $scope, '/app/#/events/' + $scope.stateParams.eventId,$scope.Albums[p.Album], p.Photo , $scope.EventObj.profile , $scope.EventObj);
-						} else {// scroll to album with delay
-							setTimeout(function(){
-								$('html, body').animate({scrollTop:$('#accordion').find('.panel-default').eq(p.Album - 1).offset().top - 60}, 1000);
-							},100);
-						}
-					}
+
+					var p = $state.params.focus;
+
+                    if(p){
+                        switch(p.charAt(0)){
+                            case 'p':
+                                // ------>
+                                console.log('state init::',$scope.Albums);
+                                for(var i = 0;i<$scope.Albums.length;i++){
+                                    var _alb = $scope.Albums[i].photos;
+                                    for(var j = 0;j<_alb.length;j++){
+                                        if(_alb[j].id == p.substr(1)){
+                                            var imgValid = true;
+                                            break;
+                                        }
+                                    }
+                                    if(imgValid){
+                                        break;
+                                    }
+                                }
+                                if(imgValid){
+                                    var photos = $scope.Albums[i].photos;
+                                    var delegate = {eventId: $scope.stateParams.eventId , base:'p'};
+                                    $photoview.setup( $scope, function(id){
+                                        delegate.focus = delegate.base + id;
+                                        $state.transitionTo('eventDetails.Focus',delegate);
+                                    },photos, j ,$scope.EventObj.profile, $scope.EventObj);
+                                }
+                                break;
+                            case 'a':
+                                setTimeout(function(){
+                                    $('html, body').animate({scrollTop:$('#accordion').find('.panel-default').eq(Number(p.substr(1))-1).offset().top - 60}, 1000);
+                                },100);
+                                break;
+                        }
+                    }
+					//if (p && p.Album && !isNaN(p.Album)) {
+				//	}
 				});
 			};
 
@@ -851,11 +877,17 @@ angular.module('blvdx.events', [
 
 			$scope.selectPhoto = function () {
 				// select photo by click in html
-				$photoview.setup( $scope, '/#/events/' + $scope.stateParams.eventId,this.$parent.album, this.$index ,$scope.EventObj.profile, $scope.EventObj);
+                var photos = this.$parent.album.photos;
+                var delegate = {eventId: $scope.stateParams.eventId , base:'p'};
+				$photoview.setup( $scope, function(id){
+                    delegate.focus = delegate.base + id;
+                    $state.transitionTo('eventDetails.Focus',delegate);
+                },photos, this.$index ,$scope.EventObj.profile, $scope.EventObj);
+                //'/#/events/' + $scope.stateParams.eventId
 			};
 
             $scope.shareAlbum = function (id){
-                $state.transitionTo('eventDetails.Album', {eventId: $scope.stateParams.eventId , Album:id});
+                $state.transitionTo('eventDetails.Focus', {eventId: $scope.stateParams.eventId , focus:'a'+id});
             };
 
 
@@ -897,12 +929,10 @@ angular.module('blvdx.events', [
 			$buttonElement.click(function () {
 				if ($pElement.is(":visible")) {
 					$buttonElement.html("show description");
-				}
-				else {
+				} else {
 					$buttonElement.html("hide description");
 				}
 				$pElement.slideToggle(150);
-
 			});
 		};
 	}])

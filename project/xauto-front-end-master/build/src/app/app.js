@@ -87,6 +87,19 @@ angular.module( 'blvdx', [
         }
     };
 
+    $scope.changePage = function(target){
+        console.log(security);
+        if(security.isAuthenticated()){
+            location.href = target;
+        } else {
+            security.showLogin();
+        }
+    };
+
+    //////////////////////////////////////////////////
+    //////////////////////////////////////////////////
+    // ----------------------->
+
     $scope.demoStreamItems = [
     1, 2, 3, 4, 5, 6, 7, 8
     ];
@@ -347,10 +360,10 @@ angular.module( 'blvdx', [
 		// start image num
 		// user profile data
 		// event data object; {title:string , }
-		setup : function (scope , baseURL , album, startIndex ,Profile, EventObj ){
-			//this.currentScope = scope;
+		setup : function (scope , baseURL , album , startIndex ,Profile, EventObj ){
+            console.log(arguments);
 			this.baseURL = baseURL;
-			this.album = album;
+			this.photos = album;
 			this.displayScope.EventObj = this.EventObj = EventObj;
 			this.displayScope.Profile = Profile;
 			this.currentScope = scope;
@@ -517,7 +530,7 @@ angular.module( 'blvdx', [
 	return pV;
 
 
-}).controller('photoviewer', function($scope , $photoview , $http,Profiles,Accounts,$fb){
+}).controller('photoviewer', function($scope , $photoview , $http,Profiles,Accounts,$fb ,$global){
 	//
 	$photoview.displayScope = $scope;
 	// ------> display photo viewer ::
@@ -540,10 +553,11 @@ angular.module( 'blvdx', [
 	// display photo
 	// set photo id and photo from current album
 	$scope.setPhoto = function () {
-		$scope.photo = $photoview.album.photos[$photoview.index];
+		$scope.photo = $photoview.photos[$photoview.index];
 		$scope.photoURL = $scope.photo.image;
-		if($photoview.baseURL){
-			window.location.href = $photoview.baseURL  + "/" + $photoview.album.index + "/" + $photoview.index + "/";
+
+        if($photoview.baseURL){
+            $photoview.baseURL($scope.photo.id);
 		}
 	};
 	$scope.showPhoto = function () {
@@ -554,15 +568,12 @@ angular.module( 'blvdx', [
 	$scope.closePhoto = function () {
 		$('.photoviewer').css('display','none');
 		$(document).off('keydown', $scope.keyChangePhoto);
-		if($photoview.baseURL){
-			window.location.href = $photoview.baseURL;
-		}
 		$photoview.isVisible = false;
 	};
 
 	$scope.nextPhoto = function () {
 		var p = parseInt($photoview.index);
-		if ($photoview.album.photos.length == (p + 1)) {
+		if ($photoview.photos.length == (p + 1)) {
 			p = 0;
 		} else {
 			p = p + 1;
@@ -572,7 +583,7 @@ angular.module( 'blvdx', [
 	$scope.prevPhoto = function () {
 		var p = parseInt($photoview.index);
 		if (p === 0) {
-			p = $photoview.album.photos.length - 1;
+			p = $photoview.photos.length - 1;
 		} else {
 			p = p - 1;
 		}
@@ -597,23 +608,31 @@ angular.module( 'blvdx', [
 		});
 	};
 
+    $scope.getImgURL = function(){
+        //var url = window.location.href;
+        //var arr = url.split("/");
+        //var base = arr[0] + "//" + arr[2];
+        return window.location.host + $global.appURL + $scope.photo.eventslug + '/p' + $scope.photo.id + '/';
+    };
+
 	// ------> SOCIAL BUTTONS
 	$scope.social_tw = function (obj) {
-		window.open('https://twitter.com/intent/tweet?text='+ $photoview.EventObj.title + '&url=' + escape(window.location.href));
+		window.open('https://twitter.com/intent/tweet?text='+ ($photoview.EventObj ? $photoview.EventObj.title : $scope.photo.caption_both )+ '&url=' + escape($scope.getImgURL()));
 	};
 
 	$scope.social_fb = function (obj) {
-		$fb.sharePhoto($scope.photo.event_name,window.location.href,window.location.host + $scope.photoURL,$scope.photo.caption,($photoview.EventObj? $photoview.EventObj.about : ""));
+        console.log('ph url:',$scope.getImgURL(),window.location.host + $scope.photoURL);
+		$fb.sharePhoto($scope.photo.event_name,$scope.getImgURL(),window.location.host + $scope.photoURL,$scope.photo.caption,($photoview.EventObj? $photoview.EventObj.about : ""));
 	};
 
 	$scope.social_p = function (obj) {
-		window.open("http://pinterest.com/pin/create/button/?source_url='" + escape(window.location.href) + '&media=' +escape(window.location.host + $scope.photoURL) + '&description=' + escape($photoview.EventObj.title) );
+		window.open("http://pinterest.com/pin/create/button/?source_url='" + escape($scope.getImgURL()) + '&media=' +escape(window.location.host + $scope.photoURL) + '&description=' + escape(($photoview.EventObj ? $photoview.EventObj.title : $scope.photo.caption_both )) );
 	};
 
 	$scope.social_tu = function (obj) {
 		window.open("https://www.tumblr.com/share/photo?source=" + escape(window.location.host + $scope.photoURL) +
-			"&caption=" + $scope.EventObj.title +
-			"&click_thru=" + escape(window.location.href));
+			"&caption=" + ($photoview.EventObj ? $photoview.EventObj.title : $scope.photo.caption_both )+
+			"&click_thru=" + escape($scope.getImgURL()));
 	};
 
 	$scope.social_pl = function (obj) {
@@ -623,17 +642,17 @@ angular.module( 'blvdx', [
 	var g = {};
     g.isPhonegap = function (){
         try {
-            if(navigator.camera &&  window.device.name){
-                element.innerHTML = 'Device Name: '     + device.name     + '<br />' +
-                    'Device PhoneGap: ' + device.phonegap + '<br />' +
-                    'Device Platform: ' + device.platform + '<br />' +
-                    'Device UUID: '     + device.uuid     + '<br />' +
-                    'Device Version: '  + device.version  + '<br />';
+            if(navigator.camera &&  window.device.name){// or cordova loaded ?
+                return true;
             }
         }catch(e){};
-
         return false
     };
+    g.appURL = '/app/#';
+        // #debug ; local proxy
+        if(location.href.indexOf('localhost:') != -1){
+            g.appURL = '/#/';
+        }
 	g.isMobile = function(a){
 		return /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test((navigator.userAgent||navigator.vendor||window.opera).substr(0,4));
 	}();
