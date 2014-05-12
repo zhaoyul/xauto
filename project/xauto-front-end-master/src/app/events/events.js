@@ -775,7 +775,7 @@ angular.module('blvdx.events', [
 					var p = $state.params;
 					if (p && p.Album && !isNaN(p.Album)) {
 						if( p.Photo ){// open photoviewer ; show photo
-							$photoview.setup( $scope, '/#/events/' + $scope.stateParams.eventId,$scope.Albums[p.Album], p.Photo , $scope.EventObj.profile , $scope.EventObj);
+							$photoview.setup( $scope, '/app/#/events/' + $scope.stateParams.eventId,$scope.Albums[p.Album], p.Photo , $scope.EventObj.profile , $scope.EventObj);
 						} else {// scroll to album with delay
 							setTimeout(function(){
 								$('html, body').animate({scrollTop:$('#accordion').find('.panel-default').eq(p.Album - 1).offset().top - 60}, 1000);

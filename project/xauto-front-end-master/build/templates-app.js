@@ -1372,7 +1372,7 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "        <button type=\"button\" class=\"btn btn-primary\" ng-click=\"changeDisplayFilter('following')\" ng-model=\"radioModel\" btn-radio=\"'Following'\">Following</button>\n" +
     "    </div>\n" +
     "    <ul class=\"people-list\">\n" +
-    "      <li ng-repeat=\"profile in Profiles\">\n" +
+    "      <li ng-repeat=\"profile in Profiles | orderBy:'srv_photosCount':true\">\n" +
     "        <div class=\"row profile-item\">\n" +
     "          <div class=\"col-xs-12 col-sm-6 col-md-4 photo-name-col\">\n" +
     "            <a href=\"#profile/{{profile.slug}}\"><img ng-src=\"{{profile.thumbnail_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +
