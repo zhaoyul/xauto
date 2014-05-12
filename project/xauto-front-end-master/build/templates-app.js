@@ -1086,7 +1086,7 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
     "    <div class=\"panel-heading\">\n" +
     "      <h4 class=\"panel-title\">\n" +
     "        <a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#album-{{album.id}}\" onClick=\"return false\">\n" +
-    "          {{album.date}} - {{album.feature_headline}}\n" +
+    "          {{album.feature_headline}}\n" +
     "        </a>\n" +
     "        <div class=\"albumShare\" href=\"#\" tooltip-placement=\"left\" tooltip=\"Share\" ng-click=\"shareAlbum(album.id)\"><i class=\"icon-share\"></i></div>\n" +
     "      </h4>\n" +
