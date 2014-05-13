@@ -135,6 +135,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'django_extensions',
     'rest_framework',
     'rest_framework.authtoken',
     'sorl.thumbnail',
@@ -170,9 +171,6 @@ AUTHENTICATION_BACKENDS = (
 # AWS_ACCESS_KEY_ID = 'AKIAINTHBRGXXWEPYAXQ'
 # AWS_SECRET_ACCESS_KEY = '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'
 # AWS_STORAGE_BUCKET_NAME = 'xauto'
-
-
-
 
 #django-registration settings
 ACCOUNT_ACTIVATION_DAYS = 3
