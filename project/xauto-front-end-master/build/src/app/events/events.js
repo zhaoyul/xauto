@@ -1,6 +1,7 @@
 angular.module('blvdx.events', [
 		'resources.events',
         'resources.accounts',
+        'resources.common',
 		'ui.router',
 		//'placeholders',
 		'ui.bootstrap',
@@ -198,7 +199,7 @@ angular.module('blvdx.events', [
         /* end of datepicker*/
 
         // fill timezones dropdown with data
-        Accounts.getAllTimezones().then(function(data) {
+        Common.getTimezones().then(function(data) {
             $scope.timezones = data;
         });
 

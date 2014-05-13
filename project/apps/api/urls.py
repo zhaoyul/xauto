@@ -10,7 +10,8 @@ from .views import (EventsListView, EventDetailsView, FollowEventView,
     LoginView, LogoutView, CurrentUserView, ActivateView, ResetPasswordView,
     ChangePasswordView, CheckUsernameView, AlbumPhotosUploader,
     ConfigurationView, CoordinatedPhotoUploader, EventDatePhotoManageView, DeletePictureView, ProfileMyOtherPhotosListView, ProfileMyDatesByEventsListView,
-    ProfileMyOutDatesView, LastDateView, ProfileDeletePhotoView, ProfileAllTimezonesListView, EventAllImagesView,)
+    ProfileMyOutDatesView, LastDateView, ProfileDeletePhotoView, TimezonesListView, EventAllImagesView,
+    CountriesListView)
 
 router = routers.DefaultRouter()
 router.register(r'events', EventViewSet)
@@ -59,10 +60,11 @@ urlpatterns = patterns('',
         name='profile-otherpictures'),
     url(r'^profiles/favorites-list/$', ProfileFavoritesListView.as_view(),
         name='profile-favorites'),
-    url(r'^profiles/alltimezones/$', ProfileAllTimezonesListView.as_view(),
-        name='profile-alltimezones'),
 
-
+    url(r'^common/timezones/$', TimezonesListView.as_view(),
+        name='common-timezones'),
+    url(r'^common/countries/$', CountriesListView.as_view(),
+        name='common-countries'),
 
     url(r'^events/check-link/$', CheckShortLinkView.as_view(),
         name='check-link'),

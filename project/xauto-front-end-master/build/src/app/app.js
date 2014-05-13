@@ -6,11 +6,7 @@ angular.module( 'blvdx', [
   'blvdx.people',
   'blvdx.stream',
   'blvdx.account',
-
-  //'ui.state',
   'ui.router',
-  //'ui.route',
-
   'restangular',
   'security',
   'angularFileUpload'
@@ -34,8 +30,8 @@ angular.module( 'blvdx', [
   titleService.setSuffix( ' | xAu.to' );
 })
 
-.controller( 'AppCtrl', ['$scope', '$state', '$location', 'security', 'Accounts', 'AppScope', '$upload',
-    function AppCtrl ( $scope, $state, $location, security, Accounts, AppScope, $upload) {
+.controller( 'AppCtrl', ['$scope', '$state', '$location', 'security', 'Accounts', 'Common', 'AppScope', '$upload',
+    function AppCtrl ( $scope, $state, $location, security, Accounts, Common, AppScope, $upload) {
 
     security.requestCurrentUser().then(function (user) {
         $scope.isAuthenticated = security.isAuthenticated;
@@ -52,8 +48,12 @@ angular.module( 'blvdx', [
         security.login($scope.AccountObj.email, $scope.AccountObj.password);
     };
 
-    Accounts.getAllTimezones().then(function (timezones) {
+    Common.getTimezones().then(function (timezones) {
           $scope.timezones = timezones;
+    });
+
+    Common.getCountries().then(function (countries) {
+          $scope.countries = countries;
     });
 
     $scope.accountCreate = function(){

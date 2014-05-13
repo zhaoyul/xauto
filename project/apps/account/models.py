@@ -20,6 +20,7 @@ from django.conf import settings
 # ---------------------------------------------------
 # --- Xauto Data models                           ---
 # ---------------------------------------------------
+from timezone_field import TimeZoneField
 from xauto_lib.models import TimestampedModel
 
 
@@ -40,7 +41,8 @@ class UserProfile(TimestampedModel):
     region = models.CharField(max_length=50, null=True, blank=True)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
-    timezone = models.CharField(max_length=30, null=False, blank=False, default="0.0")
+    #timezone = models.CharField(max_length=30, null=False, blank=False, default="0.0")
+    timezone = TimeZoneField(null=False, blank=False, default='UTC')
     website = models.CharField(max_length=100, null=True, blank=True)
 
     main_image = ImageField(upload_to='account_images/', blank=True)
