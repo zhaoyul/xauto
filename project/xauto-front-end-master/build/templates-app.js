@@ -519,7 +519,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                                    <div class=\"event-details-header\">\n" +
     "                                        <h1 class=\"pull-left\">{{EventObj.title}}</h1>\n" +
     "                                        <a href=\"#\" class=\"organizer\" tooltip-placement=\"bottom\" tooltip=\"Organizer: {{EventObj.author_name}}\">\n" +
-    "                                            <img class=\"user-pic\" alt=\"\" ng-src=\"{{ EventObj.author_photo }}\">\n" +
+    "                                            <img class=\"user-pic\" ng-src=\"{{ EventObj.author_photo }}\">\n" +
     "                                        </a>\n" +
     "                                    </div>\n" +
     "                                    <div class=\"event-details-about\" ng-init=\"eventDetailsExpanded=false\" ng-class=\"{expanded: eventDetailsExpanded}\" bx-event-detailed-text-mobile-toggle>\n" +
@@ -1609,7 +1609,7 @@ angular.module("templates/photoviewer.tpl.html", []).run(["$templateCache", func
     "    <div class=\"photoback\">\n" +
     "        <div class=\"photoviewercontent\" ng-keypress=\"keyChangePhoto()\">\n" +
     "            <div class=\"imgcontainer\">\n" +
-    "                <img src=\"{{photoURL}}\"/>\n" +
+    "                <img ng-src=\"{{photoURL}}\"/>\n" +
     "                <div ng-click=\"nextPhoto()\" class=\"nextphoto\"></div>\n" +
     "                <div ng-click=\"prevPhoto()\" class=\"prevphoto\"></div>\n" +
     "            </div>\n" +
@@ -1625,7 +1625,7 @@ angular.module("templates/photoviewer.tpl.html", []).run(["$templateCache", func
     "                    </div>\n" +
     "                </div>\n" +
     "                <div class=\"author\">\n" +
-    "                    <img class=\"userimg\" src=\"{{EventObj.author_photo}}\"/>\n" +
+    "                    <img class=\"userimg\" ng-src=\"{{EventObj.author_photo}}\"/>\n" +
     "                    <div class=\"name\">{{Profile.name}}</div>\n" +
     "                    <div ng-hide=\"Profile.srv_following\" class=\"follow\" ng-click=\"FollowUser()\">Follow Me</div>\n" +
     "                    <div ng-show=\"Profile.srv_following\" class=\"follow\" ng-click=\"FollowUser()\">Following</div>\n" +
