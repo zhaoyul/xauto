@@ -104,7 +104,7 @@ angular.module('blvdx.events', [
 
 	}])
 
-    .controller('eventDatePopup', ['$scope', 'DateObj', 'Events', 'Accounts', '$filter', '$stateParams', '$dateproxy', '$gmaps', 'DateWithTimezone', function($scope, DateObj, Events, Accounts, $filter ,$stateParams, $dateproxy, $gmaps, DateWithTimezone) {
+    .controller('eventDatePopup', ['$scope', 'DateObj', 'Events', 'Accounts', 'Common', '$filter', '$stateParams', '$dateproxy', '$gmaps', 'DateWithTimezone', function($scope, DateObj, Events, Accounts, Common, $filter ,$stateParams, $dateproxy, $gmaps, DateWithTimezone) {
         // initialization params ::
         $scope.confirmScreen = false;
         $scope.hasMap = false;
