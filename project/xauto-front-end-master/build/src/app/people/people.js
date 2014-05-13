@@ -33,7 +33,7 @@ angular.module( 'blvdx.people', [
     views: {
       "main": {
         controller: 'PeopleCtrl',
-        templateUrl: 'people/people.tpl.html
+        templateUrl: 'people/people.tpl.html'
       }
     }
   })
