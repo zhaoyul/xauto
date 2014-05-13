@@ -1079,7 +1079,7 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
     "    <div class=\"panel-heading\">\n" +
     "      <h4 class=\"panel-title\">\n" +
     "        <a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#album-{{album.id}}\" onClick=\"return false\">\n" +
-    "          {{album.date}} - {{album.feature_headline}}\n" +
+    "          {{album.feature_headline}}\n" +
     "        </a>\n" +
     "        <div class=\"albumShare\" href=\"#\" tooltip-placement=\"left\" tooltip=\"Share\" ng-click=\"shareAlbum(album.id)\"><i class=\"icon-share\"></i></div>\n" +
     "      </h4>\n" +
@@ -1155,7 +1155,7 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "      <div class=\"form-group\" ng-class=\"{'has-error': form.zip.$invalid || errors.zip}\">\n" +
     "        <label class=\"col-lg-3 control-label\">ZIP/Postal Code</label>\n" +
     "        <div class=\"col-lg-9\">\n" +
-    "          <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"editDate.zip\" name=\"zip\">\n" +
+    "          <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"editDate.zipcode\" name=\"zip\">\n" +
     "          <span class=\"help-block\" ng-show=\"errors.zip\" ng-repeat=\"error in errors.zip\">{{error}}</span>\n" +
     "        </div>\n" +
     "      </div>\n" +
@@ -1248,7 +1248,7 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "      <input type=\"text\" class=\"form-control\" placeholder=\"High\" ng-disabled=\"editDate.attend_free\" ng-model=\"editDate.attend_price_to\">\n" +
     "    </div>\n" +
     "    <div class=\"col-lg-2\" ng-class=\"{'has-error': dateform.currency.$invalid|| errors.currency}\">\n" +
-    "      <select name=\"currency\" class=\"form-control\" ng-model=\"editDate.currency\" ng-options=\"x.value as x.display_name for x in editDateOptions.currency.choices\">\n" +
+    "      <select name=\"currency\" class=\"form-control selectCurrency\" ng-model=\"editDate.currency\" ng-options=\"x.value as x.display_name for x in editDateOptions.currency.choices\">\n" +
     "      </select>\n" +
     "    </div>\n" +
     "  </div>\n" +
@@ -1285,8 +1285,8 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "     <div class=\"loc_adr_dates\">\n" +
     "        <div class=\"loc\">\n" +
     "            <p><span>Location Name:</span><b>{{ editDate.location_name }}</b></p><div class=\"clear\"></div>\n" +
-    "            <p><span>Address:</span><b>{{ editDate.address_1  }} {{ editDate.address_2  }}\n" +
-    "            <br/>{{editDate.city}} , {{editDate.zip}}</b></p><div class=\"clear\"></div>\n" +
+    "            <p><span>Address:</span><b>{{ editDate.address_2  }} {{ editDate.address_1  }}\n" +
+    "            <br/>{{editDate.city}}  {{editDate.state}} {{editDate.zipcode}}</b></p><div class=\"clear\"></div>\n" +
     "        </div>\n" +
     "        <div class=\"dates\">\n" +
     "            <div class=\"dt\">\n" +
@@ -1368,7 +1368,7 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "        <button type=\"button\" class=\"btn btn-primary\" ng-click=\"changeDisplayFilter('following')\" ng-model=\"radioModel\" btn-radio=\"'Following'\">Following</button>\n" +
     "    </div>\n" +
     "    <ul class=\"people-list\">\n" +
-    "      <li ng-repeat=\"profile in Profiles\">\n" +
+    "      <li ng-repeat=\"profile in Profiles | orderBy:'srv_photosCount':true\">\n" +
     "        <div class=\"row profile-item\">\n" +
     "          <div class=\"col-xs-12 col-sm-6 col-md-4 photo-name-col\">\n" +
     "            <a href=\"#profile/{{profile.slug}}\"><img ng-src=\"{{profile.thumbnail_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +

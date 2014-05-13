@@ -8859,6 +8859,11 @@ ul.event-details-actions > li > a.btn i {
   color: #c5c5c5;
 }
 
+.selectCurrency {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
 table.events-list-table {
   table-layout: fixed;
   /*

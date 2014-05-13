@@ -165,10 +165,8 @@ angular.module( 'blvdx.stream', [
   };
 
   $scope.selectImage = function(){
-	  $photoview.setup($scope,null,{photos:$scope.stream},this.$index,$scope.$parent.$parent.Profile);
-	  console.log($scope,this);
+	  $photoview.setup($scope,null,$scope.stream,this.$index,$scope.$parent.$parent.Profile);
   }
-
 }])
 
 

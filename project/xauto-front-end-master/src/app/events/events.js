@@ -97,12 +97,10 @@ angular.module('blvdx.events', [
 					}
 				}
 			})
-			.state('eventDetails.Photo', {
-				url: '/:Album/:Photo/'
-			})
-			.state('eventDetails.Album', {
-				url: '/:Album/'
+			.state('eventDetails.Focus', {
+				url: '/:focus/'
 			});
+
 	}])
 
     .controller('eventDatePopup', ['$scope', 'DateObj', 'Events', 'Accounts', '$filter', '$stateParams', '$dateproxy', '$gmaps', 'DateWithTimezone', function($scope, DateObj, Events, Accounts, $filter ,$stateParams, $dateproxy, $gmaps, DateWithTimezone) {
@@ -124,6 +122,7 @@ angular.module('blvdx.events', [
                 $scope.editDateOptions = options.actions.POST;
             });
         }
+        $scope.EventObj = $dateproxy.EventObj;
 
         // verification for 'copy last date';
         $scope.editConfirm = function(){
@@ -155,7 +154,7 @@ angular.module('blvdx.events', [
                                 $scope.editDate.address_1 =  placeDetiles[i].long_name + ($scope.editDate.address_1 ? ' '+$scope.editDate.address_1:'');
                                     break;
                             case 'postal_code':
-                                $scope.editDate.zip = placeDetiles[i].long_name;
+                                $scope.editDate.zipcode = placeDetiles[i].long_name;
                                 break;
                             case 'locality':
                                 $scope.editDate.city = placeDetiles[i].long_name;
@@ -283,15 +282,15 @@ angular.module('blvdx.events', [
             $scope.confirmScreen = true;
             // run map ::
             var hasPosition = $scope.editDate.latitude && $scope.editDate.longitude;
-            var zoom = 3;
+            var zoom = 1;
 
             if(hasPosition){// if user add lat and long
                 // mchange zoom
-                zoom = 12;
+                zoom = 14;
             } else {
                 // use geocoder ::
                 var adrstr = '';
-                var types = ['country','address_1','address_2','city','location_name','zip','state'];// params with data
+                var types = ['country','address_1','address_2','city','location_name','zipcode','state'];// params with data
                 for(var t in types){
                     var txt = $scope.editDate[types[t]];
                     if(txt){
@@ -308,6 +307,9 @@ angular.module('blvdx.events', [
                 $gmaps.update();
             } else {// initialize if display map first time
                 $gmaps.showMap($scope.editDate.latitude || 0 , $scope.editDate.longitude || 0,$('.map')[0],null,zoom);
+                if(hasPosition){
+                    $gmaps.addSingleMarker($scope.editDate.latitude , $scope.editDate.longitude);
+                }
                 $scope.hasMap = true;
             }
         };
@@ -526,6 +528,7 @@ angular.module('blvdx.events', [
             $scope.setNewDate = function (){
                 $dateproxy.editDate = null;
                 $dateproxy.editDateOptions = null;
+                $dateproxy.EventObj = $scope.EventObj;
                 $state.transitionTo('eventEdit.addDate', {eventId: $scope.eventId});
             }
 
@@ -584,6 +587,7 @@ angular.module('blvdx.events', [
             $scope.setNewDate = function (){
                 $dateproxy.editDate = null;
                 $dateproxy.editDateOptions = null;
+                $dateproxy.EventObj = $scope.EventObj;
                 $state.transitionTo('eventEdit.addDate', {eventId: $scope.eventId});
             };
 
@@ -644,8 +648,37 @@ angular.module('blvdx.events', [
 				}
 			};
 
+<<<<<<< HEAD
+=======
+
+			$scope.withoutimezone = function (date) {
+				x = new Date();
+				wot = x.getTimezoneOffset() / 60;
+				HH = $filter('date')(date, 'HH');
+				ret = Number(HH) + Number(wot);
+				if (ret < 0) {
+					ret = 24 + ret;
+				}
+				if (String(ret).length == 1) {
+					ret = "0" + ret;
+				}
+				return String(ret) + ':' + $filter('date')(date, 'mm');
+			};
+
+
+            $scope.initDateEditAction = {started:false,hasDate:false,hasOptions:false,update:function(){
+                if(this.started && this.hasDate && this.hasOptions){
+                    $state.transitionTo('eventEdit.addDate', {eventId: $scope.eventId});
+                    this.hasDate = this.started = this.hasOptions = false;
+                }
+            }};
+>>>>>>> f632b1bb909d6aefb7a97ceabcaf4e897596c67f
 			$scope.setThisEditableDate = function (date) {
-				DateObj.getDate(date.id).then(function (date) {
+                if($scope.initDateEditAction.started ){
+                    return;
+                }
+                $scope.initDateEditAction.started = true;
+                DateObj.getDate(date.id).then(function (date) {
 					$scope.editDate = date;
                     DateWithTimezone.timezone = date.timezone_new;
                     var start_date = DateWithTimezone.fromISO(date.start_date);
@@ -656,15 +689,15 @@ angular.module('blvdx.events', [
 					$scope.editDate.endTime = end_date.format('HH:mm');
 
                     $dateproxy.editDate = $scope.editDate;
-                    // open date editor
-                    $state.transitionTo('eventEdit.addDate', {eventId: $scope.eventId});
-				});
+                    $scope.initDateEditAction.hasDate = true;
+                    $scope.initDateEditAction.update();
+                });
 				DateObj.getOptions(date.id).then(function (options) {
 					$scope.editDateOptions = options.actions.PUT;
-                    $dateproxy.editDate = $scope.editDateOptions;
-				});
-				//$scope.editDate = date;
-
+                    $dateproxy.editDateOptions = $scope.editDateOptions;
+                    $scope.initDateEditAction.hasOptions = true;
+                    $scope.initDateEditAction.update();
+                });
 			};
 
 			$scope.removeDate = function ($index, $pk) {
@@ -736,16 +769,46 @@ angular.module('blvdx.events', [
 					Streams.send_fetch_latest();
 
 					// display photo::
-					var p = $state.params;
-					if (p && p.Album && !isNaN(p.Album)) {
-						if( p.Photo ){// open photoviewer ; show photo
-							$photoview.setup( $scope, '/#/events/' + $scope.stateParams.eventId,$scope.Albums[p.Album], p.Photo , $scope.EventObj.profile , $scope.EventObj);
-						} else {// scroll to album with delay
-							setTimeout(function(){
-								$('html, body').animate({scrollTop:$('#accordion').find('.panel-default').eq(p.Album - 1).offset().top - 60}, 1500);
-							},100);
-						}
-					}
+                    // proxy for stream ::
+                    $photoview.EventObj = $scope.EventObj;
+
+					var p = $state.params.focus;
+
+                    if(p){
+                        switch(p.charAt(0)){
+                            case 'p':
+                                // ------>
+                                console.log('state init::',$scope.Albums);
+                                for(var i = 0;i<$scope.Albums.length;i++){
+                                    var _alb = $scope.Albums[i].photos;
+                                    for(var j = 0;j<_alb.length;j++){
+                                        if(_alb[j].id == p.substr(1)){
+                                            var imgValid = true;
+                                            break;
+                                        }
+                                    }
+                                    if(imgValid){
+                                        break;
+                                    }
+                                }
+                                if(imgValid){
+                                    var photos = $scope.Albums[i].photos;
+                                    var delegate = {eventId: $scope.stateParams.eventId , base:'p'};
+                                    $photoview.setup( $scope, function(id){
+                                        delegate.focus = delegate.base + id;
+                                        $state.transitionTo('eventDetails.Focus',delegate);
+                                    },photos, j ,$scope.EventObj.profile, $scope.EventObj);
+                                }
+                                break;
+                            case 'a':
+                                setTimeout(function(){
+                                    $('html, body').animate({scrollTop:$('#accordion').find('.panel-default').eq(Number(p.substr(1))-1).offset().top - 60}, 1000);
+                                },100);
+                                break;
+                        }
+                    }
+					//if (p && p.Album && !isNaN(p.Album)) {
+				//	}
 				});
 			};
 
@@ -815,11 +878,17 @@ angular.module('blvdx.events', [
 
 			$scope.selectPhoto = function () {
 				// select photo by click in html
-				$photoview.setup( $scope, '/#/events/' + $scope.stateParams.eventId,this.$parent.album, this.$index ,$scope.EventObj.profile, $scope.EventObj);
+                var photos = this.$parent.album.photos;
+                var delegate = {eventId: $scope.stateParams.eventId , base:'p'};
+				$photoview.setup( $scope, function(id){
+                    delegate.focus = delegate.base + id;
+                    $state.transitionTo('eventDetails.Focus',delegate);
+                },photos, this.$index ,$scope.EventObj.profile, $scope.EventObj);
+                //'/#/events/' + $scope.stateParams.eventId
 			};
 
             $scope.shareAlbum = function (id){
-                $state.transitionTo('eventDetails.Album', {eventId: $scope.stateParams.eventId , Album:id});
+                $state.transitionTo('eventDetails.Focus', {eventId: $scope.stateParams.eventId , focus:'a'+id});
             };
 
 
@@ -861,12 +930,10 @@ angular.module('blvdx.events', [
 			$buttonElement.click(function () {
 				if ($pElement.is(":visible")) {
 					$buttonElement.html("show description");
-				}
-				else {
+				} else {
 					$buttonElement.html("hide description");
 				}
 				$pElement.slideToggle(150);
-
 			});
 		};
 	}])

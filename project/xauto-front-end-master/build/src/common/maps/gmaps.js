@@ -50,6 +50,7 @@ angular.module('maps', []).service('$gmaps' , function (){
             this.moveTo(lat ,long , zoom);
             //
             this.displayed = true;
+            this.update();
         },
 
         hideMap:function(container){
@@ -63,6 +64,7 @@ angular.module('maps', []).service('$gmaps' , function (){
             this.moveToLocation(new google.maps.LatLng(lat , long),zoom);
         },
         moveToLocation:function(point , zoom){
+            this.zoom = zoom;
             this.position.lat = point.lat();
             this.position.long = point.lng();
             if(this.initialized){
@@ -77,8 +79,10 @@ angular.module('maps', []).service('$gmaps' , function (){
             setTimeout(function(){
                 if(delegate.displayed){
                     google.maps.event.trigger(delegate.map, 'resize');
+                    delegate.map.setCenter(new google.maps.LatLng(delegate.position.lat,delegate.position.long));
+                    delegate.map.setZoom(delegate.zoom || 2);
                 }
-            },150);
+            },350);
 
         },
         //////////////////////////////////////////////////
@@ -97,6 +101,7 @@ angular.module('maps', []).service('$gmaps' , function (){
                 });
             } else {
                 this.marker.setPosition(position);
+                this.marker.setMap(this.map);
             }
         },
 
@@ -107,7 +112,6 @@ angular.module('maps', []).service('$gmaps' , function (){
         // -----------------------> GEOCODER
 
         getLocation:function(address){
-            console.log('find:',address);
             var delegate = this;
             this.geocoder.geocode( { 'address': address}, function(results, status) {//this.geocoder;
                 if (status == google.maps.GeocoderStatus.OK) {
