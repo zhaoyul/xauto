@@ -62,7 +62,7 @@ class EventDate(TimestampedModel):
                               verbose_name='Your Event')
 
     #timezone = models.CharField(max_length=30, null=False, blank=False, default="0.0")
-    timezone_new = TimeZoneField(default='America/Los_Angeles')
+    timezone_new = TimeZoneField(null=False, blank=False, default='UTC')
     start_date = models.DateTimeField(null=True, blank=False)
     end_date = models.DateTimeField(null=True, blank=True)
     feature_headline = models.CharField(max_length=100)
