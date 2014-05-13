@@ -33,7 +33,10 @@ angular.module( 'blvdx.people', [
     views: {
       "main": {
         controller: 'PeopleCtrl',
-        templateUrl: 'people/people.tpl.html'
+        templateUrl: 'people/people.tpl.html',
+        resolve: {
+		    authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+		}
       }
     }
   })
@@ -42,7 +45,10 @@ angular.module( 'blvdx.people', [
     views: {
       "main": {
         controller: 'ProfileViewCtrl',
-        templateUrl: 'people/profile-view.tpl.html'
+        templateUrl: 'people/profile-view.tpl.html',
+        resolve: {
+		    authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+		}
       }
     }
   });
