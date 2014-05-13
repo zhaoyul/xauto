@@ -7640,10 +7640,6 @@ div#main-container-wrapper div.main-search-bar .search-by-label {
   display: none !important;
 }
 
-a.toggle-event-details-about.info-opener i {
-  color: #000;
-}
-
 /* end of main less */
 
 ul.people-list {
@@ -8413,7 +8409,6 @@ a.toggle-event-details-about.info-opener {
   width: 30px;
   height: 30px;
   font-size: 30px;
-  color: #fff;
   text-decoration: none;
 }
 

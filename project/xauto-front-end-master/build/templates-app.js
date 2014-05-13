@@ -523,6 +523,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                                        <h1 class=\"pull-left\">{{EventObj.title}}</h1>\n" +
     "                                        <a href=\"#\" class=\"organizer\" tooltip-placement=\"bottom\" tooltip=\"Organizer: {{EventObj.author_name}}\">\n" +
     "                                            <img class=\"user-pic\" ng-src=\"{{ EventObj.author_photo }}\">\n" +
+    "                                            <span ng-hide=\"EventObj.author_photo\" ng-cloak>{{ EventObj.author_name }}</span>\n" +
     "                                        </a>\n" +
     "                                    </div>\n" +
     "                                    <div class=\"event-details-about\" ng-init=\"eventDetailsExpanded=false\" ng-class=\"{expanded: eventDetailsExpanded}\" bx-event-detailed-text-mobile-toggle>\n" +
@@ -541,7 +542,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                            </div>\n" +
     "                        </div>\n" +
     "                        <div class=\"row\" id=\"event-details-navbar\">\n" +
-    "                            <div class=\"col-xs-12 col-sm-4\">\n" +
+    "                            <div class=\"col-xs-12 col-sm-4\" ng-show=\"EventObj.srv_futureDates.length\">\n" +
     "                                <div class=\"schedule-dropdown\">\n" +
     "                                    <div class=\"dropdown\">\n" +
     "                                        <a data-toggle=\"dropdown\" href=\"javascript:;\" class=\"btn btn-schedule-dropdown\">\n" +
@@ -1115,7 +1116,7 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
     "        </div>\n" +
     "      </div>\n" +
     "        <div class=\"col-xs-12\">\n" +
-    "        <a ng-show=\"album.hasMoreEvents(album)\" ng-click=\"showMore(album)\" class=\"btn btn-info  showmorespan\">Show more</a>\n" +
+    "        <a ng-show=\"album.hasMoreEvents\" ng-click=\"showMore(album)\" class=\"btn btn-info showmorespan\">Show more</a>\n" +
     "    </div>\n" +
     "    </div>\n" +
     "  </div>\n" +

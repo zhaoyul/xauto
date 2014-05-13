@@ -96,23 +96,21 @@ angular.module( 'blvdx.stream', [
   $scope.is_fetching = false;
 
   $scope.Favorite = function(entry,type) {
-
-        //$http.get('/app/api/current-user/').then(function(response) {
-        Accounts.getCurrentUser().then(function(response) {
-            if(response.user == null) {
-                 $(".navbar-nav a").eq(1).click();
+    Accounts.getCurrentUser().then(function(response) {
+        if(response.user == null) {
+            $(".navbar-nav a").eq(1).click();
+        }else{
+            if(!type){
+                type = 1;
+            }
+            Streams.send_favorite(entry.id,type);
+            if(type === 2){
+                entry.favorited = false;
             }else{
-                     if(!type){
-                            type = 1;
-                      }
-                      Streams.send_favorite(entry.id,type);
-                      if(type == 2){
-                            entry.favorited = false;
-                      }else{
-                            entry.favorited = true;
-                      }
-                 }
-        });
+                entry.favorited = true;
+            }
+         }
+    });
 
   };
 
@@ -168,7 +166,7 @@ angular.module( 'blvdx.stream', [
   };
 
   $scope.selectImage = function(){
-	  $photoview.setup($scope,null,$scope.stream,this.$index,$scope.$parent.$parent.Profile);
+	  $photoview.setup($scope, null, $scope.stream, this.$index, $scope.$parent.$parent.Profile);
   }
 }])
 
