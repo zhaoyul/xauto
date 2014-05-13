@@ -34,9 +34,6 @@ angular.module( 'blvdx.people', [
       "main": {
         controller: 'PeopleCtrl',
         templateUrl: 'people/people.tpl.html',
-        resolve: {
-		    authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
-		}
       }
     }
   })
@@ -46,9 +43,6 @@ angular.module( 'blvdx.people', [
       "main": {
         controller: 'ProfileViewCtrl',
         templateUrl: 'people/profile-view.tpl.html',
-        resolve: {
-		    authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
-		}
       }
     }
   });

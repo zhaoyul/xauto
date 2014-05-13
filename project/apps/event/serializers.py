@@ -32,8 +32,6 @@ class EventDateSerializer(serializers.ModelSerializer):
     #end_date = serializers.SerializerMethodField('iso_end_date')
     timezone_new = TimezoneField()
 
-    fmt = "%Y-%m-%dT%H:%M:%S%z"
-
     class Meta:
         model = EventDate
 
@@ -42,20 +40,6 @@ class EventDateSerializer(serializers.ModelSerializer):
             attrs["currency"] = Currency.objects.get(pk=attrs["currency.id"])
             del attrs["currency.id"]
         return super(EventDateSerializer, self).restore_object(attrs, instance)
-
-    # def iso_start_date(self, obj):
-    #     if obj.start_date:
-    #         event_tz = pytz.timezone(obj.timezone_new.zone)
-    #         tz_date = obj.start_date.astimezone(event_tz)
-    #         return tz_date.strftime(self.fmt)
-    #     return ''
-    #
-    # def iso_end_date(self, obj):
-    #     if obj.end_date:
-    #         event_tz = pytz.timezone(obj.timezone_new.zone)
-    #         tz_date = obj.end_date.astimezone(event_tz)
-    #         return tz_date.strftime(self.fmt)
-    #     return ''
 
 
 class AlbumSerializer(serializers.ModelSerializer):
@@ -68,11 +52,6 @@ class AlbumSerializer(serializers.ModelSerializer):
 
     def get_date(self, obj):
         view = self.context['view']
-        ''''try:
-            delta = timedelta(hours= float(obj.timezone))
-            obj.start_date = localtime(obj.start_date, timezone=pytz.timezone('GMT')) + delta
-        except:
-            obj.start_date = localtime(obj.start_date, timezone=pytz.timezone(settings.TIME_ZONE))'''''
         return obj.start_date #.strftime('%B %d, %Y %H:%M:%S')
 
 
@@ -148,12 +127,14 @@ class EventSerializer(serializers.ModelSerializer):
     def get_srv_following(self, obj):
         view = self.context['view']
         user = view.request.user
-        try:
-            if user.profile.followed_events.filter(id=obj.id).count():
-                return True
-        except:
-            pass
-        return False
+        return user.profile.followed_events.filter(id=obj.id).exists()
+
+        # try:
+        #     if user.profile.followed_events.filter(id=obj.id).count():
+        #         return True
+        # except:
+        #     pass
+        # return False
 
     def get_date_info(self, obj):
         nearest_date = obj.get_nearest_date()
@@ -166,6 +147,7 @@ class EventSerializer(serializers.ModelSerializer):
                 "city": nearest_date.city,
                 "state": nearest_date.state,
                 "country": nearest_date.country,
+                "country_name": nearest_date.country.name,
                 "featureHeadline": nearest_date.feature_headline,
                 "attend_free": nearest_date.attend_free,
                 "attend_low": nearest_date.attend_price_from,

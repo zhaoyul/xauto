@@ -12,6 +12,7 @@ import string
 # ---------------------------------------------------
 # --- Django addon                                ---
 # ---------------------------------------------------
+from django_countries.fields import CountryField
 from sorl.thumbnail.fields import ImageField
 from autoslug import AutoSlugField
 from sorl.thumbnail import get_thumbnail
@@ -36,7 +37,7 @@ class UserProfile(TimestampedModel):
     ip_location = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
     state = models.CharField(max_length=50,null=True, blank=True)
-    country = models.CharField(max_length=30, null=True, blank=True)
+    country = CountryField(null=True, blank=True)
     zipcode = models.CharField(max_length=10, null=True, blank=True)
     region = models.CharField(max_length=50, null=True, blank=True)
     latitude = models.FloatField(null=True, blank=True)
