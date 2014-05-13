@@ -56,15 +56,8 @@
     <label class="col-lg-3 control-label">Scheduled Dates</label>
     <div class="col-lg-9">
       <table class="table">
-        <!-- start date form -->
-        <!--
-        <div class="dates-items-container" >
-
-        </div>
-        -->
-        <!-- end of date -->
         <tr ng-repeat="date in EventObj.dates">
-          <td>{{date.start_date | date:'fullDate' }} &mdash; {{date.feature_headline}}</td>
+          <td>{{date.start_date | toLocalEq:date.timezone_new | date: "EEEE, MMM dd, yyyy" }} &mdash; {{date.feature_headline}}</td>
           <td>
             <a href="#/eventdates/{{date.id}}/photosmanage" class="btn btn-primary btn-sm">Manage photos</a>
 

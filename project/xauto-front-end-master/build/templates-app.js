@@ -823,7 +823,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "          <div class=\"row-wrapper date-headline\">\n" +
     "            <div class=\"pull-left\">\n" +
     "              <a href=\"#\" tooltip-placement=\"right\" tooltip=\"View schedule\">\n" +
-    "                <span class=\"badge badge-primary\">{{event.date_info.date | date: 'MMM d'}}</span>\n" +
+    "                <span class=\"badge badge-primary\">{{event.date_info.date | toLocalEq:event.date_info.timezone | date: 'MMM d'}}</span>\n" +
     "              </a>\n" +
     "            </div>\n" +
     "            <div class=\"pull-right\">\n" +
@@ -1044,15 +1044,8 @@ angular.module("events/partial_edit_event_form.tpl.html", []).run(["$templateCac
     "    <label class=\"col-lg-3 control-label\">Scheduled Dates</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
     "      <table class=\"table\">\n" +
-    "        <!-- start date form -->\n" +
-    "        <!--\n" +
-    "        <div class=\"dates-items-container\" >\n" +
-    "\n" +
-    "        </div>\n" +
-    "        -->\n" +
-    "        <!-- end of date -->\n" +
     "        <tr ng-repeat=\"date in EventObj.dates\">\n" +
-    "          <td>{{date.start_date | date:'fullDate' }} &mdash; {{date.feature_headline}}</td>\n" +
+    "          <td>{{date.start_date | toLocalEq:date.timezone_new | date: \"EEEE, MMM dd, yyyy\" }} &mdash; {{date.feature_headline}}</td>\n" +
     "          <td>\n" +
     "            <a href=\"#/eventdates/{{date.id}}/photosmanage\" class=\"btn btn-primary btn-sm\">Manage photos</a>\n" +
     "\n" +
@@ -1232,13 +1225,16 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "      </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\" ng-class=\"{'has-error': form.timezone.$invalid || errors.timezone}\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.timezone_new.$invalid || errors.timezone_new}\">\n" +
     "        <label class=\"col-lg-3 control-label\">Timezone</label>\n" +
     "        <div class=\"col-lg-9\">\n" +
-    "          <ng-include src=\"'events/timezones.tpl.html'\"></ng-include>\n" +
-    "          <span class=\"help-block\" ng-show=\"errors.latitude\" ng-repeat=\"error in errors.timezone\">{{error}}</span>\n" +
+    "          <select class=\"form-control\" ng-model=\"editDate.timezone_new\"\n" +
+    "                  ng-options=\"tz.value as tz.label for tz in timezones\">\n" +
+    "          </select>\n" +
+    "          <span class=\"help-block\" ng-show=\"errors.latitude\" ng-repeat=\"error in errors.timezone_new\">{{error}}</span>\n" +
     "        </div>\n" +
-    "      </div>\n" +
+    "  </div>\n" +
+    "\n" +
     "  <div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">Cost To Attend</label>\n" +
     "    <label class=\"col-lg-2 control-label free-label\">\n" +

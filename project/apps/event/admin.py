@@ -50,7 +50,7 @@ class EventDateInline(admin.TabularInline):
     """
     model = EventDate
     extra = 0
-    fields = ( 'location_name', 'start_date', 'end_date', 'feature_headline', 'attend_free', 'exhibit_free', )
+    fields = ('location_name', 'start_date', 'end_date', 'feature_headline', 'attend_free', 'exhibit_free')
 
 
 class EventAdmin(AdminImageMixin, admin.ModelAdmin):
@@ -154,7 +154,10 @@ class EventDateAdmin(admin.ModelAdmin):
         ]
     list_display = ('location_name', 'latitude', 'longitude', 'start_date', 'end_date', 'created', 'modified', 'attend_free',)
     #readonly_fields = ("send_at",)
-    fields = ('event', 'location_name', 'address_1', 'address_2', 'country', 'country_short', 'city' , 'state', 'region', 'zipcode', 'latitude', 'longitude', 'start_date', 'end_date', 'timezone', 'feature_headline', 'feature_detail', 'currency' , 'attend_free', 'attend_price_from', 'attend_price_to', 'exhibit_free',  'exhibit_price_from', 'exhibit_price_to')
+    fields = ('event', 'location_name', 'address_1', 'address_2', 'country', 'country_short', 'city', 'state', 'region',
+              'zipcode', 'latitude', 'longitude', 'start_date', 'end_date', 'timezone_new',
+              'feature_headline', 'feature_detail', 'currency' , 'attend_free', 'attend_price_from', 'attend_price_to',
+              'exhibit_free',  'exhibit_price_from', 'exhibit_price_to')
     search_fields = ['attend_free', 'exhibit_free', ]
 
     def eventTitle(self, obj):

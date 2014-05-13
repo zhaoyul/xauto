@@ -26,7 +26,6 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
     srv_followersCount = serializers.SerializerMethodField('srv_followers_count')
     srv_following = serializers.SerializerMethodField('get_srv_following')
 
-
     class Meta(object):
         model = MultiuploaderImage
 
@@ -65,7 +64,7 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
         return '---'
 
     def get_usericon(self, obj):
-        return obj.userprofile.get_thumbnail(40,40)
+        return obj.userprofile.get_thumbnail(40, 40)
 
     def get_username(self, obj):
         return obj.userprofile.get_full_name()
@@ -77,7 +76,7 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
     def get_caption(self, obj):
         user = self.context['view'].request.user
 
-        if user.is_active and hasattr(user,"profile"):
+        if user.is_active and hasattr(user, "profile"):
             profile = user.profile
             if obj.event_date:
                 event = obj.event_date.event

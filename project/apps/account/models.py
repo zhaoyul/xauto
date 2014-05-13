@@ -23,8 +23,6 @@ from django.conf import settings
 from xauto_lib.models import TimestampedModel
 
 
-
-
 class UserProfile(TimestampedModel):
 
     user = models.OneToOneField(User, related_name='profile')
@@ -52,10 +50,10 @@ class UserProfile(TimestampedModel):
     activationtoken = models.CharField(max_length=255L,
         db_column='activationToken', null=True, blank=True)
 
-
+    #TODO: refactor
     def get_full_name(self):
-        full_name = '%s %s' % (string.capitalize(self.user.first_name),
-                                string.capitalize(self.user.last_name))
+        full_name = u'{} {}'.format(string.capitalize(self.user.first_name),
+                                   string.capitalize(self.user.last_name))
 
         if len(full_name.lstrip()) == 0:
             return self.user.username
@@ -63,8 +61,9 @@ class UserProfile(TimestampedModel):
         return full_name
     full_name = property(get_full_name)
 
-    def get_thumbnail(self,size,size2):
+    def get_thumbnail(self, size, size2):
         if self.thumbnail_image:
+            # TODO: refactor
             try:
                 imgObject = get_thumbnail(self.thumbnail_image, str(size)+'x'+str(size2), crop='center', quality=99)
             except:

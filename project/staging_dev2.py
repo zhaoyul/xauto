@@ -54,6 +54,8 @@ SOCKET_STREAMER_URL = "/photostream"
 SOCKET_STREAMER_PORT = 8449
 SOCKET_STREAMER_FULL_URL = "http://xauto.dev2.milosolutions.com:%i%s" % (SOCKET_STREAMER_PORT, SOCKET_STREAMER_URL)
 
+FORCE_SCRIPT_NAME = '/app'
+
 RAVEN_CONFIG = {
     'dsn': 'http://c78daee601974a69bfe4377165b675d8:50ac16cd6054469fa486fa6f6100400d@sentry.milosolutions.com/11',
 }

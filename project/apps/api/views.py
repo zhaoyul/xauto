@@ -4,6 +4,8 @@ import math
 from datetime import datetime, timedelta
 from random import randrange
 from hashlib import sha1
+from django.utils import timezone
+from django.utils.safestring import mark_safe
 
 import pytz
 from django.db.models import Q
@@ -35,6 +37,40 @@ if "mailer" in settings.INSTALLED_APPS:
     from mailer import send_mail, send_html_mail
 else:
     from django.core.mail import send_mail
+
+TIME_ZONE_CHOICES = (
+     ('-12.0', '(GMT -12:00) Eniwetok, Kwajalein'),
+     ('-11.0', '(GMT -11:00) Midway Island, Samoa'),
+     ('-10.0', '(GMT -10:00) Hawaii'),
+     ('-9.0', '(GMT -9:00) Alaska'),
+     ('-8.0', '(GMT -8:00) Pacific Time (US &amp; Canada)'),
+     ('-7.0', '(GMT -7:00) Mountain Time (US &amp; Canada)'),
+     ('-6.0', '(GMT -6:00) Central Time (US &amp; Canada), Mexico City'),
+     ('-5.0', '(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima'),
+     ('-4.0', '(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz'),
+     ('-3.5', '(GMT -3:30) Newfoundland'),
+     ('-3.0', '(GMT -3:00) Brazil, Buenos Aires, Georgetown'),
+     ('-2.0', '(GMT -2:00) Mid-Atlantic'),
+     ('-1.0', '(GMT -1:00 hour) Azores, Cape Verde Islands'),
+     ('0.0', '(GMT) Western Europe Time, London, Lisbon, Casablanca'),
+     ('1.0', '(GMT +1:00 hour) Brussels, Copenhagen, Madrid, Paris'),
+     ('2.0', '(GMT +2:00) Kaliningrad, South Africa'),
+     ('3.0', '(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg'),
+     ('3.5', '(GMT +3:30) Tehran'),
+     ('4.0', '(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi'),
+     ('4.5', '(GMT +4:30) Kabul'),
+     ('5.0', '(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent'),
+     ('5.5', '(GMT +5:30) Bombay, Calcutta, Madras, New Delhi'),
+     ('5.75', '(GMT +5:45) Kathmandu'),
+     ('6.0', '(GMT +6:00) Almaty, Dhaka, Colombo'),
+     ('7.0', '(GMT +7:00) Bangkok, Hanoi, Jakarta'),
+     ('8.0', '(GMT +8:00) Beijing, Perth, Singapore, Hong Kong'),
+     ('9.0', '(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk'),
+     ('9.5', '(GMT +9:30) Adelaide, Darwin'),
+     ('10.0', '(GMT +10:00) Eastern Australia, Guam, Vladivostok'),
+     ('11.0', '(GMT +11:00) Magadan, Solomon Islands, New Caledonia'),
+     ('12.0', '(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka')
+)
 
 
 class EventsListView(ListAPIView):
@@ -69,8 +105,8 @@ class EventsListView(ListAPIView):
                 queryset = queryset.filter(followed=user.profile)
 
         if filter_by == 'live':
-            queryset = queryset.filter(event_dates__start_date__lt=datetime.now()).filter(
-                event_dates__end_date__gt=datetime.now()).distinct()
+            queryset = queryset.filter(event_dates__start_date__lt=timezone.now()).filter(
+                event_dates__end_date__gt=timezone.now()).distinct()
 
         if filter_by == 'nearby':
             if long and lat:
@@ -80,7 +116,7 @@ class EventsListView(ListAPIView):
                 near = []
                 for d in neardates:
                     distance = abs(d.longitude - float(long)) + abs(d.latitude - float(lat))
-                    near.append((d.event.id,distance))
+                    near.append((d.event.id, distance))
                 near.sort(key=lambda item: item[1])
                 ids = []
                 for el in near:
@@ -104,10 +140,16 @@ class EventDetailsView(RetrieveAPIView):
 
 class ProfileAllTimezonesListView(APIView):
     """
-    Creates multiple instances of images
+    Returns all available timezones
     """
     def get(self, request, *args, **kwargs):
-        return Response(pytz.common_timezones, status=status.HTTP_200_OK)
+        ret = []
+        for tz_name in pytz.common_timezones:
+            tz = pytz.timezone(tz_name)
+            offset = datetime.now(tz).strftime('%z')
+            ret.append({'value': tz_name, 'label': '{} ({})'.format(tz_name, offset)})
+            #ret.append({'value': tz_name, 'label': mark_safe('{:*<30} ({})'.format(tz_name, offset).replace('*', '&nbsp;'))})
+        return Response(ret, status=status.HTTP_200_OK)
 
 
 class AlbumPhotosUploader(APIView):
@@ -172,11 +214,11 @@ class EventDateViewSet(ModelViewSet):
     serializer_class = EventDateSerializer
     model = EventDate
 
-    def pre_save(self, obj):
-        timezone = self.request.DATA.get("offset","")
-        delta = timedelta(hours=int(float(timezone)/60))
-        obj.start_date -= delta
-        obj.end_date -= delta
+    #def pre_save(self, obj):
+    #    timezone = self.request.DATA.get("offset", "0")
+    #    delta = timedelta(hours=int(float(timezone)/60))
+    #    obj.start_date -= delta
+    #    obj.end_date -= delta
 
 
 class LastDateView(RetrieveAPIView):
@@ -431,9 +473,9 @@ class ProfileMyOutDatesView(APIView):
 
     def get(self, request, *args, **kwargs):
         profile = self.request.user.profile
-        objs = MultiuploaderImage.objects.filter(event_date=None,userprofile=profile)
-        data=[]
-        dates=[]
+        objs = MultiuploaderImage.objects.filter(event_date=None, userprofile=profile)
+        data = []
+        dates = []
         for o in objs:
             dt = o.upload_date.strftime('%d-%m-%Y')
             if dt not in dates:
@@ -452,17 +494,20 @@ class ProfileMyPhotosListView(ListAPIView):
     def get_queryset(self):
         profile = self.request.user.profile
 
-        id = self.request.GET.get("dateid","")
-        dt = self.request.GET.get("dt","")
+        id = self.request.GET.get("dateid", "")
+        dt = self.request.GET.get("dt", "")
 
         if id:
-            dt = EventDate.objects.get(id=id,event__author=profile)
+            dt = EventDate.objects.get(id=id, event__author=profile)
             return MultiuploaderImage.objects.filter(event_date=dt)
 
+        #TODO: why strptime?!
         if dt:
             upload_date = datetime.strptime(dt, '%d-%m-%Y')
             upload_date2 = upload_date + timedelta(days=1)
-            return MultiuploaderImage.objects.filter(upload_date__gt=upload_date,upload_date__lt=upload_date2)
+            return MultiuploaderImage.objects.filter(upload_date__gt=upload_date, upload_date__lt=upload_date2)
+
+        return MultiuploaderImage.objects.filter(userprofile=profile)
 
 
 class ProfileDeletePhotoView(APIView):

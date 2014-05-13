@@ -8,7 +8,8 @@ angular.module('blvdx.events', [
 		'titleService',
 		'social',
         'maps',
-		'angularFileUpload'
+		'angularFileUpload',
+        'timezonesService'
 	])
 
 	.config(['$stateProvider', 'securityAuthorizationProvider', function config($stateProvider, securityAuthorizationProvider) {
@@ -77,16 +78,12 @@ angular.module('blvdx.events', [
                 onEnter: function($modal,$stateParams,$state){
                     $modal.open({
                         templateUrl: "events/partial_add_date.tpl.html",
-                        controller: 'eventDetilesPopup'
+                        controller: 'eventDatePopup'
                     }).result.then(
                         function(result) {
-                            console.log('closed modal');
-                            console.log('id: ' + $stateParams.eventId);
                             return $state.transitionTo('eventEdit', {eventId: $stateParams.eventId});
                         },
                         function(result) {
-                            console.log('dismissed modal');
-                            console.log('id: ' + $stateParams.eventId);
                             return $state.transitionTo('eventEdit', {eventId: $stateParams.eventId});
                     });
                 }
@@ -108,7 +105,7 @@ angular.module('blvdx.events', [
 			});
 	}])
 
-    .controller('eventDetilesPopup',function($scope, DateObj, Events, $filter ,$stateParams ,  $dateproxy, $gmaps) {
+    .controller('eventDatePopup', ['$scope', 'DateObj', 'Events', 'Accounts', '$filter', '$stateParams', '$dateproxy', '$gmaps', 'DateWithTimezone', function($scope, DateObj, Events, Accounts, $filter ,$stateParams, $dateproxy, $gmaps, DateWithTimezone) {
         // initialization params ::
         $scope.confirmScreen = false;
         $scope.hasMap = false;
@@ -169,19 +166,15 @@ angular.module('blvdx.events', [
                         }
                     }
 
-
                     if(place.geometry && place.geometry.location){
                         $scope.editDate.latitude = place.geometry.location.lat();
                         $scope.editDate.longitude = place.geometry.location.lng();
                     }
 
-
-
                     $scope.$apply();
                 });
                 $scope.hasAutoComplete = true;
             }
-            console.log('location focus');
         };
         // ------>
 
@@ -205,6 +198,11 @@ angular.module('blvdx.events', [
 
         /* end of datepicker*/
 
+        // fill timezones dropdown with data
+        Accounts.getAllTimezones().then(function(data) {
+            $scope.timezones = data;
+        });
+
         // close popup ::
         $scope.dismiss = function() {
             $scope.$dismiss();
@@ -227,6 +225,7 @@ angular.module('blvdx.events', [
                 $scope.errors.country = ["Country is required"];
                 has_errors = true;
             }
+            //TODO: only require when event is not free
             if($scope.editDate.currency === undefined){
                 $scope.errors.currency = true;
                 has_errors = true;
@@ -241,21 +240,28 @@ angular.module('blvdx.events', [
             }
             if (has_errors === false) {
                 // no errors so far?
-                var date = new Date($scope.editDate.start_date);
+                //TODO: refactor me - i'm duplicated in edit controller
                 var start_time = $scope.editDate.startTime.split(":");
                 var end_time = $scope.editDate.endTime.split(":");
-                var start_date = new Date(date);
+
+                DateWithTimezone.timezone = $scope.editDate.timezone_new;
+
+                // generate a date that is in event's timezone
+                var start_date = new Date($scope.editDate.start_date);
                 start_date.setHours(start_time[0]);
                 start_date.setMinutes(start_time[1]);
-                var end_date = new Date(date);
+                tz_start_date = DateWithTimezone.fromLocalEquivalent(start_date);
+                $scope.editDate.start_date = tz_start_date.moment.toDate();
+
+                // generate a date that is in event's timezone
+                var end_date = new Date(start_date);
                 end_date.setHours(end_time[0]);
                 end_date.setMinutes(end_time[1]);
-                $scope.editDate.start_date = start_date;
-                $scope.editDate.end_date = end_date;
+                tz_end_date = DateWithTimezone.fromLocalEquivalent(end_date);
+                $scope.editDate.end_date = tz_end_date.moment.toDate();
 
-                $scope.editDate.offset = end_date.getTimezoneOffset();
-                if (start_date.getTime() > end_date.getTime()) {
-                    $scope.errors.end_time = ["Event must ends after it begins"];
+                if (tz_start_date.moment.isAfter(tz_end_date.moment)) {
+                    $scope.errors.end_time = ["Event must end after it begins"];
                     has_errors = true;
                 }
             }
@@ -294,7 +300,6 @@ angular.module('blvdx.events', [
                 }
                 $gmaps.getLocation(adrstr);
             }
-            console.log('init map:',hasPosition,zoom);
             if($scope.hasMap){// move map to location or set default
                 $gmaps.moveTo($scope.editDate.latitude || 0 , $scope.editDate.longitude || 0,zoom);
                 if($scope.hasPosition){
@@ -305,9 +310,6 @@ angular.module('blvdx.events', [
                 $gmaps.showMap($scope.editDate.latitude || 0 , $scope.editDate.longitude || 0,$('.map')[0],null,zoom);
                 $scope.hasMap = true;
             }
-
-
-
         };
 
         // update geocoord from gmaps
@@ -347,7 +349,7 @@ angular.module('blvdx.events', [
                 $scope.editDate.endTime = $filter('date')(new_date.end_date, 'HH:mm');
             });
         };
-    })
+    }])
 
 	.controller('eventDatesPhotosmanageCtrl', ['$scope', 'titleService', '$stateParams', 'Events', 'AppScope',
 		function eventDatesPhotosmanageCtrl($scope, titleService, $stateParams, Events, AppScope) {
@@ -360,7 +362,6 @@ angular.module('blvdx.events', [
 
 		}])
 
-
 	.filter('textlimit', function () {
 		return function (input, param) {
 			if (input.length > param) {
@@ -371,7 +372,6 @@ angular.module('blvdx.events', [
 
 		};
 	})
-
 
 	.controller('EventsCtrl', ['$scope', '$geolocation', 'titleService', 'Events', 'Accounts', '$http', 'AppScope',
 		function EventsCtrl($scope, $geolocation, titleService, Events, Accounts, $http, AppScope) {
@@ -401,13 +401,8 @@ angular.module('blvdx.events', [
 					$scope.events.push($scope.eventsPool[i]);
 				}
 				// check if there are more events to load ; if not hide button
-				if ($scope.events.length == $scope.eventsPool.length) {
-					$scope.hasMoreEvents = false;
-				} else {
-					$scope.hasMoreEvents = true;
-				}
+				$scope.hasMoreEvents = $scope.events.length != $scope.eventsPool.length;
 			};
-
 
 			$scope.check = function () {
 				$scope.aviable = $geolocation.aviable;
@@ -433,7 +428,6 @@ angular.module('blvdx.events', [
 				}
 			});
 
-
 			$geolocation.stopInterval();
 			$geolocation.start();
 
@@ -455,9 +449,7 @@ angular.module('blvdx.events', [
 				});
 			};
 
-
 			$scope.Follow = function (event) {
-                //$http.get('/app/api/current-user/').then(function (response) {
 				Accounts.getCurrentUser().then(function (response) {
 					if (response.user !== null) {
 						Events.follow(event).then(function (data) {
@@ -482,10 +474,15 @@ angular.module('blvdx.events', [
 		}])
 
     .service('$dateproxy',function($rootScope){
-        return {isSet:false,EventObj:null,savedate:'Modal.CloseDatePopup',dateComplete:function(){$rootScope.$broadcast(this.savedate)}};
+        return {
+            isSet:false,
+            EventObj:null,
+            savedate: 'Modal.CloseDatePopup',
+            dateComplete: function(){$rootScope.$broadcast(this.savedate)}
+        };
     })
 	.controller('EventAddCtrl', ['$scope', '$state', 'titleService', 'Events', '$upload','$dateproxy',
-		function EventsCtrl($scope, $state, titleService, Events, $upload,$dateproxy) {
+		function EventsCtrl($scope, $state, titleService, Events, $upload, $dateproxy) {
 
 			titleService.setTitle('Add New Event');
 
@@ -534,8 +531,10 @@ angular.module('blvdx.events', [
 
 		}])
 
-	.controller('EventEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', 'DateObj', '$upload', '$filter','$dateproxy',
-		function EventEditCtrl($scope, $state, titleService, $stateParams, Events, DateObj, $upload, $filter, $dateproxy) {
+	.controller('EventEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Events', 'DateObj', '$upload',
+                                  '$filter','$dateproxy', 'DateWithTimezone',
+		function EventEditCtrl($scope, $state, titleService, $stateParams, Events, DateObj, $upload, $filter,
+                               $dateproxy, DateWithTimezone) {
 
 			titleService.setTitle('Edit Event');
 			$scope.eventId = $stateParams.eventId;
@@ -549,13 +548,11 @@ angular.module('blvdx.events', [
 
 			$scope.reloadEvent();
 
-
 			$scope.selphotoModal = function () {
 				Events.selphotoModal($scope.eventId).then(function (imgs) {
 					$scope.imgs = imgs;
 				});
 			};
-
 
 			$scope.selimg = function (entry) {
 				Events.selimg($scope.eventId, entry).then(function (imgs) {
@@ -584,27 +581,6 @@ angular.module('blvdx.events', [
 				});
 			};
 
-
-
-            /*
-			$scope.saveDateConfirm = function () {
-				//Resave lan/lon
-				$(".modal:visible").find(".close").click();
-			};
-
-			$scope.backDateEdit = function () {
-				$(".el_fields,.to_confirm").show();
-				$(".el_confirm,.back_confirm").hide();
-			};
-
-
-			$scope.showConfirm = function () {
-				$(".el_fields,.to_confirm").hide();
-				$(".el_confirm,.back_confirm").show();
-
-				adr = $scope.editDate.country + ", " + $scope.editDate.city + ", " + $scope.editDate.address_1;
-			};*/
-
             $scope.setNewDate = function (){
                 $dateproxy.editDate = null;
                 $dateproxy.editDateOptions = null;
@@ -612,19 +588,39 @@ angular.module('blvdx.events', [
             };
 
             $scope.$on($dateproxy.savedate,function () {
+                var start_time = $dateproxy.editDate.startTime.split(":");
+                var end_time = $dateproxy.editDate.endTime.split(":");
+
+                DateWithTimezone.timezone = $dateproxy.editDate.timezone_new;
+
+                // generate a date that is in event's timezone
+                var start_date = new Date($dateproxy.editDate.start_date);
+                start_date.setHours(start_time[0]);
+                start_date.setMinutes(start_time[1]);
+                tz_start_date = DateWithTimezone.fromLocalEquivalent(start_date);
+                $dateproxy.editDate.start_date = tz_start_date.moment.toDate();
+
+                // generate a date that is in event's timezone
+                var end_date = new Date(start_date);
+                end_date.setHours(end_time[0]);
+                end_date.setMinutes(end_time[1]);
+                tz_end_date = DateWithTimezone.fromLocalEquivalent(end_date);
+                $dateproxy.editDate.end_date = tz_end_date.moment.toDate();
+
+                if (tz_start_date.moment.isAfter(tz_end_date.moment)) {
+                    $scope.errors.end_time = ["Event must end after it begins"];
+                    has_errors = true;
+                }
+
 				if ($dateproxy.editDate.id !== undefined) {
 					DateObj.saveDate($dateproxy.editDate).then(function (date) {
 						$scope.reloadEvent();
-						//$(".modal:visible").find(".close").click();
-						//$scope.showConfirm();
 					}, function (error) {
 						$scope.errors = error.data;
 					});
 				} else {
 					DateObj.createDate($dateproxy.editDate).then(function (date) {
 						$scope.reloadEvent();
-						//$(".modal:visible").find(".close").click();
-						//$scope.showConfirm();
 					}, function (error) {
 						$scope.errors = error.data;
 					});
@@ -648,26 +644,17 @@ angular.module('blvdx.events', [
 				}
 			};
 
-
-			$scope.withoutimezone = function (date) {
-				x = new Date();
-				wot = x.getTimezoneOffset() / 60;
-				HH = $filter('date')(date, 'HH');
-				ret = Number(HH) + Number(wot);
-				if (ret < 0) {
-					ret = 24 + ret;
-				}
-				if (String(ret).length == 1) {
-					ret = "0" + ret;
-				}
-				return String(ret) + ':' + $filter('date')(date, 'mm');
-			};
-
 			$scope.setThisEditableDate = function (date) {
 				DateObj.getDate(date.id).then(function (date) {
 					$scope.editDate = date;
-					$scope.editDate.startTime = $scope.withoutimezone(date.start_date);
-					$scope.editDate.endTime = $scope.withoutimezone(date.end_date);
+                    DateWithTimezone.timezone = date.timezone_new;
+                    var start_date = DateWithTimezone.fromISO(date.start_date);
+                    var end_date = DateWithTimezone.fromISO(date.end_date);
+
+                    $scope.editDate.start_date = start_date.localEquivalent();
+                    $scope.editDate.startTime = start_date.format('HH:mm');
+					$scope.editDate.endTime = end_date.format('HH:mm');
+
                     $dateproxy.editDate = $scope.editDate;
                     // open date editor
                     $state.transitionTo('eventEdit.addDate', {eventId: $scope.eventId});
@@ -717,7 +704,7 @@ angular.module('blvdx.events', [
 				// get event data from url id ::
 				Events.getDetails($stateParams.eventId).then(function (event) {
 					$scope.EventObj = event;
-					//TO DO - paginator
+					//TODO: paginator
 					$showcount = 12;
 
 					$scope.showMore = function (j) {
@@ -728,17 +715,11 @@ angular.module('blvdx.events', [
 						for (var i = $scope.Albums[j].showphotos.length; i < maxPhotos; i++) {
 							$scope.Albums[j].showphotos.push($scope.Albums[j].photos[i]);
 						}
-						if ($scope.Albums[j].showphotos.length == $scope.Albums[j].photos.length) {
-							$scope.Albums[j].hasMoreEvents = false;
-						} else {
-							$scope.Albums[j].hasMoreEvents = true;
-						}
-
+						$scope.Albums[j].hasMoreEvents = $scope.Albums[j].showphotos.length != $scope.Albums[j].photos.length;
 					};
 
-
 					$scope.Albums = event.albums;
-					for (z = 0; z < $scope.Albums.length; z++) {
+					for (var z = 0; z < $scope.Albums.length; z++) {
 						$scope.Albums[z].all = $scope.Albums[z].photos.length;
 						$scope.Albums[z].showed = 0;
 						$scope.Albums[z].index = z;

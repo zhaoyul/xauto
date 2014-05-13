@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.utils import timezone
 from rest_framework import serializers
 import pytz
 from django.utils.timezone import localtime
@@ -12,20 +13,31 @@ from account.serializers import UserProfileSerializer
 from django_countries import countries
 
 
+class TimezoneField(serializers.CharField):
+
+    def to_native(self, value):
+        value = value.zone
+        return super(TimezoneField, self).to_native(value)
+
+
 class EventImageSerializer(serializers.ModelSerializer):
     """
     A serializer for ``EventImage``.
     """
+
     class Meta(object):
         model = EventImage
 
 
 class EventDateSerializer(serializers.ModelSerializer):
-    currency_choices = [(c.id, c.currency) for c in Currency.objects.all().order_by('currency')]
-    currency = serializers.ChoiceField(choices=currency_choices, source="currency.id")
-    country = serializers.ChoiceField(choices=[(c[0], c[1]) for c in list(countries)], source="country")
-    start_date = serializers.SerializerMethodField('start_date')
-    end_date = serializers.SerializerMethodField('end_date')
+    #currency_choices = [(c.id, c.currency) for c in Currency.objects.all().order_by('currency')]
+    #currency = serializers.ChoiceField(choices=currency_choices, source="currency.id")
+    #country = serializers.ChoiceField(choices=[(c[0], c[1]) for c in list(countries)], source="country")
+    #start_date = serializers.SerializerMethodField('iso_start_date')
+    #end_date = serializers.SerializerMethodField('iso_end_date')
+    timezone_new = TimezoneField()
+
+    fmt = "%Y-%m-%dT%H:%M:%S%z"
 
     class Meta:
         model = EventDate
@@ -36,11 +48,19 @@ class EventDateSerializer(serializers.ModelSerializer):
             del attrs["currency.id"]
         return super(EventDateSerializer, self).restore_object(attrs, instance)
 
-    def start_date(self, obj):
-        return obj.start_date.strftime('%B %d, %Y %H:%M:%S')
-
-    def end_date(self, obj):
-        return obj.end_date.strftime('%B %d, %Y %H:%M:%S')
+    # def iso_start_date(self, obj):
+    #     if obj.start_date:
+    #         event_tz = pytz.timezone(obj.timezone_new.zone)
+    #         tz_date = obj.start_date.astimezone(event_tz)
+    #         return tz_date.strftime(self.fmt)
+    #     return ''
+    #
+    # def iso_end_date(self, obj):
+    #     if obj.end_date:
+    #         event_tz = pytz.timezone(obj.timezone_new.zone)
+    #         tz_date = obj.end_date.astimezone(event_tz)
+    #         return tz_date.strftime(self.fmt)
+    #     return ''
 
 
 class AlbumSerializer(serializers.ModelSerializer):
@@ -58,18 +78,17 @@ class AlbumSerializer(serializers.ModelSerializer):
             obj.start_date = localtime(obj.start_date, timezone=pytz.timezone('GMT')) + delta
         except:
             obj.start_date = localtime(obj.start_date, timezone=pytz.timezone(settings.TIME_ZONE))'''''
-        return obj.start_date.strftime('%B %d, %Y %H:%M:%S')
+        return obj.start_date #.strftime('%B %d, %Y %H:%M:%S')
 
 
 class EventModelSerializer(serializers.ModelSerializer):
-
     dates = EventDateSerializer(source='event_dates', read_only=True)
     can_edit = serializers.SerializerMethodField('get_can_edit')
 
     class Meta:
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'short_link',
-            'main_image', 'author', 'dates', 'slug', 'can_edit')
+                  'main_image', 'author', 'dates', 'slug', 'can_edit')
 
     def get_can_edit(self, obj):
         view = self.context['view']
@@ -94,16 +113,16 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'srv_followersCount',
-            'srv_photosCount', 'photo', 'photo_small', 'date_info', 'author_name', 'slug',
-            'author_photo', 'author_slug', 'srv_live', 'srv_following')
+                  'srv_photosCount', 'photo', 'photo_small', 'date_info', 'author_name', 'slug',
+                  'author_photo', 'author_slug', 'srv_live', 'srv_following')
 
     def get_photo(self, obj):
         if obj.main_image:
-            return obj.thumb_url(560,400)
+            return obj.thumb_url(560, 400)
 
     def get_photo_small(self, obj):
         if obj.main_image:
-            return obj.thumb_url(50,36)
+            return obj.thumb_url(50, 36)
 
     def srv_followers_count(self, obj):
         return obj.followed.count()
@@ -123,13 +142,14 @@ class EventSerializer(serializers.ModelSerializer):
 
     def get_author_photo(self, obj):
         if obj.author and obj.author.thumbnail_image:
-            return obj.author.get_thumbnail(80,77)
+            return obj.author.get_thumbnail(80, 77)
         return ""
 
     def get_srv_live(self, obj):
         view = self.context['view']
         return obj.is_live_streaming(view.request.user)
 
+    #TODO: refactor
     def get_srv_following(self, obj):
         view = self.context['view']
         user = view.request.user
@@ -143,8 +163,11 @@ class EventSerializer(serializers.ModelSerializer):
     def get_date_info(self, obj):
         nearest_date = obj.get_nearest_date()
         if nearest_date:
+            print 'pk: ', nearest_date.pk
+            print 'start: ', nearest_date.start_date
             return {
                 "date": nearest_date.start_date,
+                "timezone": nearest_date.timezone_new,
                 "startTime": nearest_date.start_date.strftime('%H:%M'),
                 "endTime": nearest_date.end_date and nearest_date.end_date.strftime('%H:%M') or None,
                 "city": nearest_date.city,
@@ -176,12 +199,12 @@ class EventDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'srv_followersCount',
-            'srv_photosCount', 'photo', 'srv_futureDates', 'author_name',
-            'author_photo', 'srv_live', 'srv_following', 'albums', 'profile', 'slug', 'gotolink')
+                  'srv_photosCount', 'photo', 'srv_futureDates', 'author_name',
+                  'author_photo', 'srv_live', 'srv_following', 'albums', 'profile', 'slug', 'gotolink')
 
     def get_photo(self, obj):
         if obj.main_image:
-            return obj.thumb_url(1500,290)
+            return obj.thumb_url(1500, 290)
 
     def get_gotolink(self, obj):
         near = obj.get_nearest_date()
@@ -203,13 +226,14 @@ class EventDetailsSerializer(serializers.ModelSerializer):
 
     def get_author_photo(self, obj):
         if obj.author and obj.author.thumbnail_image:
-            return obj.author.get_thumbnail(50,48)
+            return obj.author.get_thumbnail(50, 48)
         return ""
 
     def get_srv_live(self, obj):
         view = self.context['view']
         return obj.is_live_streaming(view.request.user)
 
+    # TODO: refactor
     def get_srv_following(self, obj):
         view = self.context['view']
         user = view.request.user

@@ -53,7 +53,7 @@
           <div class="row-wrapper date-headline">
             <div class="pull-left">
               <a href="#" tooltip-placement="right" tooltip="View schedule">
-                <span class="badge badge-primary">{{event.date_info.date | date: 'MMM d'}}</span>
+                <span class="badge badge-primary">{{event.date_info.date | toLocalEq:event.date_info.timezone | date: 'MMM d'}}</span>
               </a>
             </div>
             <div class="pull-right">

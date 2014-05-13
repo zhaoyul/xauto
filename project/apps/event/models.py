@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 
 # ---------------------------------------------------
 # --- Django addon                                ---
+from django.utils import timezone
 from sorl.thumbnail.fields import ImageField
 from autoslug import AutoSlugField
 from sorl.thumbnail import get_thumbnail
@@ -51,7 +52,6 @@ class EventDate(TimestampedModel):
     longitude = models.FloatField(default=0.00)
     address_1 = models.CharField(max_length=100, default='', null=True, blank=True)
     address_2 = models.CharField(max_length=100, default='', null=True, blank=True)
-    #country = models.CharField(max_length=50,null=True, blank=True)
     country = CountryField(null=True, blank=True)
     country_short = models.CharField(max_length=50,null=True, blank=True)
     city = models.CharField(max_length=100,null=True, blank=True)
@@ -61,8 +61,8 @@ class EventDate(TimestampedModel):
     event = models.ForeignKey('Event', related_name='event_dates',
                               verbose_name='Your Event')
 
-    timezone = models.CharField(max_length=30, null=False, blank=False, default="0.0")
-    #timezone_new = TimeZoneField(default='America/Los_Angeles')
+    #timezone = models.CharField(max_length=30, null=False, blank=False, default="0.0")
+    timezone_new = TimeZoneField(default='America/Los_Angeles')
     start_date = models.DateTimeField(null=True, blank=False)
     end_date = models.DateTimeField(null=True, blank=True)
     feature_headline = models.CharField(max_length=100)
@@ -168,14 +168,14 @@ class Event(TimestampedModel):
 
     def get_future_dates(self):
         return self.event_dates.filter(
-            start_date__gt=datetime.now()).order_by('start_date')
+            start_date__gt=timezone.now()).order_by('start_date')
 
     def get_nearest_date(self, only_future=False):
         nearest_dates = self.event_dates.filter(
-            end_date__gt=datetime.now()).order_by('start_date')
-        if nearest_dates.count() == 0 and not only_future:
+            end_date__gt=timezone.now()).order_by('start_date')
+        if not nearest_dates.exists() and not only_future:
             nearest_dates = self.event_dates.order_by('-start_date')
-        if nearest_dates.count() > 0:
+        if nearest_dates.exists():
             return nearest_dates[0]
         return None
 
@@ -183,13 +183,8 @@ class Event(TimestampedModel):
         return self.event_dates.all().last()
 
     def is_live_streaming(self, user=None):
-        try:
-            delta = timedelta(hours=float(user.profile.timezone))
-            nowtime = datetime.now() + delta
-        except:
-            nowtime = datetime.now()
-        if self.event_dates.filter(start_date__lt=nowtime).filter(
-                end_date__gt=nowtime).exists():
+        nowtime = timezone.now()
+        if self.event_dates.filter(start_date__lt=nowtime, end_date__gt=nowtime).exists():
             return True
         return False
 

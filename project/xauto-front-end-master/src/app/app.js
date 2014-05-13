@@ -43,7 +43,7 @@ angular.module( 'blvdx', [
     });
     AppScope.setScope($scope);
 
-    //To Do move login modal and his submit to security module.
+    //TODO: move login modal and his submit to security module.
     $scope.AccountObj = {};
     $scope.$watch('AccountObj', function(){
         $scope.errors = {};
