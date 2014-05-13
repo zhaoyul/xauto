@@ -127,7 +127,9 @@ class EventSerializer(serializers.ModelSerializer):
     def get_srv_following(self, obj):
         view = self.context['view']
         user = view.request.user
-        return user.profile.followed_events.filter(id=obj.id).exists()
+        if hasattr(user, 'profile'):
+            return user.profile.followed_events.filter(id=obj.id).exists()
+        return False
 
         # try:
         #     if user.profile.followed_events.filter(id=obj.id).count():
