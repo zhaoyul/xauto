@@ -4,7 +4,7 @@
     <div class="photoback">
         <div class="photoviewercontent" ng-keypress="keyChangePhoto()">
             <div class="imgcontainer">
-                <img src="{{photoURL}}"/>
+                <img ng-src="{{photoURL}}"/>
                 <div ng-click="nextPhoto()" class="nextphoto"></div>
                 <div ng-click="prevPhoto()" class="prevphoto"></div>
             </div>
@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="author">
-                    <img class="userimg" src="{{EventObj.author_photo}}"/>
+                    <img class="userimg" ng-src="{{EventObj.author_photo}}"/>
                     <div class="name">{{Profile.name}}</div>
                     <div ng-hide="Profile.srv_following" class="follow" ng-click="FollowUser()">Follow Me</div>
                     <div ng-show="Profile.srv_following" class="follow" ng-click="FollowUser()">Following</div>

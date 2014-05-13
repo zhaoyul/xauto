@@ -11,7 +11,7 @@
                                     <div class="event-details-header">
                                         <h1 class="pull-left">{{EventObj.title}}</h1>
                                         <a href="#" class="organizer" tooltip-placement="bottom" tooltip="Organizer: {{EventObj.author_name}}">
-                                            <img class="user-pic" alt="" ng-src="{{ EventObj.author_photo }}">
+                                            <img class="user-pic" ng-src="{{ EventObj.author_photo }}">
                                         </a>
                                     </div>
                                     <div class="event-details-about" ng-init="eventDetailsExpanded=false" ng-class="{expanded: eventDetailsExpanded}" bx-event-detailed-text-mobile-toggle>
