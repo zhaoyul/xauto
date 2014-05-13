@@ -84,17 +84,17 @@ angular.module("security/login/toolbar.tpl.html", []).run(["$templateCache", fun
     "\n" +
     "      <li class=\"dropdown\" ng-show=\"isAuthenticated()\">\n" +
     "        <a href=\"#\" class=\"dropdown-toggle profile-dropdown\" data-toggle=\"dropdown\">\n" +
-    "          <img src=\"{{currentUser.thumbnail_image}}\" alt=\"\" class=\"img-rounded navbar-profile-pic\"> {{currentUser.firstName}} {{currentUser.lastName}} <b class=\"caret\"></b>\n" +
+    "          <img ng-src=\"{{currentUser.thumbnail_image}}\" class=\"img-rounded navbar-profile-pic\"/> {{currentUser.firstName}} {{currentUser.lastName}} <b class=\"caret\"></b>\n" +
     "        </a>\n" +
     "        <ul class=\"dropdown-menu\">\n" +
-    "          <li ng-show=\"isAuthenticated()\"><a href=\"#events/my\">My Events</a></li>\n" +
-    "          <li ng-show=\"isAuthenticated()\"><a href=\"#account/photos\">My Photos</a></li>\n" +
-    "          <li ng-show=\"isAuthenticated()\" class=\"divider\"></li>\n" +
-    "          <li ng-show=\"isAuthenticated()\"><a href=\"#account/MyFavorites\">My Favorite Photos</a></li>\n" +
-    "          <li ng-show=\"isAuthenticated()\" class=\"divider\"></li>\n" +
-    "          <li ng-show=\"isAuthenticated()\"><a href=\"#account/{{currentUser.slug}}/edit\">My Account</a></li>\n" +
+    "          <li><a href=\"#events/my\">My Events</a></li>\n" +
+    "          <li><a href=\"#account/photos\">My Photos</a></li>\n" +
     "          <li class=\"divider\"></li>\n" +
-    "          <li ng-show=\"isAuthenticated()\" ng-click=\"logout()\"><a href=\"#\">Logout</a></li>\n" +
+    "          <li><a href=\"#account/MyFavorites\">My Favorite Photos</a></li>\n" +
+    "          <li class=\"divider\"></li>\n" +
+    "          <li ><a href=\"#account/{{currentUser.slug}}/edit\">My Account</a></li>\n" +
+    "          <li class=\"divider\"></li>\n" +
+    "          <li ng-click=\"logout()\"><a href=\"#\">Logout</a></li>\n" +
     "        </ul>\n" +
     "      </li>\n" +
     "</ul>");

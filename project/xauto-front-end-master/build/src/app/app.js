@@ -113,7 +113,7 @@ angular.module( 'blvdx', [
     // "endTime": "11:22pm",
     // "featureHeadline": "Two Lorem Feature",
     // "featureDetail": "Two Lorem Detail"
-  } ;
+  }
   // $scope.editDate.date=false;
 
   // $scope.eventDetailPhotoAlbums = [
@@ -132,6 +132,9 @@ angular.module( 'blvdx', [
   //     active: ''
   //   }
   // ];
+
+  $scope.currentUser = {test:'exist'};
+
 }])
 
 
