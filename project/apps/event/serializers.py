@@ -139,6 +139,11 @@ class EventSerializer(serializers.ModelSerializer):
     def get_date_info(self, obj):
         nearest_date = obj.get_nearest_date()
         if nearest_date:
+            ci = nearest_date.city or u''
+            co = nearest_date.country or u''
+            comma = ci and co and u', ' or u''
+            location = u'{}{}{}'.format(ci, comma, co)
+
             return {
                 "date": nearest_date.start_date,
                 "timezone": nearest_date.timezone_new,
@@ -148,6 +153,7 @@ class EventSerializer(serializers.ModelSerializer):
                 "state": nearest_date.state,
                 "country": nearest_date.country,
                 "country_name": nearest_date.country.name,
+                "location": location,
                 "featureHeadline": nearest_date.feature_headline,
                 "attend_free": nearest_date.attend_free,
                 "attend_low": nearest_date.attend_price_from,

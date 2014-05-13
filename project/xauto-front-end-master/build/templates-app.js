@@ -756,7 +756,7 @@ angular.module("events/events-my.tpl.html", []).run(["$templateCache", function(
     "  			<tr ng-repeat=\"event in myEvents\">	\n" +
     "  				<td class=\"name\">\n" +
     "            <img class=\"img-rounded user-pic\" alt=\"\" ng-src=\"{{event.photo_small}}\">{{event.title}}</td>\n" +
-    "  				<td>{{event.date_info.city}}, {{event.date_info.country}}</td>\n" +
+    "  				<td>{{event.date_info.location}}</td>\n" +
     "  				<td><span class=\"label label-success\">{{event.srv_followersCount}} Followers</span> <span class=\"label label-info\">{{event.srv_photosCount}} Photos</span></td>\n" +
     "  				<td>\n" +
     "            <a class=\"btn btn-primary btn-sm\" href=\"#/events/{{event.slug}}/edit\">Edit</a> <a class=\"btn btn-danger btn-sm\" ng-click=\"removeEvent(event)\">Delete</a>\n" +
