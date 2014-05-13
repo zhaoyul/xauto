@@ -7640,6 +7640,10 @@ div#main-container-wrapper div.main-search-bar .search-by-label {
   display: none !important;
 }
 
+a.toggle-event-details-about.info-opener i {
+  color: #000;
+}
+
 /* end of main less */
 
 ul.people-list {
