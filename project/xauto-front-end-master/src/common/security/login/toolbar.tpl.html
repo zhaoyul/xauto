@@ -6,17 +6,17 @@
 
       <li class="dropdown" ng-show="isAuthenticated()">
         <a href="#" class="dropdown-toggle profile-dropdown" data-toggle="dropdown">
-          <img src="{{currentUser.thumbnail_image}}" alt="" class="img-rounded navbar-profile-pic"> {{currentUser.firstName}} {{currentUser.lastName}} <b class="caret"></b>
+          <img ng-src="{{currentUser.thumbnail_image}}" class="img-rounded navbar-profile-pic"/> {{currentUser.firstName}} {{currentUser.lastName}} <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
-          <li ng-show="isAuthenticated()"><a href="#events/my">My Events</a></li>
-          <li ng-show="isAuthenticated()"><a href="#account/photos">My Photos</a></li>
-          <li ng-show="isAuthenticated()" class="divider"></li>
-          <li ng-show="isAuthenticated()"><a href="#account/MyFavorites">My Favorite Photos</a></li>
-          <li ng-show="isAuthenticated()" class="divider"></li>
-          <li ng-show="isAuthenticated()"><a href="#account/{{currentUser.slug}}/edit">My Account</a></li>
+          <li><a href="#events/my">My Events</a></li>
+          <li><a href="#account/photos">My Photos</a></li>
           <li class="divider"></li>
-          <li ng-show="isAuthenticated()" ng-click="logout()"><a href="#">Logout</a></li>
+          <li><a href="#account/MyFavorites">My Favorite Photos</a></li>
+          <li class="divider"></li>
+          <li ><a href="#account/{{currentUser.slug}}/edit">My Account</a></li>
+          <li class="divider"></li>
+          <li ng-click="logout()"><a href="#">Logout</a></li>
         </ul>
       </li>
 </ul>
