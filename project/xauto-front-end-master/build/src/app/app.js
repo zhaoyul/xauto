@@ -616,8 +616,12 @@ angular.module( 'blvdx', [
         return window.location.host + $global.appURL + $scope.photo.eventslug + '/p' + $scope.photo.id + '/';
     };
     $scope.getImgURL = function (){
-        console.log($scope.photo.image);
-        return (window.location.host.indexOf('localhost:')!= -1) ?( window.location.host + $scope.photo.image ):( 'http://' + $scope.photo.image);
+        if(window.location.host.indexOf('localhost:')!= -1){
+            return window.location.host + $scope.photo.image;
+        }
+        var l = $scope.photo.image;
+        var n = l.indexOf('Signature');
+        return ( n != -1)?( l.substr(0,n-1)):( $scope.photo.image);
     }
 
 	// ------> SOCIAL BUTTONS

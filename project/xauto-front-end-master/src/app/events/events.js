@@ -136,9 +136,11 @@ angular.module('blvdx.events', [
         $scope.locationFocus = function (){
             if($scope.hasAutoComplete == false){
                 $gmaps.initAutoComplete(document.getElementById('locationInput'),function(){
+
                     $scope.fromAutoComplete = true;
                     var place = $gmaps.autocomplete.getPlace();
                     var placeDetiles = place.address_components;
+                    console.log(place);
                     for(var i = 0 ; i<placeDetiles.length ; i++){
                         switch(placeDetiles[i].types[0]){
                             case 'administrative_area_level_1':

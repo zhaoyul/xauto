@@ -2,15 +2,14 @@ angular.module('social', []).service('$fb' , function (){
 	var instance = {
 		init:function() {
 			FB.init({
-			//	appId      : '1394880617455803',
-				appId      : '147371755288305',//test
+				appId      : '1394880617455803',
+				//appId      : '147371755288305',test
 				status     : true,
 				xfbml      : true,
 				cookie: true
 			});
 		},
 		sharePhoto:function(eventName , location , picture , caption , description){
-            console.log(picture);
 			FB.ui({
 				method: 'feed',
 				name: eventName,
