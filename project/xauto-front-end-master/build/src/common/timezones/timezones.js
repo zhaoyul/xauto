@@ -1,13 +1,17 @@
 angular.module( 'timezonesService', [])
 
     .filter('toLocalEq', ['DateWithTimezone', function(DateWithTimezone) {
-       return function(date, timezone) {
+        // expects a date string containing date in iso format
+        // reads that date and creates local equivalent date (in current users' timezone)
+        // so if date was 10 AM UTC and current user is in CEST date will be 10 AM CEST
+        // in other case date would be converted automatically to CEST => 12.00 (+2h)
+        return function(date, timezone) {
           if (!date) return '---';
           if (timezone) DateWithTimezone.timezone = timezone;
 
           var tz_date = DateWithTimezone.fromISO(date);
           return tz_date.localEquivalent();
-       };
+        };
 
     }])
 

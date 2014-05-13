@@ -28,8 +28,6 @@ class EventDateSerializer(serializers.ModelSerializer):
     currency_choices = [(c.id, c.currency) for c in Currency.objects.all().order_by('currency')]
     currency = serializers.ChoiceField(choices=currency_choices, source="currency.id")
     country = serializers.ChoiceField(choices=[(c[0], c[1]) for c in list(countries)], source="country")
-    #start_date = serializers.SerializerMethodField('iso_start_date')
-    #end_date = serializers.SerializerMethodField('iso_end_date')
     timezone_new = TimezoneField()
 
     class Meta:
@@ -123,20 +121,12 @@ class EventSerializer(serializers.ModelSerializer):
         view = self.context['view']
         return obj.is_live_streaming(view.request.user)
 
-    #TODO: refactor
     def get_srv_following(self, obj):
         view = self.context['view']
         user = view.request.user
         if hasattr(user, 'profile'):
             return user.profile.followed_events.filter(id=obj.id).exists()
         return False
-
-        # try:
-        #     if user.profile.followed_events.filter(id=obj.id).count():
-        #         return True
-        # except:
-        #     pass
-        # return False
 
     def get_date_info(self, obj):
         nearest_date = obj.get_nearest_date()
