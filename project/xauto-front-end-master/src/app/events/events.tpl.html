@@ -38,6 +38,13 @@
 </div>
 
 <div class="row">
+  <div class="ng-hide" ng-show="!events.length">
+      <div class="col-xs-12 ng-scope">
+          <p class="text-info">
+          No results found
+          </p>
+      </div>
+  </div>
   <ul class="event-list">
     <li ng-repeat="event in events | filter:search" ng-animate="'animate'" class="col-xs-12 col-sm-6 col-lg-4">
       <div class="inner">
@@ -122,7 +129,7 @@
       <!--  -->
     </li>
   </ul>
-    <a ng-show="hasMoreEvents" ng-click="showMore()" class="btn btn-info showmorespan">Show more</a>
+  <a ng-show="hasMoreEvents" ng-click="showMore()" class="btn btn-info showmorespan">Show more</a>
 </div>
 
 

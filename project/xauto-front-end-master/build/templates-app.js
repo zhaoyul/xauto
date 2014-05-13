@@ -811,6 +811,13 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "</div>\n" +
     "\n" +
     "<div class=\"row\">\n" +
+    "  <div class=\"ng-hide\" ng-show=\"!events.length\">\n" +
+    "      <div class=\"col-xs-12 ng-scope\">\n" +
+    "          <p class=\"text-info\">\n" +
+    "          No results found\n" +
+    "          </p>\n" +
+    "      </div>\n" +
+    "  </div>\n" +
     "  <ul class=\"event-list\">\n" +
     "    <li ng-repeat=\"event in events | filter:search\" ng-animate=\"'animate'\" class=\"col-xs-12 col-sm-6 col-lg-4\">\n" +
     "      <div class=\"inner\">\n" +
@@ -895,7 +902,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "      <!--  -->\n" +
     "    </li>\n" +
     "  </ul>\n" +
-    "    <a ng-show=\"hasMoreEvents\" ng-click=\"showMore()\" class=\"btn btn-info showmorespan\">Show more</a>\n" +
+    "  <a ng-show=\"hasMoreEvents\" ng-click=\"showMore()\" class=\"btn btn-info showmorespan\">Show more</a>\n" +
     "</div>\n" +
     "\n" +
     "\n" +
