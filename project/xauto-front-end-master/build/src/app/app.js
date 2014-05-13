@@ -611,31 +611,33 @@ angular.module( 'blvdx', [
 		});
 	};
 
-    $scope.getImgURL = function(){
+    $scope.getImgDisplayURL = function(){
         //var url = window.location.href;
         //var arr = url.split("/");
         //var base = arr[0] + "//" + arr[2];
         return window.location.host + $global.appURL + $scope.photo.eventslug + '/p' + $scope.photo.id + '/';
     };
+    $scope.getImgURL = function (){
+        return (window.location.host.indexOf('localhost:')!= -1)?window.location.host + $scope.photo.image:$scope.photo.image;
+    }
 
 	// ------> SOCIAL BUTTONS
 	$scope.social_tw = function (obj) {
-		window.open('https://twitter.com/intent/tweet?text='+ ($photoview.EventObj ? $photoview.EventObj.title : $scope.photo.caption_both )+ '&url=' + escape($scope.getImgURL()));
+		window.open('https://twitter.com/intent/tweet?text='+ ($photoview.EventObj ? $photoview.EventObj.title : $scope.photo.caption_both )+ '&url=' + escape($scope.getImgDisplayURL()));
 	};
 
 	$scope.social_fb = function (obj) {
-        console.log('ph url:',$scope.getImgURL(),window.location.host + $scope.photoURL);
-		$fb.sharePhoto($scope.photo.event_name,$scope.getImgURL(),window.location.host + $scope.photoURL,$scope.photo.caption,($photoview.EventObj? $photoview.EventObj.about : ""));
+		$fb.sharePhoto($scope.photo.event_name,$scope.getImgDisplayURL(),$scope.getImgURL(),$scope.photo.caption,($photoview.EventObj? $photoview.EventObj.about : ""));
 	};
 
 	$scope.social_p = function (obj) {
-		window.open("http://pinterest.com/pin/create/button/?source_url='" + escape($scope.getImgURL()) + '&media=' +escape(window.location.host + $scope.photoURL) + '&description=' + escape(($photoview.EventObj ? $photoview.EventObj.title : $scope.photo.caption_both )) );
+		window.open("http://pinterest.com/pin/create/button/?source_url='" + escape($scope.getImgDisplayURL()) + '&media=' +escape($scope.getImgURL()) + '&description=' + escape(($photoview.EventObj ? $photoview.EventObj.title : $scope.photo.caption_both )) );
 	};
 
 	$scope.social_tu = function (obj) {
-		window.open("https://www.tumblr.com/share/photo?source=" + escape(window.location.host + $scope.photoURL) +
+		window.open("https://www.tumblr.com/share/photo?source=" + escape($scope.getImgURL()) +
 			"&caption=" + ($photoview.EventObj ? $photoview.EventObj.title : $scope.photo.caption_both )+
-			"&click_thru=" + escape($scope.getImgURL()));
+			"&click_thru=" + escape($scope.getImgDisplayURL()));
 	};
 
 	$scope.social_pl = function (obj) {
