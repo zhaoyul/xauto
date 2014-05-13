@@ -47,19 +47,20 @@ class EventDate(TimestampedModel):
     Django models in relation with Event Models (Event Date)
     Start / End Date  - Price/Cost / featured
     """
+    event = models.ForeignKey('Event', related_name='event_dates',
+                              verbose_name='Your Event')
     location_name = models.CharField(max_length=250, default='', null=True, blank=True)
     latitude = models.FloatField(default=0.00)
     longitude = models.FloatField(default=0.00)
     address_1 = models.CharField(max_length=100, default='', null=True, blank=True)
     address_2 = models.CharField(max_length=100, default='', null=True, blank=True)
     country = CountryField(null=True, blank=True)
+    #TODO: remove
     country_short = models.CharField(max_length=50,null=True, blank=True)
     city = models.CharField(max_length=100,null=True, blank=True)
     state = models.CharField(max_length=50,null=True, blank=True)
     region = models.CharField(max_length=50,null=True, blank=True)
     zipcode = models.CharField(max_length=20, null=True, blank=True)
-    event = models.ForeignKey('Event', related_name='event_dates',
-                              verbose_name='Your Event')
 
     #timezone = models.CharField(max_length=30, null=False, blank=False, default="0.0")
     timezone_new = TimeZoneField(null=False, blank=False, default='UTC')

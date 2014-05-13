@@ -91,7 +91,9 @@ class EventsListView(ListAPIView):
         user = self.request.user
 
         if len(search_text) >= 1:
-            queryset = Event.objects.filter((Q(title__icontains=search_text) | Q(event_dates__city__icontains=search_text) | Q(event_dates__state__icontains=search_text))).distinct()
+            queryset = Event.objects.filter((Q(title__icontains=search_text) |
+                                             Q(event_dates__city__icontains=search_text) |
+                                             Q(event_dates__state__icontains=search_text))).distinct()
         else:
             queryset = Event.objects.all()
 
@@ -105,13 +107,16 @@ class EventsListView(ListAPIView):
                 queryset = queryset.filter(followed=user.profile)
 
         if filter_by == 'live':
-            queryset = queryset.filter(event_dates__start_date__lt=timezone.now()).filter(
-                event_dates__end_date__gt=timezone.now()).distinct()
+            queryset = queryset.filter(event_dates__start_date__lt=timezone.now(),
+                                       event_dates__end_date__gt=timezone.now()).distinct()
 
+        #TODO: might be better convert 5 degrees to kilometers
         if filter_by == 'nearby':
             if long and lat:
+                neardates = EventDate.objects.filter(
+                    (Q(latitude__gt=float(lat)-5) & Q(latitude__lt=float(lat)+5)),
+                    (Q(longitude__gt=float(long)-5) & Q(longitude__lt=float(long)+5))).distinct()
 
-                neardates = EventDate.objects.filter((Q(latitude__gt=float(lat)-5) & Q(latitude__lt=float(lat)+5))).filter((Q(longitude__gt=float(long)-5) & Q(longitude__lt=float(long)+5))).distinct()
                 #sort by distance
                 near = []
                 for d in neardates:
