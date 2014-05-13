@@ -4,9 +4,9 @@ import math
 from datetime import datetime, timedelta
 from random import randrange
 from hashlib import sha1
-from django.utils import timezone
-from django.utils.safestring import mark_safe
 
+from django.utils import timezone
+from django_countries import countries
 import pytz
 from django.db.models import Q
 from django.contrib.auth.models import User
@@ -16,7 +16,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.core.files.base import ContentFile
 from django.conf import settings
-from rest_framework.generics import (ListAPIView, RetrieveAPIView, GenericAPIView)
+from rest_framework.generics import (ListAPIView, RetrieveAPIView)
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
@@ -138,7 +138,7 @@ class EventDetailsView(RetrieveAPIView):
     lookup_field = 'slug'
 
 
-class ProfileAllTimezonesListView(APIView):
+class TimezonesListView(APIView):
     """
     Returns all available timezones
     """
@@ -148,7 +148,15 @@ class ProfileAllTimezonesListView(APIView):
             tz = pytz.timezone(tz_name)
             offset = datetime.now(tz).strftime('%z')
             ret.append({'value': tz_name, 'label': '{} ({})'.format(tz_name, offset)})
-            #ret.append({'value': tz_name, 'label': mark_safe('{:*<30} ({})'.format(tz_name, offset).replace('*', '&nbsp;'))})
+        return Response(ret, status=status.HTTP_200_OK)
+
+
+class CountriesListView(APIView):
+    """
+    Returns all available countries
+    """
+    def get(self, request, *args, **kwargs):
+        ret = [{'value': c[0], 'label': c[1]} for c in list(countries)]
         return Response(ret, status=status.HTTP_200_OK)
 
 

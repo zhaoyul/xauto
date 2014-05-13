@@ -220,13 +220,17 @@ angular.module("account/partial_create_account.tpl.html", []).run(["$templateCac
     "      <span class=\"help-block\" ng-show=\"errors.password_2\" ng-repeat=\"error in errors.password_2\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\" ng-class=\"{'has-error': form.timezone.$invalid || errors.timezone}\">\n" +
-    "    <label class=\"col-lg-3 control-label\">Timezone</label>\n" +
-    "    <div class=\"col-lg-9\">\n" +
-    "      <ng-include src=\"'account/timezones.tpl.html'\"></ng-include>\n" +
-    "      <span class=\"help-block\" ng-show=\"errors.country\" ng-repeat=\"error in errors.timezone\">{{error}}</span>\n" +
-    "    </div>\n" +
+    "\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.timezone_new.$invalid || errors.timezone_new}\">\n" +
+    "        <label class=\"col-lg-3 control-label\">Timezone</label>\n" +
+    "        <div class=\"col-lg-9\">\n" +
+    "          <select class=\"form-control\" ng-model=\"AccountObj.timezone\"\n" +
+    "                  ng-options=\"tz.value as tz.label for tz in timezones\">\n" +
+    "          </select>\n" +
+    "          <span class=\"help-block\" ng-show=\"errors.latitude\" ng-repeat=\"error in errors.timezone_new\">{{error}}</span>\n" +
+    "        </div>\n" +
     "  </div>\n" +
+    "\n" +
     "  <div class=\"additional\">\n" +
     "      <div class=\"additional_label\">Additional:</div>\n" +
     "      <div class=\"form-group\" ng-class=\"{'has-error': form.about.$invalid || errors.about}\">\n" +
@@ -288,10 +292,8 @@ angular.module("account/partial_create_account.tpl.html", []).run(["$templateCac
     "  <div class=\"form-group\" ng-class=\"{'has-error': form.county.$invalid || errors.county}\">\n" +
     "    <label class=\"col-lg-3 control-label\">Country</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <select name=\"country\" class=\"form-control\" ng-model=\"AccountObj.country\">\n" +
-    "        <option>USA</option>\n" +
-    "        <option>Armenia</option>\n" +
-    "        <option>Spain</option>\n" +
+    "      <select class=\"form-control\" ng-model=\"AccountObj.country\"\n" +
+    "              ng-options=\"country.value as country.label for country in countries\">\n" +
     "      </select>\n" +
     "      <span class=\"help-block\" ng-show=\"errors.country\" ng-repeat=\"error in errors.country\">{{error}}</span>\n" +
     "    </div>\n" +
@@ -398,24 +400,25 @@ angular.module("account/partial_edit_account.tpl.html", []).run(["$templateCache
     "      <span class=\"help-block\" ng-show=\"errors.zip\" ng-repeat=\"error in errors.zip\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\" ng-class=\"{'has-error': form.county.$invalid || errors.county}\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.country.$invalid || errors.country}\">\n" +
     "    <label class=\"col-lg-3 control-label\">Country</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <select name=\"country\" class=\"form-control\" ng-model=\"AccountObj.country\">\n" +
-    "        <option>USA</option>\n" +
-    "        <option>Armenia</option>\n" +
-    "        <option>Spain</option>\n" +
-    "      </select>\n" +
+    "        <select class=\"form-control\" ng-model=\"AccountObj.country\"\n" +
+    "                  ng-options=\"country.value as country.label for country in countries\">\n" +
+    "        </select>\n" +
     "      <span class=\"help-block\" ng-show=\"errors.country\" ng-repeat=\"error in errors.country\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\" ng-class=\"{'has-error': form.timezone.$invalid || errors.timezone}\">\n" +
-    "    <label class=\"col-lg-3 control-label\">Timezone</label>\n" +
-    "    <div class=\"col-lg-9\">\n" +
-    "         <ng-include src=\"'account/timezones.tpl.html'\"></ng-include>\n" +
-    "      <span class=\"help-block\" ng-show=\"errors.country\" ng-repeat=\"error in errors.timezone\">{{error}}</span>\n" +
-    "    </div>\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.timezone_new.$invalid || errors.timezone_new}\">\n" +
+    "        <label class=\"col-lg-3 control-label\">Timezone</label>\n" +
+    "        <div class=\"col-lg-9\">\n" +
+    "          <select class=\"form-control\" ng-model=\"AccountObj.timezone\"\n" +
+    "                  ng-options=\"tz.value as tz.label for tz in timezones\">\n" +
+    "          </select>\n" +
+    "          <span class=\"help-block\" ng-show=\"errors.latitude\" ng-repeat=\"error in errors.timezone_new\">{{error}}</span>\n" +
+    "        </div>\n" +
     "  </div>\n" +
+    "\n" +
     "");
 }]);
 

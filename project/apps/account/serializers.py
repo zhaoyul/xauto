@@ -6,6 +6,14 @@ from rest_framework import serializers
 from account.models import UserProfile
 
 
+#TODO: refactor - class copied from event/serializers
+class TimezoneField(serializers.CharField):
+
+    def to_native(self, value):
+        value = value.zone
+        return super(TimezoneField, self).to_native(value)
+
+
 class UserSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField('get_full_name')
 
@@ -35,6 +43,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     srv_followingCount = serializers.SerializerMethodField('srv_following_count')
     srv_photosCount = serializers.SerializerMethodField('srv_photos_count')
     srv_following = serializers.SerializerMethodField('get_srv_following')
+    timezone = TimezoneField()
 
     class Meta(object):
         model = UserProfile

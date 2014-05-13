@@ -34,7 +34,10 @@ angular.module( 'blvdx.stream', [
     views: {
       "main": {
         controller: 'StreamCtrl',
-        templateUrl: 'stream/stream.tpl.html'
+        templateUrl: 'stream/stream.tpl.html',
+        resolve: {
+		    authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+		}
       }
     }
   });

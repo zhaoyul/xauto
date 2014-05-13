@@ -5,7 +5,8 @@ angular.module( 'blvdx.account', [
   'plusOne',
   'angularFileUpload',
   'security.authorization',
-  'resources.accounts'
+  'resources.accounts',
+  'resources.common'
 ])
 
 /**
@@ -117,7 +118,7 @@ angular.module( 'blvdx.account', [
  * And of course we define a controller for our route.
  */
 .controller( 'AccountCtrl', ['$scope', '$state', 'titleService', 'Accounts', function AccountCtrl( $scope, $state, titleService, Accounts ) {
-  titleService.setTitle( 'Account' );
+    titleService.setTitle( 'Account' );
     $scope.AccountObj = {};
 
     $scope.accountCreate = function(){
@@ -141,7 +142,7 @@ angular.module( 'blvdx.account', [
 }])
 .controller( 'AccountChangePaswordCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Accounts',
     function AccountCtrl( $scope, $state, titleService, $stateParams, Accounts ) {
-  titleService.setTitle( 'Change Password' );
+    titleService.setTitle( 'Change Password' );
     $scope.AccountObj = {};
 
     $scope.accountSubmit = function(){
@@ -152,8 +153,8 @@ angular.module( 'blvdx.account', [
 
 }])
 
-.controller( 'AccountEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Accounts', '$upload',
-    function AccountCtrl( $scope, $state, titleService, $stateParams, Accounts, $upload ) {
+.controller( 'AccountEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Accounts', 'Common', '$upload',
+    function AccountCtrl( $scope, $state, titleService, $stateParams, Accounts, Common, $upload ) {
   titleService.setTitle( 'Edit Account' );
 
   Accounts.getAccount($stateParams.accountId).then(function (account) {
@@ -167,8 +168,12 @@ angular.module( 'blvdx.account', [
     });
   };
 
-  Accounts.getAllTimezones().then(function (timezones) {
-          $scope.timezones = timezones;
+  Common.getTimezones().then(function (timezones) {
+    $scope.timezones = timezones;
+  });
+
+  Common.getCountries().then(function (countries) {
+    $scope.countries = countries;
   });
 
   $scope.checkUsername = function(value) {
