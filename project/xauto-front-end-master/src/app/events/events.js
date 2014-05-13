@@ -692,6 +692,7 @@ angular.module('blvdx.events', [
 					$scope.editDateOptions = options.actions.PUT;
                     $dateproxy.editDateOptions = $scope.editDateOptions;
                     $scope.initDateEditAction.hasOptions = true;
+                    console.log('editDateOptions:',$scope.editDateOptions);
                     $scope.initDateEditAction.update();
                 });
 			};
