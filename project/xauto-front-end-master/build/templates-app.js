@@ -783,7 +783,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "        ng-click=\"changeDisplayFilter('all')\"\n" +
     "        ng-class=\"{active:!search.srv_following && !search.srv_live}\"\n" +
     "        tooltip-placement=\"bottom\"\n" +
-    "        tooltip=\"Following\"\n" +
+    "        tooltip=\"All Events\"\n" +
     "        >All</a>\n" +
     "      <a\n" +
     "        href=\"javascript:;\"\n" +
