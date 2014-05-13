@@ -1,14 +1,9 @@
 # -*- coding: utf-8 -*-
-from django.utils import timezone
 from rest_framework import serializers
-import pytz
-from django.utils.timezone import localtime
-from datetime import timedelta
 
 from event.models import Event, EventImage, EventDate, Currency
 from multiuploader.serializers import MultiuploaderImageSerializer
 from django.conf import settings
-from django.db.models import Count
 from account.serializers import UserProfileSerializer
 from django_countries import countries
 
@@ -30,9 +25,9 @@ class EventImageSerializer(serializers.ModelSerializer):
 
 
 class EventDateSerializer(serializers.ModelSerializer):
-    #currency_choices = [(c.id, c.currency) for c in Currency.objects.all().order_by('currency')]
-    #currency = serializers.ChoiceField(choices=currency_choices, source="currency.id")
-    #country = serializers.ChoiceField(choices=[(c[0], c[1]) for c in list(countries)], source="country")
+    currency_choices = [(c.id, c.currency) for c in Currency.objects.all().order_by('currency')]
+    currency = serializers.ChoiceField(choices=currency_choices, source="currency.id")
+    country = serializers.ChoiceField(choices=[(c[0], c[1]) for c in list(countries)], source="country")
     #start_date = serializers.SerializerMethodField('iso_start_date')
     #end_date = serializers.SerializerMethodField('iso_end_date')
     timezone_new = TimezoneField()
@@ -163,8 +158,6 @@ class EventSerializer(serializers.ModelSerializer):
     def get_date_info(self, obj):
         nearest_date = obj.get_nearest_date()
         if nearest_date:
-            print 'pk: ', nearest_date.pk
-            print 'start: ', nearest_date.start_date
             return {
                 "date": nearest_date.start_date,
                 "timezone": nearest_date.timezone_new,

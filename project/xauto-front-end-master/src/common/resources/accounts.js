@@ -68,7 +68,6 @@ angular.module('resources.accounts', ['restangular'])
           return Restangular.all('profiles').customGETLIST('pictures',{dt:dt});
       };
 
-
       Accounts.getDeletePhoto = function (id) {
           return Restangular.all('profiles').customGETLIST('delpicture',{id:id});
       };
