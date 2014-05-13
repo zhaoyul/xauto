@@ -113,7 +113,7 @@ angular.module( 'blvdx', [
     // "endTime": "11:22pm",
     // "featureHeadline": "Two Lorem Feature",
     // "featureDetail": "Two Lorem Detail"
-  }
+  };
   // $scope.editDate.date=false;
 
   // $scope.eventDetailPhotoAlbums = [
@@ -132,8 +132,6 @@ angular.module( 'blvdx', [
   //     active: ''
   //   }
   // ];
-
-  $scope.currentUser = {test:'exist'};
 
 }])
 
@@ -618,7 +616,8 @@ angular.module( 'blvdx', [
         return window.location.host + $global.appURL + $scope.photo.eventslug + '/p' + $scope.photo.id + '/';
     };
     $scope.getImgURL = function (){
-        return (window.location.host.indexOf('localhost:')!= -1)?window.location.host + $scope.photo.image:$scope.photo.image;
+        console.log($scope.photo.image);
+        return (window.location.host.indexOf('localhost:')!= -1) ?( window.location.host + $scope.photo.image ):( 'http://' + $scope.photo.image);
     }
 
 	// ------> SOCIAL BUTTONS
