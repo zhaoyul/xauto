@@ -5234,6 +5234,22 @@
             "Europe/Skopje": "Europe/Belgrade",
             "Europe/Vatican": "Europe/Rome",
             "Europe/Zagreb": "Europe/Belgrade",
+            "Canada/Atlantic": "America/Halifax",
+            "Canada/Central": "America/Winnipeg",
+            "Canada/Eastern": "America/Toronto",
+            "Canada/Mountain": "America/Edmonton",
+            "Canada/Newfoundland": "America/St_Johns",
+            "Canada/Pacific": "America/Vancouver",
+            "US/Alaska": "America/Anchorage",
+            "US/Arizona": "America/Phoenix",
+            "US/Central": "America/Chicago",
+            "US/Eastern": "America/New_York",
+            "US/Hawaii": "Pacific/Honolulu",
+            "US/Mountain": "America/Denver",
+            "US/Pacific": "America/Los_Angeles",
+            "Antarctica/Troll": "Europe/Lisbon",
+            "GMT": "Etc/GMT",
+            "UTC": "Etc/UTC"
         }
     });
   };
