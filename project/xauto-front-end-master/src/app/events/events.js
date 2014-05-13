@@ -648,9 +648,6 @@ angular.module('blvdx.events', [
 				}
 			};
 
-<<<<<<< HEAD
-=======
-
 			$scope.withoutimezone = function (date) {
 				x = new Date();
 				wot = x.getTimezoneOffset() / 60;
@@ -665,14 +662,12 @@ angular.module('blvdx.events', [
 				return String(ret) + ':' + $filter('date')(date, 'mm');
 			};
 
-
             $scope.initDateEditAction = {started:false,hasDate:false,hasOptions:false,update:function(){
                 if(this.started && this.hasDate && this.hasOptions){
                     $state.transitionTo('eventEdit.addDate', {eventId: $scope.eventId});
                     this.hasDate = this.started = this.hasOptions = false;
                 }
             }};
->>>>>>> f632b1bb909d6aefb7a97ceabcaf4e897596c67f
 			$scope.setThisEditableDate = function (date) {
                 if($scope.initDateEditAction.started ){
                     return;
