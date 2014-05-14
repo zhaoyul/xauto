@@ -174,9 +174,9 @@
         <div class="dates">
             <div class="dt">
                 <!-- | toLocalEq:editDate.start_date -->
-                <div>{{ editDate.start_date | toLocalEq:date.timezone | date:'MMM'}}</div>
-                <p>{{ editDate.start_date | toLocalEq:date.timezone | date:'dd'}}</p>
-                <span>{{ editDate.start_date | toLocalEq:date.timezone | date:'yyyy'}}</span>
+                <div>{{ editDate.start_date | toLocalEq:date.timezone_new | date:'MMM'}}</div>
+                <p>{{ editDate.start_date | toLocalEq:date.timezone_new | date:'dd'}}</p>
+                <span>{{ editDate.start_date | toLocalEq:date.timezone_new | date:'yyyy'}}</span>
             </div>
             <div class="time">
                 {{editDate.startTime}} - {{editDate.endTime}}
