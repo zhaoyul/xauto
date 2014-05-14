@@ -28,7 +28,7 @@ class EventDateSerializer(serializers.ModelSerializer):
     currency_choices = [(c.id, c.currency) for c in Currency.objects.all().order_by('currency')]
     currency = serializers.ChoiceField(choices=currency_choices, source="currency.id")
     country = serializers.ChoiceField(choices=[(c[0], c[1]) for c in list(countries)], source="country")
-    timezone_new = TimezoneField()
+    timezone = TimezoneField()
 
     class Meta:
         model = EventDate
@@ -138,7 +138,7 @@ class EventSerializer(serializers.ModelSerializer):
 
             return {
                 "date": nearest_date.start_date,
-                "timezone": nearest_date.timezone_new,
+                "timezone": nearest_date.timezone,
                 "startTime": nearest_date.start_date.strftime('%H:%M'),
                 "endTime": nearest_date.end_date and nearest_date.end_date.strftime('%H:%M') or None,
                 "city": nearest_date.city,
@@ -222,7 +222,7 @@ class EventDetailsSerializer(serializers.ModelSerializer):
         for future_date in obj.get_future_dates():
             future_dates.append({
                 "date": future_date.start_date,
-                "timezone": future_date.timezone_new,
+                "timezone": future_date.timezone,
                 "startTime": future_date.start_date.strftime('%H:%M'),
                 "endTime": future_date.end_date.strftime('%H:%M'),
                 "addr1": future_date.address_1,

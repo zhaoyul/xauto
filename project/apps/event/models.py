@@ -55,15 +55,12 @@ class EventDate(TimestampedModel):
     address_1 = models.CharField(max_length=100, default='', null=True, blank=True)
     address_2 = models.CharField(max_length=100, default='', null=True, blank=True)
     country = CountryField(null=True, blank=True)
-    #TODO: remove
-    country_short = models.CharField(max_length=50,null=True, blank=True)
     city = models.CharField(max_length=100,null=True, blank=True)
     state = models.CharField(max_length=50,null=True, blank=True)
     region = models.CharField(max_length=50,null=True, blank=True)
     zipcode = models.CharField(max_length=20, null=True, blank=True)
 
-    #timezone = models.CharField(max_length=30, null=False, blank=False, default="0.0")
-    timezone_new = TimeZoneField(null=False, blank=False, default='UTC')
+    timezone = TimeZoneField(null=False, blank=False, default='UTC')
     start_date = models.DateTimeField(null=True, blank=False)
     end_date = models.DateTimeField(null=True, blank=True)
     feature_headline = models.CharField(max_length=100)
