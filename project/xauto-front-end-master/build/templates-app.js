@@ -812,7 +812,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "</div>\n" +
     "\n" +
     "<div class=\"row\">\n" +
-    "  <div ng-hide=\"events.length\" ng-cloak>\n" +
+    "  <div ng-show=\"!events.length\" class=\"ng-hide ng-cloak\" ng-cloak>\n" +
     "      <div class=\"col-xs-12 ng-scope\">\n" +
     "          <p class=\"text-info\">\n" +
     "          No results found\n" +
