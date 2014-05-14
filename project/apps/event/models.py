@@ -55,8 +55,6 @@ class EventDate(TimestampedModel):
     address_1 = models.CharField(max_length=100, default='', null=True, blank=True)
     address_2 = models.CharField(max_length=100, default='', null=True, blank=True)
     country = CountryField(null=True, blank=True)
-    #TODO: remove
-    country_short = models.CharField(max_length=50,null=True, blank=True)
     city = models.CharField(max_length=100,null=True, blank=True)
     state = models.CharField(max_length=50,null=True, blank=True)
     region = models.CharField(max_length=50,null=True, blank=True)
