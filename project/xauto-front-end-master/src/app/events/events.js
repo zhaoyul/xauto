@@ -922,7 +922,6 @@ angular.module('blvdx.events', [
                 $state.transitionTo('eventDetails.Focus', {eventId: $scope.stateParams.eventId , focus:'a'+id});
             };
 
-
 			// ------>
 		}])
 
