@@ -577,6 +577,15 @@ angular.module('blvdx.events', [
 				Events.getEvent($scope.eventId).then(function (event) {
 					$scope.EventObj = event;
 					$dateproxy.EventObj = $scope.EventObj;
+
+
+                    // jquery apply event size ::
+                    $('#eventSize').find('button').each(function(){
+                        if(this.getAttribute('btn-radio') == $scope.EventObj.eventSize.toString()){
+                            $(this).addClass('active');
+                        }
+                    })
+
 				});
 			};
 
@@ -597,15 +606,13 @@ angular.module('blvdx.events', [
 
 			$scope.eventSubmit = function () {
 				Events.saveEvent($scope.EventObj).then(function (event) {
-					$state.transitionTo('events');
-					//$('.xa-icon-nav-events').click();
+					$state.transitionTo('eventDetails', {eventId: $scope.eventId});
 				});
 			};
 
 			$scope.removeEvent = function (event) {
 				Events.removeEvent(event).then(function () {
 					$state.transitionTo('events');
-					//$('.xa-icon-nav-events').click();
 				});
 			};
 
@@ -751,6 +758,9 @@ angular.module('blvdx.events', [
 			$scope.maxDate.setDate($scope.maxDate.getDate() + 365);
 
 			/* end of datepicker */
+
+
+
 		}])
 
 	.controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', 'Accounts', '$http', 'Streams' , '$state' , '$fb','$photoview','security',
@@ -824,7 +834,10 @@ angular.module('blvdx.events', [
                                     $photoview.setup( $scope, function(id){
                                         delegate.focus = delegate.base + id;
                                         $state.transitionTo('eventDetails.Focus',delegate);
-                                    },photos, j ,$scope.EventObj.profile, $scope.EventObj);
+                                    },photos, j ,$scope.EventObj.profile, $scope.EventObj,function(){
+                                        delete delegate.base;
+                                        $state.transitionTo('eventDetails',delegate);
+                                    });
                                 }
                                 break;
                             case 'a':
@@ -872,7 +885,7 @@ angular.module('blvdx.events', [
                 }
             };
             $scope.savePhotos = function () {
-                if ($scope.form.$invalid) {
+                if ($scope.form.$invalid || $scope.uploading) {
                     return;
                 }
                 for (var i = 0; i < $scope.Album.photos.length; i++) {
@@ -914,7 +927,10 @@ angular.module('blvdx.events', [
 				$photoview.setup( $scope, function(id){
                     delegate.focus = delegate.base + id;
                     $state.transitionTo('eventDetails.Focus',delegate);
-                },photos, this.$index ,$scope.EventObj.profile, $scope.EventObj);
+                },photos, this.$index ,$scope.EventObj.profile, $scope.EventObj,function(){
+                    delete delegate.base;
+                    $state.transitionTo('eventDetails',delegate);
+                });
                 //'/#/events/' + $scope.stateParams.eventId
 			};
 
