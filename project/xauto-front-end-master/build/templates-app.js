@@ -688,7 +688,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                    </div>\n" +
     "                </div>\n" +
     "                <div class=\"modal-footer\">\n" +
-    "                    <button type=\"sumbit\" class=\"btn btn-primary\">Save</button>\n" +
+    "                    <button type=\"sumbit\" ng-class=\"{'btn-danger':uploading}\" class=\"btn btn-primary\">{{uploading ? 'Uploading':'Upload'}}</button>\n" +
     "                </div>\n" +
     "            </form>\n" +
     "        </div><!-- /.modal-content -->\n" +

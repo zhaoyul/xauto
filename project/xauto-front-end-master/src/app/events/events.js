@@ -871,28 +871,32 @@ angular.module('blvdx.events', [
 				return fileObj;
 			};
 
-			$scope.onMultipleFilesSelect = function ($files, field) {
-				//$files: an array of files selected, each file has name, size, and type.
-				for (var i = 0; i < $files.length; i++) {
-					var $file = $files[i];
-					$scope.Album.photos.push(createImageObj($file));
-				}
-			};
-
-			$scope.savePhotos = function () {
-				if ($scope.form.$invalid) {
-					return;
-				}
-				for (var i = 0; i < $scope.Album.photos.length; i++) {
-					$scope.Album.photos[i]['event_date'] = $scope.Album.id;
-				}
-				Events.uploadPhotos($scope.Album.photos).then(function (photos) {
-					$(".modal:visible").find(".close").click();
-					$scope.Album = {photos: []};
-				}, function (error) {
-					$scope.errors = error.data;
-				});
-			};
+            $scope.uploading = false;
+            $scope.onMultipleFilesSelect = function ($files, field) {
+                //$files: an array of files selected, each file has name, size, and type.
+                for (var i = 0; i < $files.length; i++) {
+                    var $file = $files[i];
+                    $scope.Album.photos.push(createImageObj($file));
+                }
+            };
+            $scope.savePhotos = function () {
+                if ($scope.form.$invalid) {
+                    return;
+                }
+                for (var i = 0; i < $scope.Album.photos.length; i++) {
+                    $scope.Album.photos[i]['event_date'] = $scope.Album.id;
+                }
+                $scope.uploading = true;
+                Events.uploadPhotos($scope.Album.photos).then(function (photos) {
+                    $scope.Album = {photos: []};
+                    $scope.uploading = false;
+                    $scope.reloadEvent();
+                    $(".modal:visible").find(".close").click();
+                }, function (error) {
+                    $scope.errors = error.data;
+                    $scope.uploading = false;
+                });
+            };
 
 			$scope.Follow = function () {
 				//$http.get('/app/api/current-user/').then(function (response) {

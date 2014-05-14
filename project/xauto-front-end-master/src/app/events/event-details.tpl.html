@@ -177,7 +177,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="sumbit" class="btn btn-primary">Save</button>
+                    <button type="sumbit" ng-class="{'btn-danger':uploading}" class="btn btn-primary">{{uploading ? 'Uploading':'Upload'}}</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->
