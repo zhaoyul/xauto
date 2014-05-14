@@ -782,28 +782,28 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "      <a\n" +
     "        href=\"javascript:;\"\n" +
     "        ng-click=\"changeDisplayFilter('all')\"\n" +
-    "        ng-class=\"{active:!search.srv_following && !search.srv_live}\"\n" +
+    "        ng-class=\"{active:searchFilter.all}\"\n" +
     "        tooltip-placement=\"bottom\"\n" +
     "        tooltip=\"All Events\"\n" +
     "        >All</a>\n" +
     "      <a\n" +
     "        href=\"javascript:;\"\n" +
     "        ng-click=\"changeDisplayFilter('following')\"\n" +
-    "        ng-class=\"{active:search.srv_following}\"\n" +
+    "        ng-class=\"{active:searchFilter.follow}\"\n" +
     "        tooltip-placement=\"bottom\"\n" +
     "        tooltip=\"Following\"\n" +
     "      ><i class=\"xa-icon-xauto-white\"></i></a>\n" +
     "      <a\n" +
     "        href=\"javascript:;\"\n" +
     "        ng-click=\"changeDisplayFilter('live')\"\n" +
-    "        ng-class=\"{active:search.srv_live}\"\n" +
+    "        ng-class=\"{active:searchFilter.live}\"\n" +
     "        tooltip-placement=\"bottom\"\n" +
     "        tooltip=\"Streaming\"\n" +
     "        ><i class=\"xa-icon-stream-white\"></i></a>\n" +
     "       <a\n" +
     "        href=\"javascript:;\"\n" +
     "        ng-click=\"changeDisplayFilter('nearby')\"\n" +
-    "        ng-class=\"{active:search.srv_live}\"\n" +
+    "        ng-class=\"{active:searchFilter.near}\"\n" +
     "        tooltip-placement=\"bottom\"\n" +
     "        tooltip=\"Nearby\"\n" +
     "        ><i class=\"xa-icon-nearby-white\"></i></a>\n" +

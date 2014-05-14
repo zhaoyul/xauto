@@ -391,6 +391,7 @@ angular.module('blvdx.events', [
 			});
 
 			$scope.search = {};
+			$scope.searchFilter = {all:true};
 			// if more events aviable to load
 			$scope.hasMoreEvents = false;
 			$scope.eventsPerLoad = 8;
@@ -439,6 +440,24 @@ angular.module('blvdx.events', [
 			$scope.check();
 
 			$scope.changeDisplayFilter = function (type) {
+                var s = $scope.searchFilter;
+                s.all = s.follow = s.near = s.live = false;
+                switch(type){
+                    case 'nearby':
+                        s.near = true;
+                        break;
+                    case 'following':
+                        s.follow = true;
+                        break;
+                    case 'live':
+                        s.live = true;
+                        break;
+                    case 'all':
+                    default:
+                        s.all = true;
+                        break;
+                }
+
 
 				if ($scope.latitude) {
 					latc = $scope.latitude;
