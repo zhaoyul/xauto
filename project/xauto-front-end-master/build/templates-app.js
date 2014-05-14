@@ -221,13 +221,13 @@ angular.module("account/partial_create_account.tpl.html", []).run(["$templateCac
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <div class=\"form-group\" ng-class=\"{'has-error': form.timezone_new.$invalid || errors.timezone_new}\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.timezone.$invalid || errors.timezone}\">\n" +
     "        <label class=\"col-lg-3 control-label\">Timezone</label>\n" +
     "        <div class=\"col-lg-9\">\n" +
     "          <select class=\"form-control\" ng-model=\"AccountObj.timezone\"\n" +
     "                  ng-options=\"tz.value as tz.label for tz in timezones\">\n" +
     "          </select>\n" +
-    "          <span class=\"help-block\" ng-show=\"errors.latitude\" ng-repeat=\"error in errors.timezone_new\">{{error}}</span>\n" +
+    "          <span class=\"help-block\" ng-show=\"errors.latitude\" ng-repeat=\"error in errors.timezone\">{{error}}</span>\n" +
     "        </div>\n" +
     "  </div>\n" +
     "\n" +
@@ -409,13 +409,13 @@ angular.module("account/partial_edit_account.tpl.html", []).run(["$templateCache
     "      <span class=\"help-block\" ng-show=\"errors.country\" ng-repeat=\"error in errors.country\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\" ng-class=\"{'has-error': form.timezone_new.$invalid || errors.timezone_new}\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.timezone.$invalid || errors.timezone}\">\n" +
     "        <label class=\"col-lg-3 control-label\">Timezone</label>\n" +
     "        <div class=\"col-lg-9\">\n" +
     "          <select class=\"form-control\" ng-model=\"AccountObj.timezone\"\n" +
     "                  ng-options=\"tz.value as tz.label for tz in timezones\">\n" +
     "          </select>\n" +
-    "          <span class=\"help-block\" ng-show=\"errors.latitude\" ng-repeat=\"error in errors.timezone_new\">{{error}}</span>\n" +
+    "          <span class=\"help-block\" ng-show=\"errors.latitude\" ng-repeat=\"error in errors.timezone\">{{error}}</span>\n" +
     "        </div>\n" +
     "  </div>\n" +
     "\n" +
@@ -1056,7 +1056,7 @@ angular.module("events/partial_edit_event_form.tpl.html", []).run(["$templateCac
     "    <div class=\"col-lg-9\">\n" +
     "      <table class=\"table\">\n" +
     "        <tr ng-repeat=\"date in EventObj.dates\">\n" +
-    "          <td>{{date.start_date | toLocalEq:date.timezone_new | date: \"EEEE, MMM dd, yyyy\" }} &mdash; {{date.feature_headline}}</td>\n" +
+    "          <td>{{date.start_date | toLocalEq:date.timezone | date: \"EEEE, MMM dd, yyyy\" }} &mdash; {{date.feature_headline}}</td>\n" +
     "          <td>\n" +
     "            <a href=\"#/eventdates/{{date.id}}/photosmanage\" class=\"btn btn-primary btn-sm\">Manage photos</a>\n" +
     "\n" +
@@ -1236,13 +1236,13 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "      </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\" ng-class=\"{'has-error': form.timezone_new.$invalid || errors.timezone_new}\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.timezone.$invalid || errors.timezone}\">\n" +
     "        <label class=\"col-lg-3 control-label\">Timezone</label>\n" +
     "        <div class=\"col-lg-9\">\n" +
-    "          <select class=\"form-control\" ng-model=\"editDate.timezone_new\"\n" +
+    "          <select class=\"form-control\" ng-model=\"editDate.timezone\"\n" +
     "                  ng-options=\"tz.value as tz.label for tz in timezones\">\n" +
     "          </select>\n" +
-    "          <span class=\"help-block\" ng-show=\"errors.latitude\" ng-repeat=\"error in errors.timezone_new\">{{error}}</span>\n" +
+    "          <span class=\"help-block\" ng-show=\"errors.latitude\" ng-repeat=\"error in errors.timezone\">{{error}}</span>\n" +
     "        </div>\n" +
     "  </div>\n" +
     "\n" +
@@ -1302,9 +1302,9 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "        <div class=\"dates\">\n" +
     "            <div class=\"dt\">\n" +
     "                <!-- | toLocalEq:editDate.start_date -->\n" +
-    "                <div>{{ editDate.start_date | toLocalEq:date.timezone_new | date:'MMM'}}</div>\n" +
-    "                <p>{{ editDate.start_date | toLocalEq:date.timezone_new | date:'dd'}}</p>\n" +
-    "                <span>{{ editDate.start_date | toLocalEq:date.timezone_new | date:'yyyy'}}</span>\n" +
+    "                <div>{{ editDate.start_date | toLocalEq:date.timezone | date:'MMM'}}</div>\n" +
+    "                <p>{{ editDate.start_date | toLocalEq:date.timezone | date:'dd'}}</p>\n" +
+    "                <span>{{ editDate.start_date | toLocalEq:date.timezone | date:'yyyy'}}</span>\n" +
     "            </div>\n" +
     "            <div class=\"time\">\n" +
     "                {{editDate.startTime}} - {{editDate.endTime}}\n" +

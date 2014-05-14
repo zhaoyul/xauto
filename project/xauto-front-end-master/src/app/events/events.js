@@ -341,7 +341,6 @@ angular.module('blvdx.events', [
             $scope.checkGeoCoords();
             // save && send ::
             $dateproxy.editDate = $scope.editDate;
-            console.log('date to be saved in saveDate: ' + $dateproxy.editDate.start_date);
             $dateproxy.editDateOptions = $scope.editDateOptions;
             $scope.$dismiss();
             $dateproxy.dateComplete();
@@ -627,7 +626,7 @@ angular.module('blvdx.events', [
                 var start_time = $dateproxy.editDate.startTime.split(":");
                 var end_time = $dateproxy.editDate.endTime.split(":");
 
-                DateWithTimezone.timezone = $dateproxy.editDate.timezone_new;
+                DateWithTimezone.timezone = $dateproxy.editDate.timezone;
 
                 // generate a date that is in event's timezone
                 var start_date = new Date($dateproxy.editDate.start_date);
@@ -701,23 +700,17 @@ angular.module('blvdx.events', [
                 }
             }};
 			$scope.setThisEditableDate = function (date) {
-                console.log('set this editable date');
                 if($scope.initDateEditAction.started ){
                     return;
                 }
                 $scope.initDateEditAction.started = true;
                 DateObj.getDate(date.id).then(function (date) {
 					$scope.editDate = date;
-                    DateWithTimezone.timezone = date.timezone_new;
-                    console.log('FROM SERVER');
-                    console.log('event timezone: ' + date.timezone_new);
-                    console.log('iso date from server: ' + date.start_date);
+                    DateWithTimezone.timezone = date.timezone;
                     var start_date = DateWithTimezone.fromISO(date.start_date);
-                    console.log('Start date from iso: ' + start_date.format());
                     var end_date = DateWithTimezone.fromISO(date.end_date);
 
                     $scope.editDate.start_date = start_date.localEquivalent();
-                    console.log('Stat date local eq: ' + start_date.localEquivalent());
 
                     $scope.editDate.startTime = start_date.format('HH:mm');
 					$scope.editDate.endTime = end_date.format('HH:mm');
@@ -730,7 +723,6 @@ angular.module('blvdx.events', [
 					$scope.editDateOptions = options.actions.PUT;
                     $dateproxy.editDateOptions = $scope.editDateOptions;
                     $scope.initDateEditAction.hasOptions = true;
-                    console.log('editDateOptions:',$scope.editDateOptions);
                     $scope.initDateEditAction.update();
                 });
 			};
