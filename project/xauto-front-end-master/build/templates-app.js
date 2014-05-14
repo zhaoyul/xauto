@@ -1056,7 +1056,7 @@ angular.module("events/partial_edit_event_form.tpl.html", []).run(["$templateCac
     "    <div class=\"col-lg-9\">\n" +
     "      <table class=\"table\">\n" +
     "        <tr ng-repeat=\"date in EventObj.dates\">\n" +
-    "          <td>{{date.start_date | toLocalEq:date.timezone_new | date: \"EEEE, MMM dd, yyyy\" }} &mdash; {{date.feature_headline}}</td>\n" +
+    "          <td>{{date.start_date | toLocalEq:date.timezone | date: \"EEEE, MMM dd, yyyy\" }} &mdash; {{date.feature_headline}}</td>\n" +
     "          <td>\n" +
     "            <a href=\"#/eventdates/{{date.id}}/photosmanage\" class=\"btn btn-primary btn-sm\">Manage photos</a>\n" +
     "\n" +
@@ -1301,9 +1301,10 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "        </div>\n" +
     "        <div class=\"dates\">\n" +
     "            <div class=\"dt\">\n" +
-    "                <div>{{ editDate.start_date | date:'MMM'}}</div>\n" +
-    "                <p>{{ editDate.start_date | date:'dd'}}</p>\n" +
-    "                <span>{{ editDate.start_date | date:'yyyy'}}</span>\n" +
+    "                <!-- | toLocalEq:editDate.start_date -->\n" +
+    "                <div>{{ editDate.start_date | toLocalEq:date.timezone | date:'MMM'}}</div>\n" +
+    "                <p>{{ editDate.start_date | toLocalEq:date.timezone | date:'dd'}}</p>\n" +
+    "                <span>{{ editDate.start_date | toLocalEq:date.timezone | date:'yyyy'}}</span>\n" +
     "            </div>\n" +
     "            <div class=\"time\">\n" +
     "                {{editDate.startTime}} - {{editDate.endTime}}\n" +
