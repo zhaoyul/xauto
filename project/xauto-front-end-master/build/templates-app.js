@@ -968,11 +968,11 @@ angular.module("events/partial_add_event_form.tpl.html", []).run(["$templateCach
     "    <label class=\"col-lg-3 control-label\">How Big is You Event?</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
     "      <div class=\"btn-group\">\n" +
-    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"'10'\">10 Cars</button>\n" +
-    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"'25'\">25 Cars</button>\n" +
-    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"'50'\">50 Cars</button>\n" +
-    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"'100'\">100 Cars</button>\n" +
-    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"'150'\">150+ Cars</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"10\">10 Cars</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"25\">25 Cars</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"50\">50 Cars</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"100\">100 Cars</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"150\">150+ Cars</button>\n" +
     "      </div>\n" +
     "      <span class=\"help-block\" ng-show=\"errors.eventSize\" ng-repeat=\"error in errors.eventSize\">{{error}}</span>\n" +
     "    </div>\n" +
@@ -1023,12 +1023,12 @@ angular.module("events/partial_edit_event_form.tpl.html", []).run(["$templateCac
     "  <div class=\"form-group\">\n" +
     "    <label class=\"col-lg-3 control-label\">How Big is You Event?</label>\n" +
     "    <div class=\"col-lg-9\">\n" +
-    "      <div class=\"btn-group\">\n" +
-    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"'10'\">10 Cars</button>\n" +
-    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"'25'\">25 Cars</button>\n" +
-    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"'50'\">50 Cars</button>\n" +
-    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"'100'\">100 Cars</button>\n" +
-    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"'150'\">150+ Cars</button>\n" +
+    "      <div class=\"btn-group\" id=\"eventSize\">\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"10\">10 Cars</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"25\">25 Cars</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"50\">50 Cars</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"100\">100 Cars</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-model=\"EventObj.eventSize\" btn-radio=\"150\">150+ Cars</button>\n" +
     "    </div>\n" +
     "    </div>\n" +
     "  </div>\n" +

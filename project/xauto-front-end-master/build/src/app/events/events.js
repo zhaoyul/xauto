@@ -577,6 +577,15 @@ angular.module('blvdx.events', [
 				Events.getEvent($scope.eventId).then(function (event) {
 					$scope.EventObj = event;
 					$dateproxy.EventObj = $scope.EventObj;
+
+
+                    // jquery apply event size ::
+                    $('#eventSize').find('button').each(function(){
+                        if(this.getAttribute('btn-radio') == $scope.EventObj.eventSize.toString()){
+                            $(this).addClass('active');
+                        }
+                    })
+
 				});
 			};
 
@@ -597,15 +606,13 @@ angular.module('blvdx.events', [
 
 			$scope.eventSubmit = function () {
 				Events.saveEvent($scope.EventObj).then(function (event) {
-					$state.transitionTo('events');
-					//$('.xa-icon-nav-events').click();
+					$state.transitionTo('eventDetails', {eventId: $scope.eventId});
 				});
 			};
 
 			$scope.removeEvent = function (event) {
 				Events.removeEvent(event).then(function () {
 					$state.transitionTo('events');
-					//$('.xa-icon-nav-events').click();
 				});
 			};
 
@@ -751,6 +758,9 @@ angular.module('blvdx.events', [
 			$scope.maxDate.setDate($scope.maxDate.getDate() + 365);
 
 			/* end of datepicker */
+
+
+
 		}])
 
 	.controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', 'Accounts', '$http', 'Streams' , '$state' , '$fb','$photoview','security',
