@@ -832,7 +832,10 @@ angular.module('blvdx.events', [
                                     $photoview.setup( $scope, function(id){
                                         delegate.focus = delegate.base + id;
                                         $state.transitionTo('eventDetails.Focus',delegate);
-                                    },photos, j ,$scope.EventObj.profile, $scope.EventObj);
+                                    },photos, j ,$scope.EventObj.profile, $scope.EventObj,function(){
+                                        delete delegate.base;
+                                        $state.transitionTo('eventDetails',delegate);
+                                    });
                                 }
                                 break;
                             case 'a':
@@ -880,7 +883,7 @@ angular.module('blvdx.events', [
                 }
             };
             $scope.savePhotos = function () {
-                if ($scope.form.$invalid) {
+                if ($scope.form.$invalid || $scope.uploading) {
                     return;
                 }
                 for (var i = 0; i < $scope.Album.photos.length; i++) {
@@ -922,7 +925,10 @@ angular.module('blvdx.events', [
 				$photoview.setup( $scope, function(id){
                     delegate.focus = delegate.base + id;
                     $state.transitionTo('eventDetails.Focus',delegate);
-                },photos, this.$index ,$scope.EventObj.profile, $scope.EventObj);
+                },photos, this.$index ,$scope.EventObj.profile, $scope.EventObj,function(){
+                    delete delegate.base;
+                    $state.transitionTo('eventDetails',delegate);
+                });
                 //'/#/events/' + $scope.stateParams.eventId
 			};
 
