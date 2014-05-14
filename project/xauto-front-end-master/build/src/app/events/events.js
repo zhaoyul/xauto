@@ -137,10 +137,19 @@ angular.module('blvdx.events', [
             if($scope.hasAutoComplete == false){
                 $gmaps.initAutoComplete(document.getElementById('locationInput'),function(){
 
+
+
                     $scope.fromAutoComplete = true;
                     var place = $gmaps.autocomplete.getPlace();
                     var placeDetiles = place.address_components;
-                    console.log(place);
+                    if(placeDetiles == null){
+                        return;
+                    }
+                    // ------> clear fields ::
+                    if($scope.fromAutoComplete){
+                        $scope.editDate.state = $scope.editDate.address_2 = $scope.editDate.address_1 = $scope.editDate.zipcode = $scope.editDate.city = $scope.editDate.country = '';
+                    }
+                    // ------> push values
                     for(var i = 0 ; i<placeDetiles.length ; i++){
                         switch(placeDetiles[i].types[0]){
                             case 'administrative_area_level_1':
@@ -242,27 +251,20 @@ angular.module('blvdx.events', [
             }
             if (has_errors === false) {
                 // no errors so far?
-                //TODO: refactor me - i'm duplicated in edit controller
                 var start_time = $scope.editDate.startTime.split(":");
                 var end_time = $scope.editDate.endTime.split(":");
 
-                DateWithTimezone.timezone = $scope.editDate.timezone_new;
-
-                // generate a date that is in event's timezone
+                // generate full start date to be validated
                 var start_date = new Date($scope.editDate.start_date);
                 start_date.setHours(start_time[0]);
                 start_date.setMinutes(start_time[1]);
-                tz_start_date = DateWithTimezone.fromLocalEquivalent(start_date);
-                $scope.editDate.start_date = tz_start_date.moment.toDate();
 
-                // generate a date that is in event's timezone
+                // generate full end date to be validated
                 var end_date = new Date(start_date);
                 end_date.setHours(end_time[0]);
                 end_date.setMinutes(end_time[1]);
-                tz_end_date = DateWithTimezone.fromLocalEquivalent(end_date);
-                $scope.editDate.end_date = tz_end_date.moment.toDate();
 
-                if (tz_start_date.moment.isAfter(tz_end_date.moment)) {
+                if (end_date < start_date) {
                     $scope.errors.end_time = ["Event must end after it begins"];
                     has_errors = true;
                 }
@@ -280,7 +282,6 @@ angular.module('blvdx.events', [
             if($scope.verify()){// verify params first
                 return;
             }
-
             // change view ::
             $scope.confirmScreen = true;
             // run map ::
@@ -340,6 +341,7 @@ angular.module('blvdx.events', [
             $scope.checkGeoCoords();
             // save && send ::
             $dateproxy.editDate = $scope.editDate;
+            console.log('date to be saved in saveDate: ' + $dateproxy.editDate.start_date);
             $dateproxy.editDateOptions = $scope.editDateOptions;
             $scope.$dismiss();
             $dateproxy.dateComplete();
@@ -632,14 +634,14 @@ angular.module('blvdx.events', [
                 start_date.setHours(start_time[0]);
                 start_date.setMinutes(start_time[1]);
                 tz_start_date = DateWithTimezone.fromLocalEquivalent(start_date);
-                $dateproxy.editDate.start_date = tz_start_date.moment.toDate();
+                $dateproxy.editDate.start_date = tz_start_date.toISO();
 
                 // generate a date that is in event's timezone
                 var end_date = new Date(start_date);
                 end_date.setHours(end_time[0]);
                 end_date.setMinutes(end_time[1]);
                 tz_end_date = DateWithTimezone.fromLocalEquivalent(end_date);
-                $dateproxy.editDate.end_date = tz_end_date.moment.toDate();
+                $dateproxy.editDate.end_date = tz_end_date.toISO();
 
                 if (tz_start_date.moment.isAfter(tz_end_date.moment)) {
                     $scope.errors.end_time = ["Event must end after it begins"];
@@ -699,6 +701,7 @@ angular.module('blvdx.events', [
                 }
             }};
 			$scope.setThisEditableDate = function (date) {
+                console.log('set this editable date');
                 if($scope.initDateEditAction.started ){
                     return;
                 }
@@ -706,10 +709,16 @@ angular.module('blvdx.events', [
                 DateObj.getDate(date.id).then(function (date) {
 					$scope.editDate = date;
                     DateWithTimezone.timezone = date.timezone_new;
+                    console.log('FROM SERVER');
+                    console.log('event timezone: ' + date.timezone_new);
+                    console.log('iso date from server: ' + date.start_date);
                     var start_date = DateWithTimezone.fromISO(date.start_date);
+                    console.log('Start date from iso: ' + start_date.format());
                     var end_date = DateWithTimezone.fromISO(date.end_date);
 
                     $scope.editDate.start_date = start_date.localEquivalent();
+                    console.log('Stat date local eq: ' + start_date.localEquivalent());
+
                     $scope.editDate.startTime = start_date.format('HH:mm');
 					$scope.editDate.endTime = end_date.format('HH:mm');
 

@@ -1012,7 +1012,7 @@ angular.module("events/partial_edit_event_form.tpl.html", []).run(["$templateCac
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +
-    "    <label class=\"col-lg-3 control-label\">xau.to/</label>\n" +
+    "    <label class=\"col-lg-3 control-label\">xauto.co/app/#/events/</label>\n" +
     "    <div class=\"col-lg-6\">\n" +
     "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"EventObj.short_link\" ng-keyup=\"checkShortLink($event.target.value)\">\n" +
     "    </div>\n" +
@@ -1056,7 +1056,7 @@ angular.module("events/partial_edit_event_form.tpl.html", []).run(["$templateCac
     "    <div class=\"col-lg-9\">\n" +
     "      <table class=\"table\">\n" +
     "        <tr ng-repeat=\"date in EventObj.dates\">\n" +
-    "          <td>{{date.start_date | toLocalEq:date.timezone | date: \"EEEE, MMM dd, yyyy\" }} &mdash; {{date.feature_headline}}</td>\n" +
+    "          <td>{{date.start_date | toLocalEq:date.timezone_new | date: \"EEEE, MMM dd, yyyy\" }} &mdash; {{date.feature_headline}}</td>\n" +
     "          <td>\n" +
     "            <a href=\"#/eventdates/{{date.id}}/photosmanage\" class=\"btn btn-primary btn-sm\">Manage photos</a>\n" +
     "\n" +
