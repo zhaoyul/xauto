@@ -137,10 +137,19 @@ angular.module('blvdx.events', [
             if($scope.hasAutoComplete == false){
                 $gmaps.initAutoComplete(document.getElementById('locationInput'),function(){
 
+
+
                     $scope.fromAutoComplete = true;
                     var place = $gmaps.autocomplete.getPlace();
                     var placeDetiles = place.address_components;
-                    console.log(place);
+                    if(placeDetiles == null){
+                        return;
+                    }
+                    // ------> clear fields ::
+                    if($scope.fromAutoComplete){
+                        $scope.editDate.state = $scope.editDate.address_2 = $scope.editDate.address_1 = $scope.editDate.zipcode = $scope.editDate.city = $scope.editDate.country = '';
+                    }
+                    // ------> push values
                     for(var i = 0 ; i<placeDetiles.length ; i++){
                         switch(placeDetiles[i].types[0]){
                             case 'administrative_area_level_1':
@@ -280,7 +289,6 @@ angular.module('blvdx.events', [
             if($scope.verify()){// verify params first
                 return;
             }
-
             // change view ::
             $scope.confirmScreen = true;
             // run map ::
@@ -378,8 +386,8 @@ angular.module('blvdx.events', [
 		};
 	})
 
-	.controller('EventsCtrl', ['$scope', '$geolocation', 'titleService', 'Events', 'Accounts', '$http', 'AppScope',
-		function EventsCtrl($scope, $geolocation, titleService, Events, Accounts, $http, AppScope) {
+	.controller('EventsCtrl', ['$scope', '$geolocation', 'titleService', 'Events', 'Accounts', '$http', 'AppScope','security',
+		function EventsCtrl($scope, $geolocation, titleService, Events, Accounts, $http, AppScope,security) {
 			titleService.setTitle('All events');
 
 			// contain events data ::
@@ -391,6 +399,7 @@ angular.module('blvdx.events', [
 			});
 
 			$scope.search = {};
+			$scope.searchFilter = {all:true};
 			// if more events aviable to load
 			$scope.hasMoreEvents = false;
 			$scope.eventsPerLoad = 8;
@@ -439,6 +448,24 @@ angular.module('blvdx.events', [
 			$scope.check();
 
 			$scope.changeDisplayFilter = function (type) {
+                var s = $scope.searchFilter;
+                s.all = s.follow = s.near = s.live = false;
+                switch(type){
+                    case 'nearby':
+                        s.near = true;
+                        break;
+                    case 'following':
+                        s.follow = true;
+                        break;
+                    case 'live':
+                        s.live = true;
+                        break;
+                    case 'all':
+                    default:
+                        s.all = true;
+                        break;
+                }
+
 
 				if ($scope.latitude) {
 					latc = $scope.latitude;
@@ -455,6 +482,14 @@ angular.module('blvdx.events', [
 			};
 
 			$scope.Follow = function (event) {
+                // ------> CHECK LOGIN
+                console.log('follow click:');
+
+                if(!security.isAuthenticated()){
+                    security.showLogin();
+                    return;
+                }
+
 				Accounts.getCurrentUser().then(function (response) {
 					if (response.user !== null) {
 						Events.follow(event).then(function (data) {
@@ -725,8 +760,8 @@ angular.module('blvdx.events', [
 			/* end of datepicker */
 		}])
 
-	.controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', 'Accounts', '$http', 'Streams' , '$state' , '$fb','$photoview',
-		function EventsCtrl($scope, titleService, $location, $stateParams, Events, Accounts, $http, Streams, $state , $fb , $photoview) {
+	.controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', 'Accounts', '$http', 'Streams' , '$state' , '$fb','$photoview','security',
+		function EventsCtrl($scope, titleService, $location, $stateParams, Events, Accounts, $http, Streams, $state , $fb , $photoview,security) {
 			titleService.setTitle('Event Details');
             $scope.go = function ( path ) {
                 $location.path( path );
