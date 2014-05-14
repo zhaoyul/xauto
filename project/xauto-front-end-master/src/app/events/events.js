@@ -378,8 +378,8 @@ angular.module('blvdx.events', [
 		};
 	})
 
-	.controller('EventsCtrl', ['$scope', '$geolocation', 'titleService', 'Events', 'Accounts', '$http', 'AppScope',
-		function EventsCtrl($scope, $geolocation, titleService, Events, Accounts, $http, AppScope) {
+	.controller('EventsCtrl', ['$scope', '$geolocation', 'titleService', 'Events', 'Accounts', '$http', 'AppScope','security',
+		function EventsCtrl($scope, $geolocation, titleService, Events, Accounts, $http, AppScope,security) {
 			titleService.setTitle('All events');
 
 			// contain events data ::
@@ -455,6 +455,14 @@ angular.module('blvdx.events', [
 			};
 
 			$scope.Follow = function (event) {
+                // ------> CHECK LOGIN
+                console.log('follow click:');
+
+                if(!security.isAuthenticated()){
+                    security.showLogin();
+                    return;
+                }
+
 				Accounts.getCurrentUser().then(function (response) {
 					if (response.user !== null) {
 						Events.follow(event).then(function (data) {
@@ -725,8 +733,8 @@ angular.module('blvdx.events', [
 			/* end of datepicker */
 		}])
 
-	.controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', 'Accounts', '$http', 'Streams' , '$state' , '$fb','$photoview',
-		function EventsCtrl($scope, titleService, $location, $stateParams, Events, Accounts, $http, Streams, $state , $fb , $photoview) {
+	.controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', 'Accounts', '$http', 'Streams' , '$state' , '$fb','$photoview','security',
+		function EventsCtrl($scope, titleService, $location, $stateParams, Events, Accounts, $http, Streams, $state , $fb , $photoview,security) {
 			titleService.setTitle('Event Details');
             $scope.go = function ( path ) {
                 $location.path( path );
