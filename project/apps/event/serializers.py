@@ -222,6 +222,7 @@ class EventDetailsSerializer(serializers.ModelSerializer):
         for future_date in obj.get_future_dates():
             future_dates.append({
                 "date": future_date.start_date,
+                "timezone": future_date.timezone_new,
                 "startTime": future_date.start_date.strftime('%H:%M'),
                 "endTime": future_date.end_date.strftime('%H:%M'),
                 "addr1": future_date.address_1,

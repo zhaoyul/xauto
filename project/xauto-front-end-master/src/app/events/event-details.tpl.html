@@ -44,7 +44,7 @@
                                                     <div class="row-wrapper">
                                                         <div class="col-xs-12 schedule-dropdown-header">
                                                             <span class="badge badge-primary badge-lg schedule-dropdown-date">
-                                                                {{futureDate.date | toLocalEq | date: 'MMM d'}}
+                                                                {{futureDate.date | toLocalEq:futureDate.timezone | date: 'MMM d'}}
                                                             </span>
                                                             <span class="schedule-dropdown-location">
                                                                 <i class="xa-icon-location-md"></i>{{futureDate.city}}, {{futureDate.state}}

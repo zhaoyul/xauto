@@ -555,7 +555,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                                                    <div class=\"row-wrapper\">\n" +
     "                                                        <div class=\"col-xs-12 schedule-dropdown-header\">\n" +
     "                                                            <span class=\"badge badge-primary badge-lg schedule-dropdown-date\">\n" +
-    "                                                                {{futureDate.date | toLocalEq | date: 'MMM d'}}\n" +
+    "                                                                {{futureDate.date | toLocalEq:futureDate.timezone | date: 'MMM d'}}\n" +
     "                                                            </span>\n" +
     "                                                            <span class=\"schedule-dropdown-location\">\n" +
     "                                                                <i class=\"xa-icon-location-md\"></i>{{futureDate.city}}, {{futureDate.state}}\n" +
@@ -1302,9 +1302,9 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "        <div class=\"dates\">\n" +
     "            <div class=\"dt\">\n" +
     "                <!-- | toLocalEq:editDate.start_date -->\n" +
-    "                <div>{{ editDate.start_date | toLocalEq:date.timezone | date:'MMM'}}</div>\n" +
-    "                <p>{{ editDate.start_date | toLocalEq:date.timezone | date:'dd'}}</p>\n" +
-    "                <span>{{ editDate.start_date | toLocalEq:date.timezone | date:'yyyy'}}</span>\n" +
+    "                <div>{{ editDate.start_date | toLocalEq:date.timezone_new | date:'MMM'}}</div>\n" +
+    "                <p>{{ editDate.start_date | toLocalEq:date.timezone_new | date:'dd'}}</p>\n" +
+    "                <span>{{ editDate.start_date | toLocalEq:date.timezone_new | date:'yyyy'}}</span>\n" +
     "            </div>\n" +
     "            <div class=\"time\">\n" +
     "                {{editDate.startTime}} - {{editDate.endTime}}\n" +
