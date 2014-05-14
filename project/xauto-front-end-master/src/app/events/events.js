@@ -137,10 +137,19 @@ angular.module('blvdx.events', [
             if($scope.hasAutoComplete == false){
                 $gmaps.initAutoComplete(document.getElementById('locationInput'),function(){
 
+
+
                     $scope.fromAutoComplete = true;
                     var place = $gmaps.autocomplete.getPlace();
                     var placeDetiles = place.address_components;
-                    console.log(place);
+                    if(placeDetiles == null){
+                        return;
+                    }
+                    // ------> clear fields ::
+                    if($scope.fromAutoComplete){
+                        $scope.editDate.state = $scope.editDate.address_2 = $scope.editDate.address_1 = $scope.editDate.zipcode = $scope.editDate.city = $scope.editDate.country = '';
+                    }
+                    // ------> push values
                     for(var i = 0 ; i<placeDetiles.length ; i++){
                         switch(placeDetiles[i].types[0]){
                             case 'administrative_area_level_1':
@@ -280,7 +289,6 @@ angular.module('blvdx.events', [
             if($scope.verify()){// verify params first
                 return;
             }
-
             // change view ::
             $scope.confirmScreen = true;
             // run map ::
