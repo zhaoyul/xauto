@@ -89,6 +89,11 @@ angular.module("account/account-my-photos-at-event.tpl.html", []).run(["$templat
     "    <div class=\"panel-collapse collapse in\"  >\n" +
     "      <div class=\"panel-body\">\n" +
     "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-12 col-sm-4 col-lg-3\">\n" +
+    "                <a ui-sref=\"photosMy.byevent\" class=\"btn btn-link\">Go back to \"My Photos\"</a>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "        <div class=\"row\">\n" +
     "          <ul class=\"stream-list\">\n" +
     "            <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"photo in photos\" ng-hide=\"photo.hide\">\n" +
     "              <div class=\"stream-picture\">\n" +
@@ -170,6 +175,12 @@ angular.module("account/account-my-photos-on-date.tpl.html", []).run(["$template
     "<div class=\"deletephotos\">\n" +
     "    <div class=\"panel-collapse collapse in\"  >\n" +
     "      <div class=\"panel-body\">\n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"col-xs-12 col-sm-4 col-lg-3\">\n" +
+    "                <a ui-sref=\"photosMy.bydate\" class=\"btn btn-link\" ng-show=\"$state.is('photosMyOnDate')\">Go back to \"My Photos\"</a>\n" +
+    "                <a ui-sref=\"photosMy.byevent\" class=\"btn btn-link\" ng-show=\"$state.is('photosMyOrphans')\">Go back to \"My Photos\"</a>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
     "        <div class=\"row\">\n" +
     "          <ul class=\"stream-list\">\n" +
     "            <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"photo in photos\" ng-hide=\"photo.hide\">\n" +

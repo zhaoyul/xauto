@@ -162,7 +162,6 @@ angular.module( 'blvdx.account', [
 
 }])
 .controller( 'AccountLoginCtrl', ['$scope', '$state', 'titleService', 'Accounts', function AccountCtrl( $scope, $state, titleService, Accounts ) {
-        console.log('account login ctrl');
     titleService.setTitle( 'Log In' );
     $scope.AccountObj = {};
 
@@ -234,7 +233,7 @@ angular.module( 'blvdx.account', [
 
 }])
 
-.controller( 'MyPhotosAtEventDate', ['$scope', 'titleService', 'Accounts', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, $stateParams ) {
+.controller( 'MyPhotosAtEventDate', ['$scope', 'titleService', 'Accounts', '$state', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, $state, $stateParams ) {
   titleService.setTitle( 'My Photos' );
 
   Accounts.getMyPhotosAtEventDate($stateParams.id).then(function (photos) {
@@ -249,9 +248,11 @@ angular.module( 'blvdx.account', [
   };
 }])
 
-.controller( 'MyOrphanedPhotos', ['$scope', 'titleService', 'Accounts', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, $stateParams ) {
+.controller( 'MyOrphanedPhotos', ['$scope', 'titleService', 'Accounts', '$state', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, $state, $stateParams ) {
   titleService.setTitle( 'My Orphaned Photos' );
   $scope.date = $stateParams.dt;
+
+  $scope.$state = $state;
 
   Accounts.getMyOrphanedPhotos($stateParams.dt).then(function (photos) {
       $scope.photos = photos;
@@ -263,9 +264,10 @@ angular.module( 'blvdx.account', [
   };
 }])
 
-.controller( 'MyPhotosOnDate', ['$scope', 'titleService', 'Accounts', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, $stateParams ) {
+.controller( 'MyPhotosOnDate', ['$scope', 'titleService', 'Accounts', '$state', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, $state, $stateParams ) {
   titleService.setTitle( 'My Photos' );
   $scope.date = $stateParams.dt;
+  $scope.$state = $state;
 
   Accounts.getMyPhotosOnDate($stateParams.dt).then(function (photos) {
       $scope.photos = photos;
