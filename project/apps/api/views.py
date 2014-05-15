@@ -525,8 +525,8 @@ class MyOrphanedPhotosListView(APIView):
         dt = request.GET.get('dt')
         if dt:
             upload_date = datetime.strptime(dt, '%Y-%m-%d').date()
-            day_start = datetime.combine(upload_date, time.min).replace(tzinfo=utc)
-            day_end = datetime.combine(upload_date, time.max).replace(tzinfo=utc)
+            day_start = datetime.combine(upload_date, time.min).replace(tzinfo=profile.timezone)
+            day_end = datetime.combine(upload_date, time.max).replace(tzinfo=profile.timezone)
 
             queryset = queryset.filter(upload_date__range=(day_start, day_end))
 
@@ -553,8 +553,8 @@ class MyPhotosListView(ListAPIView):
         dt = self.request.GET.get('dt')
         if dt:
             upload_date = datetime.strptime(dt, '%Y-%m-%d').date()
-            day_start = datetime.combine(upload_date, time.min).replace(tzinfo=utc)
-            day_end = datetime.combine(upload_date, time.max).replace(tzinfo=utc)
+            day_start = datetime.combine(upload_date, time.min).replace(tzinfo=profile.timezone)
+            day_end = datetime.combine(upload_date, time.max).replace(tzinfo=profile.timezone)
 
             queryset = queryset.filter(upload_date__range=(day_start, day_end))
 
