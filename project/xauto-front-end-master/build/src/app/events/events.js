@@ -835,7 +835,7 @@ angular.module('blvdx.events', [
                                         delegate.focus = delegate.base + id;
                                         $state.transitionTo('eventDetails.Focus',delegate);
                                     },photos, j ,$scope.EventObj.profile, $scope.EventObj,function(){
-                                        delete delegate.base;
+                                        delete delegate.focus;
                                         $state.transitionTo('eventDetails',delegate);
                                     });
                                 }

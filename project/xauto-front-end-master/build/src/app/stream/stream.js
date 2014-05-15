@@ -85,7 +85,7 @@ angular.module( 'blvdx.stream', [
   });
 }])
 
-.controller( 'StreamListCtrl', ['$scope', 'titleService', 'Streams', '$http','$photoview', 'Accounts', function StreamCtrl( $scope, titleService, Streams, $http , $photoview, Accounts) {
+.controller( 'StreamListCtrl', ['$scope', 'titleService', 'Streams', '$http','$photoview','$state','Accounts', function StreamCtrl( $scope, titleService, Streams, $http , $photoview,$state,Accounts) {
   titleService.setTitle( 'Stream' );
   $scope.stream = [];
   $scope.$watch("$parent.stream", function(){
@@ -94,7 +94,7 @@ angular.module( 'blvdx.stream', [
     }
   });
   $scope.is_fetching = false;
-
+  $scope.profileId = $state.params.profileId;
   $scope.Favorite = function(entry,type) {
     Accounts.getCurrentUser().then(function(response) {
         if(response.user == null) {
@@ -166,7 +166,23 @@ angular.module( 'blvdx.stream', [
   };
 
   $scope.selectImage = function(){
-	  $photoview.setup($scope, null, $scope.stream, this.$index, $scope.$parent.$parent.Profile);
+      var name = ($state && $state.current )?$state.current.name:'undefined';
+      switch(name){
+          case 'profileView':
+          case 'profileView.photo':
+              var delegate = {profileId: $scope.profileId , base:'p'};
+              var change = function(id){
+                  delegate.photoId = delegate.base + id;
+                  $state.transitionTo('profileView.photo',delegate);
+              };
+              var end = function(){
+                  delete delegate.photoId;
+                  $state.transitionTo('profileView',delegate);
+              };
+              var slug = 1;
+              break;
+      }
+	  $photoview.setup($scope, change, $scope.stream, this.$index, $scope.$parent.$parent.Profile,null,end,slug);
   }
 }])
 
