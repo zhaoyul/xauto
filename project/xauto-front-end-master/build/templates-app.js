@@ -118,7 +118,7 @@ angular.module("account/account-my-photos-at-event.tpl.html", []).run(["$templat
 angular.module("account/account-my-photos-by-date.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-my-photos-by-date.tpl.html",
     "<div class=\"deletephotos\">\n" +
-    "    <div class=\"panel panel-default\" ng-show=\"Outdates\">\n" +
+    "    <div class=\"panel panel-default\" ng-show=\"dates\">\n" +
     "        <div class=\"panel-heading\">\n" +
     "          <h4 class=\"panel-title\">\n" +
     "              Photos by date\n" +
@@ -126,7 +126,7 @@ angular.module("account/account-my-photos-by-date.tpl.html", []).run(["$template
     "         </div>\n" +
     "         <div class=\"panel-body\">\n" +
     "            <div ng-repeat=\"dt in dates\">\n" +
-    "                 <a ui-sref=\"photosMyOnDate({dt: $filter('date')(dt, 'yyyy-MM-dd')})\">{{dt | date: 'MMM d'}}</a>\n" +
+    "                 <a ui-sref=\"photosMyOnDate({dt: dt.date})\">{{dt.label}}</a>\n" +
     "            </div>\n" +
     "         </div>\n" +
     "     </div>\n" +
@@ -153,18 +153,6 @@ angular.module("account/account-my-photos-by-event.tpl.html", []).run(["$templat
     "               </div>\n" +
     "             </div>\n" +
     "        </div>\n" +
-    "        <div class=\"panel panel-default\" ng-show=\"Outdates\">\n" +
-    "            <div class=\"panel-heading\">\n" +
-    "              <h4 class=\"panel-title\">\n" +
-    "                  Not assigned to events\n" +
-    "              </h4>\n" +
-    "             </div>\n" +
-    "             <div class=\"panel-body\">\n" +
-    "                <div ng-repeat=\"dt in Outdates\">\n" +
-    "                     <a ui-sref=\"photosMyOrphans({dt: $filter('date')(dt, 'yyyy-MM-dd')})\">{{dt | date: 'MMM d'}}</a>\n" +
-    "                </div>\n" +
-    "             </div>\n" +
-    "         </div>\n" +
     "    </div>\n" +
     "");
 }]);
@@ -211,11 +199,6 @@ angular.module("account/account-my-photos.tpl.html", []).run(["$templateCache", 
     "  	<div class=\"btn-group\">\n" +
     "        <a class=\"btn btn-primary\" ui-sref-active=\"active\" ui-sref=\"photosMy.byevent\">By Event</a>\n" +
     "        <a class=\"btn btn-primary\" ui-sref-active=\"active\" ui-sref=\"photosMy.bydate\">By Date</a>\n" +
-    "\n" +
-    "        <!--\n" +
-    "        <button type=\"button\" class=\"btn btn-primary\" ng-sref=\"changeDisplayFilter('byevent')\" ng-model=\"radioModel\" btn-radio=\"'By Event'\">By Event</button>\n" +
-    "        <button type=\"button\" class=\"btn btn-primary\" ng-click=\"changeDisplayFilter('bydate')\" ng-model=\"radioModel\" btn-radio=\"'By Date'\">By Date</button>\n" +
-    "        -->\n" +
     "    </div>\n" +
     "\n" +
     "    <div ui-view=\"results\"></div>\n" +

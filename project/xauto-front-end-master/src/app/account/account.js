@@ -282,11 +282,7 @@ angular.module( 'blvdx.account', [
 
 .controller( 'AccountMyPhotosCtrl', ['$scope', 'titleService', 'Accounts', '$filter', function AccountCtrl( $scope, titleService, Accounts, $filter) {
   titleService.setTitle( 'My Photos' );
-  $scope.$filter = $filter;
 
-  Accounts.getDatesHavingMyOrphanedPhotos().then(function (data) {
-      $scope.Outdates = data;
-  });
   Accounts.getDatesHavingMyPhotosByEvent().then(function (data) {
       $scope.Datesbyevents = data;
   });
@@ -298,11 +294,6 @@ angular.module( 'blvdx.account', [
   Accounts.getDatesHavingMyPhotosByEvent().then(function (data) {
       $scope.Datesbyevents = data;
   });
-
-  Accounts.getDatesHavingMyOrphanedPhotos().then(function (data) {
-      $scope.Outdates = data;
-  });
-
 }])
 
 .controller( 'AccountMyPhotosCtrlByDate', ['$scope', 'titleService', 'Accounts', function AccountCtrl( $scope, titleService, Accounts ) {

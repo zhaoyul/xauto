@@ -15,16 +15,4 @@
                </div>
              </div>
         </div>
-        <div class="panel panel-default" ng-show="Outdates">
-            <div class="panel-heading">
-              <h4 class="panel-title">
-                  Not assigned to events
-              </h4>
-             </div>
-             <div class="panel-body">
-                <div ng-repeat="dt in Outdates">
-                     <a ui-sref="photosMyOrphans({dt: $filter('date')(dt, 'yyyy-MM-dd')})">{{dt | date: 'MMM d'}}</a>
-                </div>
-             </div>
-         </div>
     </div>

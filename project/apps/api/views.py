@@ -481,10 +481,12 @@ class DatesHavingMyPhotosByDateListView(APIView):
 
     def get(self, request, *args, **kwargs):
         profile = self.request.user.profile
-        imgs = MultiuploaderImage.objects.filter(userprofile=profile).\
-            distinct().datetimes('upload_date', 'day', tzinfo=utc)
-
-        return Response(imgs, status=status.HTTP_200_OK)
+        dates = MultiuploaderImage.objects.filter(userprofile=profile).\
+            distinct().datetimes('upload_date', 'day', tzinfo=profile.timezone)
+        ret = []
+        for date in dates:
+            ret.append({'label': datetime.strftime(date, '%b %d'), 'date': datetime.strftime(date, '%Y-%m-%d')})
+        return Response(ret, status=status.HTTP_200_OK)
 
 
 class DatesHavingMyOrphanedPhotosView(APIView):

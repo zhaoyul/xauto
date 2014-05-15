@@ -1,5 +1,5 @@
 <div class="deletephotos">
-    <div class="panel panel-default" ng-show="Outdates">
+    <div class="panel panel-default" ng-show="dates">
         <div class="panel-heading">
           <h4 class="panel-title">
               Photos by date
@@ -7,7 +7,7 @@
          </div>
          <div class="panel-body">
             <div ng-repeat="dt in dates">
-                 <a ui-sref="photosMyOnDate({dt: $filter('date')(dt, 'yyyy-MM-dd')})">{{dt | date: 'MMM d'}}</a>
+                 <a ui-sref="photosMyOnDate({dt: dt.date})">{{dt.label}}</a>
             </div>
          </div>
      </div>
