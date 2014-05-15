@@ -147,7 +147,7 @@ angular.module("account/account-my-photos-by-event.tpl.html", []).run(["$templat
     "               <div class=\"panel-body\">\n" +
     "                    <div ng-repeat=\"dt in event.dates\">\n" +
     "                         <a ui-sref=\"photosMyAtEventDate({id: dt.id})\">\n" +
-    "                             {{dt.date }}\n" +
+    "                             {{dt.date }} - {{ dt.title }}\n" +
     "                         </a>\n" +
     "                    </div>\n" +
     "               </div>\n" +

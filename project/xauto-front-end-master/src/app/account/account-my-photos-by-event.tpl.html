@@ -9,7 +9,7 @@
                <div class="panel-body">
                     <div ng-repeat="dt in event.dates">
                          <a ui-sref="photosMyAtEventDate({id: dt.id})">
-                             {{dt.date }}
+                             {{dt.date }} - {{ dt.title }}
                          </a>
                     </div>
                </div>
