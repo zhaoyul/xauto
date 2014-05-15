@@ -4,7 +4,6 @@ from sorl.thumbnail import get_thumbnail
 from django_resized.forms import ResizedImageField
 from django.contrib.auth.models import User
 
-#from event.models import EventDate
 from account.models import UserProfile
 
 from django.conf import settings

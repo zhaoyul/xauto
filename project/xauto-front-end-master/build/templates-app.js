@@ -1,4 +1,4 @@
-angular.module('templates-app', ['account/account-change-pswd.tpl.html', 'account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos-by-date.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'account/partial_edit_account.tpl.html', 'account/timezones.tpl.html', 'events/date-photosmanage.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_date.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_edit_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'events/timezones.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html', 'templates/photoviewer.tpl.html']);
+angular.module('templates-app', ['account/account-change-pswd.tpl.html', 'account/account-edit.tpl.html', 'account/account-login.tpl.html', 'account/account-my-favorite-photos.tpl.html', 'account/account-my-photos-at-event.tpl.html', 'account/account-my-photos-by-date.tpl.html', 'account/account-my-photos-by-event.tpl.html', 'account/account-my-photos-on-date.tpl.html', 'account/account-my-photos.tpl.html', 'account/account-signup.tpl.html', 'account/account.tpl.html', 'account/partial_create_account.tpl.html', 'account/partial_edit_account.tpl.html', 'account/timezones.tpl.html', 'events/date-photosmanage.tpl.html', 'events/event-add.tpl.html', 'events/event-details.tpl.html', 'events/event-edit.tpl.html', 'events/events-my.tpl.html', 'events/events.tpl.html', 'events/partial_add_date.tpl.html', 'events/partial_add_event_form.tpl.html', 'events/partial_edit_event_form.tpl.html', 'events/partial_event_details_photos.tpl.html', 'events/partial_form_date.tpl.html', 'events/timezones.tpl.html', 'people/people.tpl.html', 'people/profile-view.tpl.html', 'stream/partial_stream_list.tpl.html', 'stream/stream.tpl.html', 'templates/photoviewer.tpl.html']);
 
 angular.module("account/account-change-pswd.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-change-pswd.tpl.html",
@@ -82,9 +82,91 @@ angular.module("account/account-my-favorite-photos.tpl.html", []).run(["$templat
     "");
 }]);
 
+angular.module("account/account-my-photos-at-event.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("account/account-my-photos-at-event.tpl.html",
+    "<h1>My Photos - taken at {{ photos.0.event_date_name }}</h1>\n" +
+    "<div class=\"deletephotos\">\n" +
+    "    <div class=\"panel-collapse collapse in\"  >\n" +
+    "      <div class=\"panel-body\">\n" +
+    "        <div class=\"row\">\n" +
+    "          <ul class=\"stream-list\">\n" +
+    "            <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"photo in photos\" ng-hide=\"photo.hide\">\n" +
+    "              <div class=\"stream-picture\">\n" +
+    "                 <div bx-stream-photo=\"{{photo.image}}\" class=\"inner\"></div>\n" +
+    "                  <ul class=\"stream-action-links\">\n" +
+    "                        <li class=\"action-delete\" >\n" +
+    "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Delete\"\n" +
+    "                              ng-click=\"Delete(photo)\">\n" +
+    "                              <i class=\"icon-remove\"></i>\n" +
+    "                            </a>\n" +
+    "                        </li>\n" +
+    "                    </ul>\n" +
+    "              </div>\n" +
+    "            </li>\n" +
+    "          </ul>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "</div>");
+}]);
+
 angular.module("account/account-my-photos-by-date.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-my-photos-by-date.tpl.html",
-    "<h1>My Photos by date</h1>\n" +
+    "<div class=\"deletephotos\">\n" +
+    "    <div class=\"panel panel-default\" ng-show=\"Outdates\">\n" +
+    "        <div class=\"panel-heading\">\n" +
+    "          <h4 class=\"panel-title\">\n" +
+    "              Photos by date\n" +
+    "          </h4>\n" +
+    "         </div>\n" +
+    "         <div class=\"panel-body\">\n" +
+    "            <div ng-repeat=\"dt in dates\">\n" +
+    "                 <a ui-sref=\"photosMyOnDate({dt: $filter('date')(dt, 'yyyy-MM-dd')})\">{{dt | date: 'MMM d'}}</a>\n" +
+    "            </div>\n" +
+    "         </div>\n" +
+    "     </div>\n" +
+    "</div>\n" +
+    "");
+}]);
+
+angular.module("account/account-my-photos-by-event.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("account/account-my-photos-by-event.tpl.html",
+    "    <div class=\"deletephotos\">\n" +
+    "        <div ng-repeat=\"event in Datesbyevents\" ng-show=\"event.dates\">\n" +
+    "            <div class=\"panel panel-default\">\n" +
+    "               <div class=\"panel-heading\">\n" +
+    "                  <h4 class=\"panel-title\">\n" +
+    "                      {{event.title}}\n" +
+    "                  </h4>\n" +
+    "               </div>\n" +
+    "               <div class=\"panel-body\">\n" +
+    "                    <div ng-repeat=\"dt in event.dates\">\n" +
+    "                         <a ui-sref=\"photosMyAtEventDate({id: dt.id})\">\n" +
+    "                             {{dt.start_date | date: 'MMM d'}} - {{dt.end_date | date: 'MMM d'}}\n" +
+    "                         </a>\n" +
+    "                    </div>\n" +
+    "               </div>\n" +
+    "             </div>\n" +
+    "        </div>\n" +
+    "        <div class=\"panel panel-default\" ng-show=\"Outdates\">\n" +
+    "            <div class=\"panel-heading\">\n" +
+    "              <h4 class=\"panel-title\">\n" +
+    "                  Not assigned to events\n" +
+    "              </h4>\n" +
+    "             </div>\n" +
+    "             <div class=\"panel-body\">\n" +
+    "                <div ng-repeat=\"dt in Outdates\">\n" +
+    "                     <a ui-sref=\"photosMyOrphans({dt: $filter('date')(dt, 'yyyy-MM-dd')})\">{{dt | date: 'MMM d'}}</a>\n" +
+    "                </div>\n" +
+    "             </div>\n" +
+    "         </div>\n" +
+    "    </div>\n" +
+    "");
+}]);
+
+angular.module("account/account-my-photos-on-date.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("account/account-my-photos-on-date.tpl.html",
+    "<h1>My Photos - taken on {{ date | date: 'MMM d' }}</h1>\n" +
     "<div class=\"deletephotos\">\n" +
     "    <div class=\"panel-collapse collapse in\"  >\n" +
     "      <div class=\"panel-body\">\n" +
@@ -113,33 +195,19 @@ angular.module("account/account-my-photos-by-date.tpl.html", []).run(["$template
 angular.module("account/account-my-photos.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-my-photos.tpl.html",
     "<h1>My Photos</h1>\n" +
-    "<div class=\"deletephotos\">\n" +
-    "    <div ng-repeat=\"event in Datesbyevents\" ng-show=\"event.dates\">\n" +
-    "        <div class=\"panel panel-default\">\n" +
-    "            <div class=\"panel-heading\">\n" +
-    "              <h4 class=\"panel-title\">\n" +
-    "                  {{event.title}}\n" +
-    "              </h4>\n" +
-    "             </div>\n" +
-    "             <div class=\"panel-body\">\n" +
-    "                <div ng-repeat=\"dt in event.dates\">\n" +
-    "                     <a href=\"#/account/mydatephotos/{{dt.id}}/\">{{dt.start_date | date: 'MMM d'}} - {{dt.end_date | date: 'MMM d'}}</a>\n" +
-    "                </div>\n" +
-    "             </div>\n" +
-    "         </div>\n" +
+    "\n" +
+    "<div class=\"col-xs-12 col-md-12 col-lg-11 myphotos-filter\">\n" +
+    "  	<div class=\"btn-group\">\n" +
+    "        <a class=\"btn btn-primary\" ui-sref-active=\"active\" ui-sref=\"photosMy.byevent\">By Event</a>\n" +
+    "        <a class=\"btn btn-primary\" ui-sref-active=\"active\" ui-sref=\"photosMy.bydate\">By Date</a>\n" +
+    "\n" +
+    "        <!--\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-sref=\"changeDisplayFilter('byevent')\" ng-model=\"radioModel\" btn-radio=\"'By Event'\">By Event</button>\n" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-click=\"changeDisplayFilter('bydate')\" ng-model=\"radioModel\" btn-radio=\"'By Date'\">By Date</button>\n" +
+    "        -->\n" +
     "    </div>\n" +
-    "    <div class=\"panel panel-default\" ng-show=\"Outdates\">\n" +
-    "        <div class=\"panel-heading\" ng-show=\"stream\">\n" +
-    "          <h4 class=\"panel-title\">\n" +
-    "              Out of events\n" +
-    "          </h4>\n" +
-    "         </div>\n" +
-    "         <div class=\"panel-body\">\n" +
-    "            <div ng-repeat=\"dt in Outdates\">\n" +
-    "                 <a href=\"#/account/mydatephotosoutalbums/{{dt | date: 'd-M-y'}}/\">{{dt | date: 'MMM d'}}</a>\n" +
-    "            </div>\n" +
-    "         </div>\n" +
-    "     </div>\n" +
+    "\n" +
+    "    <div ui-view=\"results\"></div>\n" +
     "</div>");
 }]);
 
@@ -813,97 +881,103 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "\n" +
     "<div class=\"row\">\n" +
     "  <div ng-show=\"!events.length\" class=\"ng-hide ng-cloak\" ng-cloak>\n" +
-    "      <div class=\"col-xs-12 ng-scope\">\n" +
+    "      <div class=\"col-xs-12\">\n" +
     "          <p class=\"text-info\">\n" +
     "          No results found\n" +
     "          </p>\n" +
     "      </div>\n" +
     "  </div>\n" +
-    "  <ul class=\"event-list\">\n" +
-    "    <li ng-repeat=\"event in events | filter:search\" ng-animate=\"'animate'\" class=\"col-xs-12 col-sm-6 col-lg-4\">\n" +
-    "      <div class=\"inner\">\n" +
-    "        <div class=\"event-header\">\n" +
-    "          <div class=\"row-wrapper title-line\">\n" +
-    "            <div class=\"pull-left\">\n" +
-    "              <a href=\"#/events/{{event.slug}}\"><h1>{{event.title| textlimit:\"32\"}}</h1></a><span ng-hide=\"event.title\">&nbsp;</span>\n" +
+    "  <div class=\"col-xs-12\">\n" +
+    "    <div class=\"row\">\n" +
+    "      <ul class=\"event-list\">\n" +
+    "        <li ng-repeat=\"event in events | filter:search\" ng-animate=\"'animate'\" class=\"col-xs-12 col-sm-6 col-lg-4\">\n" +
+    "          <div class=\"inner\">\n" +
+    "            <div class=\"event-header\">\n" +
+    "              <div class=\"row-wrapper title-line\">\n" +
+    "                <div class=\"pull-left\">\n" +
+    "                  <a href=\"#/events/{{event.slug}}\"><h1>{{event.title| textlimit:\"32\"}}</h1></a><span ng-hide=\"event.title\">&nbsp;</span>\n" +
+    "                </div>\n" +
+    "                <div class=\"pull-right\">\n" +
+    "                  <a ng-show=\"event.srv_live\" href=\"#\" tooltip-placement=\"left\" tooltip=\"[Stream] Happening Now\"><i class=\"xa-icon-live-stream\"></i></a>\n" +
+    "                </div>\n" +
+    "              </div>\n" +
+    "              <div class=\"row-wrapper date-headline\">\n" +
+    "                <div class=\"pull-left\">\n" +
+    "                  <a href=\"#\" tooltip-placement=\"right\" tooltip=\"View schedule\">\n" +
+    "                    <span class=\"badge badge-primary\">{{event.date_info.date | toLocalEq:event.date_info.timezone | date: 'MMM d'}}</span>\n" +
+    "                  </a>\n" +
+    "                </div>\n" +
+    "                <div class=\"pull-right\">\n" +
+    "                  <strong>&nbsp;{{event.date_info.featureHeadline}}</strong>\n" +
+    "                </div>\n" +
+    "              </div>\n" +
+    "              <div class=\"row-wrapper price-location\">\n" +
+    "                <div class=\"pull-left\">\n" +
+    "                  <a href=\"#\" class=\"price\" tooltip-placement=\"right\" tooltip=\"Price for attendance\">\n" +
+    "                    <span ng-show=\"event.date_info.attend_low\">\n" +
+    "                      {{event.date_info.attend_low}} {{event.date_info.attend_currency}}\n" +
+    "                    </span>\n" +
+    "                    <span ng-hide=\"event.date_info.attend_low\">\n" +
+    "                      Free!\n" +
+    "                    </span>\n" +
+    "                  </a>\n" +
+    "                </div>\n" +
+    "                <div class=\"pull-right\">\n" +
+    "                  <span class=\"event-location\" ng-show=\"event.date_info.city\">\n" +
+    "                    <a href=\"#\">{{event.date_info.city}}, {{event.date_info.state}}</a>\n" +
+    "                    <i class=\"xa-icon-location\"></i>\n" +
+    "                  </span>\n" +
+    "                </div>\n" +
+    "              </div>\n" +
     "            </div>\n" +
-    "            <div class=\"pull-right\">\n" +
-    "              <a ng-show=\"event.srv_live\" href=\"#\" tooltip-placement=\"left\" tooltip=\"[Stream] Happening Now\"><i class=\"xa-icon-live-stream\"></i></a>\n" +
-    "            </div>\n" +
-    "          </div>\n" +
-    "          <div class=\"row-wrapper date-headline\">\n" +
-    "            <div class=\"pull-left\">\n" +
-    "              <a href=\"#\" tooltip-placement=\"right\" tooltip=\"View schedule\">\n" +
-    "                <span class=\"badge badge-primary\">{{event.date_info.date | toLocalEq:event.date_info.timezone | date: 'MMM d'}}</span>\n" +
+    "            <div class=\"event-picture-container\">\n" +
+    "              <a href=\"#/events/{{event.slug}}\">\n" +
+    "                <img ng-src=\"{{event.photo}}\" alt=\"\">\n" +
     "              </a>\n" +
     "            </div>\n" +
-    "            <div class=\"pull-right\">\n" +
-    "              <strong>&nbsp;{{event.date_info.featureHeadline}}</strong>\n" +
+    "            <div class=\"event-text\">\n" +
+    "              <p>\n" +
+    "                {{event.about | textlimit:\"110\"}}\n" +
+    "              </p>\n" +
     "            </div>\n" +
-    "          </div>\n" +
-    "          <div class=\"row-wrapper price-location\">\n" +
-    "            <div class=\"pull-left\">\n" +
-    "              <a href=\"#\" class=\"price\" tooltip-placement=\"right\" tooltip=\"Price for attendance\">\n" +
-    "                <span ng-show=\"event.date_info.attend_low\">\n" +
-    "                  {{event.date_info.attend_low}} {{event.date_info.attend_currency}}\n" +
+    "            <div class=\"event-footer\">\n" +
+    "              <div class=\"pull-left\">\n" +
+    "                <a href=\"#/profile/{{event.author_slug}}\" tooltip-placement=\"right\" tooltip=\"Organizer: {{event.author_name}}\">\n" +
+    "                  <img class=\"img-rounded user-pic\" ng-src=\"{{ event.author_photo }}\" alt=\"\">\n" +
+    "                </a>\n" +
+    "              </div>\n" +
+    "              <div class=\"pull-right follow-btn-container\">\n" +
+    "                <span class=\"photo-count\">\n" +
+    "                  <i class=\"xa-icon-camera\"></i>\n" +
+    "                   {{event.srv_photosCount}}\n" +
     "                </span>\n" +
-    "                <span ng-hide=\"event.date_info.attend_low\">\n" +
-    "                  Free!\n" +
-    "                </span>\n" +
-    "              </a>\n" +
+    "                <a href=\"javascript:;\" class=\"btn btn-default btn-follow\"\n" +
+    "                  ng-click=\"Follow(event)\"\n" +
+    "                  ng-class=\"{following:event.srv_following}\">\n" +
+    "                  <span class=\"badge badge-purple\">\n" +
+    "                    {{event.srv_followersCount}}\n" +
+    "                  </span>\n" +
+    "                  <span ng-hide=\"event.srv_following\">Follow</span>\n" +
+    "                  <span ng-show=\"event.srv_following\">Following</span>\n" +
+    "                  <i class=\"xa-icon-xauto-colored\"></i>\n" +
+    "                </a>\n" +
+    "              </div>\n" +
     "            </div>\n" +
-    "            <div class=\"pull-right\">\n" +
-    "              <span class=\"event-location\" ng-show=\"event.date_info.city\">\n" +
-    "                <a href=\"#\">{{event.date_info.city}}, {{event.date_info.state}}</a>\n" +
-    "                <i class=\"xa-icon-location\"></i>\n" +
-    "              </span>\n" +
-    "            </div>\n" +
+    "            <!-- <div class=\"event-follow\">\n" +
+    "              <a href=\"#\" class=\"btn btn-sm btn-clear\"><i class=\"icon-group\"></i> {{event.srv_followersCount}} Followers</a>\n" +
+    "              <a href=\"#\" class=\"btn btn-sm btn-clear\"><i class=\"icon-camera\"></i> {{event.srv_photosCount}} Photos</a>\n" +
+    "              <a href=\"#\" class=\"btn btn-primary btn-sm\" ng-hide=\"event.srv_following\" ng-click=\"event.srv_following=true\"><i class=\"icon-heart\"></i> Follow</a>\n" +
+    "              <a href=\"#\" class=\"btn btn-success btn-sm\" ng-show=\"event.srv_following\" ng-click=\"event.srv_following=false\" tooltip-placement=\"bottom\" tooltip=\"Click to Unfollow\"><i class=\"icon-heart\"></i> Following</a>\n" +
+    "            </div> -->\n" +
     "          </div>\n" +
-    "        </div>\n" +
-    "        <div class=\"event-picture-container\">\n" +
-    "          <a href=\"#/events/{{event.slug}}\">\n" +
-    "            <img ng-src=\"{{event.photo}}\" alt=\"\">\n" +
-    "          </a>\n" +
-    "        </div>\n" +
-    "        <div class=\"event-text\">\n" +
-    "          <p>\n" +
-    "            {{event.about | textlimit:\"110\"}}\n" +
-    "          </p>\n" +
-    "        </div>\n" +
-    "        <div class=\"event-footer\">\n" +
-    "          <div class=\"pull-left\">\n" +
-    "            <a href=\"#/profile/{{event.author_slug}}\" tooltip-placement=\"right\" tooltip=\"Organizer: {{event.author_name}}\">\n" +
-    "              <img class=\"img-rounded user-pic\" ng-src=\"{{ event.author_photo }}\" alt=\"\">\n" +
-    "            </a>\n" +
-    "          </div>\n" +
-    "          <div class=\"pull-right follow-btn-container\">\n" +
-    "            <span class=\"photo-count\">\n" +
-    "              <i class=\"xa-icon-camera\"></i>\n" +
-    "               {{event.srv_photosCount}}\n" +
-    "            </span>\n" +
-    "            <a href=\"javascript:;\" class=\"btn btn-default btn-follow\"\n" +
-    "              ng-click=\"Follow(event)\"\n" +
-    "              ng-class=\"{following:event.srv_following}\">\n" +
-    "              <span class=\"badge badge-purple\">\n" +
-    "                {{event.srv_followersCount}}\n" +
-    "              </span>\n" +
-    "              <span ng-hide=\"event.srv_following\">Follow</span>\n" +
-    "              <span ng-show=\"event.srv_following\">Following</span>\n" +
-    "              <i class=\"xa-icon-xauto-colored\"></i>\n" +
-    "            </a>\n" +
-    "          </div>\n" +
-    "        </div>\n" +
-    "        <!-- <div class=\"event-follow\">\n" +
-    "          <a href=\"#\" class=\"btn btn-sm btn-clear\"><i class=\"icon-group\"></i> {{event.srv_followersCount}} Followers</a>\n" +
-    "          <a href=\"#\" class=\"btn btn-sm btn-clear\"><i class=\"icon-camera\"></i> {{event.srv_photosCount}} Photos</a>\n" +
-    "          <a href=\"#\" class=\"btn btn-primary btn-sm\" ng-hide=\"event.srv_following\" ng-click=\"event.srv_following=true\"><i class=\"icon-heart\"></i> Follow</a>\n" +
-    "          <a href=\"#\" class=\"btn btn-success btn-sm\" ng-show=\"event.srv_following\" ng-click=\"event.srv_following=false\" tooltip-placement=\"bottom\" tooltip=\"Click to Unfollow\"><i class=\"icon-heart\"></i> Following</a>\n" +
-    "        </div> -->\n" +
-    "      </div>\n" +
-    "      <!--  -->\n" +
-    "    </li>\n" +
-    "  </ul>\n" +
-    "  <a ng-show=\"hasMoreEvents\" ng-click=\"showMore()\" class=\"btn btn-info showmorespan\">Show more</a>\n" +
+    "          <!--  -->\n" +
+    "        </li>\n" +
+    "      </ul>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"col-xs-12 col-sm-12 col-lg-12\">\n" +
+    "    <a ng-show=\"hasMoreEvents\" ng-click=\"showMore()\" class=\"btn btn-info showmorespan\">Show more</a>\n" +
+    "  </div>\n" +
     "</div>\n" +
     "\n" +
     "\n" +
@@ -1440,7 +1514,9 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "    </ul>\n" +
     "\n" +
     "  </div>\n" +
+    "  <div class=\"col-xs-12 col-md-12 col-lg-12\">\n" +
     "    <a ng-show=\"hasMoreProfiles\" ng-click=\"showMore()\" class=\"btn btn-info showmorespan\">Show more</a>\n" +
+    "  </div>\n" +
     "</div>\n" +
     "");
 }]);

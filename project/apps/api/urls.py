@@ -5,13 +5,13 @@ from rest_framework import routers
 
 from .views import (EventsListView, EventDetailsView, FollowEventView,
     EventViewSet, EventDateViewSet, CheckShortLinkView, UserProfileViewSet,
-    FollowProfileView, StreamListView, FavoritePictureView, ReportPictureView,
-    ProfileFavoritesListView, ProfileMyPhotosListView, RegistrationView,
+    FollowProfileView, StreamListView, ToggleFavoritePicture, ReportPictureView,
+    FavoritePicturesListView, MyPhotosListView, RegistrationView,
     LoginView, LogoutView, CurrentUserView, ActivateView, ResetPasswordView,
     ChangePasswordView, CheckUsernameView, AlbumPhotosUploader,
-    ConfigurationView, CoordinatedPhotoUploader, EventDatePhotoManageView, DeletePictureView, ProfileMyOtherPhotosListView, ProfileMyDatesByEventsListView,
-    ProfileMyOutDatesView, LastDateView, ProfileDeletePhotoView, TimezonesListView, EventAllImagesView,
-    CountriesListView)
+    ConfigurationView, CoordinatedPhotoUploader, EventDatePhotoManageView, DeletePictureView, MyOrphanedPhotosListView,
+    DatesHavingMyPhotosByEventListView, DatesHavingMyOrphanedPhotosView, LastDateView, TimezonesListView, EventAllImagesView,
+    CountriesListView, MyPhotosDeletePhotoView, DatesHavingMyPhotosByDateListView)
 
 router = routers.DefaultRouter()
 router.register(r'events', EventViewSet)
@@ -46,20 +46,22 @@ urlpatterns = patterns('',
     url(r'^login/$', LoginView.as_view(), name='api-login'),
     url(r'^logout/$', LogoutView.as_view(), name='api-logout'),
     url(r'^current-user/$', CurrentUserView.as_view(), name='api-current-user'),
+
     url(r'^profiles/(?P<slug>[-\w]+)/follow/$', FollowProfileView.as_view(),
         name='profile-follow'),
-    url(r'^profiles/datesbyevents/$', ProfileMyDatesByEventsListView.as_view(),
-        name='profile-datesbyevents'),
-    url(r'^profiles/outdates/$', ProfileMyOutDatesView.as_view(),
-        name='profile-outdates'),
-    url(r'^profiles/pictures/$', ProfileMyPhotosListView.as_view(),
-        name='profile-pictures'),
-    url(r'^profiles/delpicture/$', ProfileDeletePhotoView.as_view(),
-        name='profile-pictures'),
-    url(r'^profiles/otherpictures/$', ProfileMyOtherPhotosListView.as_view(),
-        name='profile-otherpictures'),
-    url(r'^profiles/favorites-list/$', ProfileFavoritesListView.as_view(),
-        name='profile-favorites'),
+
+    url(r'^myphotos/$', MyPhotosListView.as_view(),
+        name='myphotos'),
+    url(r'^myphotos/bydate/$', DatesHavingMyPhotosByDateListView.as_view(),
+        name='myphotos-bydate'),
+    url(r'^myphotos/byevent/$', DatesHavingMyPhotosByEventListView.as_view(),
+        name='myphotos-byevent'),
+    url(r'^myphotos/dates-with-orphans/$', DatesHavingMyOrphanedPhotosView.as_view(),
+        name='myphotos-dates-with-orphans'),
+    url(r'^myphotos/orphans/$', MyOrphanedPhotosListView.as_view(),
+        name='myphotos-orphans'),
+    url(r'^myphotos/(?P<pk>\d+)/delete/$', MyPhotosDeletePhotoView.as_view(),
+        name='myphotos-delete'),
 
     url(r'^common/timezones/$', TimezonesListView.as_view(),
         name='common-timezones'),
@@ -70,15 +72,21 @@ urlpatterns = patterns('',
         name='check-link'),
     url(r'^profiles/check-username/$', CheckUsernameView.as_view(),
         name='check-username'),
+
     url(r'^stream/$', StreamListView.as_view(), name='stream'),
     url(r'^stream/upload/$', AlbumPhotosUploader.as_view(), name='stream-upload'),
     url(r'^pictures/upload/$',
         CoordinatedPhotoUploader.as_view(), name='picture-upload'),
-    url(r'^pictures/(?P<picture_id>\d+)/favorite/$',
-        FavoritePictureView.as_view(), name='picture-favorite'),
     url(r'^pictures/(?P<picture_id>\d+)/report/$',
         ReportPictureView.as_view(), name='picture-report'),
     url(r'^pictures/(?P<picture_id>\d+)/delete/$',
         DeletePictureView.as_view(), name='picture-delete'),
+    url(r'^pictures/(?P<picture_id>\d+)/favorite/$',
+        ToggleFavoritePicture.as_view(), name='picture-favorite'),
+    url(r'^pictures/favorites/$', FavoritePicturesListView.as_view(),
+        name='picture-favorites'),
+
+
+
     url(r'^', include(router.urls)),
 )

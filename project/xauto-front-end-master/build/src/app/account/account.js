@@ -17,7 +17,8 @@ angular.module( 'blvdx.account', [
 .config(['$stateProvider', '$urlRouterProvider', 'securityAuthorizationProvider',
     function config( $stateProvider, $urlRouterProvider, securityAuthorizationProvider ) {
 
-  $urlRouterProvider.otherwise("/account/signup");
+  $urlRouterProvider.when("/account/photos", "/account/photos/byevent");
+  $urlRouterProvider.otherwise("/account/signup/");
 
   $stateProvider
   .state( 'accountSignup', {
@@ -39,7 +40,7 @@ angular.module( 'blvdx.account', [
 //    }
 //  })
   .state( 'changePassword', {
-    url: '/account/changePassword/:token/',
+    url: '/account/changePassword/:token',
     views: {
       "main": {
         controller: 'AccountChangePaswordCtrl',
@@ -59,7 +60,7 @@ angular.module( 'blvdx.account', [
       }
     }
   })
-  .state( 'accountMyPhotos', {
+  .state('photosMy', {
     url: '/account/photos',
     views: {
       "main": {
@@ -72,12 +73,32 @@ angular.module( 'blvdx.account', [
     }
   })
 
-  .state( 'accountMyDatePhotos', {
-    url: '/account/mydatephotos/:id/',
+  .state('photosMy.byevent', {
+    url: '/byevent',
+    views: {
+        "results": {
+            controller: 'AccountMyPhotosCtrlByEvent',
+            templateUrl: 'account/account-my-photos-by-event.tpl.html'
+        }
+    }
+  })
+
+  .state('photosMy.bydate', {
+    url: '/bydate',
+    views: {
+        "results": {
+            controller: 'AccountMyPhotosCtrlByDate',
+            templateUrl: 'account/account-my-photos-by-date.tpl.html'
+        }
+    }
+  })
+
+  .state('photosMyAtEventDate', {
+    url: '/account/photos/at/eventdate/:id',
     views: {
       "main": {
-        controller: 'AccountMyDatePhotosCtrl',
-        templateUrl: 'account/account-my-photos-by-date.tpl.html',
+        controller: 'MyPhotosAtEventDate',
+        templateUrl: 'account/account-my-photos-at-event.tpl.html',
         resolve:{
           authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
         }
@@ -85,12 +106,12 @@ angular.module( 'blvdx.account', [
     }
   })
 
-  .state( 'accountMyDatePhotosOutOfAlboms', {
-    url: '/account/mydatephotosoutalbums/:dt/',
+  .state( 'photosMyOrphans', {
+    url: '/account/photos/orphans/on/:dt',
     views: {
       "main": {
-        controller: 'AccountMyDatePhotosOutOfAlbomsCtrl',
-        templateUrl: 'account/account-my-photos-by-date.tpl.html',
+        controller: 'MyOrphanedPhotos',
+        templateUrl: 'account/account-my-photos-on-date.tpl.html',
         resolve:{
           authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
         }
@@ -98,9 +119,21 @@ angular.module( 'blvdx.account', [
     }
   })
 
+  .state( 'photosMyOnDate', {
+    url: '/account/photos/on/:dt',
+    views: {
+      "main": {
+        controller: 'MyPhotosOnDate',
+        templateUrl: 'account/account-my-photos-on-date.tpl.html',
+        resolve:{
+          authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+        }
+      }
+    }
+  })
 
-  .state( 'accountMyFavorites', {
-    url: '/account/MyFavorites',
+  .state( 'photosMyFavorites', {
+    url: '/account/photos/favorites',
     views: {
       "main": {
         controller: 'AccountMyFavoritePhotosCtrl',
@@ -190,7 +223,6 @@ angular.module( 'blvdx.account', [
         fileObj['file'] = evt.target.result.replace("data:image/jpeg;base64,", "");
         $scope.AccountObj[field] = fileObj;
     };
-    console.log('hej');
 
     for (var i = 0; i < $files.length; i++) {
       var $file = $files[i];
@@ -202,11 +234,26 @@ angular.module( 'blvdx.account', [
 
 }])
 
-
-.controller( 'AccountMyDatePhotosCtrl', ['$scope', 'titleService', 'Accounts', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, $stateParams ) {
+.controller( 'MyPhotosAtEventDate', ['$scope', 'titleService', 'Accounts', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, $stateParams ) {
   titleService.setTitle( 'My Photos' );
 
-  Accounts.getDatePhotos($stateParams.id).then(function (photos) {
+  Accounts.getMyPhotosOnDate($stateParams.id).then(function (photos) {
+      $scope.photos = photos;
+  });
+
+  $scope.Delete = function(obj) {
+      Accounts.deleteMyPhoto(obj.id).then(function(result){
+        obj.hide = true;
+      });
+
+  };
+}])
+
+.controller( 'MyOrphanedPhotos', ['$scope', 'titleService', 'Accounts', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, $stateParams ) {
+  titleService.setTitle( 'My Orphaned Photos' );
+  $scope.date = $stateParams.dt;
+
+  Accounts.getMyOrphanedPhotos($stateParams.dt).then(function (photos) {
       $scope.photos = photos;
   });
 
@@ -214,14 +261,13 @@ angular.module( 'blvdx.account', [
       Accounts.getDeletePhoto(obj.id);
       obj.hide = true;
   };
-
-
 }])
 
-.controller( 'AccountMyDatePhotosOutOfAlbomsCtrl', ['$scope', 'titleService', 'Accounts', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, $stateParams ) {
+.controller( 'MyPhotosOnDate', ['$scope', 'titleService', 'Accounts', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, $stateParams ) {
   titleService.setTitle( 'My Photos' );
+  $scope.date = $stateParams.dt;
 
-  Accounts.getDateOutOfAlbomsPhotos($stateParams.dt).then(function (photos) {
+  Accounts.getMyPhotosOnDate($stateParams.dt).then(function (photos) {
       $scope.photos = photos;
   });
 
@@ -229,24 +275,38 @@ angular.module( 'blvdx.account', [
       Accounts.getDeletePhoto(obj.id);
       obj.hide = true;
   };
-
-
 }])
 
 
-.controller( 'AccountMyPhotosCtrl', ['$scope', 'titleService', 'Accounts', function AccountCtrl( $scope, titleService, Accounts ) {
+.controller( 'AccountMyPhotosCtrl', ['$scope', 'titleService', 'Accounts', '$filter', function AccountCtrl( $scope, titleService, Accounts, $filter) {
   titleService.setTitle( 'My Photos' );
-  Accounts.getOutdates().then(function (data) {
+  $scope.$filter = $filter;
+
+  Accounts.getDatesHavingMyOrphanedPhotos().then(function (data) {
       $scope.Outdates = data;
   });
-  Accounts.getDatesbyevents().then(function (data) {
+  Accounts.getDatesHavingMyPhotosByEvent().then(function (data) {
       $scope.Datesbyevents = data;
   });
-  Accounts.getAlbums().then(function (albums) {
-      $scope.Albums = albums;
+}])
+
+.controller( 'AccountMyPhotosCtrlByEvent', ['$scope', 'titleService', 'Accounts', function AccountCtrl( $scope, titleService, Accounts ) {
+  titleService.setTitle( 'My Photos - by event');
+
+  Accounts.getDatesHavingMyPhotosByEvent().then(function (data) {
+      $scope.Datesbyevents = data;
   });
-  Accounts.getOtherPhotos().then(function (photos) {
-      $scope.stream = photos;
+
+  Accounts.getDatesHavingMyOrphanedPhotos().then(function (data) {
+      $scope.Outdates = data;
+  });
+
+}])
+
+.controller( 'AccountMyPhotosCtrlByDate', ['$scope', 'titleService', 'Accounts', function AccountCtrl( $scope, titleService, Accounts ) {
+  titleService.setTitle( 'My Photos - by date');
+  Accounts.getDatesHavingMyPhotosByDate().then(function (data) {
+      $scope.dates = data;
   });
 }])
 

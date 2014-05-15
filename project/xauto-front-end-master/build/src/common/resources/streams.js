@@ -56,17 +56,6 @@ angular.module('resources.streams', ['resources.configuration', 'restangular'])
         });
     };
 
-    instance.send_favorite = function(entry_id,type){
-      // var msg = {
-      //   type: "favorite",
-      //   data: {
-      //     "id": entry_id
-      //   }
-      // };
-      // instance.send(JSON.stringify(msg));
-      return Restangular.one('pictures', entry_id).customPUT(entry_id, 'favorite');
-    };
-
     instance.send_report = function(entry_id){
       // var msg = {
       //   type: "report",
@@ -80,7 +69,8 @@ angular.module('resources.streams', ['resources.configuration', 'restangular'])
     };
 
     instance.send_delete = function(entry_id){
-        return Restangular.one('pictures', entry_id).customPUT(entry_id, 'delete');
+        return Restangular.one('pictures', entry_id).customDELETE(entry_id, 'delete');
+        //return Restangular.one('pictures', entry_id).customPUT(entry_id, 'delete');
     };
 
     instance.send_fetch_latest = function(){

@@ -87,12 +87,12 @@ angular.module("security/login/toolbar.tpl.html", []).run(["$templateCache", fun
     "          <img ng-src=\"{{currentUser.thumbnail_image}}\" class=\"img-rounded navbar-profile-pic\"/> {{currentUser.firstName}} {{currentUser.lastName}} <b class=\"caret\"></b>\n" +
     "        </a>\n" +
     "        <ul class=\"dropdown-menu\">\n" +
-    "          <li><a href=\"#events/my\">My Events</a></li>\n" +
-    "          <li><a href=\"#account/photos\">My Photos</a></li>\n" +
+    "          <li><a ui-sref=\"eventsMy\">My Events</a></li>\n" +
+    "          <li><a ui-sref=\"photosMy\">My Photos</a></li>\n" +
     "          <li class=\"divider\"></li>\n" +
-    "          <li><a href=\"#account/MyFavorites\">My Favorite Photos</a></li>\n" +
+    "          <li><a ui-sref=\"photosMyFavorites\">My Favorite Photos</a></li>\n" +
     "          <li class=\"divider\"></li>\n" +
-    "          <li ><a href=\"#account/{{currentUser.slug}}/edit\">My Account</a></li>\n" +
+    "          <li ><a ui-sref=\"accountEdit({accountId: currentUser.slug})\">My Account</a></li>\n" +
     "          <li class=\"divider\"></li>\n" +
     "          <li ng-click=\"logout()\"><a href=\"#\">Logout</a></li>\n" +
     "        </ul>\n" +

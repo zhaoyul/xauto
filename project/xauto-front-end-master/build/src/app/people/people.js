@@ -28,7 +28,7 @@ angular.module( 'blvdx.people', [
  */
 .config(['$stateProvider', 'securityAuthorizationProvider', function config( $stateProvider, securityAuthorizationProvider) {
   $stateProvider
-  .state( 'people', {
+  .state( 'profiles', {
     url: '/profiles',
     views: {
       "main": {
@@ -57,7 +57,6 @@ angular.module( 'blvdx.people', [
 
   Profiles.getProfiles({}).then(function (profiles) {
       $scope.profilesPool = profiles;
-      console.log($scope.profilesPool);
       $scope.showMore();
   });
 

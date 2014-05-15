@@ -9147,6 +9147,10 @@ ul.stream-list > li:hover ul.stream-action-links {
   cursor: pointer;
 }
 
+.myphotos-filter .btn-group {
+  margin-bottom: 10px;
+}
+
 .photoviewer {
   position: fixed;
   top: 0px;

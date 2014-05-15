@@ -39,97 +39,103 @@
 
 <div class="row">
   <div ng-show="!events.length" class="ng-hide ng-cloak" ng-cloak>
-      <div class="col-xs-12 ng-scope">
+      <div class="col-xs-12">
           <p class="text-info">
           No results found
           </p>
       </div>
   </div>
-  <ul class="event-list">
-    <li ng-repeat="event in events | filter:search" ng-animate="'animate'" class="col-xs-12 col-sm-6 col-lg-4">
-      <div class="inner">
-        <div class="event-header">
-          <div class="row-wrapper title-line">
-            <div class="pull-left">
-              <a href="#/events/{{event.slug}}"><h1>{{event.title| textlimit:"32"}}</h1></a><span ng-hide="event.title">&nbsp;</span>
+  <div class="col-xs-12">
+    <div class="row">
+      <ul class="event-list">
+        <li ng-repeat="event in events | filter:search" ng-animate="'animate'" class="col-xs-12 col-sm-6 col-lg-4">
+          <div class="inner">
+            <div class="event-header">
+              <div class="row-wrapper title-line">
+                <div class="pull-left">
+                  <a href="#/events/{{event.slug}}"><h1>{{event.title| textlimit:"32"}}</h1></a><span ng-hide="event.title">&nbsp;</span>
+                </div>
+                <div class="pull-right">
+                  <a ng-show="event.srv_live" href="#" tooltip-placement="left" tooltip="[Stream] Happening Now"><i class="xa-icon-live-stream"></i></a>
+                </div>
+              </div>
+              <div class="row-wrapper date-headline">
+                <div class="pull-left">
+                  <a href="#" tooltip-placement="right" tooltip="View schedule">
+                    <span class="badge badge-primary">{{event.date_info.date | toLocalEq:event.date_info.timezone | date: 'MMM d'}}</span>
+                  </a>
+                </div>
+                <div class="pull-right">
+                  <strong>&nbsp;{{event.date_info.featureHeadline}}</strong>
+                </div>
+              </div>
+              <div class="row-wrapper price-location">
+                <div class="pull-left">
+                  <a href="#" class="price" tooltip-placement="right" tooltip="Price for attendance">
+                    <span ng-show="event.date_info.attend_low">
+                      {{event.date_info.attend_low}} {{event.date_info.attend_currency}}
+                    </span>
+                    <span ng-hide="event.date_info.attend_low">
+                      Free!
+                    </span>
+                  </a>
+                </div>
+                <div class="pull-right">
+                  <span class="event-location" ng-show="event.date_info.city">
+                    <a href="#">{{event.date_info.city}}, {{event.date_info.state}}</a>
+                    <i class="xa-icon-location"></i>
+                  </span>
+                </div>
+              </div>
             </div>
-            <div class="pull-right">
-              <a ng-show="event.srv_live" href="#" tooltip-placement="left" tooltip="[Stream] Happening Now"><i class="xa-icon-live-stream"></i></a>
-            </div>
-          </div>
-          <div class="row-wrapper date-headline">
-            <div class="pull-left">
-              <a href="#" tooltip-placement="right" tooltip="View schedule">
-                <span class="badge badge-primary">{{event.date_info.date | toLocalEq:event.date_info.timezone | date: 'MMM d'}}</span>
+            <div class="event-picture-container">
+              <a href="#/events/{{event.slug}}">
+                <img ng-src="{{event.photo}}" alt="">
               </a>
             </div>
-            <div class="pull-right">
-              <strong>&nbsp;{{event.date_info.featureHeadline}}</strong>
+            <div class="event-text">
+              <p>
+                {{event.about | textlimit:"110"}}
+              </p>
             </div>
-          </div>
-          <div class="row-wrapper price-location">
-            <div class="pull-left">
-              <a href="#" class="price" tooltip-placement="right" tooltip="Price for attendance">
-                <span ng-show="event.date_info.attend_low">
-                  {{event.date_info.attend_low}} {{event.date_info.attend_currency}}
+            <div class="event-footer">
+              <div class="pull-left">
+                <a href="#/profile/{{event.author_slug}}" tooltip-placement="right" tooltip="Organizer: {{event.author_name}}">
+                  <img class="img-rounded user-pic" ng-src="{{ event.author_photo }}" alt="">
+                </a>
+              </div>
+              <div class="pull-right follow-btn-container">
+                <span class="photo-count">
+                  <i class="xa-icon-camera"></i>
+                   {{event.srv_photosCount}}
                 </span>
-                <span ng-hide="event.date_info.attend_low">
-                  Free!
-                </span>
-              </a>
+                <a href="javascript:;" class="btn btn-default btn-follow"
+                  ng-click="Follow(event)"
+                  ng-class="{following:event.srv_following}">
+                  <span class="badge badge-purple">
+                    {{event.srv_followersCount}}
+                  </span>
+                  <span ng-hide="event.srv_following">Follow</span>
+                  <span ng-show="event.srv_following">Following</span>
+                  <i class="xa-icon-xauto-colored"></i>
+                </a>
+              </div>
             </div>
-            <div class="pull-right">
-              <span class="event-location" ng-show="event.date_info.city">
-                <a href="#">{{event.date_info.city}}, {{event.date_info.state}}</a>
-                <i class="xa-icon-location"></i>
-              </span>
-            </div>
+            <!-- <div class="event-follow">
+              <a href="#" class="btn btn-sm btn-clear"><i class="icon-group"></i> {{event.srv_followersCount}} Followers</a>
+              <a href="#" class="btn btn-sm btn-clear"><i class="icon-camera"></i> {{event.srv_photosCount}} Photos</a>
+              <a href="#" class="btn btn-primary btn-sm" ng-hide="event.srv_following" ng-click="event.srv_following=true"><i class="icon-heart"></i> Follow</a>
+              <a href="#" class="btn btn-success btn-sm" ng-show="event.srv_following" ng-click="event.srv_following=false" tooltip-placement="bottom" tooltip="Click to Unfollow"><i class="icon-heart"></i> Following</a>
+            </div> -->
           </div>
-        </div>
-        <div class="event-picture-container">
-          <a href="#/events/{{event.slug}}">
-            <img ng-src="{{event.photo}}" alt="">
-          </a>
-        </div>
-        <div class="event-text">
-          <p>
-            {{event.about | textlimit:"110"}}
-          </p>
-        </div>
-        <div class="event-footer">
-          <div class="pull-left">
-            <a href="#/profile/{{event.author_slug}}" tooltip-placement="right" tooltip="Organizer: {{event.author_name}}">
-              <img class="img-rounded user-pic" ng-src="{{ event.author_photo }}" alt="">
-            </a>
-          </div>
-          <div class="pull-right follow-btn-container">
-            <span class="photo-count">
-              <i class="xa-icon-camera"></i>
-               {{event.srv_photosCount}}
-            </span>
-            <a href="javascript:;" class="btn btn-default btn-follow"
-              ng-click="Follow(event)"
-              ng-class="{following:event.srv_following}">
-              <span class="badge badge-purple">
-                {{event.srv_followersCount}}
-              </span>
-              <span ng-hide="event.srv_following">Follow</span>
-              <span ng-show="event.srv_following">Following</span>
-              <i class="xa-icon-xauto-colored"></i>
-            </a>
-          </div>
-        </div>
-        <!-- <div class="event-follow">
-          <a href="#" class="btn btn-sm btn-clear"><i class="icon-group"></i> {{event.srv_followersCount}} Followers</a>
-          <a href="#" class="btn btn-sm btn-clear"><i class="icon-camera"></i> {{event.srv_photosCount}} Photos</a>
-          <a href="#" class="btn btn-primary btn-sm" ng-hide="event.srv_following" ng-click="event.srv_following=true"><i class="icon-heart"></i> Follow</a>
-          <a href="#" class="btn btn-success btn-sm" ng-show="event.srv_following" ng-click="event.srv_following=false" tooltip-placement="bottom" tooltip="Click to Unfollow"><i class="icon-heart"></i> Following</a>
-        </div> -->
-      </div>
-      <!--  -->
-    </li>
-  </ul>
-  <a ng-show="hasMoreEvents" ng-click="showMore()" class="btn btn-info showmorespan">Show more</a>
+          <!--  -->
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-lg-12">
+    <a ng-show="hasMoreEvents" ng-click="showMore()" class="btn btn-info showmorespan">Show more</a>
+  </div>
 </div>
 
 

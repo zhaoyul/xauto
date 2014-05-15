@@ -85,7 +85,7 @@ angular.module( 'blvdx.stream', [
   });
 }])
 
-.controller( 'StreamListCtrl', ['$scope', 'titleService', 'Streams', '$http','$photoview', function StreamCtrl( $scope, titleService, Streams, $http , $photoview) {
+.controller( 'StreamListCtrl', ['$scope', 'titleService', 'Streams', '$http','$photoview', 'Accounts', function StreamCtrl( $scope, titleService, Streams, $http , $photoview, Accounts) {
   titleService.setTitle( 'Stream' );
   $scope.stream = [];
   $scope.$watch("$parent.stream", function(){
@@ -103,7 +103,7 @@ angular.module( 'blvdx.stream', [
             if(!type){
                 type = 1;
             }
-            Streams.send_favorite(entry.id,type);
+            Accounts.toggleFavorite(entry.id, type);
             if(type === 2){
                 entry.favorited = false;
             }else{

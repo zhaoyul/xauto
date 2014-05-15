@@ -75,7 +75,7 @@ angular.module('blvdx.events', [
 			})
 
             .state('eventEdit.addDate', {
-                url: '/dates/',
+                url: '/dates',
                 onEnter: function($modal,$stateParams,$state){
                     $modal.open({
                         templateUrl: "events/partial_add_date.tpl.html",
@@ -99,7 +99,7 @@ angular.module('blvdx.events', [
 				}
 			})
 			.state('eventDetails.Focus', {
-				url: '/:focus/'
+				url: '/:focus'
 			});
 
 	}])

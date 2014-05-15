@@ -1,29 +1,15 @@
 <h1>My Photos</h1>
-<div class="deletephotos">
-    <div ng-repeat="event in Datesbyevents" ng-show="event.dates">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-              <h4 class="panel-title">
-                  {{event.title}}
-              </h4>
-             </div>
-             <div class="panel-body">
-                <div ng-repeat="dt in event.dates">
-                     <a href="#/account/mydatephotos/{{dt.id}}/">{{dt.start_date | date: 'MMM d'}} - {{dt.end_date | date: 'MMM d'}}</a>
-                </div>
-             </div>
-         </div>
+
+<div class="col-xs-12 col-md-12 col-lg-11 myphotos-filter">
+  	<div class="btn-group">
+        <a class="btn btn-primary" ui-sref-active="active" ui-sref="photosMy.byevent">By Event</a>
+        <a class="btn btn-primary" ui-sref-active="active" ui-sref="photosMy.bydate">By Date</a>
+
+        <!--
+        <button type="button" class="btn btn-primary" ng-sref="changeDisplayFilter('byevent')" ng-model="radioModel" btn-radio="'By Event'">By Event</button>
+        <button type="button" class="btn btn-primary" ng-click="changeDisplayFilter('bydate')" ng-model="radioModel" btn-radio="'By Date'">By Date</button>
+        -->
     </div>
-    <div class="panel panel-default" ng-show="Outdates">
-        <div class="panel-heading" ng-show="stream">
-          <h4 class="panel-title">
-              Out of events
-          </h4>
-         </div>
-         <div class="panel-body">
-            <div ng-repeat="dt in Outdates">
-                 <a href="#/account/mydatephotosoutalbums/{{dt | date: 'd-M-y'}}/">{{dt | date: 'MMM d'}}</a>
-            </div>
-         </div>
-     </div>
+
+    <div ui-view="results"></div>
 </div>

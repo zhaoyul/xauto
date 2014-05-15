@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 import uuid
 import math
-from datetime import datetime, timedelta
+import pytz
+from datetime import datetime, timedelta, time
 from random import randrange
 from hashlib import sha1
 
 from django.utils import timezone
+from django.utils.timezone import utc
 from django_countries import countries
-import pytz
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth import (login as auth_login, logout, authenticate)
@@ -16,7 +17,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.core.files.base import ContentFile
 from django.conf import settings
-from rest_framework.generics import (ListAPIView, RetrieveAPIView)
+from rest_framework.generics import (ListAPIView, RetrieveAPIView, DestroyAPIView)
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
@@ -24,12 +25,12 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from event.models import Event, EventDate, EventImage
 from event.serializers import (EventSerializer, EventDetailsSerializer,
-    EventModelSerializer, EventDateSerializer)
+                               EventModelSerializer, EventDateSerializer)
 from account.serializers import (UserProfileSerializer, UserSerializer,
-    NewProfileSerializer, EmailSerializer)
+                                 NewProfileSerializer, EmailSerializer)
 from account.models import UserProfile
 from multiuploader.serializers import (MultiuploaderImageSerializer,
-    CoordinatedPhotoSerializer)
+                                       CoordinatedPhotoSerializer)
 from multiuploader.models import MultiuploaderImage
 
 
@@ -37,40 +38,6 @@ if "mailer" in settings.INSTALLED_APPS:
     from mailer import send_mail, send_html_mail
 else:
     from django.core.mail import send_mail
-
-TIME_ZONE_CHOICES = (
-     ('-12.0', '(GMT -12:00) Eniwetok, Kwajalein'),
-     ('-11.0', '(GMT -11:00) Midway Island, Samoa'),
-     ('-10.0', '(GMT -10:00) Hawaii'),
-     ('-9.0', '(GMT -9:00) Alaska'),
-     ('-8.0', '(GMT -8:00) Pacific Time (US &amp; Canada)'),
-     ('-7.0', '(GMT -7:00) Mountain Time (US &amp; Canada)'),
-     ('-6.0', '(GMT -6:00) Central Time (US &amp; Canada), Mexico City'),
-     ('-5.0', '(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima'),
-     ('-4.0', '(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz'),
-     ('-3.5', '(GMT -3:30) Newfoundland'),
-     ('-3.0', '(GMT -3:00) Brazil, Buenos Aires, Georgetown'),
-     ('-2.0', '(GMT -2:00) Mid-Atlantic'),
-     ('-1.0', '(GMT -1:00 hour) Azores, Cape Verde Islands'),
-     ('0.0', '(GMT) Western Europe Time, London, Lisbon, Casablanca'),
-     ('1.0', '(GMT +1:00 hour) Brussels, Copenhagen, Madrid, Paris'),
-     ('2.0', '(GMT +2:00) Kaliningrad, South Africa'),
-     ('3.0', '(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg'),
-     ('3.5', '(GMT +3:30) Tehran'),
-     ('4.0', '(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi'),
-     ('4.5', '(GMT +4:30) Kabul'),
-     ('5.0', '(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent'),
-     ('5.5', '(GMT +5:30) Bombay, Calcutta, Madras, New Delhi'),
-     ('5.75', '(GMT +5:45) Kathmandu'),
-     ('6.0', '(GMT +6:00) Almaty, Dhaka, Colombo'),
-     ('7.0', '(GMT +7:00) Bangkok, Hanoi, Jakarta'),
-     ('8.0', '(GMT +8:00) Beijing, Perth, Singapore, Hong Kong'),
-     ('9.0', '(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk'),
-     ('9.5', '(GMT +9:30) Adelaide, Darwin'),
-     ('10.0', '(GMT +10:00) Eastern Australia, Guam, Vladivostok'),
-     ('11.0', '(GMT +11:00) Magadan, Solomon Islands, New Caledonia'),
-     ('12.0', '(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka')
-)
 
 
 class EventsListView(ListAPIView):
@@ -114,8 +81,8 @@ class EventsListView(ListAPIView):
         if filter_by == 'nearby':
             if long and lat:
                 neardates = EventDate.objects.filter(
-                    (Q(latitude__gt=float(lat)-5) & Q(latitude__lt=float(lat)+5)),
-                    (Q(longitude__gt=float(long)-5) & Q(longitude__lt=float(long)+5))).distinct()
+                    (Q(latitude__gt=float(lat) - 5) & Q(latitude__lt=float(lat) + 5)),
+                    (Q(longitude__gt=float(long) - 5) & Q(longitude__lt=float(long) + 5))).distinct()
 
                 #sort by distance
                 near = []
@@ -147,6 +114,7 @@ class TimezonesListView(APIView):
     """
     Returns all available timezones
     """
+
     def get(self, request, *args, **kwargs):
         ret = []
         for tz_name in pytz.common_timezones:
@@ -160,6 +128,7 @@ class CountriesListView(APIView):
     """
     Returns all available countries
     """
+
     def get(self, request, *args, **kwargs):
         ret = [{'value': c[0], 'label': c[1]} for c in list(countries)]
         return Response(ret, status=status.HTTP_200_OK)
@@ -177,10 +146,10 @@ class AlbumPhotosUploader(APIView):
         for index, photo in enumerate(self.request.DATA):
             imageObj = MultiuploaderImage()
             ff = photo['file'].split(",")
-            if len(ff)>1:
+            if len(ff) > 1:
                 ff = ff[1]
             else:
-                ff= photo['file']
+                ff = photo['file']
             imageObj.image.save(
                 photo['name'],
                 ContentFile(ff.decode('base64')),
@@ -227,12 +196,6 @@ class EventDateViewSet(ModelViewSet):
     serializer_class = EventDateSerializer
     model = EventDate
 
-    #def pre_save(self, obj):
-    #    timezone = self.request.DATA.get("offset", "0")
-    #    delta = timedelta(hours=int(float(timezone)/60))
-    #    obj.start_date -= delta
-    #    obj.end_date -= delta
-
 
 class LastDateView(RetrieveAPIView):
     """
@@ -258,10 +221,10 @@ class EventAllImagesView(APIView):
     def get(self, request, slug, *args, **kwargs):
         user = self.request.user
 
-        event = Event.objects.get(slug=slug,author=user.profile)
+        event = Event.objects.get(slug=slug, author=user.profile)
 
         #setting image
-        sset = self.request.GET.get("id", "")
+        sset = self.request.GET.get('id', None)
         if sset:
             img = MultiuploaderImage.objects.get(id=sset)
             new = EventImage()
@@ -273,28 +236,45 @@ class EventAllImagesView(APIView):
 
         imgs = []
 
-        mi = MultiuploaderImage.objects.filter(event_date__in=EventDate.objects.filter(event=event ))
+        mi = MultiuploaderImage.objects.filter(event_date__in=EventDate.objects.filter(event=event))
         for m in mi:
-            imgs.append((m.id, m.thumb_url(250,250)))
+            imgs.append((m.id, m.thumb_url(250, 250)))
 
         return Response(imgs, status=status.HTTP_200_OK)
 
 
-class DeletePictureView(APIView):
+class MyPhotosDeletePhotoView(DestroyAPIView):
     """
-    Delete photo for event date (of my event,or my photo)
+    Delete my photo
+    """
+    permission_classes = (IsAuthenticated,)
+    model = MultiuploaderImage
+
+    def get_queryset(self):
+        profile = self.request.user.profile
+        print MultiuploaderImage.objects.filter(userprofile=profile)
+        return MultiuploaderImage.objects.filter(userprofile=profile)
+
+
+class DeletePictureView(DestroyAPIView):
+    """
+    Delete photo from my event
     """
     permission_classes = (IsAuthenticated,)
 
-    def put(self, request, picture_id, *args, **kwargs):
-        user = request.user
-        picture = MultiuploaderImage.objects.get(id=picture_id)
-        if picture.event_date:
-            event = picture.event_date.event
-            if event.author.user == user:
-                picture.delete()
+    def get_queryset(self):
+        profile = self.request.user.profile
+        return MultiuploaderImage.objects.filter(event_date__event__author=profile)
 
-        return Response({}, status=status.HTTP_200_OK)
+        # def put(self, request, picture_id, *args, **kwargs):
+        #     user = request.user
+        #     picture = MultiuploaderImage.objects.get(id=picture_id)
+        #     if picture.event_date:
+        #         event = picture.event_date.event
+        #         if event.author.user == user:
+        #             picture.delete()
+        #
+        #     return Response({}, status=status.HTTP_200_OK)
 
 
 class EventDatePhotoManageView(APIView):
@@ -303,7 +283,6 @@ class EventDatePhotoManageView(APIView):
     """
     permission_classes = (IsAuthenticated,)
 
-
     def get(self, request, id, *args, **kwargs):
         data = {}
         DateObj = EventDate.objects.get(id=id)
@@ -311,7 +290,7 @@ class EventDatePhotoManageView(APIView):
         data["DateObjImgs"] = []
         imgs = MultiuploaderImage.objects.filter(event_date=DateObj)
         for img in imgs:
-            data["DateObjImgs"].append({"id":img.id,"image":img.image.url})
+            data["DateObjImgs"].append({"id": img.id, "image": img.image.url})
         return Response(data, status=status.HTTP_200_OK)
 
 
@@ -384,8 +363,7 @@ class UserProfileViewSet(ModelViewSet):
         filter_by = self.request.GET.get('filter_by', '')
         user = self.request.user
 
-
-        if len(search_text)>=1:
+        if len(search_text) >= 1:
             queryset = UserProfile.objects.filter(
                 Q(name__icontains=search_text) |
                 Q(user__first_name__icontains=search_text) |
@@ -414,12 +392,12 @@ class UserProfileViewSet(ModelViewSet):
 
         if thumbnail_image:
             obj.thumbnail_image.save(thumbnail_image['name'],
-                ContentFile(thumbnail_image['file'].decode('base64')),
-                save=False)
+                                     ContentFile(thumbnail_image['file'].decode('base64')),
+                                     save=False)
         if main_image:
             obj.main_image.save(main_image['name'],
-                ContentFile(main_image['file'].decode('base64')),
-                save=False)
+                                ContentFile(main_image['file'].decode('base64')),
+                                save=False)
 
         if len(full_name) > 1:
             user_data['last_name'] = ' '.join(full_name[1:])
@@ -463,7 +441,7 @@ class FollowProfileView(APIView):
         return Response({}, status=status.HTTP_403_FORBIDDEN)
 
 
-class ProfileMyDatesByEventsListView(APIView):
+class DatesHavingMyPhotosByEventListView(APIView):
     """
     Returns current user dates grouped by events
     """
@@ -471,87 +449,138 @@ class ProfileMyDatesByEventsListView(APIView):
 
     def get(self, request, *args, **kwargs):
         profile = self.request.user.profile
-        evs = Event.objects.filter(author=profile)
+        evs = Event.objects.filter(event_dates__event_upload_images__userprofile=profile).distinct()
         data = []
         for e in evs:
-            data.append({"title":e.title,"dates":EventDate.objects.filter(event=e).values()})
+            data.append({"title": e.title,
+                         "dates": e.event_dates.all().values()})
         return Response(data, status=status.HTTP_200_OK)
 
 
-class ProfileMyOutDatesView(APIView):
+class DatesHavingMyPhotosByDateListView(APIView):
     """
     Returns current user dates grouped by events
+    """
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        profile = self.request.user.profile
+        imgs = MultiuploaderImage.objects.filter(userprofile=profile).\
+            distinct().datetimes('upload_date', 'day', tzinfo=utc)
+
+        print imgs
+
+        return Response(imgs, status=status.HTTP_200_OK)
+
+
+class DatesHavingMyOrphanedPhotosView(APIView):
+    """
+    Returns list of dates that have current user's images
+    that are not assigned to any Events (EventDates)
     """
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
         profile = self.request.user.profile
         objs = MultiuploaderImage.objects.filter(event_date=None, userprofile=profile)
+        # TODO: use set here for unique entries
         data = []
         dates = []
         for o in objs:
-            dt = o.upload_date.strftime('%d-%m-%Y')
+            dt = o.upload_date.strftime('%Y-%m-%d')
             if dt not in dates:
                 dates.append(dt)
                 data.append(o.upload_date)
         return Response(data, status=status.HTTP_200_OK)
 
 
-class ProfileMyPhotosListView(ListAPIView):
+class MyOrphanedPhotosListView(APIView):
     """
-    Returns current user photos
+    Returns current user photos that are not in albums (not assigned to any Event (EventDate))
+    """
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        profile = self.request.user.profile
+
+        queryset = MultiuploaderImage.objects.filter(event_date=None,
+                                                     userprofile=profile)
+
+        dt = request.GET.get('dt')
+        if dt:
+            upload_date = datetime.strptime(dt, '%Y-%m-%d').date()
+            day_start = datetime.combine(upload_date, time.min).replace(tzinfo=utc)
+            day_end = datetime.combine(upload_date, time.max).replace(tzinfo=utc)
+
+            queryset = queryset.filter(upload_date__range=(day_start, day_end))
+
+        objs_list = [{"id": o.id, "image": o.image.url} for o in queryset]
+        return Response(objs_list, status=status.HTTP_200_OK)
+
+
+class MyPhotosListView(ListAPIView):
+    """
+    Returns current user's photos
     """
     permission_classes = (IsAuthenticated,)
     serializer_class = MultiuploaderImageSerializer
 
     def get_queryset(self):
         profile = self.request.user.profile
+        queryset = MultiuploaderImage.objects.filter(userprofile=profile)
 
-        id = self.request.GET.get("dateid", "")
-        dt = self.request.GET.get("dt", "")
-
+        id = self.request.GET.get('dateid')
         if id:
-            dt = EventDate.objects.get(id=id, event__author=profile)
-            return MultiuploaderImage.objects.filter(event_date=dt)
+            dt = EventDate.objects.get(id=id)
+            queryset = queryset.objects.filter(event_date=dt)
 
-        #TODO: why strptime?!
+        dt = self.request.GET.get('dt')
         if dt:
-            upload_date = datetime.strptime(dt, '%d-%m-%Y')
-            upload_date2 = upload_date + timedelta(days=1)
-            return MultiuploaderImage.objects.filter(upload_date__gt=upload_date, upload_date__lt=upload_date2)
+            upload_date = datetime.strptime(dt, '%Y-%m-%d').date()
+            day_start = datetime.combine(upload_date, time.min).replace(tzinfo=utc)
+            day_end = datetime.combine(upload_date, time.max).replace(tzinfo=utc)
 
-        return MultiuploaderImage.objects.filter(userprofile=profile)
+            queryset = queryset.filter(upload_date__range=(day_start, day_end))
+
+        #TODO: timezone?!
+        # dt = self.request.GET.get('dt')
+        # if dt:
+        #     upload_date = datetime.strptime(dt, '%Y-%m-%d')
+        #     upload_date2 = upload_date + timedelta(days=1)
+        #     return MultiuploaderImage.objects.filter(upload_date__gt=upload_date,
+        #                                              upload_date__lt=upload_date2,
+        #                                              userprofile=profile)
+
+        return queryset
 
 
-class ProfileDeletePhotoView(APIView):
+class ToggleFavoritePicture(APIView):
     """
-    Delete photo
-    """
-    permission_classes = (IsAuthenticated,)
-
-    def get(self, request, *args, **kwargs):
-        profile = self.request.user.profile
-        id = request.GET.get('id')
-        MultiuploaderImage.objects.filter(id=id,userprofile=profile).delete()
-        return Response({}, status=status.HTTP_200_OK)
-
-
-class ProfileMyOtherPhotosListView(APIView):
-    """
-    Returns current user photos which out of albums
+    Adding Picture to favorites
     """
     permission_classes = (IsAuthenticated,)
 
-    def get(self, request, *args, **kwargs):
-        profile = self.request.user.profile
-        objs_list = []
-        objs = MultiuploaderImage.objects.filter(event_date=None,userprofile=profile)
-        for o in objs:
-            objs_list.append({"id":o.id,"image":o.image.url})
-        return Response(objs_list, status=status.HTTP_200_OK)
+    def put(self, request, picture_id, *args, **kwargs):
+        user = request.user
+        try:
+            profile = user.profile
+        except UserProfile.DoesNotExist:
+            return Response({'success': False, 'message': 'User profile doesn\'t exist'},
+                            status=status.HTTP_403_FORBIDDEN)
+        try:
+            picture = MultiuploaderImage.objects.get(id=picture_id)
+        except MultiuploaderImage.DoesNotExist:
+            return Response({'success': False, 'message': 'Picture doesn\'t exist'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        if profile.favorite_images.filter(id=picture_id).exists():
+            profile.favorite_images.remove(picture)
+        else:
+            profile.favorite_images.add(picture)
+        return Response({'success': True}, status=status.HTTP_200_OK)
 
 
-class ProfileFavoritesListView(ListAPIView):
+class FavoritePicturesListView(ListAPIView):
     """
     Returns favorite images for current user
     """
@@ -595,27 +624,6 @@ class StreamListView(ListAPIView):
         return queryset
 
 
-class FavoritePictureView(APIView):
-    """
-    Adding Picture to favorites
-    """
-    permission_classes = (IsAuthenticated,)
-
-    def put(self, request, picture_id, *args, **kwargs):
-        user = request.user
-        picture = MultiuploaderImage.objects.get(id=picture_id)
-        try:
-            if user.profile.favorite_images.filter(id=picture_id).count():
-                user.profile.favorite_images.remove(picture)
-            else:
-                user.profile.favorite_images.add(picture)
-
-            return Response({}, status=status.HTTP_200_OK)
-        except:
-            pass
-        return Response({}, status=status.HTTP_403_FORBIDDEN)
-
-
 class ReportPictureView(APIView):
     """
     Flagging Picture as inappropriate
@@ -630,18 +638,18 @@ class ReportPictureView(APIView):
         #email to admin
         user = request.user
         email_body = render_to_string('emails/picture_report_email.html',
-                    {'user': user,
-                     'title': 'Picture report',
-                     'site_name': settings.SITE_NAME,
-                     'domain': request.build_absolute_uri(reverse('index')),
-                     'picture_id': picture_id}
-                )
+                                      {'user': user,
+                                       'title': 'Picture report',
+                                       'site_name': settings.SITE_NAME,
+                                       'domain': request.build_absolute_uri(reverse('index')),
+                                       'picture_id': picture_id}
+        )
         if "mailer" in settings.INSTALLED_APPS:
             send_html_mail("Picture report", email_body, email_body,
-                settings.DEFAULT_FROM_EMAIL, [settings.ADMINS])
+                           settings.DEFAULT_FROM_EMAIL, [settings.ADMINS])
         else:
             send_mail("Picture report", email_body,
-                settings.DEFAULT_FROM_EMAIL, [settings.ADMINS])
+                      settings.DEFAULT_FROM_EMAIL, [settings.ADMINS])
 
         return Response({}, status=status.HTTP_200_OK)
 
@@ -650,9 +658,9 @@ def make_userjson(user):
     image_url = ""
     image_url2 = ""
     if user.profile.thumbnail_image:
-        image_url = user.profile.get_main_image(32,21)
+        image_url = user.profile.get_main_image(32, 21)
     if user.profile.main_image:
-        image_url2 = user.profile.get_thumbnail(32,21)
+        image_url2 = user.profile.get_thumbnail(32, 21)
     user_data = {
         'id': user.pk,
         'email': user.email,
@@ -685,9 +693,9 @@ class LoginView(APIView):
         if user:
             if not user.is_active:
                 return Response({"message": "Account not active, you must "
-                    "activate your account by clicking the validation link in "
-                    "the confirmation email sent to you."},
-                    status=status.HTTP_403_FORBIDDEN)
+                                            "activate your account by clicking the validation link in "
+                                            "the confirmation email sent to you."},
+                                status=status.HTTP_403_FORBIDDEN)
             auth_login(request, user)
             user_data = make_userjson(user)
 
@@ -754,25 +762,25 @@ class ResetPasswordView(APIView):
                 email = email_serializer.data.get('email', None)
                 user = User.objects.get(email=email)
                 user.profile.activationtoken = sha1("%sovahi%s" %
-                    (randrange(1, 1000), randrange(1, 1000))).hexdigest()
+                                                    (randrange(1, 1000), randrange(1, 1000))).hexdigest()
                 user.profile.save()
                 reset_link = request.build_absolute_uri(
                     reverse('change-password',
-                    args=(user.profile.activationtoken,))
+                            args=(user.profile.activationtoken,))
                 )
                 reset_link = reset_link.replace("api/change_password", "#/account/changePassword")
                 email_body = render_to_string('emails/reset_password_email.html',
-                    {'user': user,
-                     'title': 'Password reset',
-                     'site_name': settings.SITE_NAME,
-                     'reset_link': reset_link}
+                                              {'user': user,
+                                               'title': 'Password reset',
+                                               'site_name': settings.SITE_NAME,
+                                               'reset_link': reset_link}
                 )
                 if "mailer" in settings.INSTALLED_APPS:
                     send_html_mail("Reset Password", email_body, email_body,
-                        settings.DEFAULT_FROM_EMAIL, [user.email])
+                                   settings.DEFAULT_FROM_EMAIL, [user.email])
                 else:
                     send_mail("Reset Password", email_body,
-                        settings.DEFAULT_FROM_EMAIL, [user.email])
+                              settings.DEFAULT_FROM_EMAIL, [user.email])
 
                 return Response({'success': True})
             except User.DoesNotExist:
@@ -781,7 +789,7 @@ class ResetPasswordView(APIView):
                     status=status.HTTP_400_BAD_REQUEST)
 
         return Response(email_serializer.errors,
-            status=status.HTTP_400_BAD_REQUEST)
+                        status=status.HTTP_400_BAD_REQUEST)
 
 
 class ChangePasswordView(APIView):
@@ -868,7 +876,7 @@ class RegistrationView(APIView):
                     )
 
                 profile_serializer.object.activationtoken = sha1("%sovahi%s" %
-                    (randrange(1, 1000), randrange(1, 1000))).hexdigest()
+                                                                 (randrange(1, 1000), randrange(1, 1000))).hexdigest()
 
                 profile_serializer.object.user = user_serializer.object
                 profile_serializer.save()
@@ -944,7 +952,8 @@ class CoordinatedPhotoUploader(APIView):
         dlat = math.radians(lat2 - lat1)
         dlon = math.radians(lon2 - lon1)
         a = math.sin(dlat / 2) * math.sin(dlat / 2) + math.cos(math.radians(lat1)) \
-            * math.cos(math.radians(lat2)) * math.sin(dlon / 2) * math.sin(dlon / 2)
+                                                      * math.cos(math.radians(lat2)) * math.sin(dlon / 2) * math.sin(
+            dlon / 2)
         c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
         d = radius * c
         return d
@@ -959,7 +968,7 @@ class CoordinatedPhotoUploader(APIView):
         for event_date in EventDate.objects.filter(start_date__lt=now, end_date__gt=now):
             distance = self.haversine_distance((lat, long), (event_date.latitude, event_date.longitude))
             if distance < radius:
-                matches.append((event_date.id,distance))
+                matches.append((event_date.id, distance))
 
         if len(matches):
             matches.sort(key=lambda item: item[1])

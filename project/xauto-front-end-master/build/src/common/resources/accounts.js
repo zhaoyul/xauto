@@ -36,40 +36,36 @@ angular.module('resources.accounts', ['restangular'])
           return Restangular.all('reset_password').post(account);
       };
 
+      Accounts.toggleFavorite = function(entry_id, type){
+        return Restangular.one('pictures', entry_id).customPUT(entry_id, 'favorite');
+      };
+
       Accounts.getFavorites = function () {
-          return Restangular.all('profiles').customGETLIST('favorites-list');
+          return Restangular.all('pictures/favorites').getList();
       };
 
-      Accounts.getAllTimezones = function () {
-          return Restangular.all('profiles').customGETLIST('alltimezones');
+      Accounts.getDatesHavingMyOrphanedPhotos = function () {
+            return Restangular.all('myphotos').customGETLIST('dates-with-orphans');
       };
 
-      Accounts.getDatesbyevents = function () {
-            return Restangular.all('profiles').customGETLIST('datesbyevents');
+      Accounts.getDatesHavingMyPhotosByDate = function () {
+            return Restangular.all('myphotos').customGETLIST('bydate');
       };
 
-      Accounts.getOutdates = function () {
-            return Restangular.all('profiles').customGETLIST('outdates');
+      Accounts.getDatesHavingMyPhotosByEvent = function () {
+            return Restangular.all('myphotos').customGETLIST('byevent');
       };
 
-      Accounts.getAlbums = function () {
-          return Restangular.all('profiles').customGETLIST('pictures');
+      Accounts.getMyPhotosOnDate = function (id) {
+          return Restangular.all('myphotos').getList({'dt': id});
       };
 
-      Accounts.getOtherPhotos = function () {
-          return Restangular.all('profiles').customGETLIST('otherpictures');
+      Accounts.getMyOrphanedPhotos = function (date) {
+          return Restangular.all('myphotos').customGETLIST('orphans', {dt: date});
       };
 
-      Accounts.getDatePhotos = function (id) {
-          return Restangular.all('profiles').customGETLIST('pictures',{dateid:id});
-      };
-
-      Accounts.getDateOutOfAlbomsPhotos = function (dt) {
-          return Restangular.all('profiles').customGETLIST('pictures',{dt:dt});
-      };
-
-      Accounts.getDeletePhoto = function (id) {
-          return Restangular.all('profiles').customGETLIST('delpicture',{id:id});
+      Accounts.deleteMyPhoto = function (id) {
+          return Restangular.one('myphotos', id).customDELETE('delete');
       };
 
       Accounts.checkUsername = function (params) {
