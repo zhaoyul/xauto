@@ -45,6 +45,9 @@ angular.module( 'blvdx.people', [
         templateUrl: 'people/profile-view.tpl.html'
       }
     }
+  })
+  .state('profileView.photo',{
+         url: '/:photoId/'
   });
 }])
 
@@ -57,7 +60,6 @@ angular.module( 'blvdx.people', [
 
   Profiles.getProfiles({}).then(function (profiles) {
       $scope.profilesPool = profiles;
-      console.log($scope.profilesPool);
       $scope.showMore();
   });
 
