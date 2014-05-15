@@ -244,7 +244,6 @@ angular.module( 'blvdx.account', [
       Accounts.deleteMyPhoto(obj.id).then(function(result){
         obj.hide = true;
       });
-
   };
 }])
 
@@ -274,8 +273,9 @@ angular.module( 'blvdx.account', [
   });
 
   $scope.Delete = function(obj) {
-      Accounts.getDeletePhoto(obj.id);
-      obj.hide = true;
+      Accounts.deleteMyPhoto(obj.id).then(function(result){
+        obj.hide = true;
+      });
   };
 }])
 
