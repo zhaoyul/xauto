@@ -385,10 +385,12 @@ angular.module('blvdx.events', [
 
 			// contain events data ::
 			$scope.eventsPool = null;
+            $scope.no_events_txt = "Loading...";
 
 			Events.getEvents({}).then(function (events) {
 				$scope.eventsPool = events;
 				$scope.showMore();
+                $scope.no_events_txt = "No events found";
 			});
 
 			$scope.search = {};
