@@ -60,6 +60,11 @@ angular.module('resources.accounts', ['restangular'])
           return Restangular.all('myphotos').getList({'dt': id});
       };
 
+      Accounts.getMyPhotosAtEventDate = function (id) {
+          return Restangular.all('myphotos').getList({'eventdate_id': id});
+      };
+
+
       Accounts.getMyOrphanedPhotos = function (date) {
           return Restangular.all('myphotos').customGETLIST('orphans', {dt: date});
       };

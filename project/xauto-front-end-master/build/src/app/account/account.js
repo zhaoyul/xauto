@@ -237,7 +237,7 @@ angular.module( 'blvdx.account', [
 .controller( 'MyPhotosAtEventDate', ['$scope', 'titleService', 'Accounts', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, $stateParams ) {
   titleService.setTitle( 'My Photos' );
 
-  Accounts.getMyPhotosOnDate($stateParams.id).then(function (photos) {
+  Accounts.getMyPhotosAtEventDate($stateParams.id).then(function (photos) {
       $scope.photos = photos;
   });
 

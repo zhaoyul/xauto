@@ -529,10 +529,10 @@ class MyPhotosListView(ListAPIView):
         profile = self.request.user.profile
         queryset = MultiuploaderImage.objects.filter(userprofile=profile)
 
-        id = self.request.GET.get('dateid')
+        id = self.request.GET.get('eventdate_id')
         if id:
             dt = EventDate.objects.get(id=id)
-            queryset = queryset.objects.filter(event_date=dt)
+            queryset = queryset.filter(event_date=dt)
 
         dt = self.request.GET.get('dt')
         if dt:
