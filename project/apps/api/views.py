@@ -448,7 +448,7 @@ class DatesHavingMyPhotosByEventListView(APIView):
 
     def get(self, request, *args, **kwargs):
         profile = self.request.user.profile
-        event_dates = EventDate.objects.filter(event_upload_images__userprofile=profile).distinct()
+        event_dates = EventDate.objects.filter(event_upload_images__userprofile=profile).order_by('-start_date').distinct()
 
         events = {}
         for event_date in event_dates:
@@ -456,11 +456,11 @@ class DatesHavingMyPhotosByEventListView(APIView):
             timezone = pytz.timezone(event_date.timezone.zone)
             date = u'---'
             if event_date.start_date.astimezone(timezone).date() == event_date.end_date.astimezone(timezone).date():
-                date = datetime.strftime(event_date.start_date.astimezone(timezone), '%b %d')
+                date = datetime.strftime(event_date.start_date.astimezone(timezone), '%b %d, %Y')
             else:
                 date = u"{} - {}".format(
-                    datetime.strftime(event_date.start_date.astimezone(timezone), '%b %d'),
-                    datetime.strftime(event_date.end_date.astimezone(timezone), '%b %d')
+                    datetime.strftime(event_date.start_date.astimezone(timezone), '%b %d, %Y'),
+                    datetime.strftime(event_date.end_date.astimezone(timezone), '%b %d, %Y')
                 )
 
             event.append({"id": event_date.id,
@@ -485,7 +485,7 @@ class DatesHavingMyPhotosByDateListView(APIView):
             distinct().datetimes('upload_date', 'day', order="DESC", tzinfo=profile.timezone)
         ret = []
         for date in dates:
-            ret.append({'label': datetime.strftime(date, '%b %d'), 'date': datetime.strftime(date, '%Y-%m-%d')})
+            ret.append({'label': datetime.strftime(date, '%b %d, %Y'), 'date': datetime.strftime(date, '%Y-%m-%d')})
         return Response(ret, status=status.HTTP_200_OK)
 
 
