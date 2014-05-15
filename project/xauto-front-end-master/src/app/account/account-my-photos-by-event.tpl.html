@@ -1,5 +1,5 @@
     <div class="deletephotos">
-        <div ng-repeat="event in Datesbyevents" ng-show="event.dates">
+        <div ng-repeat="event in Datesbyevents" ng-show="Datesbyevents">
             <div class="panel panel-default">
                <div class="panel-heading">
                   <h4 class="panel-title">
@@ -9,7 +9,7 @@
                <div class="panel-body">
                     <div ng-repeat="dt in event.dates">
                          <a ui-sref="photosMyAtEventDate({id: dt.id})">
-                             {{dt.start_date | date: 'MMM d'}} - {{dt.end_date | date: 'MMM d'}}
+                             {{dt.date }}
                          </a>
                     </div>
                </div>

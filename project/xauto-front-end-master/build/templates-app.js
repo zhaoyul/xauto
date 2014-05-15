@@ -132,7 +132,7 @@ angular.module("account/account-my-photos-by-date.tpl.html", []).run(["$template
 angular.module("account/account-my-photos-by-event.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account-my-photos-by-event.tpl.html",
     "    <div class=\"deletephotos\">\n" +
-    "        <div ng-repeat=\"event in Datesbyevents\" ng-show=\"event.dates\">\n" +
+    "        <div ng-repeat=\"event in Datesbyevents\" ng-show=\"Datesbyevents\">\n" +
     "            <div class=\"panel panel-default\">\n" +
     "               <div class=\"panel-heading\">\n" +
     "                  <h4 class=\"panel-title\">\n" +
@@ -142,7 +142,7 @@ angular.module("account/account-my-photos-by-event.tpl.html", []).run(["$templat
     "               <div class=\"panel-body\">\n" +
     "                    <div ng-repeat=\"dt in event.dates\">\n" +
     "                         <a ui-sref=\"photosMyAtEventDate({id: dt.id})\">\n" +
-    "                             {{dt.start_date | date: 'MMM d'}} - {{dt.end_date | date: 'MMM d'}}\n" +
+    "                             {{dt.date }}\n" +
     "                         </a>\n" +
     "                    </div>\n" +
     "               </div>\n" +

@@ -252,7 +252,6 @@ class MyPhotosDeletePhotoView(DestroyAPIView):
 
     def get_queryset(self):
         profile = self.request.user.profile
-        print MultiuploaderImage.objects.filter(userprofile=profile)
         return MultiuploaderImage.objects.filter(userprofile=profile)
 
 
@@ -449,12 +448,29 @@ class DatesHavingMyPhotosByEventListView(APIView):
 
     def get(self, request, *args, **kwargs):
         profile = self.request.user.profile
-        evs = Event.objects.filter(event_dates__event_upload_images__userprofile=profile).distinct()
-        data = []
-        for e in evs:
-            data.append({"title": e.title,
-                         "dates": e.event_dates.all().values()})
-        return Response(data, status=status.HTTP_200_OK)
+        event_dates = EventDate.objects.filter(event_upload_images__userprofile=profile).distinct()
+
+        events = {}
+        for event_date in event_dates:
+            event = events.setdefault(event_date.event.title, [])
+            timezone = pytz.timezone(event_date.timezone.zone)
+            date = u'---'
+            if event_date.start_date.astimezone(timezone).date() == event_date.end_date.astimezone(timezone).date():
+                date = datetime.strftime(event_date.start_date.astimezone(timezone), '%b %d')
+            else:
+                date = u"{} - {}".format(
+                    datetime.strftime(event_date.start_date.astimezone(timezone), '%b %d'),
+                    datetime.strftime(event_date.end_date.astimezone(timezone), '%b %d')
+                )
+
+            event.append({"id": event_date.id,
+                          "title": event_date.feature_headline,
+                          "date": date,
+                          })
+        ret = []
+        for key, value in events.iteritems():
+            ret.append({'title': key, 'dates': value})
+        return Response(ret, status=status.HTTP_200_OK)
 
 
 class DatesHavingMyPhotosByDateListView(APIView):
@@ -467,8 +483,6 @@ class DatesHavingMyPhotosByDateListView(APIView):
         profile = self.request.user.profile
         imgs = MultiuploaderImage.objects.filter(userprofile=profile).\
             distinct().datetimes('upload_date', 'day', tzinfo=utc)
-
-        print imgs
 
         return Response(imgs, status=status.HTTP_200_OK)
 
