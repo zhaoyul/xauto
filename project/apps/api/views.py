@@ -482,7 +482,7 @@ class DatesHavingMyPhotosByDateListView(APIView):
     def get(self, request, *args, **kwargs):
         profile = self.request.user.profile
         dates = MultiuploaderImage.objects.filter(userprofile=profile).\
-            distinct().datetimes('upload_date', 'day', tzinfo=profile.timezone)
+            distinct().datetimes('upload_date', 'day', order="DESC", tzinfo=profile.timezone)
         ret = []
         for date in dates:
             ret.append({'label': datetime.strftime(date, '%b %d'), 'date': datetime.strftime(date, '%Y-%m-%d')})
