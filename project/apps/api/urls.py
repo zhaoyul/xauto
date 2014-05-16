@@ -22,7 +22,7 @@ urlpatterns = patterns('',
     url(r'^configuration/$', ConfigurationView.as_view(), name='configuration'),
     url(r'^events/list/$', EventsListView.as_view(), name='events-list'),
 
-    url(r'^events/(?P<pk>\d+)/lastdate/$',LastDateView.as_view(),
+    url(r'^events/(?P<pk>\d+)/lastdate/$', LastDateView.as_view(),
         name='date-photosmanage'),
 
     url(r'^eventdates/(?P<id>\d+)/photosmanage/$', EventDatePhotoManageView.as_view(),

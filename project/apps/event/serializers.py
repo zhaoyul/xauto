@@ -231,6 +231,7 @@ class EventDetailsSerializer(serializers.ModelSerializer):
 
             future_dates.append({
                 "date": start_day,
+                "start_date": future_date.start_date,
                 "timezone": future_date.timezone,
                 "startTime": start_time,
                 "endTime": end_time,

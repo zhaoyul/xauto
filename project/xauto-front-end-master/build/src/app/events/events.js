@@ -349,10 +349,18 @@ angular.module('blvdx.events', [
         $scope.copyLastDate = function () {
             Events.getLastDate($dateproxy.EventObj).then(function (date) {
                 var new_date = date;
+                var timezone = new_date.timezone;
+                DateWithTimezone.timezone = timezone;
+
                 delete new_date.id;
                 $scope.editDate = new_date;
-                $scope.editDate.startTime = $filter('date')(new_date.start_date, 'HH:mm');
-                $scope.editDate.endTime = $filter('date')(new_date.end_date, 'HH:mm');
+
+                // convert received dates to event timezone
+                $scope.editDate.start_date = DateWithTimezone.fromISO(new_date.start_date).localEquivalent();
+                $scope.editDate.end_date = DateWithTimezone.fromISO(new_date.end_date).localEquivalent();
+
+                $scope.editDate.startTime = $filter('date')($scope.editDate.start_date, 'HH:mm');
+                $scope.editDate.endTime = $filter('date')($scope.editDate.end_date, 'HH:mm');
             });
         };
     }])
