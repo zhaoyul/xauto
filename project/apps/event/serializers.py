@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from rest_framework import serializers
 
 from event.models import Event, EventImage, EventDate, Currency
@@ -220,11 +221,19 @@ class EventDetailsSerializer(serializers.ModelSerializer):
     def get_future_date(self, obj):
         future_dates = []
         for future_date in obj.get_future_dates():
+            timezone = future_date.timezone
+            start_date = future_date.start_date.astimezone(timezone)
+            start_day = datetime.strftime(start_date, '%b %d')
+            start_time = datetime.strftime(start_date, '%H:%M')
+
+            end_date = future_date.end_date.astimezone(timezone)
+            end_time = datetime.strftime(end_date, '%H:%M')
+
             future_dates.append({
-                "date": future_date.start_date,
+                "date": start_day,
                 "timezone": future_date.timezone,
-                "startTime": future_date.start_date.strftime('%H:%M'),
-                "endTime": future_date.end_date.strftime('%H:%M'),
+                "startTime": start_time,
+                "endTime": end_time,
                 "addr1": future_date.address_1,
                 "addr2": future_date.address_2,
                 "city": future_date.city,

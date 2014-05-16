@@ -86,7 +86,5 @@ urlpatterns = patterns('',
     url(r'^pictures/favorites/$', FavoritePicturesListView.as_view(),
         name='picture-favorites'),
 
-
-
     url(r'^', include(router.urls)),
 )

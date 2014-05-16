@@ -617,7 +617,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                                                    <div class=\"row-wrapper\">\n" +
     "                                                        <div class=\"col-xs-12 schedule-dropdown-header\">\n" +
     "                                                            <span class=\"badge badge-primary badge-lg schedule-dropdown-date\">\n" +
-    "                                                                {{futureDate.date | toLocalEq:futureDate.timezone | date: 'MMM d'}}\n" +
+    "                                                                {{futureDate.date}}\n" +
     "                                                            </span>\n" +
     "                                                            <span class=\"schedule-dropdown-location\">\n" +
     "                                                                <i class=\"xa-icon-location-md\"></i>{{futureDate.city}}, {{futureDate.state}}\n" +
