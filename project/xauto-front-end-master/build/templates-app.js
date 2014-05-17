@@ -775,7 +775,8 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
-    "</div>");
+    "</div>\n" +
+    "");
 }]);
 
 angular.module("events/event-edit.tpl.html", []).run(["$templateCache", function($templateCache) {

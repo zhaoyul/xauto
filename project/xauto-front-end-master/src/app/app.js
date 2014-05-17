@@ -373,9 +373,11 @@ angular.module( 'blvdx', [
 			if(!this.isVisible){
 				this.displayScope.showPhoto();
 			}
+            this.changeLocked = album && album.length < 2;
 			this.setIndex(startIndex || 0);
 			this.resize();
 		},
+        changeLocked:false,
 		back:element.find('.photoback'),// full container
 		container:element.find('.photoviewercontent'),// display area
 		imgcontainer:element.find('.imgcontainer'),// img container
@@ -539,6 +541,9 @@ angular.module( 'blvdx', [
 
 	// change image on key press
 	$scope.keyChangePhoto = function (evt) {
+        if($photoview.changeLocked){
+           return;
+        }
 		switch (evt.keyCode) {
 			case 37:
 				$scope.prevPhoto();
@@ -577,6 +582,9 @@ angular.module( 'blvdx', [
 	};
 
 	$scope.nextPhoto = function () {
+        if($photoview.changeLocked){
+            return;
+        }
 		var p = parseInt($photoview.index);
 		if ($photoview.photos.length == (p + 1)) {
 			p = 0;
@@ -586,6 +594,9 @@ angular.module( 'blvdx', [
 		$photoview.setIndex(p);
 	};
 	$scope.prevPhoto = function () {
+        if($photoview.changeLocked){
+            return;
+        }
 		var p = parseInt($photoview.index);
 		if (p === 0) {
 			p = $photoview.photos.length - 1;
@@ -616,11 +627,9 @@ angular.module( 'blvdx', [
     $scope.getImgDisplayURL = function(){
         //var url = window.location.href;
         //var arr = url.split("/");
-        //var base = arr[0] + "//" + arr[2];
-        console.log($scope.photo.userslug,$photoview.urlPath);
+        //var base = arr[0] + "//" + arr[2];  console.log($scope.photo.userslug,$photoview.urlPath);
         switch($photoview.urlPath){
-            case 1:
-                console.log(window.location.host + $global.appURL + $scope.photo.userslug + '/p' + $scope.photo.id + '/');
+            case 1:// profiles
                 return window.location.host + $global.appURL + $scope.photo.userslug + '/p' + $scope.photo.id + '/';
             case 0 :
             default:
@@ -642,6 +651,7 @@ angular.module( 'blvdx', [
 	};
 
 	$scope.social_fb = function (obj) {
+        console.log('share links ::',$scope.getImgDisplayURL(),$scope.getImgURL());
 		$fb.sharePhoto($scope.photo.event_name,$scope.getImgDisplayURL(),$scope.getImgURL(),$scope.photo.caption,($photoview.EventObj? $photoview.EventObj.about : ""));
 	};
 
