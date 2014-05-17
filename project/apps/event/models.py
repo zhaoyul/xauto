@@ -79,6 +79,9 @@ class EventDate(TimestampedModel):
     shared = models.ManyToManyField(UserProfile, null=True, blank=True,
                                     related_name='shared_dates')
 
+    class Meta:
+        ordering = ('-start_date',)
+
     def __unicode__(self):
         return '(%s) - %s/%s' % (self.event.title.capitalize(),
                                  self.start_date, self.end_date)
@@ -169,8 +172,7 @@ class Event(TimestampedModel):
             start_date__gt=timezone.now()).order_by('start_date')
 
     def get_nearest_date(self, only_future=False):
-        nearest_dates = self.event_dates.filter(
-            end_date__gt=timezone.now()).order_by('start_date')
+        nearest_dates = self.event_dates.filter(end_date__gt=timezone.now()).order_by('start_date')
         if not nearest_dates.exists() and not only_future:
             nearest_dates = self.event_dates.order_by('-start_date')
         if nearest_dates.exists():
@@ -178,7 +180,7 @@ class Event(TimestampedModel):
         return None
 
     def get_latest_date(self):
-        return self.event_dates.all().last()
+        return self.event_dates.all().first()
 
     def is_live_streaming(self, user=None):
         nowtime = timezone.now()

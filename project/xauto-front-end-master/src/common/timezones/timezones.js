@@ -12,7 +12,6 @@ angular.module( 'timezonesService', [])
           var tz_date = DateWithTimezone.fromISO(date);
           return tz_date.localEquivalent();
         };
-
     }])
 
     .factory('DateWithTimezone', function(){

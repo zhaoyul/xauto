@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import uuid
 import math
-import pytz
-from datetime import datetime, timedelta, time
+from datetime import datetime, time
 from random import randrange
 from hashlib import sha1
+from api.permissions import IsEventAuthorOrReadOnly, IsEventDateAuthorOrReadOnly, IsAccountOwnerOrReadOnly
 
+import pytz
 from django.utils import timezone
-from django.utils.timezone import utc
 from django_countries import countries
 from django.db.models import Q
 from django.contrib.auth.models import User
@@ -17,12 +17,12 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.core.files.base import ContentFile
 from django.conf import settings
-from rest_framework.generics import (ListAPIView, RetrieveAPIView, DestroyAPIView)
+from rest_framework.generics import (ListAPIView, RetrieveAPIView, DestroyAPIView, ListCreateAPIView)
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
 from event.models import Event, EventDate, EventImage
 from event.serializers import (EventSerializer, EventDetailsSerializer,
                                EventModelSerializer, EventDateSerializer)
@@ -64,8 +64,11 @@ class EventsListView(ListAPIView):
         else:
             queryset = Event.objects.all()
 
-        if own_events == 'true' and user.is_active:
-            queryset = queryset.filter(author=user.profile)
+        if own_events == 'true':
+            if user.is_active:
+                queryset = queryset.filter(author=user.profile)
+            else:
+                queryset = queryset.none()
 
         if filter_by == 'following':
             if not user.is_authenticated():
@@ -162,14 +165,14 @@ class AlbumPhotosUploader(APIView):
             imageObj.save()
             i += 1
 
-        return Response({}, status=status.HTTP_200_OK)
+        return Response({'success': True}, status=status.HTTP_200_OK)
 
 
 class EventViewSet(ModelViewSet):
     """
     Returns Event CRUD methods
     """
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsEventAuthorOrReadOnly)
     serializer_class = EventModelSerializer
     model = Event
     lookup_field = 'slug'
@@ -190,11 +193,24 @@ class EventViewSet(ModelViewSet):
             obj.main_image = imageObj
 
 
-# TODO: Only event creator should be able to save date!
 class EventDateViewSet(ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsEventDateAuthorOrReadOnly)
     serializer_class = EventDateSerializer
     model = EventDate
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.DATA, files=request.FILES)
+        if serializer.is_valid():
+            # permissions check
+            if serializer.object.event.author == request.user.profile:
+                self.pre_save(serializer.object)
+                self.object = serializer.save(force_insert=True)
+                self.post_save(self.object, created=True)
+                headers = self.get_success_headers(serializer.data)
+                return Response(serializer.data, status=status.HTTP_201_CREATED,
+                                headers=headers)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LastDateView(RetrieveAPIView):
@@ -212,28 +228,18 @@ class LastDateView(RetrieveAPIView):
         return Response(serializer.data)
 
 
-class EventAllImagesView(APIView):
+class EventAllImagesView(ListCreateAPIView):
     """
     Show all photos of the album
     """
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsEventAuthorOrReadOnly)
+    model = Event
 
-    def get(self, request, slug, *args, **kwargs):
-        user = self.request.user
+    def list(self, request, *args, **kwargs):
+        user = request.user
+        slug = kwargs.get('slug')
 
         event = Event.objects.get(slug=slug, author=user.profile)
-
-        #setting image
-        sset = self.request.GET.get('id', None)
-        if sset:
-            img = MultiuploaderImage.objects.get(id=sset)
-            new = EventImage()
-            new.image = img.image
-            new.save()
-            event.main_image = new
-            event.save()
-            return Response({}, status=status.HTTP_200_OK)
-
         imgs = []
 
         mi = MultiuploaderImage.objects.filter(event_date__in=EventDate.objects.filter(event=event))
@@ -241,6 +247,34 @@ class EventAllImagesView(APIView):
             imgs.append((m.id, m.thumb_url(250, 250)))
 
         return Response(imgs, status=status.HTTP_200_OK)
+
+    def create(self, request, *args, **kwargs):
+        """Set event photo
+        """
+        user = request.user
+        slug = kwargs.get('slug')
+
+        event = Event.objects.get(slug=slug, author=user.profile)
+
+        #setting image
+        sset = self.request.DATA.get('id', None)
+        message = 'Invalid parameters'
+        if sset:
+            try:
+                img = MultiuploaderImage.objects.get(id=sset)
+                new = EventImage()
+                new.image = img.image
+                new.save()
+                event.main_image = new
+                event.save()
+                data = {'id': event.main_image.id}
+                headers = self.get_success_headers(data)
+                return Response(data, status=status.HTTP_201_CREATED,
+                                headers=headers)
+            except MultiuploaderImage.DoesNotExist:
+                message = 'Image not found'
+
+        return Response({'error': message}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class MyPhotosDeletePhotoView(DestroyAPIView):
@@ -304,7 +338,7 @@ class FollowEventView(APIView):
         event = Event.objects.get(slug=slug)
         srv_following = False
         try:
-            if user.profile.followed_events.filter(slug=slug).count():
+            if user.profile.followed_events.filter(slug=slug).exists():
                 user.profile.followed_events.remove(event)
             else:
                 user.profile.followed_events.add(event)
@@ -352,7 +386,7 @@ class CheckUsernameView(APIView):
 
 
 class UserProfileViewSet(ModelViewSet):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticatedOrReadOnly, IsAccountOwnerOrReadOnly)
     serializer_class = UserProfileSerializer
     model = UserProfile
     lookup_field = 'slug'
@@ -418,6 +452,7 @@ class FollowProfileView(APIView):
     """
     permission_classes = (IsAuthenticated,)
 
+    # TODO: refactor
     def put(self, request, slug, *args, **kwargs):
         user = request.user
         profile = UserProfile.objects.get(slug=slug)

@@ -9,12 +9,13 @@ angular.module('resources.events', ['restangular'])
   };
 
   Events.selphotoModal = function (id) {
-      return Restangular.one('events',id).customGET('selphotoModal');
+      return Restangular.one('events',id).customGET('eventphotos');
   };
 
 
   Events.selimg = function (ev_id,entry) {
-      return Restangular.one('events',ev_id).customGETLIST('selphotoModal', {id:entry[0]});
+      return Restangular.one('events',ev_id).customPOST({id: entry[0]}, 'eventphotos');
+      //return Restangular.one('events',ev_id).customGETLIST('selphotoModal', {id:entry[0]});
   };
 
 

@@ -617,7 +617,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                                                    <div class=\"row-wrapper\">\n" +
     "                                                        <div class=\"col-xs-12 schedule-dropdown-header\">\n" +
     "                                                            <span class=\"badge badge-primary badge-lg schedule-dropdown-date\">\n" +
-    "                                                                {{futureDate.date | toLocalEq:futureDate.timezone | date: 'MMM d'}}\n" +
+    "                                                                {{futureDate.date}}\n" +
     "                                                            </span>\n" +
     "                                                            <span class=\"schedule-dropdown-location\">\n" +
     "                                                                <i class=\"xa-icon-location-md\"></i>{{futureDate.city}}, {{futureDate.state}}\n" +
@@ -918,7 +918,7 @@ angular.module("events/events.tpl.html", []).run(["$templateCache", function($te
     "              <div class=\"row-wrapper date-headline\">\n" +
     "                <div class=\"pull-left\">\n" +
     "                  <a href=\"#\" tooltip-placement=\"right\" tooltip=\"View schedule\">\n" +
-    "                    <span class=\"badge badge-primary\">{{event.date_info.date | toLocalEq:event.date_info.timezone | date: 'MMM d'}}</span>\n" +
+    "                    <span class=\"badge badge-primary\">{{event.date_info.date | toLocalEq:event.date_info.timezone | date: 'MMM d hh:mm'}}</span>\n" +
     "                  </a>\n" +
     "                </div>\n" +
     "                <div class=\"pull-right\">\n" +

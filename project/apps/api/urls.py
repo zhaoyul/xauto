@@ -22,7 +22,7 @@ urlpatterns = patterns('',
     url(r'^configuration/$', ConfigurationView.as_view(), name='configuration'),
     url(r'^events/list/$', EventsListView.as_view(), name='events-list'),
 
-    url(r'^events/(?P<pk>\d+)/lastdate/$',LastDateView.as_view(),
+    url(r'^events/(?P<pk>\d+)/lastdate/$', LastDateView.as_view(),
         name='date-photosmanage'),
 
     url(r'^eventdates/(?P<id>\d+)/photosmanage/$', EventDatePhotoManageView.as_view(),
@@ -33,7 +33,7 @@ urlpatterns = patterns('',
     url(r'^events/(?P<slug>[-\w]+)/follow/$', FollowEventView.as_view(),
         name='event-follow'),
 
-    url(r'^events/(?P<slug>[-\w]+)/selphotoModal/$', EventAllImagesView.as_view(),
+    url(r'^events/(?P<slug>[-\w]+)/eventphotos/$', EventAllImagesView.as_view(),
         name='event-follow'),
 
     url(r'^register/$', RegistrationView.as_view(), name='profiles-register'),
@@ -85,8 +85,6 @@ urlpatterns = patterns('',
         ToggleFavoritePicture.as_view(), name='picture-favorite'),
     url(r'^pictures/favorites/$', FavoritePicturesListView.as_view(),
         name='picture-favorites'),
-
-
 
     url(r'^', include(router.urls)),
 )
