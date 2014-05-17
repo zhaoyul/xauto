@@ -817,7 +817,6 @@ angular.module('blvdx.events', [
                         switch(p.charAt(0)){
                             case 'p':
                                 // ------>
-                                console.log('state init::',$scope.Albums);
                                 for(var i = 0;i<$scope.Albums.length;i++){
                                     var _alb = $scope.Albums[i].photos;
                                     for(var j = 0;j<_alb.length;j++){
@@ -843,9 +842,24 @@ angular.module('blvdx.events', [
                                 }
                                 break;
                             case 'a':
-                                setTimeout(function(){
-                                    $('html, body').animate({scrollTop:$('#accordion').find('.panel-default').eq(Number(p.substr(1))-1).offset().top - 60}, 1000);
-                                },100);
+                                if($scope.Albums == null){
+                                    return;
+                                }
+                                for(var i = 0;i<$scope.Albums.length ; i++){
+                                    console.log($scope.Albums[i].id , p.substr(1));
+                                    if($scope.Albums[i].id == p.substr(1)){
+                                        break;
+                                    }
+                                }
+                                console.log();
+                                if(i == $scope.Albums.length ){
+                                    // not found
+                                } else {
+                                    setTimeout(function(){
+                                        $('html, body').animate({
+                                            scrollTop:$('#accordion').find('.panel-default').eq(i).offset().top - 60}, 1000);
+                                    },100);
+                                }
                                 break;
                         }
                     }
@@ -940,6 +954,16 @@ angular.module('blvdx.events', [
                 $state.transitionTo('eventDetails.Focus', {eventId: $scope.stateParams.eventId , focus:'a'+id});
             };
 
+
+            $scope.getCurrentURL = function(){
+                return window.location.href;
+            };
+            $scope.closeModal = function(){
+                $(".modal:visible").find(".close").click();
+            };
+            $scope.focusOnAlbum = function (){
+                console.log(this);
+            };
 			// ------>
 		}])
 

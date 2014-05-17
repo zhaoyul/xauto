@@ -755,7 +755,27 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "            </form>\n" +
     "        </div><!-- /.modal-content -->\n" +
     "    </div><!-- /.modal-dialog -->\n" +
-    "</div><!-- /.modal -->");
+    "</div><!-- /.modal -->\n" +
+    "\n" +
+    "<div class=\"modal fade\" id=\"shareAlbumModal\">\n" +
+    "    <div class=\"modal-dialog\">\n" +
+    "        <div class=\"modal-content\">\n" +
+    "            <div class=\"modal-header\">\n" +
+    "                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n" +
+    "                <h4 class=\"modal-title\">Share album</h4>\n" +
+    "            </div>\n" +
+    "            <div class=\"modal-body\">\n" +
+    "                <div class=\"form-group\" style=\"text-align: center;padding: 40px;\">\n" +
+    "                    <div>Copy the link below to share:</div>\n" +
+    "                    <input class=\"copy-album-url\" type=\"text\" value=\"{{getCurrentURL()}}\" readonly />\n" +
+    "                </div>\n" +
+    "                <div class=\"modal-footer\">\n" +
+    "                    <button ng-click=\"closeModal()\" class=\"btn btn-primary\">Close</button>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "</div>");
 }]);
 
 angular.module("events/event-edit.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -1160,7 +1180,7 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
     "        <a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#album-{{album.id}}\" onClick=\"return false\">\n" +
     "          {{album.feature_headline}}\n" +
     "        </a>\n" +
-    "        <div class=\"albumShare\" href=\"#\" tooltip-placement=\"left\" tooltip=\"Share\" ng-click=\"shareAlbum(album.id)\"><i class=\"icon-share\"></i></div>\n" +
+    "        <div class=\"albumShare\" href=\"#\" tooltip-placement=\"left\" tooltip=\"Share\" data-toggle=\"modal\"  data-target=\"#shareAlbumModal\" ng-click=\"focusOnAlbum()\"><i class=\"icon-share\"></i></div>\n" +
     "      </h4>\n" +
     "    </div>\n" +
     "    <div id=\"album-{{album.id}}\" class=\"panel-collapse collapse in\" ng-class=\"{in:album.active}\" >\n" +
@@ -1668,8 +1688,7 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "        </li>\n" +
     "    </ul>\n" +
     "</div>\n" +
-    "<div ng-show=\"is_fetching\">Loading older entries...</div>\n" +
-    "");
+    "<div ng-show=\"is_fetching\">Loading older entries...</div>");
 }]);
 
 angular.module("stream/stream.tpl.html", []).run(["$templateCache", function($templateCache) {
