@@ -33,7 +33,7 @@ urlpatterns = patterns('',
     url(r'^events/(?P<slug>[-\w]+)/follow/$', FollowEventView.as_view(),
         name='event-follow'),
 
-    url(r'^events/(?P<slug>[-\w]+)/selphotoModal/$', EventAllImagesView.as_view(),
+    url(r'^events/(?P<slug>[-\w]+)/eventphotos/$', EventAllImagesView.as_view(),
         name='event-follow'),
 
     url(r'^register/$', RegistrationView.as_view(), name='profiles-register'),
