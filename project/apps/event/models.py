@@ -1,4 +1,3 @@
-from datetime import datetime
 # ---------------------------------------------------
 # --- Django base core code (system)              ---
 from django.db import models
@@ -16,8 +15,6 @@ from account.models import UserProfile
 from xauto_lib.models import TimestampedModel
 from multiuploader.models import MultiuploaderImage
 from timezone_field import TimeZoneField
-
-from datetime import timedelta
 
 
 class Currency(models.Model):

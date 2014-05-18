@@ -33,6 +33,7 @@ class DispatchableConnection(SockJSConnection, Dispachable):
         logger.debug("Client connected: %s" % info.ip)
 
     def on_message(self, msg):
+        print 'message: ', msg
         try:
             if type(msg) == dict:
                 message = msg

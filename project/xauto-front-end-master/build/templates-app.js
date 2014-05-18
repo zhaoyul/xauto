@@ -736,7 +736,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                        <label class=\"col-lg-3 control-label\">Event Date</label>\n" +
     "                        <div class=\"col-lg-9\">\n" +
     "                            <select class=\"form-control\" ng-model=\"Album.id\" name=\"albumid\" required>\n" +
-    "                                <option ng-repeat=\"album in EventObj.albums\" value=\"{{album.id}}\">{{album.feature_headline}} - {{album.date}}</option>\n" +
+    "                                <option ng-repeat=\"album in EventObj.albums\" value=\"{{album.id}}\">{{album.feature_headline}} - {{album.date | toLocalEq:album.timezone | date:\"MMM d hh:mm\" }}</option>\n" +
     "                            </select>\n" +
     "                            <span class=\"help-block\" ng-show=\"errors.id\" ng-repeat=\"error in errors.id\">{{error}}</span>\n" +
     "                        </div>\n" +
@@ -750,7 +750,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "                    </div>\n" +
     "                </div>\n" +
     "                <div class=\"modal-footer\">\n" +
-    "                    <button type=\"sumbit\" ng-class=\"{'btn-danger':uploading}\" class=\"btn btn-primary\">{{uploading ? 'Uploading':'Upload'}}</button>\n" +
+    "                    <button type=\"submit\" ng-class=\"{'btn-danger':uploading}\" class=\"btn btn-primary\">{{uploading ? 'Uploading':'Upload'}}</button>\n" +
     "                </div>\n" +
     "            </form>\n" +
     "        </div><!-- /.modal-content -->\n" +

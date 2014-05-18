@@ -163,7 +163,7 @@
                         <label class="col-lg-3 control-label">Event Date</label>
                         <div class="col-lg-9">
                             <select class="form-control" ng-model="Album.id" name="albumid" required>
-                                <option ng-repeat="album in EventObj.albums" value="{{album.id}}">{{album.feature_headline}} - {{album.date}}</option>
+                                <option ng-repeat="album in EventObj.albums" value="{{album.id}}">{{album.feature_headline}} - {{album.date | toLocalEq:album.timezone | date:"MMM d hh:mm" }}</option>
                             </select>
                             <span class="help-block" ng-show="errors.id" ng-repeat="error in errors.id">{{error}}</span>
                         </div>
@@ -177,7 +177,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="sumbit" ng-class="{'btn-danger':uploading}" class="btn btn-primary">{{uploading ? 'Uploading':'Upload'}}</button>
+                    <button type="submit" ng-class="{'btn-danger':uploading}" class="btn btn-primary">{{uploading ? 'Uploading':'Upload'}}</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->

@@ -46,6 +46,8 @@ class PhotoStream(DispatchableConnection):
             caption_ev = "@ %s" %entry.event_date.event.title
             eventslug = "/events/" + entry.event_date.event.slug
         caption_text.append("by %s" % entry.userprofile.get_full_name())
+
+
         msg = {
             "image": entry.url,
             "id": entry.id,
@@ -79,7 +81,6 @@ class PhotoStream(DispatchableConnection):
             user = None
         self.user = user
 
-
     def on_subscribe(self, subscriptions):
         """
             checks and saves user subscriptions
@@ -104,8 +105,6 @@ class PhotoStream(DispatchableConnection):
         """
             fetches ``count`` latest photos from subscribed events or users
         """
-        now = datetime.utcnow().replace(tzinfo=utc)
-
         user_photos = Q(userprofile__slug__in=self.subscriptions["profiles"])
         event_photos = Q(event_date__event__slug__in=self.subscriptions["events"])
 
@@ -128,7 +127,6 @@ class PhotoStream(DispatchableConnection):
         for obj in objs:
             self.send_message("append_entry", self.entry_serializer(obj))
         self.send_message("fetch_end", None)
-
 
     def on_favorite(self, id):
         """

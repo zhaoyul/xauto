@@ -664,13 +664,13 @@ class StreamListView(ListAPIView):
             )
             queryset = MultiuploaderImage.objects.filter(
                 Q(event_date__event_id__in=events_ids) &
-                Q(event_date__start_date__lt=datetime.now()) &
-                Q(event_date__end_date__gt=datetime.now())
+                Q(event_date__start_date__lt=timezone.now()) &
+                Q(event_date__end_date__gt=timezone.now())
             )
         else:
             queryset = MultiuploaderImage.objects.filter(
-                Q(event_date__start_date__lt=datetime.now()) &
-                Q(event_date__end_date__gt=datetime.now())
+                Q(event_date__start_date__lt=timezone.now()) &
+                Q(event_date__end_date__gt=timezone.now())
             )
         return queryset
 
@@ -1013,7 +1013,7 @@ class CoordinatedPhotoUploader(APIView):
         """
             Find first matching event for given coordinates (long, lat) within radius (in km)
         """
-        now = datetime.now()
+        now = timezone.now()
         matches = []
 
         for event_date in EventDate.objects.filter(start_date__lt=now, end_date__gt=now):

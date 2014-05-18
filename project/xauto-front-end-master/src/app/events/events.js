@@ -919,7 +919,7 @@ angular.module('blvdx.events', [
                 Events.uploadPhotos($scope.Album.photos).then(function (photos) {
                     $scope.Album = {photos: []};
                     $scope.uploading = false;
-                    $scope.reloadEvent();
+                    //$scope.reloadEvent();
                     $(".modal:visible").find(".close").click();
                 }, function (error) {
                     $scope.errors = error.data;
@@ -942,7 +942,6 @@ angular.module('blvdx.events', [
 			};
 
 			$scope.reloadEvent();
-
 
 			$scope.selectPhoto = function () {
 				// select photo by click in html
