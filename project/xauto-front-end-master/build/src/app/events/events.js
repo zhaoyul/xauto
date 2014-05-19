@@ -433,6 +433,7 @@ angular.module('blvdx.events', [
 			};
 
 			$scope.$on(GeolocationEvent.COMPLETE, function (nge) {
+                console.log('hasGeo:',nge);
 				$scope.check();
 				if (!$scope.$$phase) {
 					$scope.$apply();// async call z poza angulara potrzebuje apply, inaczej nie zrobi update'u parametrow
@@ -780,6 +781,7 @@ angular.module('blvdx.events', [
                 $location.path( path );
             };
 			$scope.stateParams = $stateParams;
+
 			$scope.reloadEvent = function () {
 				// get event data from url id ::
 				Events.getDetails($stateParams.eventId).then(function (event) {
@@ -919,7 +921,10 @@ angular.module('blvdx.events', [
                 Events.uploadPhotos($scope.Album.photos).then(function (photos) {
                     $scope.Album = {photos: []};
                     $scope.uploading = false;
-                    //$scope.reloadEvent();
+                    console.log('uploading:: is live',$scope.EventObj.srv_live);
+                    if(!$scope.EventObj.srv_live){
+                        $scope.reloadEvent();
+                    }
                     $(".modal:visible").find(".close").click();
                 }, function (error) {
                     $scope.errors = error.data;

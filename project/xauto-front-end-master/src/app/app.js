@@ -668,7 +668,8 @@ angular.module( 'blvdx', [
 	$scope.social_pl = function (obj) {
 		window.open('https://plus.google.com/share?url=' + escape(window.location.href));
 	};
-}).service('$global',function (){
+})
+.service('$global',function (){
 	var g = {};
     g.isPhonegap = function (){
         try {
