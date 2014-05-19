@@ -99,7 +99,7 @@ angular.module('blvdx.events', [
 				}
 			})
 			.state('eventDetails.Focus', {
-				url: '/:focus'
+				url: '/:focus/'
 			});
 
 	}])
