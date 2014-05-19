@@ -647,7 +647,7 @@ angular.module( 'blvdx', [
 
 	// ------> SOCIAL BUTTONS
 	$scope.social_tw = function (obj) {
-		window.open('https://twitter.com/intent/tweet?text='+ ($photoview.EventObj ? $photoview.EventObj.title : $scope.photo.caption_both )+ '&url=' + escape($scope.getImgDisplayURL()));
+		window.open('https://twitter.com/intent/tweet?text='+ ($photoview.EventObj ? $photoview.EventObj.title : $scope.photo.caption_both )+ '&url=http://' + escape($scope.getImgDisplayURL()));
 	};
 
 	$scope.social_fb = function (obj) {
@@ -668,7 +668,8 @@ angular.module( 'blvdx', [
 	$scope.social_pl = function (obj) {
 		window.open('https://plus.google.com/share?url=' + escape(window.location.href));
 	};
-}).service('$global',function (){
+})
+.service('$global',function (){
 	var g = {};
     g.isPhonegap = function (){
         try {
