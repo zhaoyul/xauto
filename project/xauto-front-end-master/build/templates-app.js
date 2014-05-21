@@ -767,7 +767,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "            <div class=\"modal-body\">\n" +
     "                <div class=\"form-group\" style=\"text-align: center;padding: 40px;\">\n" +
     "                    <div>Copy the link below to share:</div>\n" +
-    "                    <input class=\"copy-album-url\" type=\"text\" value=\"{{getCurrentURL()}}\" readonly />\n" +
+    "                    <input class=\"copy-album-url form-control\" style=\"cursor: pointer\" type=\"text\" value=\"{{currentURL}}\" readonly />\n" +
     "                </div>\n" +
     "                <div class=\"modal-footer\">\n" +
     "                    <button ng-click=\"closeModal()\" class=\"btn btn-primary\">Close</button>\n" +
@@ -1044,7 +1044,7 @@ angular.module("events/partial_add_event_form.tpl.html", []).run(["$templateCach
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"form-group\" ng-class=\"{'has-error': form.short_link.$invalid || errors.short_link}\">\n" +
-    "    <label class=\"col-lg-3 control-label\">xau.to/</label>\n" +
+    "    <label class=\"col-lg-3 control-label\">xauto.co/app/#/events/</label>\n" +
     "    <div class=\"col-lg-6\">\n" +
     "      <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"EventObj.short_link\" ng-keyup=\"checkShortLink($event.target.value)\" name=\"short_link\">\n" +
     "      <span class=\"help-block\" ng-show=\"errors.short_link\" ng-repeat=\"error in errors.short_link\">{{error}}</span>\n" +

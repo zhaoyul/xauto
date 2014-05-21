@@ -774,8 +774,8 @@ angular.module('blvdx.events', [
 
 		}])
 
-	.controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', 'Accounts', '$http', 'Streams' , '$state' , '$fb','$photoview','security',
-		function EventsCtrl($scope, titleService, $location, $stateParams, Events, Accounts, $http, Streams, $state , $fb , $photoview,security) {
+	.controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', 'Accounts', '$http', 'Streams' , '$state' , '$fb','$photoview','security','$global',
+		function EventsCtrl($scope, titleService, $location, $stateParams, Events, Accounts, $http, Streams, $state , $fb , $photoview,security,$global) {
 			titleService.setTitle('Event Details');
             $scope.go = function ( path ) {
                 $location.path( path );
@@ -856,12 +856,11 @@ angular.module('blvdx.events', [
                                     return;
                                 }
                                 for(var i = 0;i<$scope.Albums.length ; i++){
-                                    console.log($scope.Albums[i].id , p.substr(1));
+                                    //console.log($scope.Albums[i].id , p.substr(1));
                                     if($scope.Albums[i].id == p.substr(1)){
                                         break;
                                     }
                                 }
-                                console.log();
                                 if(i == $scope.Albums.length ){
                                     // not found
                                 } else {
@@ -921,7 +920,6 @@ angular.module('blvdx.events', [
                 Events.uploadPhotos($scope.Album.photos).then(function (photos) {
                     $scope.Album = {photos: []};
                     $scope.uploading = false;
-                    console.log('uploading:: is live',$scope.EventObj.srv_live);
                     if(!$scope.EventObj.srv_live){
                         $scope.reloadEvent();
                     }
@@ -963,18 +961,16 @@ angular.module('blvdx.events', [
 			};
 
             $scope.shareAlbum = function (id){
+                $scope.currentURL = 'http://'+ window.location.host + $global.appURL +'/events/'+ $scope.EventObj.slug + '/a' + id + '/';
                 $state.transitionTo('eventDetails.Focus', {eventId: $scope.stateParams.eventId , focus:'a'+id});
             };
 
-
-            $scope.getCurrentURL = function(){
-                return window.location.href;
-            };
+            $scope.currentURL = '';
             $scope.closeModal = function(){
                 $(".modal:visible").find(".close").click();
             };
             $scope.focusOnAlbum = function (){
-                console.log(this);
+                $scope.shareAlbum(this.$parent.album.id);
             };
 			// ------>
 		}])
