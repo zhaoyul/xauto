@@ -6,7 +6,9 @@ angular.module( 'blvdx.account', [
   'angularFileUpload',
   'security.authorization',
   'resources.accounts',
-  'resources.common'
+  'resources.common',
+  'resources.streams',
+  'security.service'
 ])
 
 /**
@@ -185,8 +187,8 @@ angular.module( 'blvdx.account', [
 
 }])
 
-.controller( 'AccountEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Accounts', 'Common', '$upload',
-    function AccountCtrl( $scope, $state, titleService, $stateParams, Accounts, Common, $upload ) {
+.controller( 'AccountEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Accounts', 'Common', '$upload', 'security',
+    function AccountCtrl( $scope, $state, titleService, $stateParams, Accounts, Common, $upload, security) {
   titleService.setTitle( 'Edit Account' );
 
   Accounts.getAccount($stateParams.accountId).then(function (account) {
@@ -196,7 +198,9 @@ angular.module( 'blvdx.account', [
 
   $scope.accountSubmit = function(){
     Accounts.saveAccount($scope.AccountObj).then(function (account) {
-        $state.transitionTo('events');
+        security.refreshCurrentUser();
+        $state.go('accountEdit', {accountId: account.user.username});
+        //$state.transitionTo('events');
     });
   };
 
@@ -233,7 +237,7 @@ angular.module( 'blvdx.account', [
 
 }])
 
-.controller( 'MyPhotosAtEventDate', ['$scope', 'titleService', 'Accounts', '$state', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, $state, $stateParams ) {
+.controller( 'MyPhotosAtEventDate', ['$scope', 'titleService', 'Accounts', 'Streams', '$state', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, Streams, $state, $stateParams ) {
   titleService.setTitle( 'My Photos' );
 
   Accounts.getMyPhotosAtEventDate($stateParams.id).then(function (photos) {
@@ -241,7 +245,7 @@ angular.module( 'blvdx.account', [
   });
 
   $scope.Delete = function(obj) {
-      Accounts.deleteMyPhoto(obj.id).then(function(result){
+      Streams.send_delete(obj.id).then(function(result){
         obj.hide = true;
       });
   };
@@ -263,7 +267,7 @@ angular.module( 'blvdx.account', [
   };
 }])
 
-.controller( 'MyPhotosOnDate', ['$scope', 'titleService', 'Accounts', '$state', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, $state, $stateParams ) {
+.controller( 'MyPhotosOnDate', ['$scope', 'titleService', 'Accounts', 'Streams', '$state', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, Streams, $state, $stateParams ) {
   titleService.setTitle( 'My Photos' );
   $scope.date = $stateParams.dt;
   $scope.$state = $state;
@@ -273,7 +277,7 @@ angular.module( 'blvdx.account', [
   });
 
   $scope.Delete = function(obj) {
-      Accounts.deleteMyPhoto(obj.id).then(function(result){
+      Streams.send_delete(obj.id).then(function(result){
         obj.hide = true;
       });
   };

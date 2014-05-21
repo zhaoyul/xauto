@@ -64,14 +64,13 @@ angular.module('resources.accounts', ['restangular'])
           return Restangular.all('myphotos').getList({'eventdate_id': id});
       };
 
-
       Accounts.getMyOrphanedPhotos = function (date) {
           return Restangular.all('myphotos').customGETLIST('orphans', {dt: date});
       };
 
-      Accounts.deleteMyPhoto = function (id) {
-          return Restangular.one('myphotos', id).customDELETE('delete');
-      };
+//      Accounts.deleteMyPhoto = function (id) {
+//          return Restangular.one('myphotos', id).customDELETE('delete');
+//      };
 
       Accounts.checkUsername = function (params) {
           return Restangular.one('profiles').customGET('check-username', params);

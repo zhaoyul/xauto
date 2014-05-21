@@ -35,14 +35,11 @@ angular.module('security.service', [
     }
   }
   function onLoginDialogCancel(reason) {
-    console.log('onlogindialogcancel called');
-    console.log('reason: ' + reason);
     loginDialog = null;
     queue.cancelAll();
     //redirect();
   }
   function onLoginDialogClose(success) {
-    console.log('onlogindialogclose called');
     loginDialog = null;
     if ( success ) {
       queue.retryAll();
@@ -80,7 +77,6 @@ angular.module('security.service', [
     resetDialog = null;
   }
 
-
   // Register a handler for when an item is added to the retry queue
   queue.onItemAddedCallbacks.push(function(retryItem) {
     if ( queue.hasMore() ) {
@@ -107,7 +103,6 @@ angular.module('security.service', [
 
     // Attempt to authenticate a user by the given email and password
     login: function(email, password) {
-      console.log({email: email, password: password});
       return Accounts.login({email: email, password: password}).then(
           function(account) {
               if (account.user){
@@ -126,13 +121,11 @@ angular.module('security.service', [
 
     // Give up trying to login and clear the retry queue
     cancelLogin: function() {
-      console.log('cancelLogin');
       closeLoginDialog(false);
       //redirect(url);
     },
 
     cancelReset: function() {
-      console.log('cancelReset');
       closeResetPasswordDialog(false);
     },
 
@@ -147,6 +140,11 @@ angular.module('security.service', [
 //        service.currentUser = null;
 //        redirect(redirectTo);
 //      });
+    },
+    refreshCurrentUser: function(){
+        Accounts.getCurrentUser().then(function(response) {
+          service.currentUser = response.user;
+        });
     },
 
     // Ask the backend to see if a user is already authenticated - this may be from a previous session.

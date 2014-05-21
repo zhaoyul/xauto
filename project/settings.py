@@ -413,6 +413,8 @@ COUNTRIES_OVERRIDE = {
 TOS_URL = u'#'
 GOTO_BUTTON_URL=u'http://maps.apple.com/?q={lat},{lon}'
 
+DATETIME_FORMAT = '%b %d, %Y'
+
 try:
     from settings_local import *
 except Exception, err:

@@ -1,4 +1,4 @@
-<div><h1 >Manage photos for date  {{DateObj.DateObjTitle}}</h1></div>
+<div><h1 >Manage photos for: {{ DateObj.DateObjLocation }} - {{ DateObj.DateObjDate }}</h1></div>
 <br/>
 <div class="clear"></div>
 <div class="row">
@@ -9,8 +9,8 @@
                     <div bx-stream-photo="{{item.image}}" class="inner"></div>
                     <ul class="stream-action-links">
                         <li class="action-delete">
-                            <a href="javascript:;" tooltip-placement="left" tooltip="Delete"
-                               ng-click="Delete(item)">
+                            <a href="javascript:;" tooltip-placement="left" tooltip="Remove photo from this event"
+                               ng-click="Remove(item)">
                                 <i class="icon-remove"></i>
                             </a>
                         </li>

@@ -69,8 +69,13 @@ angular.module('resources.streams', ['resources.configuration', 'restangular'])
     };
 
     instance.send_delete = function(entry_id){
-        return Restangular.one('pictures', entry_id).customDELETE(entry_id, 'delete');
+        return Restangular.one('pictures', entry_id).customDELETE('delete');
         //return Restangular.one('pictures', entry_id).customPUT(entry_id, 'delete');
+    };
+
+    instance.send_unassign = function(pk){
+      //unassign photo from event date
+      return Restangular.one('pictures', pk).customOperation('patch', 'unassign', {}, {}, {event_date: null});
     };
 
     instance.send_fetch_latest = function(){

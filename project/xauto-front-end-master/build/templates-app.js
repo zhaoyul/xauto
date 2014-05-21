@@ -523,7 +523,7 @@ angular.module("account/timezones.tpl.html", []).run(["$templateCache", function
 
 angular.module("events/date-photosmanage.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("events/date-photosmanage.tpl.html",
-    "<div><h1 >Manage photos for date  {{DateObj.DateObjTitle}}</h1></div>\n" +
+    "<div><h1 >Manage photos for: {{ DateObj.DateObjLocation }} - {{ DateObj.DateObjDate }}</h1></div>\n" +
     "<br/>\n" +
     "<div class=\"clear\"></div>\n" +
     "<div class=\"row\">\n" +
@@ -534,8 +534,8 @@ angular.module("events/date-photosmanage.tpl.html", []).run(["$templateCache", f
     "                    <div bx-stream-photo=\"{{item.image}}\" class=\"inner\"></div>\n" +
     "                    <ul class=\"stream-action-links\">\n" +
     "                        <li class=\"action-delete\">\n" +
-    "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Delete\"\n" +
-    "                               ng-click=\"Delete(item)\">\n" +
+    "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Remove photo from this event\"\n" +
+    "                               ng-click=\"Remove(item)\">\n" +
     "                                <i class=\"icon-remove\"></i>\n" +
     "                            </a>\n" +
     "                        </li>\n" +

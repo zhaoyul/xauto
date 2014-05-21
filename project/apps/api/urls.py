@@ -9,9 +9,9 @@ from .views import (EventsListView, EventDetailsView, FollowEventView,
     FavoritePicturesListView, MyPhotosListView, RegistrationView,
     LoginView, LogoutView, CurrentUserView, ActivateView, ResetPasswordView,
     ChangePasswordView, CheckUsernameView, AlbumPhotosUploader,
-    ConfigurationView, CoordinatedPhotoUploader, EventDatePhotoManageView, DeletePictureView, MyOrphanedPhotosListView,
+    ConfigurationView, CoordinatedPhotoUploader, EventDatePhotoManageView, MyOrphanedPhotosListView,
     DatesHavingMyPhotosByEventListView, DatesHavingMyOrphanedPhotosView, LastDateView, TimezonesListView, EventAllImagesView,
-    CountriesListView, MyPhotosDeletePhotoView, DatesHavingMyPhotosByDateListView)
+    CountriesListView, DeletePhotoView, DatesHavingMyPhotosByDateListView, UnassignPicture)
 
 router = routers.DefaultRouter()
 router.register(r'events', EventViewSet)
@@ -60,8 +60,6 @@ urlpatterns = patterns('',
         name='myphotos-dates-with-orphans'),
     url(r'^myphotos/orphans/$', MyOrphanedPhotosListView.as_view(),
         name='myphotos-orphans'),
-    url(r'^myphotos/(?P<pk>\d+)/delete/$', MyPhotosDeletePhotoView.as_view(),
-        name='myphotos-delete'),
 
     url(r'^common/timezones/$', TimezonesListView.as_view(),
         name='common-timezones'),
@@ -79,8 +77,11 @@ urlpatterns = patterns('',
         CoordinatedPhotoUploader.as_view(), name='picture-upload'),
     url(r'^pictures/(?P<picture_id>\d+)/report/$',
         ReportPictureView.as_view(), name='picture-report'),
-    url(r'^pictures/(?P<picture_id>\d+)/delete/$',
-        DeletePictureView.as_view(), name='picture-delete'),
+    url(r'^pictures/(?P<pk>\d+)/delete/$',
+        DeletePhotoView.as_view(), name='picture-delete'),
+    url(r'^pictures/(?P<pk>\d+)/unassign/$',
+        UnassignPicture.as_view(), name='picture-unassign'),
+
     url(r'^pictures/(?P<picture_id>\d+)/favorite/$',
         ToggleFavoritePicture.as_view(), name='picture-favorite'),
     url(r'^pictures/favorites/$', FavoritePicturesListView.as_view(),

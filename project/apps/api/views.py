@@ -5,6 +5,7 @@ from datetime import datetime, time
 from random import randrange
 from hashlib import sha1
 from api.permissions import IsEventAuthorOrReadOnly, IsEventDateAuthorOrReadOnly, IsAccountOwnerOrReadOnly
+from api.utils import get_time_display
 
 import pytz
 from django.utils import timezone
@@ -17,7 +18,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.core.files.base import ContentFile
 from django.conf import settings
-from rest_framework.generics import (ListAPIView, RetrieveAPIView, DestroyAPIView, ListCreateAPIView)
+from rest_framework.generics import (ListAPIView, RetrieveAPIView, DestroyAPIView, ListCreateAPIView, UpdateAPIView)
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
@@ -277,7 +278,7 @@ class EventAllImagesView(ListCreateAPIView):
         return Response({'error': message}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class MyPhotosDeletePhotoView(DestroyAPIView):
+class DeletePhotoView(DestroyAPIView):
     """
     Delete my photo
     """
@@ -289,11 +290,12 @@ class MyPhotosDeletePhotoView(DestroyAPIView):
         return MultiuploaderImage.objects.filter(userprofile=profile)
 
 
-class DeletePictureView(DestroyAPIView):
+class UnassignPicture(UpdateAPIView):
     """
-    Delete photo from my event
+    Unassing photo from event date - only if event belongs to the user
     """
     permission_classes = (IsAuthenticated,)
+    model = MultiuploaderImage
 
     def get_queryset(self):
         profile = self.request.user.profile
@@ -319,7 +321,8 @@ class EventDatePhotoManageView(APIView):
     def get(self, request, id, *args, **kwargs):
         data = {}
         DateObj = EventDate.objects.get(id=id)
-        data["DateObjTitle"] = DateObj.start_date.strftime('%B %d, %Y') + " - " + DateObj.end_date.strftime('%B %d, %Y')
+        data["DateObjLocation"] = DateObj.location_name or 'unspecified'
+        data["DateObjDate"] = DateObj.get_date_display()
         data["DateObjImgs"] = []
         imgs = MultiuploaderImage.objects.filter(event_date=DateObj)
         for img in imgs:
@@ -377,9 +380,12 @@ class CheckUsernameView(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, *args, **kwargs):
+        user = request.user
         search_text = self.request.GET.get('search_text', '')
         data = {'response': 'Available'}
-        if UserProfile.objects.filter(name=search_text).count():
+        if user.is_authenticated() and user.username.lower() == search_text.lower():
+            data = {'response': ''}
+        elif UserProfile.objects.filter(name=search_text).exists():
             data = {'response': 'Unavailable'}
 
         return Response(data, status=status.HTTP_200_OK)
@@ -488,19 +494,10 @@ class DatesHavingMyPhotosByEventListView(APIView):
         events = {}
         for event_date in event_dates:
             event = events.setdefault(event_date.event.title, [])
-            timezone = pytz.timezone(event_date.timezone.zone)
-            date = u'---'
-            if event_date.start_date.astimezone(timezone).date() == event_date.end_date.astimezone(timezone).date():
-                date = datetime.strftime(event_date.start_date.astimezone(timezone), '%b %d, %Y')
-            else:
-                date = u"{} - {}".format(
-                    datetime.strftime(event_date.start_date.astimezone(timezone), '%b %d, %Y'),
-                    datetime.strftime(event_date.end_date.astimezone(timezone), '%b %d, %Y')
-                )
 
             event.append({"id": event_date.id,
                           "title": event_date.feature_headline,
-                          "date": date,
+                          "date": event_date.get_display_date(),
                           })
         ret = []
         for key, value in events.iteritems():
@@ -520,7 +517,7 @@ class DatesHavingMyPhotosByDateListView(APIView):
             distinct().datetimes('upload_date', 'day', order="DESC", tzinfo=profile.timezone)
         ret = []
         for date in dates:
-            ret.append({'label': datetime.strftime(date, '%b %d, %Y'), 'date': datetime.strftime(date, '%Y-%m-%d')})
+            ret.append({'label': get_time_display(date), 'date': datetime.strftime(date, '%Y-%m-%d')})
         return Response(ret, status=status.HTTP_200_OK)
 
 
@@ -592,15 +589,6 @@ class MyPhotosListView(ListAPIView):
             day_end = datetime.combine(upload_date, time.max).replace(tzinfo=profile.timezone)
 
             queryset = queryset.filter(upload_date__range=(day_start, day_end))
-
-        #TODO: timezone?!
-        # dt = self.request.GET.get('dt')
-        # if dt:
-        #     upload_date = datetime.strptime(dt, '%Y-%m-%d')
-        #     upload_date2 = upload_date + timedelta(days=1)
-        #     return MultiuploaderImage.objects.filter(upload_date__gt=upload_date,
-        #                                              upload_date__lt=upload_date2,
-        #                                              userprofile=profile)
 
         return queryset
 

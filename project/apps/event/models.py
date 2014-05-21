@@ -1,5 +1,6 @@
 # ---------------------------------------------------
 # --- Django base core code (system)              ---
+from api.utils import get_time_display
 from django.db import models
 from django.db.models import permalink
 from django.core.exceptions import ValidationError
@@ -7,6 +8,7 @@ from django.core.exceptions import ValidationError
 # ---------------------------------------------------
 # --- Django addon                                ---
 from django.utils import timezone
+import pytz
 from sorl.thumbnail.fields import ImageField
 from autoslug import AutoSlugField
 from sorl.thumbnail import get_thumbnail
@@ -82,6 +84,24 @@ class EventDate(TimestampedModel):
     def __unicode__(self):
         return '(%s) - %s/%s' % (self.event.title.capitalize(),
                                  self.start_date, self.end_date)
+
+    def normalize_time(self, time):
+        timezone = pytz.timezone(self.timezone.zone)
+        return time.astimezone(timezone)
+
+    def get_date_display(self):
+        tz_start_date = self.normalize_time(self.start_date)
+        tz_end_date = self.normalize_time(self.end_date)
+
+        if tz_start_date.date() == tz_end_date.date():
+            date = get_time_display(tz_start_date)
+        else:
+            date = u"{} - {}".format(
+                get_time_display(tz_start_date),
+                get_time_display(tz_end_date)
+            )
+        return date
+
 
 
 class Event(TimestampedModel):

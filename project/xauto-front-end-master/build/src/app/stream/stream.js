@@ -114,8 +114,8 @@ angular.module( 'blvdx.stream', [
 
   };
 
-  $scope.Delete = function(entry) {
-        Streams.send_delete(entry.id);
+  $scope.Remove = function(entry) {
+        Streams.send_unassign(entry.id);
         entry.hide = true;
   };
 

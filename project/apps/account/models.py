@@ -75,6 +75,7 @@ class UserProfile(TimestampedModel):
             return urlImg
 
     def get_main_image(self,size,size2):
+        # TODO: refactor
         if self.main_image:
             try:
                 imgObject = get_thumbnail(self.main_image, str(size)+'x'+str(size2), crop='center', quality=99)
