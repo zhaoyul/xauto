@@ -321,7 +321,7 @@ class EventDatePhotoManageView(APIView):
     def get(self, request, id, *args, **kwargs):
         data = {}
         DateObj = EventDate.objects.get(id=id)
-        data["DateObjLocation"] = DateObj.location_name or 'unspecified'
+        data["DateObjLocation"] = DateObj.location_name and DateObj.location_name + ' - ' or ''
         data["DateObjDate"] = DateObj.get_date_display()
         data["DateObjImgs"] = []
         imgs = MultiuploaderImage.objects.filter(event_date=DateObj)
