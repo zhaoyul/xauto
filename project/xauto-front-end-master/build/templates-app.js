@@ -523,7 +523,7 @@ angular.module("account/timezones.tpl.html", []).run(["$templateCache", function
 
 angular.module("events/date-photosmanage.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("events/date-photosmanage.tpl.html",
-    "<div><h1 >Manage photos for: {{ DateObj.DateObjLocation }} - {{ DateObj.DateObjDate }}</h1></div>\n" +
+    "<div><h1 >Manage photos for: {{ DateObj.DateObjLocation }} {{ DateObj.DateObjDate }}</h1></div>\n" +
     "<br/>\n" +
     "<div class=\"clear\"></div>\n" +
     "<div class=\"row\">\n" +
