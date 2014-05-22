@@ -796,18 +796,19 @@ class ResetPasswordView(APIView):
 
     def post(self, request, *args, **kwargs):
         email_serializer = EmailSerializer(data=request.DATA)
+        import pdb;pdb.set_trace()
         if email_serializer.is_valid():
             try:
                 email = email_serializer.data.get('email', None)
                 user = User.objects.get(email=email)
-                user.profile.activationtoken = sha1("%sovahi%s" %
+                user.profile.activationtoken = sha1("%sxauto%s" %
                                                     (randrange(1, 1000), randrange(1, 1000))).hexdigest()
                 user.profile.save()
                 reset_link = request.build_absolute_uri(
                     reverse('change-password',
                             args=(user.profile.activationtoken,))
                 )
-                reset_link = reset_link.replace("api/change_password", "#/account/changePassword")
+                reset_link = reset_link.replace("app/api/change_password", "#/account/changePassword")
                 email_body = render_to_string('emails/reset_password_email.html',
                                               {'user': user,
                                                'title': 'Password reset',
@@ -869,7 +870,7 @@ class RegistrationView(APIView):
         pw1 = user_data.get('password_1', '1')
         pw2 = user_data.get('password_2', '2')
         if pw1 != pw2:
-            error = {'password_1': ['Passwords does not match']}
+            error = {'password_1': ['Passwords do not match']}
             error['password_2'] = ['']
             return Response(error, status=status.HTTP_400_BAD_REQUEST)
 
@@ -914,7 +915,7 @@ class RegistrationView(APIView):
                         save=False
                     )
 
-                profile_serializer.object.activationtoken = sha1("%sovahi%s" %
+                profile_serializer.object.activationtoken = sha1("%sxauto%s" %
                                                                  (randrange(1, 1000), randrange(1, 1000))).hexdigest()
 
                 profile_serializer.object.user = user_serializer.object
