@@ -1252,7 +1252,7 @@ angular.module("events/partial_form_date.tpl.html", []).run(["$templateCache", f
     "          <span class=\"help-block\" ng-show=\"errors.state\" ng-repeat=\"error in errors.state\">{{error}}</span>\n" +
     "        </div>\n" +
     "      </div>\n" +
-    "      <div class=\"form-group\" ng-class=\"{'has-error': form.zip.$invalid || errors.zip}\">\n" +
+    "      <div class=\"form-group\" ng-class=\"{'has-error': form.zipcode.$invalid || errors.zipcode}\">\n" +
     "        <label class=\"col-lg-3 control-label\">ZIP/Postal Code</label>\n" +
     "        <div class=\"col-lg-9\">\n" +
     "          <input type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"editDate.zipcode\" name=\"zip\">\n" +
