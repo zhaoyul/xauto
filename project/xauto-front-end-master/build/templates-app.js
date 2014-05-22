@@ -1529,7 +1529,7 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "    </ul>\n" +
     "\n" +
     "  </div>\n" +
-    "  <div class=\"col-xs-12 col-md-12 col-lg-12\">\n" +
+    "  <div>\n" +
     "    <a ng-show=\"hasMoreProfiles\" ng-click=\"showMore()\" class=\"btn btn-info showmorespan\">Show more</a>\n" +
     "  </div>\n" +
     "</div>\n" +

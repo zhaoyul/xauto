@@ -847,7 +847,8 @@ angular.module('blvdx.events', [
                                         $state.transitionTo('eventDetails.Focus',delegate);
                                     },photos, j ,$scope.EventObj.profile, $scope.EventObj,function(){
                                         delete delegate.focus;
-                                        $state.transitionTo('eventDetails',delegate);
+                                        window.history.back();
+                                        //$state.transitionTo('eventDetails',delegate);
                                     });
                                 }
                                 break;
@@ -952,10 +953,12 @@ angular.module('blvdx.events', [
                 var delegate = {eventId: $scope.stateParams.eventId , base:'p'};
 				$photoview.setup( $scope, function(id){
                     delegate.focus = delegate.base + id;
+                    window.history.back();
                     $state.transitionTo('eventDetails.Focus',delegate);
                 },photos, this.$index ,$scope.EventObj.profile, $scope.EventObj,function(){
                     delete delegate.base;
-                    $state.transitionTo('eventDetails',delegate);
+                    window.history.back();
+                    //$state.transitionTo('eventDetails',delegate);
                 });
                 //'/#/events/' + $scope.stateParams.eventId
 			};
