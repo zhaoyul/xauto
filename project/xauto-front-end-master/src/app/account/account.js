@@ -45,7 +45,7 @@ angular.module( 'blvdx.account', [
     url: '/account/changePassword/:token',
     views: {
       "main": {
-        controller: 'AccountChangePaswordCtrl',
+        controller: 'AccountChangePasswordCtrl',
         templateUrl: 'account/account-change-pswd.tpl.html'
       }
     }
@@ -174,7 +174,7 @@ angular.module( 'blvdx.account', [
     };
 
 }])
-.controller( 'AccountChangePaswordCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Accounts',
+.controller( 'AccountChangePasswordCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Accounts',
     function AccountCtrl( $scope, $state, titleService, $stateParams, Accounts ) {
     titleService.setTitle( 'Change Password' );
     $scope.AccountObj = {};

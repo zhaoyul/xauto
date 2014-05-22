@@ -120,15 +120,17 @@ angular.module( 'blvdx.stream', [
   };
 
   $scope.Report = function(entry) {
-         //$http.get('/app/api/current-user/').then(function(response) {
-         Accounts.getCurrentUser().then(function(response) {
-            if(response.user == null) {
-                 $(".navbar-nav a").eq(1).click();
-            }else{
-                     Streams.send_report(entry.id);
-                     entry.reported = true;
-                 }
-        });
+     Streams.send_report(entry.id);
+     entry.reported = true;
+     //$http.get('/app/api/current-user/').then(function(response) {
+//     Accounts.getCurrentUser().then(function(response) {
+//        if(response.user == null) {
+//             $(".navbar-nav a").eq(1).click();
+//        }else{
+//                 Streams.send_report(entry.id);
+//                 entry.reported = true;
+//             }
+//    });
   };
 
   $scope.$on("prepend_entry", function(event, data){
