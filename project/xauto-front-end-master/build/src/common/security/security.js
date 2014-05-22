@@ -43,7 +43,7 @@ angular.module('security.service', [
     loginDialog = null;
     if ( success ) {
       queue.retryAll();
-      redirect();
+      //redirect();
     } else {
       queue.cancelAll();
       //redirect();

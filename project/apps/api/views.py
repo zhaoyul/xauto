@@ -683,12 +683,15 @@ class ReportPictureView(APIView):
                                        'domain': request.build_absolute_uri(reverse('index')),
                                        'picture_id': picture_id}
         )
+
+        manager_emails = [t[1] for t in settings.MANAGERS]
+
         if "mailer" in settings.INSTALLED_APPS:
             send_html_mail("Picture report", email_body, email_body,
-                           settings.DEFAULT_FROM_EMAIL, [settings.ADMINS])
+                           settings.DEFAULT_FROM_EMAIL, manager_emails)
         else:
             send_mail("Picture report", email_body,
-                      settings.DEFAULT_FROM_EMAIL, [settings.ADMINS])
+                      settings.DEFAULT_FROM_EMAIL, manager_emails)
 
         return Response({}, status=status.HTTP_200_OK)
 
@@ -796,7 +799,6 @@ class ResetPasswordView(APIView):
 
     def post(self, request, *args, **kwargs):
         email_serializer = EmailSerializer(data=request.DATA)
-        import pdb;pdb.set_trace()
         if email_serializer.is_valid():
             try:
                 email = email_serializer.data.get('email', None)
@@ -808,7 +810,11 @@ class ResetPasswordView(APIView):
                     reverse('change-password',
                             args=(user.profile.activationtoken,))
                 )
-                reset_link = reset_link.replace("app/api/change_password", "#/account/changePassword")
+
+                # change Django url to Angular url
+                reset_link = reset_link.replace("{}/api/change_password".format(settings.APP_PREFIX),
+                                                "/#/account/changePassword")
+
                 email_body = render_to_string('emails/reset_password_email.html',
                                               {'user': user,
                                                'title': 'Password reset',

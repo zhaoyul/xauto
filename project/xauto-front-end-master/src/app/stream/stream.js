@@ -20,7 +20,8 @@ angular.module( 'blvdx.stream', [
   'resources.streams',
   'resources.events',
   'resources.users',
-  'resources.accounts'
+  'resources.accounts',
+  'security.authorization'
 ])
 
 /**
@@ -85,7 +86,7 @@ angular.module( 'blvdx.stream', [
   });
 }])
 
-.controller( 'StreamListCtrl', ['$scope', 'titleService', 'Streams', '$http','$photoview','$state','Accounts', function StreamCtrl( $scope, titleService, Streams, $http , $photoview,$state,Accounts) {
+.controller( 'StreamListCtrl', ['$scope', 'titleService', 'Streams', '$http','$photoview', '$state','Accounts', 'securityAuthorization', function StreamCtrl( $scope, titleService, Streams, $http, $photoview, $state, Accounts, securityAuthorization) {
   titleService.setTitle( 'Stream' );
   $scope.stream = [];
   $scope.$watch("$parent.stream", function(){
@@ -120,8 +121,13 @@ angular.module( 'blvdx.stream', [
   };
 
   $scope.Report = function(entry) {
-     Streams.send_report(entry.id);
-     entry.reported = true;
+     securityAuthorization.requireAuthenticatedUser().then(
+        function(userInfo){
+            Streams.send_report(entry.id);
+            entry.reported = true;
+        }
+     );
+
      //$http.get('/app/api/current-user/').then(function(response) {
 //     Accounts.getCurrentUser().then(function(response) {
 //        if(response.user == null) {

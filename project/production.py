@@ -6,9 +6,10 @@ TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     ('Jakub Wisniowski', 'jwisniowski@milosolutions.com'),
-    ('Mateusz Szefer', 'mszefer@milosolutions.com'),
     ('Maciej Zuk', 'mzuk@milosolutions.com'),
 )
+
+MANAGERS = ADMINS + (('Will Andre', 'will@blvdx.com'))
 
 DATABASES = {
     'default': {
@@ -65,6 +66,7 @@ SOCKET_STREAMER_URL = "/photostream"
 SOCKET_STREAMER_PORT = 8449
 SOCKET_STREAMER_FULL_URL = "http://xauto.co:%i%s" % (SOCKET_STREAMER_PORT, SOCKET_STREAMER_URL)
 
+# also note that APP_PREFIX in settings.py has to be set
 FORCE_SCRIPT_NAME = '/app'
 
 RAVEN_CONFIG = {
