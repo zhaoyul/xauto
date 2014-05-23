@@ -534,7 +534,8 @@ angular.module("events/date-photosmanage.tpl.html", []).run(["$templateCache", f
     "                    <div bx-stream-photo=\"{{item.image}}\" class=\"inner\"></div>\n" +
     "                    <ul class=\"stream-action-links\">\n" +
     "                        <li class=\"action-delete\">\n" +
-    "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Remove photo from this event\"\n" +
+    "                            <a href=\"javascript:;\"\n" +
+    "                               tooltip-placement=\"left\" data-container=\"body\" tooltip=\"Remove\"\n" +
     "                               ng-click=\"Remove(item)\">\n" +
     "                                <i class=\"icon-remove\"></i>\n" +
     "                            </a>\n" +
