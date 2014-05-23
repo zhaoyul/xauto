@@ -12,7 +12,7 @@ class MultiuploaderImageAdmin(AdminImageMixin, admin.ModelAdmin):
     """
 
     search_fields = ["filename", "key_data", "application", "is_inappropriate"]
-    list_display = [ "id", "EVENT_IMAGE", "filename", "image", "application", "userprofile", "event_date", "Flagged"]
+    list_display = ["id", "EVENT_IMAGE", "filename", "image", "application", "userprofile", "event_date", "Flagged"]
     list_filter = ["userprofile", "event_date", "application", "is_irrelevant", "is_inappropriate",]
     #fields = ('filename', 'image', 'key_data', 'application',  'userprofile', 'upload_date', 'caption')
 

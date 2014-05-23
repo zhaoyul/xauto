@@ -497,7 +497,7 @@ class DatesHavingMyPhotosByEventListView(APIView):
 
             event.append({"id": event_date.id,
                           "title": event_date.feature_headline,
-                          "date": event_date.get_display_date(),
+                          "date": event_date.get_date_display(),
                           })
         ret = []
         for key, value in events.iteritems():
