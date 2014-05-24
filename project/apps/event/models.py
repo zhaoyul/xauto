@@ -82,7 +82,7 @@ class EventDate(TimestampedModel):
         ordering = ('-start_date',)
 
     def __unicode__(self):
-        return '(%s) - %s/%s' % (self.event.title.capitalize(),
+        return u'{} - {}'.format(self.event.title.capitalize(),
                                  self.get_date_display())
 
     def normalize_time(self, time):

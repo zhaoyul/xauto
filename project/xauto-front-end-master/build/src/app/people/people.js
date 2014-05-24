@@ -83,36 +83,33 @@ angular.module( 'blvdx.people', [
       });
   };
 
-
-
-   $scope.search = {};
+  $scope.search = {};
   // if more profiles aviable to load
   $scope.hasMoreProfiles = false;
   $scope.profilesPerLoad = 9;
 
+  //TODO: refactor and use real server side pagination
   $scope.showMore = function (){
         if($scope.Profiles == null){
             $scope.Profiles = [];
         }
-        // count how many events can be added
+        // count how many profiles can be added
         var maxProfiles = Math.min($scope.profilesPool.length, $scope.Profiles.length + $scope.profilesPerLoad);
 
         // loop and add Profiles ::
         for(var i = $scope.Profiles.length;i< maxProfiles; i++){
             $scope.Profiles.push($scope.profilesPool[i]);
         }
-        // check if there are more events to load ; if not hide button
+
+        // check if there are more profiles to load ; if not hide button
         if($scope.Profiles.length == $scope.profilesPool.length){
             $scope.hasMoreProfiles = false;
         }else{
-        $scope.hasMoreProfiles = true;
-      }
+            $scope.hasMoreProfiles = true;
+        }
   };
 
 }])
-
-
-
 
 .filter('websiteadr', function() {
     return function(input) {

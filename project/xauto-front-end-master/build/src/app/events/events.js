@@ -411,6 +411,7 @@ angular.module('blvdx.events', [
 			$scope.hasMoreEvents = false;
 			$scope.eventsPerLoad = 8;
 
+            //TODO: refactor and use real server side pagination
 			$scope.showMore = function () {
 				if ($scope.events == null) {
 					$scope.events = [];
@@ -803,7 +804,6 @@ angular.module('blvdx.events', [
 						$scope.showMore(z);
 					}
 
-
 					var subscription = {
 						'profiles': [],
 						'events': [event.slug]
@@ -817,7 +817,6 @@ angular.module('blvdx.events', [
 			};
 
             $scope.$on('$stateChangeSuccess' , function(){
-                console.log('state change::',arguments);
                 $scope.stateUpdate();
             });
 
