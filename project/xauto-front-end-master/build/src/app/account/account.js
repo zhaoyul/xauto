@@ -190,52 +190,50 @@ angular.module( 'blvdx.account', [
 
 .controller( 'AccountEditCtrl', ['$scope', '$state', 'titleService', '$stateParams', 'Accounts', 'Common', '$upload', 'security',
     function AccountCtrl( $scope, $state, titleService, $stateParams, Accounts, Common, $upload, security) {
-  titleService.setTitle( 'Edit Account' );
+      titleService.setTitle( 'Edit Account' );
 
-  Accounts.getAccount($stateParams.accountId).then(function (account) {
-      $scope.AccountObj = account;
-  });
-  var files_to_upload = [];
-
-  $scope.accountSubmit = function(){
-    Accounts.saveAccount($scope.AccountObj).then(function (account) {
-        security.refreshCurrentUser();
-        $state.go('accountEdit', {accountId: account.user.username});
-        //$state.transitionTo('events');
-    });
-  };
-
-  Common.getTimezones().then(function (timezones) {
-    $scope.timezones = timezones;
-  });
-
-  Common.getCountries().then(function (countries) {
-    $scope.countries = countries;
-  });
-
-  $scope.checkUsername = function(value) {
-      Accounts.checkUsername({search_text: value}).then(function (response) {
-          $scope.AccountObj.username_available = response.response;
+      Accounts.getAccount($stateParams.accountId).then(function (account) {
+          $scope.AccountObj = account;
       });
-  };
+      var files_to_upload = [];
 
-  $scope.onFileSelect = function($files, field) {
-    //$files: an array of files selected, each file has name, size, and type.
-    var fileObj = {};
-    var reader = new FileReader();
-    reader.onloadend = function(evt) {
-        fileObj['file'] = evt.target.result.replace("data:image/jpeg;base64,", "");
-        $scope.AccountObj[field] = fileObj;
-    };
+      $scope.accountSubmit = function(){
+        Accounts.saveAccount($scope.AccountObj).then(function (account) {
+            security.refreshCurrentUser();
+            $state.go('accountEdit', {accountId: account.user.username});
+            //TODO: notify user that save was sucessful
+        });
+      };
 
-    for (var i = 0; i < $files.length; i++) {
-      var $file = $files[i];
-      fileObj['name'] = $file.name;
-      reader.readAsDataURL($file);
-    }
+      Common.getTimezones().then(function (timezones) {
+        $scope.timezones = timezones;
+      });
 
-  };
+      Common.getCountries().then(function (countries) {
+        $scope.countries = countries;
+      });
 
+      $scope.checkUsername = function(value) {
+          Accounts.checkUsername({search_text: value}).then(function (response) {
+              $scope.AccountObj.username_available = response.response;
+          });
+      };
+
+      $scope.onFileSelect = function($files, field) {
+        //$files: an array of files selected, each file has name, size, and type.
+        var fileObj = {};
+        var reader = new FileReader();
+        reader.onloadend = function(evt) {
+            fileObj['file'] = evt.target.result.replace("data:image/jpeg;base64,", "");
+            $scope.AccountObj[field] = fileObj;
+        };
+
+        for (var i = 0; i < $files.length; i++) {
+          var $file = $files[i];
+          fileObj['name'] = $file.name;
+          reader.readAsDataURL($file);
+        }
+      };
 }])
 
 .controller( 'MyPhotosAtEventDate', ['$scope', 'titleService', 'Accounts', 'Streams', '$state', '$stateParams',  function AccountCtrl( $scope, titleService, Accounts, Streams, $state, $stateParams ) {
@@ -283,7 +281,6 @@ angular.module( 'blvdx.account', [
       });
   };
 }])
-
 
 .controller( 'AccountMyPhotosCtrl', ['$scope', 'titleService', 'Accounts', '$filter', function AccountCtrl( $scope, titleService, Accounts, $filter) {
   titleService.setTitle( 'My Photos' );

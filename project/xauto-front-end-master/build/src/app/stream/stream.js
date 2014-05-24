@@ -37,7 +37,7 @@ angular.module( 'blvdx.stream', [
         controller: 'StreamCtrl',
         templateUrl: 'stream/stream.tpl.html',
         resolve: {
-		    authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
+            authenticatedUser: securityAuthorizationProvider.requireAuthenticatedUser
 		}
       }
     }
@@ -190,8 +190,8 @@ angular.module( 'blvdx.stream', [
               var slug = 1;
               break;
       }
-	  $photoview.setup($scope, change, $scope.stream, this.$index, $scope.$parent.$parent.Profile,null,end,slug);
-  }
+      $photoview.setup($scope, change, $scope.stream, this.$index, $scope.$parent.$parent.Profile,null,end,slug);
+  };
 }])
 
 

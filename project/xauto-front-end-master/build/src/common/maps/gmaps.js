@@ -7,21 +7,21 @@ angular.module('maps', []).service('$gmaps' , function (){
         displayed:false,
         view:mapview,
         map:null,
-        position:{lat:0,long:0},
+        position:{lat:0, lon:0},
         zoom:2,
         init:function(){// static map init
             var mapOptions = {
                 disableDefaultUI: true,
                 zoom: this.zoom,
-                center: new google.maps.LatLng(this.position.lat, this.position.long)
+                center: new google.maps.LatLng(this.position.lat, this.position.lon)
             };
             this.map = new google.maps.Map(mapview, mapOptions);
             this.initialized = true;
         },
-        showMap:function(lat , long , container , mapOptions,zoom){
+        showMap:function(lat , lon , container , mapOptions,zoom){
             // ------> LOAD VERIFICATION :: if not loaded , create promise
             if(!this.loaded){
-                this.displayPromise = {lat:lat , long:long , container:container , showMarker:showMarker , mapOptions:mapOptions,zoom:zoom};
+                this.displayPromise = {lat:lat , lon: lon , container:container , showMarker:showMarker , mapOptions:mapOptions,zoom:zoom};
                 return;
             } else {
                 this.displayPromise = null;
@@ -47,7 +47,7 @@ angular.module('maps', []).service('$gmaps' , function (){
             }
             container.appendChild(mapview);
             google.maps.event.trigger(this.map, 'resize');
-            this.moveTo(lat ,long , zoom);
+            this.moveTo(lat, lon, zoom);
             //
             this.displayed = true;
             this.update();
@@ -60,13 +60,13 @@ angular.module('maps', []).service('$gmaps' , function (){
         },
 
 
-        moveTo:function(lat , long , zoom){
-            this.moveToLocation(new google.maps.LatLng(lat , long),zoom);
+        moveTo:function(lat , lon , zoom){
+            this.moveToLocation(new google.maps.LatLng(lat, lon),zoom);
         },
         moveToLocation:function(point , zoom){
             this.zoom = zoom;
             this.position.lat = point.lat();
-            this.position.long = point.lng();
+            this.position.lon = point.lng();
             if(this.initialized){
                 this.map.setCenter(point);
                 if(zoom){
@@ -79,7 +79,7 @@ angular.module('maps', []).service('$gmaps' , function (){
             setTimeout(function(){
                 if(delegate.displayed){
                     google.maps.event.trigger(delegate.map, 'resize');
-                    delegate.map.setCenter(new google.maps.LatLng(delegate.position.lat,delegate.position.long));
+                    delegate.map.setCenter(new google.maps.LatLng(delegate.position.lat,delegate.position.lon));
                     delegate.map.setZoom(delegate.zoom || 2);
                 }
             },350);
@@ -89,8 +89,8 @@ angular.module('maps', []).service('$gmaps' , function (){
         //////////////////////////////////////////////////
         // -----------------------> MARKERS
 
-        addSingleMarker:function(lat ,long){
-            this.addSingleMarkerPos(new google.maps.LatLng(lat,long));
+        addSingleMarker:function(lat ,lon){
+            this.addSingleMarkerPos(new google.maps.LatLng(lat, lon));
         },
         addSingleMarkerPos:function (position){
             if(this.marker == null){
@@ -134,7 +134,7 @@ angular.module('maps', []).service('$gmaps' , function (){
             if(this.loaded){
                 this.autocomplete = new google.maps.places.Autocomplete(inputElement,{ types: ['geocode'] });
                 google.maps.event.addListener(this.autocomplete, 'place_changed', changeCallback);
-                if(this._autoCompleteInitialized == false){
+                if(this._autoCompleteInitialized === false){
                     $('.pac-container').css({'z-index':10001});
                     this._autoCompleteInitialized = true;
                 }
@@ -153,7 +153,7 @@ angular.module('maps', []).service('$gmaps' , function (){
         console.log('map loaded');
         instance.loaded = true;
         if(instance.displayPromise){
-            instance.showMap(instance.displayPromise.lat,instance.displayPromise.long,instance.displayPromise.container,instance.displayPromise.showMarker,instance.displayPromise.mapOptions);
+            instance.showMap(instance.displayPromise.lat,instance.displayPromise.lon,instance.displayPromise.container,instance.displayPromise.showMarker,instance.displayPromise.mapOptions);
         }
         if(instance._autoCompletePromise){
             instance.initAutoComplete.apply(instance,instance._autoCompletePromise);

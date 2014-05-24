@@ -192,7 +192,7 @@ angular.module( 'blvdx', [
                 longitude = $scope.longitude;
                 latitude = $scope.latitude;
             }
-            var coords = {long: longitude, lat: latitude};
+            var coords = {lon: longitude, lat: latitude};
             reader.onload = function (e) {
                 var photo = {
                     coords: coords,

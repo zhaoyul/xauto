@@ -134,7 +134,7 @@ angular.module('blvdx.events', [
         $scope.hasAutoComplete = false;
         $scope.fromAutoComplete = false;
         $scope.locationFocus = function (){
-            if($scope.hasAutoComplete == false){
+            if($scope.hasAutoComplete === false){
                 $gmaps.initAutoComplete(document.getElementById('locationInput'),function(){
 
 
@@ -192,7 +192,6 @@ angular.module('blvdx.events', [
             }
         };
         // ------>
-
 
         /* datepicker */
         $scope.today = function () {
@@ -327,9 +326,9 @@ angular.module('blvdx.events', [
             // verify geolocation ::
             if(isNaN($scope.editDate.latitude) || isNaN($scope.editDate)){
                 var p = $gmaps.position;
-                if(p.lat && p.long){
+                if(p.lat && p.lon){
                     $scope.editDate.latitude = p.lat;
-                    $scope.editDate.longitude = p.long;
+                    $scope.editDate.longitude = p.lon;
                 }
             }
         };
@@ -469,6 +468,7 @@ angular.module('blvdx.events', [
                         s.live = true;
                         break;
                     case 'all':
+                        break;
                     default:
                         s.all = true;
                         break;
@@ -482,7 +482,7 @@ angular.module('blvdx.events', [
 					latc = 0;
 					longc = 0;
 				}
-				Events.getEvents({filter_by: type, lat: latc, long: longc }).then(function (events) {
+				Events.getEvents({filter_by: type, lat: latc, lon: longc }).then(function (events) {
 					$scope.events = [];
 					$scope.eventsPool = events;
 					$scope.showMore();
@@ -491,8 +491,6 @@ angular.module('blvdx.events', [
 
 			$scope.Follow = function (event) {
                 // ------> CHECK LOGIN
-                console.log('follow click:');
-
                 if(!security.isAuthenticated()){
                     security.showLogin();
                     return;
@@ -526,7 +524,9 @@ angular.module('blvdx.events', [
             isSet:false,
             EventObj:null,
             savedate: 'Modal.CloseDatePopup',
-            dateComplete: function(){$rootScope.$broadcast(this.savedate)}
+            dateComplete: function(){
+                $rootScope.$broadcast(this.savedate);
+            }
         };
     })
 	.controller('EventAddCtrl', ['$scope', '$state', 'titleService', 'Events', '$upload','$dateproxy',
@@ -576,7 +576,7 @@ angular.module('blvdx.events', [
                 $dateproxy.editDateOptions = null;
                 $dateproxy.EventObj = $scope.EventObj;
                 $state.transitionTo('eventEdit.addDate', {eventId: $scope.eventId});
-            }
+            };
 
 		}])
 
@@ -599,7 +599,7 @@ angular.module('blvdx.events', [
                         if(this.getAttribute('btn-radio') == $scope.EventObj.eventSize.toString()){
                             $(this).addClass('active');
                         }
-                    })
+                    });
 
 				});
 			};
@@ -837,16 +837,19 @@ angular.module('blvdx.events', [
                 $photoview.EventObj = $scope.EventObj;
 
                 var p = $state.params.focus;
+                var imgValid = false;
 
                 if(p){
                     switch(p.charAt(0)){
                         case 'p':
+                            var i, j;
                             // ------>
-                            for(var i = 0;i<$scope.Albums.length;i++){
+                            for(i = 0; i < $scope.Albums.length; i++){
                                 var _alb = $scope.Albums[i].photos;
-                                for(var j = 0;j<_alb.length;j++){
+
+                                for(j = 0;j<_alb.length;j++){
                                     if(_alb[j].id == p.substr(1)){
-                                        var imgValid = true;
+                                        imgValid = true;
                                         break;
                                     }
                                 }
@@ -854,29 +857,39 @@ angular.module('blvdx.events', [
                                     break;
                                 }
                             }
+
                             if(imgValid){
                                 var photos = $scope.Albums[i].photos;
                                 var delegate = {eventId: $scope.stateParams.eventId , base:'p'};
-                                $photoview.setup( $scope, function(id){
-                                    delegate.focus = delegate.base + id;
-                                    $state.transitionTo('eventDetails.Focus',delegate);
-                                },photos, j ,$scope.EventObj.profile, $scope.EventObj,function(){
-                                    delete delegate.focus;
-                                    $state.transitionTo('eventDetails',delegate);
-                                });
+
+                                $photoview.setup(
+                                    $scope,
+                                    function(id){
+                                        delegate.focus = delegate.base + id;
+                                        $state.transitionTo('eventDetails.Focus',delegate);
+                                    },
+                                    photos,
+                                    j,
+                                    $scope.EventObj.profile,
+                                    $scope.EventObj,
+                                    function(){
+                                        delete delegate.focus;
+                                        $state.transitionTo('eventDetails',delegate);
+                                    }
+                                );
                             }
                             break;
                         case 'a':
+                            var z;
                             if($scope.Albums == null){
                                 return;
                             }
-                            for(var i = 0;i<$scope.Albums.length ; i++){
-                                //console.log($scope.Albums[i].id , p.substr(1));
-                                if($scope.Albums[i].id == p.substr(1)){
+                            for(z = 0; z < $scope.Albums.length; z++){
+                                if($scope.Albums[z].id == p.substr(1)){
                                     break;
                                 }
                             }
-                            if(i == $scope.Albums.length ){
+                            if(z == $scope.Albums.length ){
                                 // not found
                             } else {
                                 setTimeout(function(){
@@ -896,11 +909,11 @@ angular.module('blvdx.events', [
 			$scope.Album = {photos: []};
 
             //$http.get('/app/api/current-user/').then(function (response) {
-			Accounts.getCurrentUser().then(function (response) {
-				if (response.user == null) {
-					//$("#uploadphotolink").hide();
-				}
-			});
+//			Accounts.getCurrentUser().then(function (response) {
+//				if (response.user == null) {
+//					//$("#uploadphotolink").hide();
+//				}
+//			});
 
 			createImageObj = function ($file) {
 				var fileObj = {};
