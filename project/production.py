@@ -9,7 +9,7 @@ ADMINS = (
     ('Maciej Zuk', 'mzuk@milosolutions.com'),
 )
 
-MANAGERS = ADMINS + (('Will Andre', 'will@blvdx.com'))
+MANAGERS = ADMINS + (('Will Andre', 'will@blvdx.com'),)
 
 DATABASES = {
     'default': {
@@ -35,7 +35,7 @@ AWS_CALLING_FORMAT = CallingFormat.SUBDOMAIN
 MEDIA_URL = 'http://xauto.s3.amazonaws.com/media/'
 STATIC_URL = '/app/static/'
 
-ALLOWED_HOSTS = ['xauto.co', 'xauto.dev.milosolutions.com', 'www.xauto.dev.milosolutions.com', '54.187.65.140']
+ALLOWED_HOSTS = ['xauto.co', 'www.auto.co', 'xauto.dev.milosolutions.com', 'www.xauto.dev.milosolutions.com', '54.187.65.140']
 
 COMPRESS_ENABLED = True
 
