@@ -105,11 +105,7 @@ angular.module( 'blvdx.stream', [
                 type = 1;
             }
             Accounts.toggleFavorite(entry.id, type);
-            if(type === 2){
-                entry.favorited = false;
-            }else{
-                entry.favorited = true;
-            }
+            entry.favorited = type !== 2;
          }
     });
 

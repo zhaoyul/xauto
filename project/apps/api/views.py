@@ -54,7 +54,7 @@ class EventsListView(ListAPIView):
         own_events = self.request.GET.get('own_events', False)
 
         lat = self.request.GET.get('lat', '')
-        long = self.request.GET.get('long', '')
+        lon = self.request.GET.get('lon', '')
 
         user = self.request.user
 
@@ -83,15 +83,15 @@ class EventsListView(ListAPIView):
 
         #TODO: might be better convert 5 degrees to kilometers
         if filter_by == 'nearby':
-            if long and lat:
+            if lon and lat:
                 neardates = EventDate.objects.filter(
                     (Q(latitude__gt=float(lat) - 5) & Q(latitude__lt=float(lat) + 5)),
-                    (Q(longitude__gt=float(long) - 5) & Q(longitude__lt=float(long) + 5))).distinct()
+                    (Q(longitude__gt=float(lon) - 5) & Q(longitude__lt=float(lon) + 5))).distinct()
 
                 #sort by distance
                 near = []
                 for d in neardates:
-                    distance = abs(d.longitude - float(long)) + abs(d.latitude - float(lat))
+                    distance = abs(d.longitude - float(lon)) + abs(d.latitude - float(lat))
                     near.append((d.event.id, distance))
                 near.sort(key=lambda item: item[1])
                 ids = []
@@ -983,7 +983,7 @@ class CoordinatedPhotoUploader(APIView):
     Creates image and assigns it to the closest event
 
     var data = {};
-    data['coords'] = {"long": 2.12, "lat": -3.53};
+    data['coords'] = {"lon": 2.12, "lat": -3.53};
     data['file'] = "data:image/jpg|;base64,........"
     Events.uploadCoordinatedPhoto(data);
 
@@ -1004,15 +1004,15 @@ class CoordinatedPhotoUploader(APIView):
         d = radius * c
         return d
 
-    def findEventFromCoords(self, long=0, lat=0, radius=50):
+    def findEventFromCoords(self, lon=0, lat=0, radius=50):
         """
-            Find first matching event for given coordinates (long, lat) within radius (in km)
+            Find first matching event for given coordinates (lon, lat) within radius (in km)
         """
         now = timezone.now()
 
         # TODO: in case of multiple events we can try to reduce radius
         for event_date in EventDate.objects.filter(start_date__lt=now, end_date__gt=now):
-            distance = self.haversine_distance((lat, long), (event_date.latitude, event_date.longitude))
+            distance = self.haversine_distance((lat, lon), (event_date.latitude, event_date.longitude))
             if distance < radius:
                 return event_date
 
@@ -1030,11 +1030,11 @@ class CoordinatedPhotoUploader(APIView):
             )
             imageObj.userprofile = profile
             if "coords" in serializer.object:
-                long = serializer.object["coords"]["long"]
+                lon = serializer.object["coords"]["lon"]
                 lat = serializer.object["coords"]["lat"]
 
-                imageObj.event_date = self.findEventFromCoords(long, lat)
-                imageObj.longitude = long
+                imageObj.event_date = self.findEventFromCoords(lon, lat)
+                imageObj.longitude = lon
                 imageObj.latitude = lat
             imageObj.save()
             return Response({}, status=status.HTTP_200_OK)

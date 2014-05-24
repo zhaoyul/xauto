@@ -19,7 +19,6 @@ angular.module('security.service', [
     if ( loginDialog ) {
       throw new Error('Trying to open a dialog that is already open!');
     }
-    //loginDialog = $dialog.dialog();
     loginDialog = $modal.open({
         templateUrl: 'security/login/form.tpl.html',
         controller: 'LoginFormController'
@@ -51,7 +50,6 @@ angular.module('security.service', [
   }
 
   //reset password stuff
-
   var resetDialog = null;
   function openResetPasswordDialog() {
     if ( resetDialog ) {
@@ -135,11 +133,6 @@ angular.module('security.service', [
         service.currentUser = null;
         redirect(redirectTo);
       });
-
-//      $http.post('/app/api/logout/').then(function() {
-//        service.currentUser = null;
-//        redirect(redirectTo);
-//      });
     },
     refreshCurrentUser: function(){
         Accounts.getCurrentUser().then(function(response) {
@@ -156,11 +149,6 @@ angular.module('security.service', [
           service.currentUser = response.user;
           return service.currentUser;
         });
-
-//        return $http.get('/app/api/current-user/').then(function(response) {
-//          service.currentUser = response.data.user;
-//          return service.currentUser;
-//        });
       }
     },
 

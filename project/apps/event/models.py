@@ -83,11 +83,11 @@ class EventDate(TimestampedModel):
 
     def __unicode__(self):
         return '(%s) - %s/%s' % (self.event.title.capitalize(),
-                                 self.start_date, self.end_date)
+                                 self.get_date_display())
 
     def normalize_time(self, time):
-        timezone = pytz.timezone(self.timezone.zone)
-        return time.astimezone(timezone)
+        tz = pytz.timezone(self.timezone.zone)
+        return time.astimezone(tz)
 
     def get_date_display(self):
         tz_start_date = self.normalize_time(self.start_date)
@@ -101,7 +101,6 @@ class EventDate(TimestampedModel):
                 get_time_display(tz_end_date)
             )
         return date
-
 
 
 class Event(TimestampedModel):
@@ -177,6 +176,9 @@ class Event(TimestampedModel):
 
     class Meta:
         ordering = ['-created']
+
+    def __unicode__(self):
+        return self.title
 
     # Short link must be validated for case-insensitive unique
     def clean(self):

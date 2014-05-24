@@ -128,7 +128,7 @@ class Base64ImageField(serializers.Serializer):
 
 
 class CoordinateSerializer(serializers.Serializer):
-    long = serializers.FloatField(required=False)
+    lon = serializers.FloatField(required=False)
     lat = serializers.FloatField(required=False)
 
 

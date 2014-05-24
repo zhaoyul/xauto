@@ -390,8 +390,9 @@ angular.module('blvdx.events', [
 		};
 	})
 
-	.controller('EventsCtrl', ['$scope', '$geolocation', 'titleService', 'Events', 'Accounts', '$http', 'AppScope','security',
-		function EventsCtrl($scope, $geolocation, titleService, Events, Accounts, $http, AppScope,security) {
+	.controller('EventsCtrl', ['$scope', '$geolocation', 'titleService', 'Events', 'Accounts', '$http', 'AppScope',
+        'securityAuthorization',
+		function EventsCtrl($scope, $geolocation, titleService, Events, Accounts, $http, AppScope, securityAuthorization) {
 			titleService.setTitle('All events');
 
 			// contain events data ::
@@ -424,6 +425,7 @@ angular.module('blvdx.events', [
 				$scope.hasMoreEvents = $scope.events.length != $scope.eventsPool.length;
 			};
 
+            // GEOLOCATION
 			$scope.check = function () {
 				$scope.aviable = $geolocation.aviable;
 				$scope.error = $geolocation.error;
@@ -453,6 +455,7 @@ angular.module('blvdx.events', [
 			$geolocation.start();
 
 			$scope.check();
+            // END GEOLOCATION
 
 			$scope.changeDisplayFilter = function (type) {
                 var s = $scope.searchFilter;
@@ -474,7 +477,6 @@ angular.module('blvdx.events', [
                         break;
                 }
 
-
 				if ($scope.latitude) {
 					latc = $scope.latitude;
 					longc = $scope.longitude;
@@ -482,6 +484,7 @@ angular.module('blvdx.events', [
 					latc = 0;
 					longc = 0;
 				}
+
 				Events.getEvents({filter_by: type, lat: latc, lon: longc }).then(function (events) {
 					$scope.events = [];
 					$scope.eventsPool = events;
@@ -490,23 +493,14 @@ angular.module('blvdx.events', [
 			};
 
 			$scope.Follow = function (event) {
-                // ------> CHECK LOGIN
-                if(!security.isAuthenticated()){
-                    security.showLogin();
-                    return;
-                }
-
-				Accounts.getCurrentUser().then(function (response) {
-					if (response.user !== null) {
-						Events.follow(event).then(function (data) {
+                securityAuthorization.requireAuthenticatedUser().then(
+                    function(){
+                        Events.follow(event).then(function (data) {
 							event.srv_following = data.srv_following;
 							event.srv_followersCount = data.srv_followersCount;
-						});
-					} else {
-						$(".navbar-nav a").eq(1).click();
-					}
-				});
-
+                        });
+                    }
+                 );
 			};
 
 			app_scope = AppScope.getScope();
@@ -531,7 +525,6 @@ angular.module('blvdx.events', [
     })
 	.controller('EventAddCtrl', ['$scope', '$state', 'titleService', 'Events', '$upload','$dateproxy',
 		function EventsCtrl($scope, $state, titleService, Events, $upload, $dateproxy) {
-
 			titleService.setTitle('Add New Event');
 
 			$scope.open = function () {
@@ -644,7 +637,7 @@ angular.module('blvdx.events', [
                 $state.transitionTo('eventEdit.addDate', {eventId: $scope.eventId});
             };
 
-            $scope.$on($dateproxy.savedate,function () {
+            $scope.$on($dateproxy.savedate, function () {
                 var start_time = $dateproxy.editDate.startTime.split(":");
                 var end_time = $dateproxy.editDate.endTime.split(":");
 
@@ -773,9 +766,6 @@ angular.module('blvdx.events', [
 			$scope.maxDate.setDate($scope.maxDate.getDate() + 365);
 
 			/* end of datepicker */
-
-
-
 		}])
 
 	.controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', 'Accounts', '$http', 'Streams' , '$state' , '$fb','$photoview','security','$global','$rootScope',
@@ -907,13 +897,6 @@ angular.module('blvdx.events', [
 			});
 
 			$scope.Album = {photos: []};
-
-            //$http.get('/app/api/current-user/').then(function (response) {
-//			Accounts.getCurrentUser().then(function (response) {
-//				if (response.user == null) {
-//					//$("#uploadphotolink").hide();
-//				}
-//			});
 
 			createImageObj = function ($file) {
 				var fileObj = {};
