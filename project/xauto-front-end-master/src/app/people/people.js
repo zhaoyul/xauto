@@ -150,7 +150,6 @@ angular.module( 'blvdx.people', [
 
   $scope.Follow = function($profile) {
       Profiles.Follow($profile.slug).then(function (profile) {
-          console.log(profile);
           $profile.srv_following = profile.srv_following;
           $profile.srv_followersCount = profile.srv_followersCount;
       });
