@@ -1475,8 +1475,8 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "          <div class=\"col-xs-12 col-sm-6 col-md-4 photo-name-col\">\n" +
     "            <a href=\"#profile/{{profile.slug}}\"><img ng-src=\"{{profile.thumbnail_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +
     "            <div class=\"name-wrapper\">\n" +
-    "              <strong><a href=\"#profile/{{profile.slug}}\">{{profile.full_name}}</a></strong>\n" +
-    "              <span class=\"username\"><a href=\"#profile/{{profile.slug}}\">{{profile.name}}</a></span>\n" +
+    "              <strong><a href=\"#profile/{{profile.slug}}\">{{profile.user.full_name}}</a></strong>\n" +
+    "              <span class=\"username\"><a href=\"#profile/{{profile.slug}}\">{{profile.user.username}}</a></span>\n" +
     "              <span class=\"location\">\n" +
     "                <i class=\"xa-icon-location\"></i> {{profile.location_address}}\n" +
     "              </span>\n" +
