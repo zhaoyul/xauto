@@ -28,7 +28,6 @@ from xauto_lib.models import TimestampedModel
 class UserProfile(TimestampedModel):
 
     user = models.OneToOneField(User, related_name='profile')
-    name = models.CharField(max_length=255, unique=True, default='', null=False, blank=False)
     slug = AutoSlugField(populate_from='name',
         slugify=lambda value: value.replace(' ', '-'))
     about = models.TextField(null=True, blank=True)
@@ -55,6 +54,7 @@ class UserProfile(TimestampedModel):
 
     #TODO: refactor
     def get_full_name(self):
+        print self.user.first_name
         full_name = u'{} {}'.format(string.capitalize(self.user.first_name),
                                    string.capitalize(self.user.last_name))
 
