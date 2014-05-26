@@ -59,7 +59,16 @@ angular.module( 'blvdx.people', [
   $scope.radioModel = 'All';
 
   Profiles.getProfiles({}).then(function (profiles) {
-      $scope.profilesPool = profiles;
+      function compare(a,b) {
+          if (a.srv_photosCount < b.srv_photosCount) {
+             return 1;
+          }
+          if (a.srv_photosCount > b.srv_photosCount) {
+            return -1;
+          }
+          return 0;
+      }
+      $scope.profilesPool = profiles.sort(compare);
       $scope.showMore();
   });
 
@@ -140,6 +149,7 @@ angular.module( 'blvdx.people', [
 
   $scope.Follow = function($profile) {
       Profiles.Follow($profile.slug).then(function (profile) {
+          console.log(profile);
           $profile.srv_following = profile.srv_following;
           $profile.srv_followersCount = profile.srv_followersCount;
       });
