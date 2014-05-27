@@ -150,7 +150,6 @@ angular.module('blvdx.events', [
                         $scope.editDate.state = $scope.editDate.address_2 = $scope.editDate.address_1 = $scope.editDate.zipcode = $scope.editDate.city = $scope.editDate.country = '';
                     }
                     // ------> push values
-                    console.log(placeDetiles);
                     for(var i = 0 ; i<placeDetiles.length ; i++){
                         switch(placeDetiles[i].types[0]){
                             case 'administrative_area_level_1':
@@ -439,7 +438,6 @@ angular.module('blvdx.events', [
 			};
 
 			$scope.$on(GeolocationEvent.COMPLETE, function (nge) {
-                console.log('hasGeo:',nge);
 				$scope.check();
 				if (!$scope.$$phase) {
 					$scope.$apply();// async call z poza angulara potrzebuje apply, inaczej nie zrobi update'u parametrow
@@ -813,20 +811,28 @@ angular.module('blvdx.events', [
 
                     $scope.stateUpdate();
 
+                    $scope.loaded = true;
+
 				});
 			};
 
             $scope.$on('$stateChangeSuccess' , function(){
-                $scope.stateUpdate();
+                if($scope.loaded){
+                    $scope.stateUpdate();
+                }
             });
 
             $scope.stateUpdate = function(){
                 // display photo::
                 // proxy for stream ::
-                $photoview.EventObj = $scope.EventObj;
-
+                //$photoview.EventObj = $scope.EventObj;
                 var p = $state.params.focus;
                 var imgValid = false;
+                if($photoview.invoked){
+                    $photoview.invoked = false;
+                    return;
+                }
+
 
                 if(p){
                     switch(p.charAt(0)){
@@ -848,12 +854,16 @@ angular.module('blvdx.events', [
                             }
 
                             if(imgValid){
+                                if($photoview.isVisible){
+                                    $photoview.setIndex(j,true);
+                                    return;
+                                }
                                 var photos = $scope.Albums[i].photos;
-                                var delegate = {eventId: $scope.stateParams.eventId , base:'p'};
-
+                                var delegate = {eventId: $scope.stateParams.eventId , base:'p',invoked:true};
                                 $photoview.setup(
                                     $scope,
                                     function(id){
+                                        $photoview.invoked = true;
                                         delegate.focus = delegate.base + id;
                                         $state.transitionTo('eventDetails.Focus',delegate);
                                     },
@@ -862,12 +872,14 @@ angular.module('blvdx.events', [
                                     $scope.EventObj.profile,
                                     $scope.EventObj,
                                     function(){
+                                        $photoview.invoked = true;
                                         delete delegate.focus;
                                         $state.transitionTo('eventDetails',delegate);
-                                    }
+                                    },
+                                    true//
                                 );
                             }
-                            break;
+                            return;
                         case 'a':
                             var z;
                             if($scope.Albums == null){
@@ -882,12 +894,18 @@ angular.module('blvdx.events', [
                                 // not found
                             } else {
                                 setTimeout(function(){
-                                    $('html, body').animate({
-                                        scrollTop:$('#accordion').find('.panel-default').eq(i).offset().top - 60}, 1000);
+                                    var target = $('#accordion').find('.panel-default').eq(z);
+                                    if(target.length >0){
+                                        $('html, body').animate({
+                                            scrollTop:target.offset().top - 60}, 1000);
+                                    }
                                 },100);
                             }
                             break;
                     }
+                }
+                if($photoview.isVisible){
+                    $photoview.close(true);
                 }
             };
 
@@ -956,17 +974,15 @@ angular.module('blvdx.events', [
 			$scope.selectPhoto = function () {
 				// select photo by click in html
                 var photos = this.$parent.album.photos;
-                var delegate = {eventId: $scope.stateParams.eventId , base:'p'};
+                var delegate = {eventId: $scope.stateParams.eventId , base:'p',invoked:true};
 				$photoview.setup( $scope, function(id){
                     delegate.focus = delegate.base + id;
-                    //window.history.back();
+                    $photoview.invoked = true;
                     $state.transitionTo('eventDetails.Focus',delegate);
-                    $scope.stateUpdate();
                 },photos, this.$index ,$scope.EventObj.profile, $scope.EventObj,function(){
                     delete delegate.base;
-                    //window.history.back();
+                    $photoview.invoked = true;
                     $state.transitionTo('eventDetails',delegate);
-                    $scope.stateUpdate();
                 });
                 //'/#/events/' + $scope.stateParams.eventId
 			};
