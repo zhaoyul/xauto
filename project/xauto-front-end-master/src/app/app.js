@@ -88,7 +88,6 @@ angular.module( 'blvdx', [
     };
 
     $scope.changePage = function(target){
-        console.log(security);
         if(security.isAuthenticated()){
             location.href = target;
         } else {
@@ -245,10 +244,8 @@ angular.module( 'blvdx', [
                     gloc.position = result.coords;
                     gloc.complete = true;
                     gloc.timestamp = result.timestamp;
-					//console.log('geolocation set');
                     $rootScope.$broadcast(GeolocationEvent.UPDATE, new GeolocationEvent(true, "received"), gloc.position);
                 }, function (result) {
-					//console.log('geolocation er:',result);
                     if (result.code == 3 && gloc.position != null) {
                         return;
                     }
@@ -280,7 +277,6 @@ angular.module( 'blvdx', [
                     gloc.position = result.coords;
                     gloc.complete = true;
                     gloc.timestamp = result.timestamp;
-					//console.log('geolocation set');
                     $rootScope.$broadcast(GeolocationEvent.COMPLETE, new GeolocationEvent(true, "complete"), gloc.position);
                 }, function (result) {
                     gloc.abort(false);
@@ -359,7 +355,7 @@ angular.module( 'blvdx', [
 		// start image num
 		// user profile data
 		// event data object; {title:string , }
-		setup : function (scope , baseURL , album , startIndex ,Profile, EventObj , closeURL , urlPath){
+		setup : function (scope , baseURL , album , startIndex ,Profile, EventObj , closeURL , urlPath,invoked){
 			this.baseURL = baseURL;
 			this.closeURL = closeURL;
 			this.photos = album;
@@ -372,7 +368,7 @@ angular.module( 'blvdx', [
 				this.displayScope.showPhoto();
 			}
             this.changeLocked = album && album.length < 2;
-			this.setIndex(startIndex || 0);
+			this.setIndex(startIndex || 0,invoked);
 			this.resize();
 		},
         changeLocked:false,
@@ -501,11 +497,14 @@ angular.module( 'blvdx', [
 		},
 
 		displayScope:null,
-		setIndex:function (id){
+		setIndex:function (id,invoked){
 			this.index = id;
 			pV.target.css({opacity:0});
-			this.displayScope.setPhoto();
-		}
+			this.displayScope.setPhoto(invoked);
+		},
+        close:function(invoke){
+            this.displayScope.closePhoto(invoke);
+        }
 	};
 	// on img load ::
 	pV.target.on('load' , function(){
@@ -557,12 +556,12 @@ angular.module( 'blvdx', [
 
 	// display photo
 	// set photo id and photo from current album
-	$scope.setPhoto = function () {
+	$scope.setPhoto = function (invoked) {
         $('.userimg').attr('src','');// clear last photo
 		$scope.photo = $photoview.photos[$photoview.index];
 		$scope.photoURL = $scope.photo.image;
 
-        if($photoview.baseURL){
+        if($photoview.baseURL && !invoked){
             $photoview.baseURL($scope.photo.id);
 		}
 	};
@@ -571,13 +570,13 @@ angular.module( 'blvdx', [
 		$('.photoviewer').css('display','block');
 		$photoview.isVisible = true;
 	};
-	$scope.closePhoto = function () {
+	$scope.closePhoto = function (invoke) {
         $scope.photoURL = '';
         $scope.photoURL = '';
         $('.photoviewer').css('display','none');
 		$(document).off('keydown', $scope.keyChangePhoto);
 		$photoview.isVisible = false;
-        if($photoview.closeURL){
+        if($photoview.closeURL && !invoke){
             $photoview.closeURL();
         }
 	};

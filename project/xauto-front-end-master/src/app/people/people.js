@@ -108,7 +108,6 @@ angular.module( 'blvdx.people', [
             $scope.hasMoreProfiles = true;
         }
   };
-
 }])
 
 .filter('websiteadr', function() {

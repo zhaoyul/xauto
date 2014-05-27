@@ -86,7 +86,8 @@ angular.module( 'blvdx.stream', [
   });
 }])
 
-.controller( 'StreamListCtrl', ['$scope', 'titleService', 'Streams', '$http','$photoview', '$state','Accounts', 'securityAuthorization', function StreamCtrl( $scope, titleService, Streams, $http, $photoview, $state, Accounts, securityAuthorization) {
+.controller( 'StreamListCtrl', ['$scope', 'titleService', 'Streams', '$http','$photoview', '$state','Accounts', 'securityAuthorization','$stateParams',
+        function StreamCtrl( $scope, titleService, Streams, $http, $photoview, $state, Accounts, securityAuthorization,$stateParams) {
   titleService.setTitle( 'Stream' );
   $scope.stream = [];
   $scope.$watch("$parent.stream", function(){
@@ -177,10 +178,12 @@ angular.module( 'blvdx.stream', [
               var delegate = {profileId: $scope.profileId , base:'p'};
               var change = function(id){
                   delegate.photoId = delegate.base + id;
+                  $photoview.invoked = true;
                   $state.transitionTo('profileView.photo',delegate);
               };
               var end = function(){
                   delete delegate.photoId;
+                  $photoview.invoked = true;
                   $state.transitionTo('profileView',delegate);
               };
               var slug = 1;
@@ -188,6 +191,10 @@ angular.module( 'blvdx.stream', [
       }
       $photoview.setup($scope, change, $scope.stream, this.$index, $scope.$parent.$parent.Profile,null,end,slug);
   };
+
+
+  console.log('$stateParams:',$stateParams);
+
 }])
 
 

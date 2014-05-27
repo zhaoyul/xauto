@@ -768,7 +768,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "            <div class=\"modal-body\">\n" +
     "                <div class=\"form-group\" style=\"text-align: center;padding: 40px;\">\n" +
     "                    <div>Copy the link below to share:</div>\n" +
-    "                    <input class=\"copy-album-url form-control\" style=\"cursor: pointer\" type=\"text\" value=\"{{currentURL}}\" readonly />\n" +
+    "                    <input onClick=\"this.setSelectionRange(0, this.value.length)\" class=\"copy-album-url form-control\" style=\"cursor: pointer\" type=\"text\" value=\"{{currentURL}}\" readonly />\n" +
     "                </div>\n" +
     "                <div class=\"modal-footer\">\n" +
     "                    <button ng-click=\"closeModal()\" class=\"btn btn-primary\">Close</button>\n" +
