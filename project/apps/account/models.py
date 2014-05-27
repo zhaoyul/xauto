@@ -41,7 +41,6 @@ class UserProfile(TimestampedModel):
     region = models.CharField(max_length=50, null=True, blank=True)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
-    #timezone = models.CharField(max_length=30, null=False, blank=False, default="0.0")
     timezone = TimeZoneField(null=False, blank=False, default='UTC')
     website = models.CharField(max_length=100, null=True, blank=True)
 
@@ -52,16 +51,10 @@ class UserProfile(TimestampedModel):
     activationtoken = models.CharField(max_length=255L,
         db_column='activationToken', null=True, blank=True)
 
-    #TODO: refactor
     def get_full_name(self):
-        print self.user.first_name
-        full_name = u'{} {}'.format(string.capitalize(self.user.first_name),
-                                   string.capitalize(self.user.last_name))
-
-        if len(full_name.lstrip()) == 0:
-            return self.user.username
-
+        full_name = self.user.get_full_name() or self.user.username
         return full_name
+
     full_name = property(get_full_name)
 
     def get_thumbnail(self, size, size2):
