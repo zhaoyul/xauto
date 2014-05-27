@@ -135,8 +135,9 @@ angular.module('security.service', [
       });
     },
     refreshCurrentUser: function(){
-        Accounts.getCurrentUser().then(function(response) {
+        return Accounts.getCurrentUser().then(function(response) {
           service.currentUser = response.user;
+          return service.currentUser;
         });
     },
 
