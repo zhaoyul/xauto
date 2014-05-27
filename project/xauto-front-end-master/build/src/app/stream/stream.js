@@ -47,47 +47,51 @@ angular.module( 'blvdx.stream', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'StreamCtrl', ['$scope', '$state', 'titleService', 'Streams', '$http', 'Events', 'Accounts', '$q', 'Profiles', function StreamCtrl( $scope, $state, titleService, Streams, $http, Events, Accounts, $q, Profiles) {
+.controller('StreamCtrl', ['$scope', '$state', 'titleService', 'Streams', '$http', 'Events', 'Accounts', '$q',
+            'Profiles', 'security',
+        function StreamCtrl($scope, $state, titleService, Streams, $http, Events, Accounts, $q,
+                            Profiles, security) {
   titleService.setTitle( 'Stream' );
 
-  // always reqest latest user data
-  //$http.get('/app/api/current-user/').then(function(response) {
-  Accounts.getCurrentUser().then(function(response) {
-    if(response.user !== null) {
-      Streams.send_subscribe(response.user.following);
+  // always request latest user data
+  security.refreshCurentUser.then(function(user) {
+      Streams.send_subscribe(service.currentUser.following);
       Streams.send_fetch_latest();
-
-    } else{
-
-      $(".navbar-nav a").eq(1).click();
-
-      var following = {};
-      var eventsLoaded = $q.defer();
-      var usersLoaded = $q.defer();
-      Events.getEvents({}).then(function (events) {
-        following['events'] = [];
-        angular.forEach(events, function(ev){
-          following['events'].push(ev.slug);
-        });
-        eventsLoaded.resolve();
-      });
-      Profiles.getProfiles({}).then(function (profiles) {
-        following['profiles'] = [];
-        angular.forEach(profiles, function(profile){
-          following['profiles'].push(profile.slug);
-        });
-        usersLoaded.resolve();
-      });
-      $q.all([eventsLoaded.promise, usersLoaded.promise]).then(function(){
-        Streams.send_subscribe(following);
-        Streams.send_fetch_latest();
-      });
-    }
   });
+// TODO: remove, what was this for?
+//    } else{
+//
+//      $(".navbar-nav a").eq(1).click();
+//
+//      var following = {};
+//      var eventsLoaded = $q.defer();
+//      var usersLoaded = $q.defer();
+//      Events.getEvents({}).then(function (events) {
+//        following['events'] = [];
+//        angular.forEach(events, function(ev){
+//          following['events'].push(ev.slug);
+//        });
+//        eventsLoaded.resolve();
+//      });
+//      Profiles.getProfiles({}).then(function (profiles) {
+//        following['profiles'] = [];
+//        angular.forEach(profiles, function(profile){
+//          following['profiles'].push(profile.slug);
+//        });
+//        usersLoaded.resolve();
+//      });
+//      $q.all([eventsLoaded.promise, usersLoaded.promise]).then(function(){
+//        Streams.send_subscribe(following);
+//        Streams.send_fetch_latest();
+//      });
+//    }
+//  });
 }])
 
-.controller( 'StreamListCtrl', ['$scope', 'titleService', 'Streams', '$http','$photoview', '$state','Accounts', 'securityAuthorization','$stateParams',
-        function StreamCtrl( $scope, titleService, Streams, $http, $photoview, $state, Accounts, securityAuthorization,$stateParams) {
+.controller( 'StreamListCtrl', ['$scope', 'titleService', 'Streams', '$http','$photoview', '$state','Accounts',
+        'securityAuthorization', '$stateParams',
+        function StreamCtrl($scope, titleService, Streams, $http, $photoview, $state, Accounts,
+                            securityAuthorization, $stateParams) {
   titleService.setTitle( 'Stream' );
   $scope.stream = [];
   $scope.$watch("$parent.stream", function(){
@@ -97,19 +101,16 @@ angular.module( 'blvdx.stream', [
   });
   $scope.is_fetching = false;
   $scope.profileId = $state.params.profileId;
-  $scope.Favorite = function(entry,type) {
-    Accounts.getCurrentUser().then(function(response) {
-        if(response.user == null) {
-            $(".navbar-nav a").eq(1).click();
-        }else{
+  $scope.Favorite = function(entry, type) {
+     securityAuthorization.requireAuthenticatedUser().then(
+        function(){
             if(!type){
                 type = 1;
             }
             Accounts.toggleFavorite(entry.id, type);
             entry.favorited = type !== 2;
-         }
-    });
-
+        }
+     );
   };
 
   $scope.Remove = function(entry) {
@@ -119,21 +120,11 @@ angular.module( 'blvdx.stream', [
 
   $scope.Report = function(entry) {
      securityAuthorization.requireAuthenticatedUser().then(
-        function(userInfo){
+        function(){
             Streams.send_report(entry.id);
             entry.reported = true;
         }
      );
-
-     //$http.get('/app/api/current-user/').then(function(response) {
-//     Accounts.getCurrentUser().then(function(response) {
-//        if(response.user == null) {
-//             $(".navbar-nav a").eq(1).click();
-//        }else{
-//                 Streams.send_report(entry.id);
-//                 entry.reported = true;
-//             }
-//    });
   };
 
   $scope.$on("prepend_entry", function(event, data){
@@ -191,10 +182,6 @@ angular.module( 'blvdx.stream', [
       }
       $photoview.setup($scope, change, $scope.stream, this.$index, $scope.$parent.$parent.Profile,null,end,slug);
   };
-
-
-  console.log('$stateParams:',$stateParams);
-
 }])
 
 
@@ -203,7 +190,6 @@ angular.module( 'blvdx.stream', [
     restrict: 'AC',
     link: function (scope, element, attrs) {
         $(element).css("background-image", "url('"+attrs.bxStreamPhoto+"')");
-        //$(element).colorbox({maxWidth:"100%",maxHeight:"100%",scalePhotos:true, photo:true, href:attrs.bxStreamPhoto});
     }
   };
 });

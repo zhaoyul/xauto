@@ -767,8 +767,10 @@ angular.module('blvdx.events', [
 			/* end of datepicker */
 		}])
 
-	.controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', 'Accounts', '$http', 'Streams' , '$state' , '$fb','$photoview','security','$global','$rootScope',
-		function EventsCtrl($scope, titleService, $location, $stateParams, Events, Accounts, $http, Streams, $state , $fb , $photoview,security,$global, $root) {
+	.controller('EventDetailsCtrl', ['$scope', 'titleService', '$location', '$stateParams', 'Events', 'Accounts',
+        '$http', 'Streams', '$state', '$fb','$photoview', 'security', 'securityAuthorization', '$global','$rootScope',
+		function EventsCtrl($scope, titleService, $location, $stateParams, Events, Accounts,
+                            $http, Streams, $state, $fb, $photoview, security, securityAuthorization, $global, $root) {
 			titleService.setTitle('Event Details');
             $scope.go = function ( path ) {
                 $location.path( path );
@@ -956,17 +958,26 @@ angular.module('blvdx.events', [
             };
 
 			$scope.Follow = function () {
-				//$http.get('/app/api/current-user/').then(function (response) {
-                Accounts.getCurrentUser().then(function (response) {
-					if (response.user == null) {
-						$(".navbar-nav a").eq(1).click();
-					} else {
-						Events.follow($scope.EventObj).then(function (data) {
+                securityAuthorization.requireAuthenticatedUser().then(
+                    function(){
+                        Events.follow($scope.EventObj).then(function (data) {
 							$scope.EventObj.srv_following = data.srv_following;
 							$scope.EventObj.srv_followersCount = data.srv_followersCount;
 						});
-					}
-				});
+                    }
+                 );
+
+				//$http.get('/app/api/current-user/').then(function (response) {
+//                Accounts.getCurrentUser().then(function (response) {
+//					if (response.user == null) {
+//						$(".navbar-nav a").eq(1).click();
+//					} else {
+//						Events.follow($scope.EventObj).then(function (data) {
+//							$scope.EventObj.srv_following = data.srv_following;
+//							$scope.EventObj.srv_followersCount = data.srv_followersCount;
+//						});
+//					}
+//				});
 			};
 
 			$scope.reloadEvent();
