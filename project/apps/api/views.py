@@ -881,7 +881,6 @@ class RegistrationView(APIView):
 
         user_serializer = UserSerializer(data=user_data)
         profile_serializer = NewProfileSerializer(data=request.DATA)
-        print user_serializer.errors
         if user_serializer.is_valid() and profile_serializer.is_valid():
             email = user_serializer.data.get('email', None)
             timezone = request.DATA.get('timezone', None)
