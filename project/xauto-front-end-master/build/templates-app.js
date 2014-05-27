@@ -1642,11 +1642,6 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
     "        </div>\n" +
     "    </div>\n" +
     "</div>\n" +
-    "<script type=\"text/javascript\">\n" +
-    "	if (!(\"ontouchstart\" in document.documentElement)) {\n" +
-    "    	$('ul.stream-list').addClass(\"no-touch\");\n" +
-    "}\n" +
-    "</script>\n" +
     "\n" +
     "");
 }]);
@@ -1695,7 +1690,14 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "        </li>\n" +
     "    </ul>\n" +
     "</div>\n" +
-    "<div ng-show=\"is_fetching\">Loading older entries...</div>");
+    "<div ng-show=\"is_fetching\">Loading older entries...</div>\n" +
+    "<script type=\"text/javascript\">\n" +
+    "	$(document).ready(function () {\n" +
+    "	if (!(\"ontouchstart\" in document.documentElement)) {\n" +
+    "    	$('ul.stream-list').addClass(\"no-touch\");\n" +
+    "	}\n" +
+    "});\n" +
+    "</script>");
 }]);
 
 angular.module("stream/stream.tpl.html", []).run(["$templateCache", function($templateCache) {
