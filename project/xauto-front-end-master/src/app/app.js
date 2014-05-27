@@ -518,6 +518,7 @@ angular.module( 'blvdx', [
 	// photo slide ::
 	new Hammer($('.photoviewer')[0], { drag_lock_to_axis: true }).on("dragleft dragright swipeleft swiperight", function (e) {
 		e.gesture.preventDefault();
+        $('.imgcontainer img').hide();
 		switch (e.type) {
 			case 'swipeleft':
 				pV.displayScope.nextPhoto();
@@ -557,9 +558,9 @@ angular.module( 'blvdx', [
 	// display photo
 	// set photo id and photo from current album
 	$scope.setPhoto = function (invoked) {
-        $('.userimg').attr('src','');// clear last photo
 		$scope.photo = $photoview.photos[$photoview.index];
 		$scope.photoURL = $scope.photo.image;
+        $('.imgcontainer img').show();
 
         if($photoview.baseURL && !invoked){
             $photoview.baseURL($scope.photo.id);
@@ -585,6 +586,7 @@ angular.module( 'blvdx', [
         if($photoview.changeLocked){
             return;
         }
+
 		var p = parseInt($photoview.index, 10);
 		if ($photoview.photos.length == (p + 1)) {
 			p = 0;
