@@ -811,10 +811,8 @@ angular.module('blvdx.events', [
 					Streams.send_subscribe(subscription);
 					Streams.send_fetch_latest();
 
-                    $scope.stateUpdate();
-
                     $scope.loaded = true;
-
+                    $scope.stateUpdate();
 				});
 			};
 
@@ -828,14 +826,14 @@ angular.module('blvdx.events', [
                 // display photo::
                 // proxy for stream ::
                 //$photoview.EventObj = $scope.EventObj;
-                var p = $state.params.focus;
-                var imgValid = false;
+
+
                 if($photoview.invoked){
                     $photoview.invoked = false;
                     return;
                 }
-
-
+                var p = $state.params.focus;
+                var imgValid = false;
                 if(p){
                     switch(p.charAt(0)){
                         case 'p':
@@ -877,8 +875,8 @@ angular.module('blvdx.events', [
                                         $photoview.invoked = true;
                                         delete delegate.focus;
                                         $state.transitionTo('eventDetails',delegate);
-                                    },
-                                    true//
+                                    },null,
+                                    true
                                 );
                             }
                             return;

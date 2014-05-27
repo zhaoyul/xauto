@@ -558,6 +558,7 @@ angular.module( 'blvdx', [
 	// display photo
 	// set photo id and photo from current album
 	$scope.setPhoto = function (invoked) {
+        //????$('.userimg').attr('src','');// clear last photo
 		$scope.photo = $photoview.photos[$photoview.index];
 		$scope.photoURL = $scope.photo.image;
         $('.imgcontainer img').show();
