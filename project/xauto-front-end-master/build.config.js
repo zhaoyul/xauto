@@ -51,6 +51,7 @@ module.exports = {
     js: [
       'vendor/ng-file-upload/angular-file-upload-shim.min.js',
       'vendor/angular/angular.js',
+      'vendor/angular-touch/angular-touch.min.js',
       'vendor/ng-file-upload/angular-file-upload.min.js',
       'vendor/angular-resource/angular-resource.js',
 

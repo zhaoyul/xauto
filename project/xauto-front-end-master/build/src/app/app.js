@@ -9,7 +9,8 @@ angular.module( 'blvdx', [
   'ui.router',
   'restangular',
   'security',
-  'angularFileUpload'
+  'angularFileUpload',
+  'ngTouch'
 ])
 
 .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'RestangularProvider',
@@ -32,7 +33,6 @@ angular.module( 'blvdx', [
 
 .controller( 'AppCtrl', ['$scope', '$state', '$location', 'security', 'Accounts', 'Common', 'AppScope', '$upload',
     function AppCtrl ( $scope, $state, $location, security, Accounts, Common, AppScope, $upload) {
-
     security.requestCurrentUser().then(function (user) {
         $scope.isAuthenticated = security.isAuthenticated;
         $scope.isAdmin = security.isAdmin;
@@ -572,7 +572,9 @@ angular.module( 'blvdx', [
 		$photoview.isVisible = true;
 	};
 	$scope.closePhoto = function () {
-		$('.photoviewer').css('display','none');
+        $scope.photoURL = '';
+        $scope.photoURL = '';
+        $('.photoviewer').css('display','none');
 		$(document).off('keydown', $scope.keyChangePhoto);
 		$photoview.isVisible = false;
         if($photoview.closeURL){
