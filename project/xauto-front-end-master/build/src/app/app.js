@@ -560,7 +560,6 @@ angular.module( 'blvdx', [
         $('.userimg').attr('src','');// clear last photo
 		$scope.photo = $photoview.photos[$photoview.index];
 		$scope.photoURL = $scope.photo.image;
-
         if($photoview.baseURL && !invoked){
             $photoview.baseURL($scope.photo.id);
 		}

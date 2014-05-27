@@ -177,6 +177,7 @@ angular.module( 'blvdx.stream', [
           case 'profileView.photo':
               var delegate = {profileId: $scope.profileId , base:'p'};
               var change = function(id){
+                  console.log('fix url');
                   delegate.photoId = delegate.base + id;
                   $photoview.invoked = true;
                   $state.transitionTo('profileView.photo',delegate);
@@ -193,7 +194,7 @@ angular.module( 'blvdx.stream', [
   };
 
 
-  console.log('$stateParams:',$stateParams);
+  //console.log('$stateParams:',$stateParams);
 
 }])
 
