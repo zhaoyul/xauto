@@ -1642,6 +1642,11 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
     "        </div>\n" +
     "    </div>\n" +
     "</div>\n" +
+    "<script type=\"text/javascript\">\n" +
+    "	if (!(\"ontouchstart\" in document.documentElement)) {\n" +
+    "    	$('ul.stream-list').addClass(\"no-touch\");\n" +
+    "}\n" +
+    "</script>\n" +
     "\n" +
     "");
 }]);
