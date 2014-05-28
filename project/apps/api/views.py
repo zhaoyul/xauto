@@ -903,7 +903,6 @@ class RegistrationView(APIView):
                 error = {'email': ['User with given email already exists']}
                 return Response(error, status=status.HTTP_400_BAD_REQUEST)
             except User.DoesNotExist:
-                user_serializer.object.username = profile_serializer.object.name
                 user_serializer.object.set_password(pw1)
                 user_serializer.object.is_active = True
                 user_serializer.save()
