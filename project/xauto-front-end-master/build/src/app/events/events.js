@@ -137,8 +137,6 @@ angular.module('blvdx.events', [
             if($scope.hasAutoComplete === false){
                 $gmaps.initAutoComplete(document.getElementById('locationInput'),function(){
 
-
-
                     $scope.fromAutoComplete = true;
                     var place = $gmaps.autocomplete.getPlace();
                     var placeDetiles = place.address_components;

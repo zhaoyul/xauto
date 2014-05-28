@@ -722,8 +722,6 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "    </div>\n" +
     "</div>\n" +
     "\n" +
-    "\n" +
-    "\n" +
     "<div class=\"modal fade\" id=\"addPhotosModal\">\n" +
     "    <div class=\"modal-dialog\">\n" +
     "        <div class=\"modal-content\">\n" +
