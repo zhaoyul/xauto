@@ -54,11 +54,9 @@ angular.module( 'blvdx.stream', [
   titleService.setTitle( 'Stream' );
 
   // always request latest user data
-  Accounts.getCurrentUser().then(function(response) {
-      if(response.user !== null) {
-          Streams.send_subscribe(response.user.following);
-          Streams.send_fetch_latest();
-      }
+  security.refreshCurrentUser().then(function(user){
+      Streams.send_subscribe(user.following);
+      Streams.send_fetch_latest();
   });
 // TODO: remove, what was this for?
 //    } else{
