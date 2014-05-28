@@ -8,8 +8,8 @@ class UserProfileAdmin(admin.ModelAdmin):
     """
 
     list_display = ('getEmail', 'getuserName', 'created', 'ip_location', 'city', 'country', )
-    search_fields = ['city', 'country', 'about', 'user__first_name', 'user__last_name', 'user__email',]
-    ordering = ('city', 'country')
+    search_fields = ['name', 'city', 'country', 'about', 'user__first_name', 'user__last_name', 'user__email',]
+    ordering = ('name', 'city' , 'country')
     list_per_page = 30
     list_filter = ['country']
     change_list_filter_template = "admin/filter_listing.html"

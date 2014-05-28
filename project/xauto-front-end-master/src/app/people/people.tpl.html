@@ -6,13 +6,13 @@
         <button type="button" class="btn btn-primary" ng-click="changeDisplayFilter('following')" ng-model="radioModel" btn-radio="'Following'">Following</button>
     </div>
     <ul class="people-list">
-      <li ng-repeat="profile in Profiles">
+      <li ng-repeat="profile in Profiles | orderBy:'srv_photosCount':true">
         <div class="row profile-item">
           <div class="col-xs-12 col-sm-6 col-md-4 photo-name-col">
             <a href="#profile/{{profile.slug}}"><img ng-src="{{profile.thumbnail_image}}" alt="" class="user-pic"></a>
             <div class="name-wrapper">
-              <strong><a href="#profile/{{profile.slug}}">{{profile.user.full_name}}</a></strong>
-              <span class="username"><a href="#profile/{{profile.slug}}">{{profile.user.username}}</a></span>
+              <strong><a href="#profile/{{profile.slug}}">{{profile.full_name}}</a></strong>
+              <span class="username"><a href="#profile/{{profile.slug}}">{{profile.name}}</a></span>
               <span class="location">
                 <i class="xa-icon-location"></i> {{profile.location_address}}
               </span>

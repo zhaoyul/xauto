@@ -59,16 +59,7 @@ angular.module( 'blvdx.people', [
   $scope.radioModel = 'All';
 
   Profiles.getProfiles({}).then(function (profiles) {
-      function compare(a,b) {
-          if (a.srv_photosCount < b.srv_photosCount) {
-             return 1;
-          }
-          if (a.srv_photosCount > b.srv_photosCount) {
-            return -1;
-          }
-          return 0;
-      }
-      $scope.profilesPool = profiles.sort(compare);
+      $scope.profilesPool = profiles;
       $scope.showMore();
   });
 

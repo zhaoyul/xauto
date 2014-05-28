@@ -9031,7 +9031,7 @@ ul.stream-list > li ul.stream-action-links {
   top: 0;
   right: 0;
   z-index: 1;
-  display: block;
+  display: none;
   padding: 0;
   margin: 0;
   background: rgba(255, 255, 255, 0.9);
@@ -9102,25 +9102,21 @@ ul.stream-list > li .stream-title a:hover {
   color: #2567b2;
 }
 
-ul.stream-list.no-touch ul.stream-action-links {
-  display: none;
-}
-
-ul.stream-list.no-touch > li:hover > .inner {
+ul.stream-list > li:hover > .inner {
   -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.4);
           box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.4);
 }
 
-ul.stream-list.no-touch > li:hover .stream-picture > .inner {
+ul.stream-list > li:hover .stream-picture > .inner {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-ul.stream-list.no-touch > li:hover .stream-title {
+ul.stream-list > li:hover .stream-title {
   background: #f8f8f8;
 }
 
-ul.stream-list.no-touch > li:hover ul.stream-action-links {
+ul.stream-list > li:hover ul.stream-action-links {
   display: block;
 }
 

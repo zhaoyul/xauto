@@ -766,7 +766,7 @@ angular.module("events/event-details.tpl.html", []).run(["$templateCache", funct
     "            <div class=\"modal-body\">\n" +
     "                <div class=\"form-group\" style=\"text-align: center;padding: 40px;\">\n" +
     "                    <div>Copy the link below to share:</div>\n" +
-    "                    <input onClick=\"this.setSelectionRange(0, this.value.length)\" class=\"copy-album-url form-control\" style=\"cursor: text\" type=\"text\" value=\"{{currentURL}}\" readonly />\n" +
+    "                    <input onClick=\"this.setSelectionRange(0, this.value.length)\" class=\"copy-album-url form-control\" style=\"cursor: pointer\" type=\"text\" value=\"{{currentURL}}\" readonly />\n" +
     "                </div>\n" +
     "                <div class=\"modal-footer\">\n" +
     "                    <button ng-click=\"closeModal()\" class=\"btn btn-primary\">Close</button>\n" +
@@ -1468,13 +1468,13 @@ angular.module("people/people.tpl.html", []).run(["$templateCache", function($te
     "        <button type=\"button\" class=\"btn btn-primary\" ng-click=\"changeDisplayFilter('following')\" ng-model=\"radioModel\" btn-radio=\"'Following'\">Following</button>\n" +
     "    </div>\n" +
     "    <ul class=\"people-list\">\n" +
-    "      <li ng-repeat=\"profile in Profiles\">\n" +
+    "      <li ng-repeat=\"profile in Profiles | orderBy:'srv_photosCount':true\">\n" +
     "        <div class=\"row profile-item\">\n" +
     "          <div class=\"col-xs-12 col-sm-6 col-md-4 photo-name-col\">\n" +
     "            <a href=\"#profile/{{profile.slug}}\"><img ng-src=\"{{profile.thumbnail_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +
     "            <div class=\"name-wrapper\">\n" +
-    "              <strong><a href=\"#profile/{{profile.slug}}\">{{profile.user.full_name}}</a></strong>\n" +
-    "              <span class=\"username\"><a href=\"#profile/{{profile.slug}}\">{{profile.user.username}}</a></span>\n" +
+    "              <strong><a href=\"#profile/{{profile.slug}}\">{{profile.full_name}}</a></strong>\n" +
+    "              <span class=\"username\"><a href=\"#profile/{{profile.slug}}\">{{profile.name}}</a></span>\n" +
     "              <span class=\"location\">\n" +
     "                <i class=\"xa-icon-location\"></i> {{profile.location_address}}\n" +
     "              </span>\n" +
@@ -1688,14 +1688,7 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "        </li>\n" +
     "    </ul>\n" +
     "</div>\n" +
-    "<div ng-show=\"is_fetching\">Loading older entries...</div>\n" +
-    "<script type=\"text/javascript\">\n" +
-    "	$(document).ready(function () {\n" +
-    "	if (!(\"ontouchstart\" in document.documentElement)) {\n" +
-    "    	$('ul.stream-list').addClass(\"no-touch\");\n" +
-    "	}\n" +
-    "});\n" +
-    "</script>");
+    "<div ng-show=\"is_fetching\">Loading older entries...</div>");
 }]);
 
 angular.module("stream/stream.tpl.html", []).run(["$templateCache", function($templateCache) {
