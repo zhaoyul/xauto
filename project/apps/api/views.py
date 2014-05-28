@@ -385,7 +385,7 @@ class CheckUsernameView(APIView):
         data = {'response': 'Available'}
         if user.is_authenticated() and user.username.lower() == search_text.lower():
             data = {'response': ''}
-        elif UserProfile.objects.filter(user__username=search_text).exists():
+        elif UserProfile.objects.filter(user__username__iexact=search_text).exists():
             data = {'response': 'Unavailable'}
 
         return Response(data, status=status.HTTP_200_OK)
@@ -902,6 +902,7 @@ class RegistrationView(APIView):
                 error = {'email': ['User with given email already exists']}
                 return Response(error, status=status.HTTP_400_BAD_REQUEST)
             except User.DoesNotExist:
+                #user_serializer.object.username = profile_serializer.object.user
                 user_serializer.object.set_password(pw1)
                 user_serializer.object.is_active = True
                 user_serializer.save()

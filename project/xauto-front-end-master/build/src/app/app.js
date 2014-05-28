@@ -10,7 +10,6 @@ angular.module( 'blvdx', [
   'restangular',
   'security',
   'angularFileUpload',
-  'ngTouch'
 ])
 
 .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'RestangularProvider',

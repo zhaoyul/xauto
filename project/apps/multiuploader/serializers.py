@@ -12,6 +12,7 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
     A serializer for ``MultiuploaderImage``.
     """
     image = serializers.SerializerMethodField('get_image')
+    image_thumb = serializers.SerializerMethodField('get_image_thumb')
     caption = serializers.SerializerMethodField('get_caption')
     caption_by = serializers.SerializerMethodField('get_caption_by')
     caption_ev = serializers.SerializerMethodField('get_caption_ev')
@@ -70,6 +71,10 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
         return obj.userprofile.get_full_name()
 
     def get_image(self, obj):
+        if obj.image:
+            return obj.image.url
+
+    def get_image_thumb(self, obj):
         if obj.image:
             return obj.image.url
 
