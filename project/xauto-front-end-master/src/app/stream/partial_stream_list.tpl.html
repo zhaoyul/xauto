@@ -41,3 +41,10 @@
     </ul>
 </div>
 <div ng-show="is_fetching">Loading older entries...</div>
+<script type="text/javascript">
+	$(document).ready(function () {
+	if (!("ontouchstart" in document.documentElement)) {
+    	$('ul.stream-list').addClass("no-touch");
+	}
+});
+</script>

@@ -17,6 +17,7 @@ angular.module('resources.accounts', ['restangular'])
       };
 
       Accounts.createAccount = function (account) {
+          account.user.username = account.name;
           return Restangular.all('register').post(account);
       };
 

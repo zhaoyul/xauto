@@ -385,7 +385,7 @@ class CheckUsernameView(APIView):
         data = {'response': 'Available'}
         if user.is_authenticated() and user.username.lower() == search_text.lower():
             data = {'response': ''}
-        elif UserProfile.objects.filter(name=search_text).exists():
+        elif UserProfile.objects.filter(user__username=search_text).exists():
             data = {'response': 'Unavailable'}
 
         return Response(data, status=status.HTTP_200_OK)
@@ -404,7 +404,6 @@ class UserProfileViewSet(ModelViewSet):
 
         if len(search_text) >= 1:
             queryset = UserProfile.objects.filter(
-                Q(name__icontains=search_text) |
                 Q(user__first_name__icontains=search_text) |
                 Q(user__last_name__icontains=search_text) |
                 Q(city__icontains=search_text) |
