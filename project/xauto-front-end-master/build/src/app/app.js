@@ -6,10 +6,12 @@ angular.module( 'blvdx', [
   'blvdx.people',
   'blvdx.stream',
   'blvdx.account',
+  'resources.users',
   'ui.router',
   'restangular',
   'security',
-  'angularFileUpload',
+  'security.authorization',
+  'angularFileUpload'
 ])
 
 .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'RestangularProvider',
@@ -345,7 +347,7 @@ angular.module( 'blvdx', [
 }).directive('photoview',function (){
 		return {templateUrl: 'templates/photoviewer.tpl.html'};
 	}
-).service('$photoview' , function(){
+).service('$photoview', ['Events', 'Profiles', function(Events, Profiles){
 	var element = $('.photoviewer');
 	var pV = {currentScope:null,baseURL:null,photos:null,index:0,isVisible:false,
 		// current scope;
@@ -357,7 +359,16 @@ angular.module( 'blvdx', [
 		setup : function (scope, baseURL, album, startIndex, Profile, EventObj, closeURL, urlPath, invoked){
 			this.baseURL = baseURL;
 			this.closeURL = closeURL;
-			this.photos = album;
+            $(album).each(function(index) {
+                Events.getEvent(this.eventslug.split('/')[2]).then(function(event) {
+                    album[index].EventObj = event;
+                    console.log(event.srv_following);
+                });
+                Profiles.getDetails(this.userslug.split('/')[2]).then(function(author){
+                    album[index].author = author;
+                });
+            });
+            this.photos = album;
             this.urlPath = urlPath || 0;
 			this.displayScope.EventObj = this.EventObj = EventObj;
 			this.displayScope.Profile = Profile;
@@ -531,7 +542,7 @@ angular.module( 'blvdx', [
 	return pV;
 
 
-}).controller('photoviewer', function($scope, $photoview, $http, Profiles, Accounts,
+}]).controller('photoviewer', function($scope, $photoview, $http, Profiles, Accounts, securityAuthorization, Events,
                                       $fb, $global){
 	//
 	$photoview.displayScope = $scope;
@@ -612,13 +623,23 @@ angular.module( 'blvdx', [
 	$scope.Follow = function(){
 		$photoview.currentScope.Follow();
 	};
-	$scope.FollowUser = function (){
+    $scope.FollowEvent = function (event) {
+        securityAuthorization.requireAuthenticatedUser().then(
+            function(){
+                Events.follow(event).then(function (data) {
+                    event.srv_following = data.srv_following;
+                    event.srv_followersCount = data.srv_followersCount;
+                });
+            }
+         );
+    };
+	$scope.FollowUser = function (author) {
         //$http.get('/app/api/current-user/').then(function (response) {
 		Accounts.getCurrentUser().then(function (response) {
 			if (response.user !== null) {
-				Profiles.Follow($scope.Profile.slug).then(function (data) {
-					$scope.Profile.srv_following = data.srv_following;
-					$scope.Profile.srv_followersCount = data.srv_followersCount;
+				Profiles.Follow(author.slug).then(function (data) {
+					author.srv_following = data.srv_following;
+					author.srv_followersCount = data.srv_followersCount;
 				});
 			} else {
 				$(".navbar-nav a").eq(1).click();

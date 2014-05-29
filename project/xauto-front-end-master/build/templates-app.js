@@ -1724,20 +1724,20 @@ angular.module("templates/photoviewer.tpl.html", []).run(["$templateCache", func
     "            </div>\n" +
     "            <div class=\"rightwrap\">\n" +
     "                <div class=\"close\" ng-click=\"closePhoto()\"></div>\n" +
-    "                <div class=\"eventtitle\" ng-show=\"EventObj\">\n" +
-    "                    <div class=\"title\">{{EventObj.title}}</div>\n" +
-    "                    <div class=\"follow\" ng-click=\"Follow()\">\n" +
-    "                        <div class=\"followcount\">{{EventObj.srv_followersCount}}</div>\n" +
+    "                <div class=\"eventtitle\">\n" +
+    "                    <div class=\"title\">{{photo.EventObj.title}}</div>\n" +
+    "                    <div class=\"follow\" ng-click=\"FollowEvent(photo.EventObj)\">\n" +
+    "                        <div class=\"followcount\">{{photo.EventObj.srv_followersCount}}</div>\n" +
     "                        <a href=\"\" ng-click=\"\" class=\"followicon\">\n" +
-    "                            <i style=\"width: 28px;height: 18px;margin-top: 2px ; margin-left: 10px\" ng-class=\"{'xa-icon-xauto-white': !EventObj.srv_following ,'xa-icon-xauto-colored': EventObj.srv_following}\"></i>\n" +
+    "                            <i style=\"width: 28px;height: 18px;margin-top: 2px ; margin-left: 10px\" ng-class=\"{'xa-icon-xauto-white': !photo.EventObj.srv_following ,'xa-icon-xauto-colored': photo.EventObj.srv_following}\"></i>\n" +
     "                        </a>\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "                <div class=\"author\">\n" +
-    "                    <img class=\"userimg\" ng-src=\"{{EventObj.author_photo}}\"/>\n" +
-    "                    <div class=\"name\">{{Profile.name}}</div>\n" +
-    "                    <div ng-hide=\"Profile.srv_following\" class=\"follow\" ng-click=\"FollowUser()\">Follow Me</div>\n" +
-    "                    <div ng-show=\"Profile.srv_following\" class=\"follow\" ng-click=\"FollowUser()\">Following</div>\n" +
+    "                    <img class=\"userimg\" ng-src=\"{{photo.author.thumbnail_image}}\"/>\n" +
+    "                    <div class=\"name\">{{photo.author.user.full_name}}</div>\n" +
+    "                    <div ng-hide=\"photo.author.srv_following\" class=\"follow\" ng-click=\"FollowUser(photo.author)\">Follow Me</div>\n" +
+    "                    <div ng-show=\"photo.author.srv_following\" class=\"follow\" ng-click=\"FollowUser(photo.author)\">Following</div>\n" +
     "                </div>\n" +
     "                <div class=\"social\">\n" +
     "                    <div class=\"links\">\n" +

@@ -57,17 +57,37 @@ class AlbumSerializer(serializers.ModelSerializer):
 class EventModelSerializer(serializers.ModelSerializer):
     dates = EventDateSerializer(source='event_dates', read_only=True)
     can_edit = serializers.SerializerMethodField('get_can_edit')
+    author_slug = serializers.SerializerMethodField('get_author_slug')
+    srv_followersCount = serializers.SerializerMethodField('srv_followers_count')
+    srv_following = serializers.SerializerMethodField('get_srv_following')
+
 
     class Meta:
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'short_link',
-                  'main_image', 'author', 'dates', 'slug', 'can_edit')
+                  'main_image', 'author', 'author_slug', 'dates',
+                  'slug', 'can_edit', 'srv_followersCount', 'srv_following')
 
     def get_can_edit(self, obj):
         view = self.context['view']
         user = view.request.user
         if user.is_staff or obj.author == user:
             return True
+        return False
+
+    def get_author_slug(self, obj):
+        if obj.author:
+            return obj.author.slug
+        return ""
+
+    def srv_followers_count(self, obj):
+        return obj.followed.count()
+
+    def get_srv_following(self, obj):
+        view = self.context['view']
+        user = view.request.user
+        if hasattr(user, 'profile'):
+            return user.profile.followed_events.filter(id=obj.id).exists()
         return False
 
 
