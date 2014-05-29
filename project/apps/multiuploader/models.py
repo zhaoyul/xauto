@@ -1,13 +1,13 @@
-from django.db import models
 import random
-from sorl.thumbnail import get_thumbnail
+
+from xauto_lib.mixins import ThumbMixin
+from django.db import models
 from django_resized.forms import ResizedImageField
 from django.contrib.auth.models import User
-
 from account.models import UserProfile
-
 from django.conf import settings
 from xauto_lib.models import TimestampedModel
+
 
 try:
     storage = settings.MULTI_IMAGES_FOLDER + '/'
@@ -15,7 +15,7 @@ except AttributeError:
     storage = 'multiuploader_images/'
 
 
-class MultiuploaderImage(TimestampedModel):
+class MultiuploaderImage(ThumbMixin, TimestampedModel):
     """
     Model for storing uploaded photos for User Profile Table and Event Table
     """
@@ -65,23 +65,6 @@ class MultiuploaderImage(TimestampedModel):
     def url(self):
         return self.image.url
 
-    def get_thumb(self, size):
-        try:
-            img = get_thumbnail(self.image,
-                                size,
-                                crop='center',
-                                quality=99)
-            return img.url
-        except IOError:
-            pass
-        return self.image.url
-
-    def thumb_url(self):
-        return self.get_thumb(settings.THUMBNAIL_SIZE)
-
-    def photoviewer_url(self, size):
-        return self.get_thumb(settings.PHOTOVIEWER_SIZE)
-
 
 class MultiuploaderFiles(TimestampedModel):
     """
@@ -125,6 +108,3 @@ class MultiuploaderFiles(TimestampedModel):
                 MultiuploaderFiles.objects.get(key=key)
             except:
                 return key
-
-
-

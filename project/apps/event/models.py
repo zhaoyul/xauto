@@ -1,7 +1,6 @@
 # ---------------------------------------------------
 # --- Django base core code (system)              ---
 from api.utils import get_time_display
-from django.conf import settings
 from django.db import models
 from django.db.models import permalink
 from django.core.exceptions import ValidationError
@@ -11,10 +10,10 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 import pytz
 from sorl.thumbnail.fields import ImageField
-from sorl.thumbnail import get_thumbnail
 from autoslug import AutoSlugField
 from django_countries.fields import CountryField
 from account.models import UserProfile
+from xauto_lib.mixins import ThumbMixin
 from xauto_lib.models import TimestampedModel
 from multiuploader.models import MultiuploaderImage
 from timezone_field import TimeZoneField
@@ -213,32 +212,12 @@ class Event(TimestampedModel):
     def event_upload_images(self):
         return MultiuploaderImage.objects.filter(event_date__event_id=self.id)
 
-    def thumb_url(self):
-        if self.main_image:
-            return self.main_image.get_thumb(settings.THUMBNAIL_SIZE)
-        return u''
-
-    def card_thumb_url(self):
-        if self.main_image:
-            return self.main_image.get_thumb(settings.CARD_THUMBNAIL_SIZE)
-        return u''
-
-    def hero_thumb_url(self):
-        if self.main_image:
-            return self.main_image.get_thumb(settings.HERO_THUMBNAIL_SIZE)
-        return u''
-
-    def admin_thumb_url(self):
-        if self.main_image:
-            return self.main_image.get_thumb(settings.ADMIN_THUMBNAIL_SIZE)
-        return u''
-
     @permalink
     def get_absolute_url(self):
         return 'view_event', None, {'slug': self.slug}
 
 
-class EventImage(TimestampedModel):
+class EventImage(ThumbMixin, TimestampedModel):
     """
     Images For Events
     """
@@ -252,15 +231,4 @@ class EventImage(TimestampedModel):
 
     @property
     def url(self):
-        return self.image.url
-
-    def get_thumb(self, size):
-        try:
-            img = get_thumbnail(self.image,
-                                size,
-                                crop='center',
-                                quality=99)
-            return img.url
-        except IOError:
-            pass
         return self.image.url

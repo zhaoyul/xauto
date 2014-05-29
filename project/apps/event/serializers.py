@@ -61,7 +61,6 @@ class EventModelSerializer(serializers.ModelSerializer):
     srv_followersCount = serializers.SerializerMethodField('srv_followers_count')
     srv_following = serializers.SerializerMethodField('get_srv_following')
 
-
     class Meta:
         model = Event
         fields = ('id', 'title', 'about', 'eventSize', 'short_link',
@@ -111,12 +110,15 @@ class EventSerializer(serializers.ModelSerializer):
 
     def get_photo(self, obj):
         if obj.main_image:
-            return obj.card_thumb_url()
+            return obj.main_image.list_thumb_url()
+            #return obj.main_image.card_thumb_url()
             #return obj.thumb_url(560, 400)
+        return u''
 
     def get_photo_small(self, obj):
         if obj.main_image:
-            return obj.main_image.get_thumb(settings.SMALL_THUMBNAIL_SIZE)
+            return obj.main_image.small_thumb_url()
+        return u''
 
     def srv_followers_count(self, obj):
         return obj.followed.count()
@@ -199,7 +201,9 @@ class EventDetailsSerializer(serializers.ModelSerializer):
                   'author_photo', 'srv_live', 'srv_following', 'albums', 'profile', 'slug', 'gotolink')
 
     def get_photo(self, obj):
-        return obj.hero_thumb_url()
+        if obj.main_image:
+            return obj.main_image.hero_thumb_url()
+        return u''
 
     def get_gotolink(self, obj):
         near = obj.get_nearest_date()
@@ -219,6 +223,7 @@ class EventDetailsSerializer(serializers.ModelSerializer):
             return obj.author.get_full_name()
         return ""
 
+    # TODO: refactor
     def get_author_photo(self, obj):
         if obj.author and obj.author.thumbnail_image:
             return obj.author.get_thumbnail(50, 48)
@@ -233,7 +238,7 @@ class EventDetailsSerializer(serializers.ModelSerializer):
         view = self.context['view']
         user = view.request.user
         try:
-            if user.profile.followed_events.filter(id=obj.id).count():
+            if user.profile.followed_events.filter(id=obj.id).exists():
                 return True
         except:
             pass

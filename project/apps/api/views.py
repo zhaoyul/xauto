@@ -245,7 +245,7 @@ class EventAllImagesView(ListCreateAPIView):
 
         mi = MultiuploaderImage.objects.filter(event_date__in=EventDate.objects.filter(event=event))
         for m in mi:
-            imgs.append((m.id, m.thumb_url()))
+            imgs.append((m.id, m.list_thumb_url()))
 
         return Response(imgs, status=status.HTTP_200_OK)
 
@@ -259,7 +259,7 @@ class EventAllImagesView(ListCreateAPIView):
 
         #setting image
         sset = self.request.DATA.get('id', None)
-        message = 'Invalid parameters'
+        message = u'Invalid parameters'
         if sset:
             try:
                 img = MultiuploaderImage.objects.get(id=sset)
@@ -273,7 +273,7 @@ class EventAllImagesView(ListCreateAPIView):
                 return Response(data, status=status.HTTP_201_CREATED,
                                 headers=headers)
             except MultiuploaderImage.DoesNotExist:
-                message = 'Image not found'
+                message = u'Image not found'
 
         return Response({'error': message}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -300,16 +300,6 @@ class UnassignPicture(UpdateAPIView):
     def get_queryset(self):
         profile = self.request.user.profile
         return MultiuploaderImage.objects.filter(event_date__event__author=profile)
-
-        # def put(self, request, picture_id, *args, **kwargs):
-        #     user = request.user
-        #     picture = MultiuploaderImage.objects.get(id=picture_id)
-        #     if picture.event_date:
-        #         event = picture.event_date.event
-        #         if event.author.user == user:
-        #             picture.delete()
-        #
-        #     return Response({}, status=status.HTTP_200_OK)
 
 
 class EventDatePhotoManageView(APIView):
@@ -926,32 +916,7 @@ class RegistrationView(APIView):
                 profile_serializer.object.user = user_serializer.object
                 profile_serializer.save()
 
-                #activation (old)
-                '''activation_link = request.build_absolute_uri(
-                    reverse('activate-profile',
-                    args=(profile_serializer.object.activationtoken,))
-                )
-
-                email_body = render_to_string('emails/activation_email.html',
-                    {'user': user_serializer.object,
-                     'title': 'Registration',
-                     'site_name': settings.SITE_NAME,
-                     'domain': request.build_absolute_uri(reverse('index')),
-                     'activation_link': activation_link}
-                )
-                if "mailer" in settings.INSTALLED_APPS:
-                    send_html_mail("Welcome to Xauto", email_body, email_body,
-                        settings.DEFAULT_FROM_EMAIL, [email], fail_silently=False)
-                else:
-                    send_mail("Welcome to Xauto", email_body,
-                        settings.DEFAULT_FROM_EMAIL, [email], fail_silently=False)
-
-                # return authentication token
-                token, created = Token.objects.get_or_create(
-                    user=user_serializer.object)'''
-
                 #auth new user
-
                 user = authenticate(email=user_serializer.object.email, password=pw1)
                 auth_login(request, user)
 

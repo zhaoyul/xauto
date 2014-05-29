@@ -1,13 +1,13 @@
 import json
 import logging
+
 from interface import DispatchableConnection
 from multiuploader.models import MultiuploaderImage
-from datetime import timedelta, datetime
 from django.db.models import Q
 from django.utils.dateparse import parse_datetime
-from django.utils.timezone import utc
 from django.conf import settings
 from django.utils.importlib import import_module
+
 SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -49,7 +49,7 @@ class PhotoStream(DispatchableConnection):
 
         msg = {
             "image": entry.url,
-            "image_thumb": entry.thumb_url(),
+            "image_thumb": entry.list_thumb_url(),
             "id": entry.id,
             "timestamp": entry.upload_date.strftime("%Y-%m-%dT%H:%M:%S.%f%z"),
             "caption_both": " ".join(caption_text),

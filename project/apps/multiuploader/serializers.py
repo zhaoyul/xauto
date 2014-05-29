@@ -45,8 +45,9 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
     def get_srv_following(self, obj):
         view = self.context['view']
         user = view.request.user
+        # TODO: refactor
         try:
-            if user.profile.followed_events.filter(id=obj.event_date.event.id).count():
+            if user.profile.followed_events.filter(id=obj.event_date.event.id).exists():
                 return True
         except:
             pass
@@ -56,13 +57,13 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
         date = obj.event_date
         if date:
             return date.location_name
-        return '---'
+        return u'---'
 
     def get_event_date_name(self, obj):
         date = obj.event_date
         if date:
             return date.feature_headline
-        return '---'
+        return u'---'
 
     def get_usericon(self, obj):
         return obj.userprofile.get_thumbnail(40, 40)
@@ -75,7 +76,7 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
             return obj.image.url
 
     def get_image_thumb(self, obj):
-        return obj.thumb_url
+        return obj.list_thumb_url()
 
     def get_caption(self, obj):
         user = self.context['view'].request.user
@@ -84,25 +85,25 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
             profile = user.profile
             if obj.event_date:
                 event = obj.event_date.event
-                if profile.followed_events.filter(id=event.id).count():
+                if profile.followed_events.filter(id=event.id).exists():
                     return event.title
 
-            if profile.followed_profiles.filter(id=obj.userprofile_id).count():
+            if profile.followed_profiles.filter(id=obj.userprofile_id).exists():
                 return obj.userprofile.get_full_name()
 
-        return ""
+        return u""
 
     def get_caption_by(self, obj):
-        return "by %s" % obj.userprofile.get_full_name()
+        return u"by %s" % obj.userprofile.get_full_name()
 
     def get_caption_ev(self, obj):
         if obj.event_date:
-            return "@ %s" %obj.event_date.event.title
+            return u"@ %s" % obj.event_date.event.title
         return ""
 
     def get_eventslug(self, obj):
         if obj.event_date:
-            return  "/events/" + obj.event_date.event.slug
+            return "/events/" + obj.event_date.event.slug
         return ""
 
     def get_userslug(self, obj):
@@ -111,19 +112,17 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
     def get_favorited(self, obj):
         user = self.context['view'].request.user
         if user.is_active:
-            fav = obj.favorite_by.filter(user=user).count() != 0
+            fav = obj.favorite_by.filter(user=user).exists()
             return fav
         else:
             return False
 
 
-
 class Base64ImageField(serializers.Serializer):
     def from_native(self, data, files):
         if data.startswith('data:image'):
-
-            format, imgstr = data.split(';base64,')
-            ext = format.split('/')[-1]
+            fmt, imgstr = data.split(';base64,')
+            ext = fmt.split('/')[-1]
 
             data = ContentFile(imgstr.decode('base64'), name='%s.%s' % (str(uuid.uuid4()), ext))
             return data
