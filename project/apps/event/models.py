@@ -32,10 +32,12 @@ class Currency(models.Model):
 
     def get_currency(self):
         return self.symbol if self.symbol else ''
+
     currency_symbol = property(get_currency)
 
     def get_currency_name(self):
         return self.currency
+
     currency_name = property(get_currency_name)
 
     def get_symbol(self):
@@ -55,9 +57,9 @@ class EventDate(TimestampedModel):
     address_1 = models.CharField(max_length=100, default='', null=True, blank=True)
     address_2 = models.CharField(max_length=100, default='', null=True, blank=True)
     country = CountryField(null=True, blank=True)
-    city = models.CharField(max_length=100,null=True, blank=True)
-    state = models.CharField(max_length=50,null=True, blank=True)
-    region = models.CharField(max_length=50,null=True, blank=True)
+    city = models.CharField(max_length=100, null=True, blank=True)
+    state = models.CharField(max_length=50, null=True, blank=True)
+    region = models.CharField(max_length=50, null=True, blank=True)
     zipcode = models.CharField(max_length=20, null=True, blank=True)
 
     timezone = TimeZoneField(null=False, blank=False, default='UTC')
@@ -69,13 +71,13 @@ class EventDate(TimestampedModel):
     attend_free = models.BooleanField(default=False)
     exhibit_free = models.BooleanField(default=False)
     attend_price_from = models.FloatField(default=0.0,
-        verbose_name='Attend Price US$ (From)')    # price range from (attend)
+                                          verbose_name='Attend Price US$ (From)')  # price range from (attend)
     attend_price_to = models.FloatField(default=0.0,
-        verbose_name='Attend Price US$ (To)')      # price range from (attend)
+                                        verbose_name='Attend Price US$ (To)')  # price range from (attend)
     exhibit_price_from = models.FloatField(default=0.0,
-        verbose_name='Exhibit Price US$ (From)')   # price range from (exhibit)
+                                           verbose_name='Exhibit Price US$ (From)')  # price range from (exhibit)
     exhibit_price_to = models.FloatField(default=0.0,
-        verbose_name='Exhibit Price US$ (To)')     # price range from (exhibit)
+                                         verbose_name='Exhibit Price US$ (To)')  # price range from (exhibit)
     shared = models.ManyToManyField(UserProfile, null=True, blank=True,
                                     related_name='shared_dates')
 
@@ -136,14 +138,14 @@ class Event(TimestampedModel):
     )
 
     SORT_CHOICES = {
-        'Show Last Event':  '-created',
-        'endingtime':  'expire_at',
-        'dateposted':  'published_at',
-        'distance':  'distance',
-        '-endingtime':  '-expire_at',
-        '-dateposted':  '-published_at',
-        '-distance':  'published_at',
-        }
+        'Show Last Event': '-created',
+        'endingtime': 'expire_at',
+        'dateposted': 'published_at',
+        'distance': 'distance',
+        '-endingtime': '-expire_at',
+        '-dateposted': '-published_at',
+        '-distance': 'published_at',
+    }
 
     STATUS_COMPLETED_EVENT = [STATUS_COMPLETE, ]
 
@@ -151,29 +153,29 @@ class Event(TimestampedModel):
     about = models.TextField()
 
     author = models.ForeignKey(UserProfile, related_name='authored_event',
-        null=True, blank=True)
+                               null=True, blank=True)
 
     duration = models.PositiveIntegerField(default=0,
-         verbose_name='Duration in Days')
+                                           verbose_name='Duration in Days')
 
     status = models.CharField(max_length=15, db_index=True,
-        choices=STATUS_CHOICES, default=STATUS_NEW)
+                              choices=STATUS_CHOICES, default=STATUS_NEW)
     eventSize = models.IntegerField(choices=EVENT_SIZE, default=10)  # How big is your event in Cars
     capacity = models.IntegerField(default=0)  # How big is your Capacity in people in people
 
     short_link = models.CharField(max_length=50, default='', unique=True)
 
     slug = AutoSlugField(populate_from='short_link',
-        slugify=lambda value: value.replace(' ', '-'),
-        always_update=True,
-        unique=True)
+                         slugify=lambda value: value.replace(' ', '-'),
+                         always_update=True,
+                         unique=True)
 
     main_image = models.ForeignKey('EventImage', on_delete=models.SET_NULL,
-        blank=True, null=True, related_name='main')
+                                   blank=True, null=True, related_name='main')
 
     followed = models.ManyToManyField(UserProfile,
-        related_name='followed_events', null=True, blank=True,
-        verbose_name='Event followed by')
+                                      related_name='followed_events', null=True, blank=True,
+                                      verbose_name='Event followed by')
 
     class Meta:
         ordering = ['-created']
@@ -211,17 +213,25 @@ class Event(TimestampedModel):
     def event_upload_images(self):
         return MultiuploaderImage.objects.filter(event_date__event_id=self.id)
 
-    def card_thumb_url(self):
-        return self.main_image.get_thumb(settings.CARD_THUMBNAIL_SIZE)
-
     def thumb_url(self):
-        return self.main_image.get_thumb(settings.THUMBNAIL_SIZE)
+        if self.main_image:
+            return self.main_image.get_thumb(settings.THUMBNAIL_SIZE)
+        return u''
+
+    def card_thumb_url(self):
+        if self.main_image:
+            return self.main_image.get_thumb(settings.CARD_THUMBNAIL_SIZE)
+        return u''
 
     def hero_thumb_url(self):
-        return self.main_image.get_thumb(settings.HERO_THUMBNAIL_SIZE)
+        if self.main_image:
+            return self.main_image.get_thumb(settings.HERO_THUMBNAIL_SIZE)
+        return u''
 
     def admin_thumb_url(self):
-        return self.main_image.get_thumb(settings.ADMIN_THUMBNAIL_SIZE)
+        if self.main_image:
+            return self.main_image.get_thumb(settings.ADMIN_THUMBNAIL_SIZE)
+        return u''
 
     @permalink
     def get_absolute_url(self):
@@ -246,11 +256,11 @@ class EventImage(TimestampedModel):
 
     def get_thumb(self, size):
         try:
-            imgObject = get_thumbnail(self.image,
-                                  size,
-                                  crop='center',
-                                  quality=99)
-            return imgObject.url
+            img = get_thumbnail(self.image,
+                                size,
+                                crop='center',
+                                quality=99)
+            return img.url
         except IOError:
             pass
         return self.image.url

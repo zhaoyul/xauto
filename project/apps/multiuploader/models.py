@@ -42,8 +42,8 @@ class MultiuploaderImage(TimestampedModel):
     is_irrelevant = models.BooleanField(default=False)
     is_inappropriate = models.BooleanField(default=False)
     favorite_by = models.ManyToManyField(UserProfile,
-        related_name='favorite_images', null=True, blank=True,
-        verbose_name='Image favorite by')
+                                         related_name='favorite_images', null=True, blank=True,
+                                         verbose_name='Image favorite by')
 
     image = ResizedImageField(max_width=1600, max_height=1200, upload_to=storage)
     caption = models.CharField(max_length=100, blank=True)
@@ -67,11 +67,11 @@ class MultiuploaderImage(TimestampedModel):
 
     def get_thumb(self, size):
         try:
-            imgObject = get_thumbnail(self.image,
-                                  size,
-                                  crop='center',
-                                  quality=99)
-            return imgObject.url
+            img = get_thumbnail(self.image,
+                                size,
+                                crop='center',
+                                quality=99)
+            return img.url
         except IOError:
             pass
         return self.image.url
@@ -81,6 +81,7 @@ class MultiuploaderImage(TimestampedModel):
 
     def photoviewer_url(self, size):
         return self.get_thumb(settings.PHOTOVIEWER_SIZE)
+
 
 class MultiuploaderFiles(TimestampedModel):
     """
