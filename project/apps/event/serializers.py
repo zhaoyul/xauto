@@ -91,11 +91,12 @@ class EventSerializer(serializers.ModelSerializer):
 
     def get_photo(self, obj):
         if obj.main_image:
-            return obj.thumb_url(560, 400)
+            return obj.card_thumb_url()
+            #return obj.thumb_url(560, 400)
 
     def get_photo_small(self, obj):
         if obj.main_image:
-            return obj.thumb_url(50, 36)
+            return obj.main_image.get_thumb(settings.SMALL_THUMBNAIL_SIZE)
 
     def srv_followers_count(self, obj):
         return obj.followed.count()
@@ -113,6 +114,7 @@ class EventSerializer(serializers.ModelSerializer):
             return obj.author.slug
         return ""
 
+    #TODO: refactor
     def get_author_photo(self, obj):
         if obj.author and obj.author.thumbnail_image:
             return obj.author.get_thumbnail(80, 77)
@@ -177,8 +179,7 @@ class EventDetailsSerializer(serializers.ModelSerializer):
                   'author_photo', 'srv_live', 'srv_following', 'albums', 'profile', 'slug', 'gotolink')
 
     def get_photo(self, obj):
-        if obj.main_image:
-            return obj.thumb_url(1500, 290)
+        return obj.hero_thumb_url()
 
     def get_gotolink(self, obj):
         near = obj.get_nearest_date()

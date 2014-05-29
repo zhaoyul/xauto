@@ -65,38 +65,22 @@ class MultiuploaderImage(TimestampedModel):
     def url(self):
         return self.image.url
 
-
-    def thumb_url(self, size, size2):
+    def get_thumb(self, size):
         try:
-            imgObject = get_thumbnail(self.image, str(size)+'x'+str(size2), crop='center', quality=99)
-        except:
-            return self.image.url
-        urlImg = imgObject.url
-        return urlImg
-
-    #def thumb_url(self, size):
-    #    return unicode(self.image.extra_thumbnails.get(size))
-
-    def EVENT_IMAGE(self):
-        from multiuploader.models import MultiuploaderImage
-        items = None
-        try:
-            eventObj = self.event
-            items = MultiuploaderImage.objects.filter(event=eventObj)
-            if items:
-                imageRecord = items[0]
-                imgObject = get_thumbnail(imageRecord, '50x50', crop='center',
-                                          quality=99)
-                urlImg = imgObject.url
-                htmlDiv = '<img src="%s"/>' % urlImg
-                return htmlDiv
-        except:
+            imgObject = get_thumbnail(self.image,
+                                  size,
+                                  crop='center',
+                                  quality=99)
+            return imgObject.url
+        except IOError:
             pass
-        return  '<img src="%s"/ width="50"  height="50">' % \
-            ('/static/images/default_pic.jpg')
+        return self.image.url
 
-    EVENT_IMAGE.allow_tags = True
+    def thumb_url(self):
+        return self.get_thumb(settings.THUMBNAIL_SIZE)
 
+    def photoviewer_url(self, size):
+        return self.get_thumb(settings.PHOTOVIEWER_SIZE)
 
 class MultiuploaderFiles(TimestampedModel):
     """

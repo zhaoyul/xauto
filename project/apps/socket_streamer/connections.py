@@ -47,9 +47,9 @@ class PhotoStream(DispatchableConnection):
             eventslug = "/events/" + entry.event_date.event.slug
         caption_text.append("by %s" % entry.userprofile.get_full_name())
 
-
         msg = {
             "image": entry.url,
+            "image_thumb": entry.thumb_url(),
             "id": entry.id,
             "timestamp": entry.upload_date.strftime("%Y-%m-%dT%H:%M:%S.%f%z"),
             "caption_both": " ".join(caption_text),
@@ -60,7 +60,6 @@ class PhotoStream(DispatchableConnection):
             "favorited": entry.favorite_by.filter(user=self.user).count() != 0,
             "reported": entry.is_irrelevant or entry.is_inappropriate,
         }
-        print 'entry serializer for: ', entry
         return msg
 
     def on_close(self):

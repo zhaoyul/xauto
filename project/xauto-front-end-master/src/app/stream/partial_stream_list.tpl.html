@@ -3,7 +3,7 @@
         <li class="col-xs-12 col-sm-4 col-lg-3" ng-repeat="item in stream">
             <div class="inner">
                 <div class="stream-picture">
-                     <div bx-stream-photo="{{item.image}}" class="inner" ng-click="selectImage()"></div>
+                     <div bx-stream-photo="{{ item.image_thumb }}" class="inner" ng-click="selectImage()"></div>
                      <ul class="stream-action-links">
                         <li ng-hide="item.favorited" class="action-favorite">
                             <a href="javascript:;" tooltip-placement="left" tooltip="Favorite!"
@@ -17,7 +17,7 @@
                           </a>
                         </li>
                         <li class="action-share">
-                            <a href="#" tooltip-placement="left" tooltip="Share"  ng-click="selectImage()"><i class="icon-share"></i></a>
+                            <a href="#" tooltip-placement="left" tooltip="Share" ng-click="selectImage()"><i class="icon-share"></i></a>
                         </li>
                         <li ng-hide="item.reported" class="action-report">
                             <a href="javascript:;" tooltip-placement="left" tooltip="Report"

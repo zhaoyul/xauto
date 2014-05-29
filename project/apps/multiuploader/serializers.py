@@ -75,8 +75,7 @@ class MultiuploaderImageSerializer(serializers.ModelSerializer):
             return obj.image.url
 
     def get_image_thumb(self, obj):
-        if obj.image:
-            return obj.image.url
+        return obj.thumb_url
 
     def get_caption(self, obj):
         user = self.context['view'].request.user

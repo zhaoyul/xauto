@@ -97,7 +97,7 @@ angular.module("account/account-my-photos-at-event.tpl.html", []).run(["$templat
     "          <ul class=\"stream-list\">\n" +
     "            <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"photo in photos\" ng-hide=\"photo.hide\">\n" +
     "              <div class=\"stream-picture\">\n" +
-    "                 <div bx-stream-photo=\"{{photo.image}}\" class=\"inner\"></div>\n" +
+    "                 <div bx-stream-photo=\"{{photo.image_thumb}}\" class=\"inner\"></div>\n" +
     "                  <ul class=\"stream-action-links\">\n" +
     "                        <li class=\"action-delete\" >\n" +
     "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Delete\"\n" +
@@ -173,7 +173,7 @@ angular.module("account/account-my-photos-on-date.tpl.html", []).run(["$template
     "          <ul class=\"stream-list\">\n" +
     "            <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"photo in photos\" ng-hide=\"photo.hide\">\n" +
     "              <div class=\"stream-picture\">\n" +
-    "                 <div bx-stream-photo=\"{{photo.image}}\" class=\"inner\"></div>\n" +
+    "                 <div bx-stream-photo=\"{{photo.image_thumb}}\" class=\"inner\"></div>\n" +
     "                  <ul class=\"stream-action-links\">\n" +
     "                        <li class=\"action-delete\" >\n" +
     "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Delete\"\n" +
@@ -1190,7 +1190,7 @@ angular.module("events/partial_event_details_photos.tpl.html", []).run(["$templa
     "          <ul class=\"stream-list\">\n" +
     "            <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"photo in album.showphotos\" ng-hide=\"photo.hide\" ng-click=\"selectPhoto()\">\n" +
     "              <div class=\"stream-picture\">\n" +
-    "                  <div bx-stream-photo=\"{{photo.image}}\" class=\"inner\"></div>\n" +
+    "                  <div bx-stream-photo=\"{{ photo.image_thumb }}\" class=\"inner\"></div>\n" +
     "                  <ul class=\"stream-action-links\">\n" +
     "                      <li class=\"action-delete\" ng-show=\"false\">\n" +
     "                          <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Delete\"\n" +
@@ -1652,7 +1652,7 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "        <li class=\"col-xs-12 col-sm-4 col-lg-3\" ng-repeat=\"item in stream\">\n" +
     "            <div class=\"inner\">\n" +
     "                <div class=\"stream-picture\">\n" +
-    "                     <div bx-stream-photo=\"{{item.image}}\" class=\"inner\" ng-click=\"selectImage()\"></div>\n" +
+    "                     <div bx-stream-photo=\"{{ item.image_thumb }}\" class=\"inner\" ng-click=\"selectImage()\"></div>\n" +
     "                     <ul class=\"stream-action-links\">\n" +
     "                        <li ng-hide=\"item.favorited\" class=\"action-favorite\">\n" +
     "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Favorite!\"\n" +
@@ -1666,7 +1666,7 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "                          </a>\n" +
     "                        </li>\n" +
     "                        <li class=\"action-share\">\n" +
-    "                            <a href=\"#\" tooltip-placement=\"left\" tooltip=\"Share\"  ng-click=\"selectImage()\"><i class=\"icon-share\"></i></a>\n" +
+    "                            <a href=\"#\" tooltip-placement=\"left\" tooltip=\"Share\" ng-click=\"selectImage()\"><i class=\"icon-share\"></i></a>\n" +
     "                        </li>\n" +
     "                        <li ng-hide=\"item.reported\" class=\"action-report\">\n" +
     "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Report\"\n" +

@@ -245,7 +245,7 @@ class EventAllImagesView(ListCreateAPIView):
 
         mi = MultiuploaderImage.objects.filter(event_date__in=EventDate.objects.filter(event=event))
         for m in mi:
-            imgs.append((m.id, m.thumb_url(250, 250)))
+            imgs.append((m.id, m.thumb_url()))
 
         return Response(imgs, status=status.HTTP_200_OK)
 

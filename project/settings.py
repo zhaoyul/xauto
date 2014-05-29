@@ -409,12 +409,24 @@ COUNTRIES_OVERRIDE = {
     "ZW": None,
 }
 
-
 TOS_URL = u'#'
 GOTO_BUTTON_URL=u'http://maps.apple.com/?q={lat},{lon}'
 
 DATETIME_FORMAT = '%b %d, %Y'
 APP_PREFIX = '/app'
+
+
+# Default event image
+DEFAULT_EVENT_IMAGE = '/static/images/default_pic.jpg'
+
+# IMAGE SIZES
+SMALL_THUMBNAIL_SIZE = u'50x36'  # used at my-events page
+CARD_THUMBNAIL_SIZE = u'370x200'
+HERO_THUMBNAIL_SIZE = u'1500x290'
+ADMIN_THUMBNAIL_SIZE = u'60x60'
+THUMBNAIL_SIZE = u'500x500'
+PHOTOVIEWER_SIZE = u'1600x1200'
+
 
 try:
     from settings_local import *

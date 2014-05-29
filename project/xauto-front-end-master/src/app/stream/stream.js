@@ -180,10 +180,10 @@ angular.module( 'blvdx.stream', [
               var slug = 1;
               break;
       }
-      $photoview.setup($scope, change, $scope.stream, this.$index, $scope.$parent.$parent.Profile,null,end,slug);
+      $photoview.setup($scope, change, $scope.stream, this.$index, $scope.$parent.$parent.Profile,
+                       null, end, slug);
   };
 }])
-
 
 .directive('bxStreamPhoto', function() {
   return {

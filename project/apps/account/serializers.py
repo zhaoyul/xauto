@@ -50,12 +50,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     def get_thumbnail_image(self, obj):
         if obj.thumbnail_image:
-            return obj.get_thumbnail(80,77)
+            return obj.get_thumbnail(80, 77)
         return ""
 
     def get_main_image(self, obj):
         if obj.main_image:
-            return obj.get_main_image(1520,300)
+            return obj.get_main_image(1520, 300)
         return ""
 
     def srv_followers_count(self, obj):

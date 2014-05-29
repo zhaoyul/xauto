@@ -1,6 +1,7 @@
 # ---------------------------------------------------
 # --- Django base core code (system)              ---
 from api.utils import get_time_display
+from django.conf import settings
 from django.db import models
 from django.db.models import permalink
 from django.core.exceptions import ValidationError
@@ -10,8 +11,8 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 import pytz
 from sorl.thumbnail.fields import ImageField
-from autoslug import AutoSlugField
 from sorl.thumbnail import get_thumbnail
+from autoslug import AutoSlugField
 from django_countries.fields import CountryField
 from account.models import UserProfile
 from xauto_lib.models import TimestampedModel
@@ -210,13 +211,17 @@ class Event(TimestampedModel):
     def event_upload_images(self):
         return MultiuploaderImage.objects.filter(event_date__event_id=self.id)
 
-    def thumb_url(self, size, size2):
-        try:
-            imgObject = get_thumbnail(self.main_image, str(size)+'x'+str(size2), crop='center', quality=99)
-        except:
-            return self.main_image.url
-        urlImg = imgObject.url
-        return urlImg
+    def card_thumb_url(self):
+        return self.main_image.get_thumb(settings.CARD_THUMBNAIL_SIZE)
+
+    def thumb_url(self):
+        return self.main_image.get_thumb(settings.THUMBNAIL_SIZE)
+
+    def hero_thumb_url(self):
+        return self.main_image.get_thumb(settings.HERO_THUMBNAIL_SIZE)
+
+    def admin_thumb_url(self):
+        return self.main_image.get_thumb(settings.ADMIN_THUMBNAIL_SIZE)
 
     @permalink
     def get_absolute_url(self):
@@ -239,5 +244,13 @@ class EventImage(TimestampedModel):
     def url(self):
         return self.image.url
 
-    def thumb_url(self, size):
-        return unicode(self.image.extra_thumbnails.get(size))
+    def get_thumb(self, size):
+        try:
+            imgObject = get_thumbnail(self.image,
+                                  size,
+                                  crop='center',
+                                  quality=99)
+            return imgObject.url
+        except IOError:
+            pass
+        return self.image.url

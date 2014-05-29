@@ -354,7 +354,7 @@ angular.module( 'blvdx', [
 		// start image num
 		// user profile data
 		// event data object; {title:string , }
-		setup : function (scope , baseURL , album , startIndex ,Profile, EventObj , closeURL , urlPath,invoked){
+		setup : function (scope, baseURL, album, startIndex, Profile, EventObj, closeURL, urlPath, invoked){
 			this.baseURL = baseURL;
 			this.closeURL = closeURL;
 			this.photos = album;
@@ -531,7 +531,8 @@ angular.module( 'blvdx', [
 	return pV;
 
 
-}).controller('photoviewer', function($scope , $photoview , $http,Profiles,Accounts,$fb ,$global){
+}).controller('photoviewer', function($scope, $photoview, $http, Profiles, Accounts,
+                                      $fb, $global){
 	//
 	$photoview.displayScope = $scope;
 	// ------> display photo viewer ::
