@@ -715,7 +715,6 @@ angular.module( 'blvdx', [
 });
 
 
-
 var GeolocationEvent = (function () {
     function GeolocationEvent(success, message, position) {
         this.success = success;

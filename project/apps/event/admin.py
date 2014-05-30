@@ -95,7 +95,7 @@ class EventAdmin(AdminImageMixin, admin.ModelAdmin):
         )
 
     list_display = ('title', 'Author', 'main_image', )
-    search_fields = ['title', 'author__email', 'status', ]
+    search_fields = ['title', 'author__user__email', 'status', ]
     list_filter = ['status', ]
     change_list_filter_template = "admin/filter_listing.html"
     autocomplete_lookup_fields = {

@@ -1,9 +1,0 @@
-
-<ul>
-    {% for item in items %}
-        <li>
-            <span style="display: inline-block; width: 200px;" >{{ item.caption }}</span>&nbsp; | &nbsp; <span style="display: inline-block; width: 40px;" >{{ item.file_type }}</span> &nbsp; | &nbsp; <span style="display: inline-block; width: 120px;" >{{ item.size }}kb</span>
-            <a title="{% trans 'Click here to remove this File' %}" href="javascript:void(0);"  data-id="{{ item.id }}" class="ico remove remove_image_icon">{% trans "Delete" %}</a>
-        </li>
-    {% endfor %}
-</ul>
