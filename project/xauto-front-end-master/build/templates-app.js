@@ -1555,61 +1555,61 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
     "                        <div class=\"row\" id=\"profile-view-navbar\">\n" +
     "                            <div class=\"col-xs-12\">\n" +
     "\n" +
-    "                                        <div class=\"row profile-item\">\n" +
-    "                                          <div class=\"col-xs-12 col-sm-6 col-md-4 photo-name-col\">\n" +
-    "                                            <a href=\"#profile/{{Profile.slug}}\"><img src=\"{{Profile.thumbnail_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +
-    "                                            <div class=\"name-wrapper\">\n" +
-    "                                              <strong><a href=\"#profile/{{Profile.slug}}\">{{Profile.full_name}}</a></strong>\n" +
-    "                                              <span class=\"username\"><a href=\"#profile/{{Profile.slug}}\">{{Profile.name}}</a></span>\n" +
-    "                                              <span class=\"location\">\n" +
-    "                                                <i class=\"xa-icon-location\"></i> {{Profile.location}}\n" +
-    "                                              </span>\n" +
-    "                                              <span class=\"website\"><a href=\"{{Profile.website | websiteadr}}\">{{Profile.website}}</a></span>\n" +
-    "                                            </div>\n" +
-    "                                          </div>\n" +
-    "                                          <div class=\"col-md-3 hidden-xs hidden-sm about-col\">\n" +
-    "                                            <p>\n" +
-    "                                              {{Profile.about}}\n" +
-    "                                            </p>\n" +
-    "                                          </div>\n" +
-    "                                          <div class=\"col-xs-6 col-sm-4 col-md-3 counts-col\">\n" +
-    "                                            <ul>\n" +
-    "                                              <li>\n" +
-    "                                                <span class=\"count-badge\">\n" +
-    "                                                  <span class=\"badge\">{{Profile.srv_photosCount}}</span>\n" +
-    "                                                </span>\n" +
-    "                                                <span class=\"count-title\">\n" +
-    "                                                  Photos\n" +
-    "                                                </span>\n" +
-    "                                              </li>\n" +
-    "                                              <li>\n" +
-    "                                                <span class=\"count-badge\">\n" +
-    "                                                  <span class=\"badge\">{{Profile.srv_followersCount}}</span>\n" +
-    "                                                </span>\n" +
-    "                                                <span class=\"count-title\">\n" +
-    "                                                  Followers\n" +
-    "                                                </span>\n" +
-    "                                              </li>\n" +
-    "                                              <li>\n" +
-    "                                                <span class=\"count-badge\">\n" +
-    "                                                  <span class=\"badge\">{{Profile.srv_followingCount}}</span>\n" +
-    "                                                </span>\n" +
-    "                                                <span class=\"count-title\">\n" +
-    "                                                  Following\n" +
-    "                                                </span>\n" +
-    "                                              </li>\n" +
-    "                                            </ul>\n" +
-    "                                          </div>\n" +
-    "                                          <div class=\"col-xs-6 col-sm-2 col-md-2 follow-col\">\n" +
-    "                                            <a href=\"javascript:;\"\n" +
-    "                                              ng-click=\"Follow(Profile)\"\n" +
-    "                                              ng-class=\"{following:Profile.srv_following}\">\n" +
-    "                                              <i class=\"xa-icon-event-details-follow\"></i>\n" +
-    "                                              <span ng-hide=\"Profile.srv_following\">Follow</span>\n" +
-    "                                              <span ng-show=\"Profile.srv_following\">Following</span>\n" +
-    "                                            </a>\n" +
-    "                                          </div>\n" +
-    "                                        </div>\n" +
+    "                                <div class=\"row profile-item\">\n" +
+    "                                  <div class=\"col-xs-12 col-sm-6 col-md-4 photo-name-col\">\n" +
+    "                                    <a href=\"#profile/{{Profile.slug}}\"><img src=\"{{Profile.thumbnail_image}}\" alt=\"\" class=\"user-pic\"></a>\n" +
+    "                                    <div class=\"name-wrapper\">\n" +
+    "                                      <strong><a href=\"#profile/{{Profile.slug}}\">{{Profile.full_name}}</a></strong>\n" +
+    "                                      <span class=\"username\"><a href=\"#profile/{{Profile.slug}}\">{{Profile.name}}</a></span>\n" +
+    "                                      <span class=\"location\">\n" +
+    "                                        <i class=\"xa-icon-location\"></i> {{Profile.location}}\n" +
+    "                                      </span>\n" +
+    "                                      <span class=\"website\"><a href=\"{{Profile.website | websiteadr}}\">{{Profile.website}}</a></span>\n" +
+    "                                    </div>\n" +
+    "                                  </div>\n" +
+    "                                  <div class=\"col-md-3 hidden-xs hidden-sm about-col\">\n" +
+    "                                    <p>\n" +
+    "                                      {{Profile.about}}\n" +
+    "                                    </p>\n" +
+    "                                  </div>\n" +
+    "                                  <div class=\"col-xs-6 col-sm-4 col-md-3 counts-col\">\n" +
+    "                                    <ul>\n" +
+    "                                      <li>\n" +
+    "                                        <span class=\"count-badge\">\n" +
+    "                                          <span class=\"badge\">{{Profile.srv_photosCount}}</span>\n" +
+    "                                        </span>\n" +
+    "                                        <span class=\"count-title\">\n" +
+    "                                          Photos\n" +
+    "                                        </span>\n" +
+    "                                      </li>\n" +
+    "                                      <li>\n" +
+    "                                        <span class=\"count-badge\">\n" +
+    "                                          <span class=\"badge\">{{Profile.srv_followersCount}}</span>\n" +
+    "                                        </span>\n" +
+    "                                        <span class=\"count-title\">\n" +
+    "                                          Followers\n" +
+    "                                        </span>\n" +
+    "                                      </li>\n" +
+    "                                      <li>\n" +
+    "                                        <span class=\"count-badge\">\n" +
+    "                                          <span class=\"badge\">{{Profile.srv_followingCount}}</span>\n" +
+    "                                        </span>\n" +
+    "                                        <span class=\"count-title\">\n" +
+    "                                          Following\n" +
+    "                                        </span>\n" +
+    "                                      </li>\n" +
+    "                                    </ul>\n" +
+    "                                  </div>\n" +
+    "                                  <div class=\"col-xs-6 col-sm-2 col-md-2 follow-col\">\n" +
+    "                                    <a href=\"javascript:;\"\n" +
+    "                                      ng-click=\"Follow(Profile)\"\n" +
+    "                                      ng-class=\"{following:Profile.srv_following}\">\n" +
+    "                                      <i class=\"xa-icon-event-details-follow\"></i>\n" +
+    "                                      <span ng-hide=\"Profile.srv_following\">Follow</span>\n" +
+    "                                      <span ng-show=\"Profile.srv_following\">Following</span>\n" +
+    "                                    </a>\n" +
+    "                                  </div>\n" +
+    "                                </div>\n" +
     "\n" +
     "                            </div>\n" +
     "                        </div>\n" +
@@ -1620,23 +1620,9 @@ angular.module("people/profile-view.tpl.html", []).run(["$templateCache", functi
     "        </div>\n" +
     "        <div class=\"row\">\n" +
     "            <div class=\"col-xs-12\">\n" +
-    "                <!-- <ul class=\"nav nav-tabs event-details-tabs\">\n" +
-    "                    <li class=\"active\"><a data-toggle=\"tab\" data-target=\"#stream\">Live Stream</a></li>\n" +
-    "                    <li><a data-toggle=\"tab\" data-target=\"#photos\">{{EventObj.srv_photosCount}} Photos</a></li>\n" +
-    "                    <li><a data-toggle=\"tab\" data-target=\"#followers\">{{EventObj.srv_followersCount}} Followers</a></li>\n" +
-    "                </ul> -->\n" +
-    "\n" +
-    "                <div class=\"tab-content event-details-tab-contents\">\n" +
-    "                  <div class=\"active tab-pane\" id=\"stream\">\n" +
+    "                  <div id=\"stream\">\n" +
     "                      <ng-include src=\"'stream/partial_stream_list.tpl.html'\"></ng-include>\n" +
     "                  </div>\n" +
-    "                  <div class=\"tab-pane\" id=\"photos\">\n" +
-    "                      <ng-include src=\"'events/partial_event_details_photos.tpl.html'\"></ng-include>\n" +
-    "                  </div>\n" +
-    "                  <div class=\"tab-pane\" id=\"followers\">\n" +
-    "                      Followers\n" +
-    "                  </div>\n" +
-    "                </div>\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +

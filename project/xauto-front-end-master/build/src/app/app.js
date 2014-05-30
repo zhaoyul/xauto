@@ -619,7 +619,6 @@ angular.module( 'blvdx', [
 		$photoview.setIndex(p);
 	};
 
-
 	$scope.Follow = function(){
 		$photoview.currentScope.Follow();
 	};

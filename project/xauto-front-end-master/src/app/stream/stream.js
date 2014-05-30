@@ -88,7 +88,7 @@ angular.module( 'blvdx.stream', [
 //  });
 }])
 
-.controller( 'StreamListCtrl', ['$scope', 'titleService', 'Streams', '$http','$photoview', '$state','Accounts',
+.controller('StreamListCtrl', ['$scope', 'titleService', 'Streams', '$http','$photoview', '$state','Accounts',
         'securityAuthorization', '$stateParams',
         function StreamCtrl($scope, titleService, Streams, $http, $photoview, $state, Accounts,
                             securityAuthorization, $stateParams) {
@@ -161,27 +161,50 @@ angular.module( 'blvdx.stream', [
     Streams.send_fetch_more(offset);
   };
 
+//  $scope.$on('$stateChangeSuccess' , function(){
+//    console.log('state changed!');
+//    console.log('state: '+$state.current.name);
+//      console.log('state: '+$state.params);
+//    if ($state.current.name !== 'profileView.photo'){
+//        if($photoview.invoked){
+//            $photoview.close(true);
+//        }
+//    }
+//  });
+
+  $scope.$on('$stateChangeStart' , function(event, toState, toParams, fromState, fromParams){
+    if (toState.name !== 'profileView.photo'){
+        $photoview.close(true);
+    }
+  });
+
   $scope.selectImage = function(){
-      var name = ($state && $state.current )?$state.current.name:'undefined';
+      var name = ($state && $state.current) ? $state.current.name: 'undefined';
       switch(name){
           case 'profileView':
           case 'profileView.photo':
-              var delegate = {profileId: $scope.profileId , base:'p'};
+              var delegate = {profileId: $scope.profileId, base: 'p', invoked: true, first: true};
               var change = function(id){
+                  var params = null;
                   delegate.photoId = delegate.base + id;
                   $photoview.invoked = true;
-                  $state.transitionTo('profileView.photo',delegate);
+                  if (delegate.first){
+                      delegate.first = false;
+                  }else {
+                      params = {location: 'replace'};
+                  }
+                  $state.transitionTo('profileView.photo', delegate, params);
               };
               var end = function(){
+                  console.log('end called');
                   delete delegate.photoId;
-                  $photoview.invoked = true;
-                  $state.transitionTo('profileView',delegate);
+                  $photoview.invoked = false;
+                  $state.go('profileView', delegate);
               };
               var slug = 1;
-              break;
       }
-      $photoview.setup($scope, change, $scope.stream, this.$index, $scope.$parent.$parent.Profile,
-                       null, end, slug);
+      $photoview.setup($scope, change, $scope.stream, this.$index,
+                       $scope.$parent.$parent.Profile, null, end);
   };
 }])
 

@@ -133,7 +133,8 @@ angular.module( 'blvdx.people', [
     };
 })
 
-.controller( 'ProfileViewCtrl', ['$scope', 'titleService', '$stateParams', 'Profiles', 'Streams', function ProfileViewCtrl( $scope, titleService, $stateParams, Profiles, Streams) {
+.controller( 'ProfileViewCtrl', ['$scope', 'titleService', '$stateParams', 'Profiles', 'Streams',
+        function ProfileViewCtrl($scope, titleService, $stateParams, Profiles, Streams) {
 
   titleService.setTitle( $stateParams.username+' - Profile' );
 

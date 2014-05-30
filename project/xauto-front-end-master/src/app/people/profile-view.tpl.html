@@ -15,61 +15,61 @@
                         <div class="row" id="profile-view-navbar">
                             <div class="col-xs-12">
 
-                                        <div class="row profile-item">
-                                          <div class="col-xs-12 col-sm-6 col-md-4 photo-name-col">
-                                            <a href="#profile/{{Profile.slug}}"><img src="{{Profile.thumbnail_image}}" alt="" class="user-pic"></a>
-                                            <div class="name-wrapper">
-                                              <strong><a href="#profile/{{Profile.slug}}">{{Profile.full_name}}</a></strong>
-                                              <span class="username"><a href="#profile/{{Profile.slug}}">{{Profile.name}}</a></span>
-                                              <span class="location">
-                                                <i class="xa-icon-location"></i> {{Profile.location}}
-                                              </span>
-                                              <span class="website"><a href="{{Profile.website | websiteadr}}">{{Profile.website}}</a></span>
-                                            </div>
-                                          </div>
-                                          <div class="col-md-3 hidden-xs hidden-sm about-col">
-                                            <p>
-                                              {{Profile.about}}
-                                            </p>
-                                          </div>
-                                          <div class="col-xs-6 col-sm-4 col-md-3 counts-col">
-                                            <ul>
-                                              <li>
-                                                <span class="count-badge">
-                                                  <span class="badge">{{Profile.srv_photosCount}}</span>
-                                                </span>
-                                                <span class="count-title">
-                                                  Photos
-                                                </span>
-                                              </li>
-                                              <li>
-                                                <span class="count-badge">
-                                                  <span class="badge">{{Profile.srv_followersCount}}</span>
-                                                </span>
-                                                <span class="count-title">
-                                                  Followers
-                                                </span>
-                                              </li>
-                                              <li>
-                                                <span class="count-badge">
-                                                  <span class="badge">{{Profile.srv_followingCount}}</span>
-                                                </span>
-                                                <span class="count-title">
-                                                  Following
-                                                </span>
-                                              </li>
-                                            </ul>
-                                          </div>
-                                          <div class="col-xs-6 col-sm-2 col-md-2 follow-col">
-                                            <a href="javascript:;"
-                                              ng-click="Follow(Profile)"
-                                              ng-class="{following:Profile.srv_following}">
-                                              <i class="xa-icon-event-details-follow"></i>
-                                              <span ng-hide="Profile.srv_following">Follow</span>
-                                              <span ng-show="Profile.srv_following">Following</span>
-                                            </a>
-                                          </div>
-                                        </div>
+                                <div class="row profile-item">
+                                  <div class="col-xs-12 col-sm-6 col-md-4 photo-name-col">
+                                    <a href="#profile/{{Profile.slug}}"><img src="{{Profile.thumbnail_image}}" alt="" class="user-pic"></a>
+                                    <div class="name-wrapper">
+                                      <strong><a href="#profile/{{Profile.slug}}">{{Profile.full_name}}</a></strong>
+                                      <span class="username"><a href="#profile/{{Profile.slug}}">{{Profile.name}}</a></span>
+                                      <span class="location">
+                                        <i class="xa-icon-location"></i> {{Profile.location}}
+                                      </span>
+                                      <span class="website"><a href="{{Profile.website | websiteadr}}">{{Profile.website}}</a></span>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-3 hidden-xs hidden-sm about-col">
+                                    <p>
+                                      {{Profile.about}}
+                                    </p>
+                                  </div>
+                                  <div class="col-xs-6 col-sm-4 col-md-3 counts-col">
+                                    <ul>
+                                      <li>
+                                        <span class="count-badge">
+                                          <span class="badge">{{Profile.srv_photosCount}}</span>
+                                        </span>
+                                        <span class="count-title">
+                                          Photos
+                                        </span>
+                                      </li>
+                                      <li>
+                                        <span class="count-badge">
+                                          <span class="badge">{{Profile.srv_followersCount}}</span>
+                                        </span>
+                                        <span class="count-title">
+                                          Followers
+                                        </span>
+                                      </li>
+                                      <li>
+                                        <span class="count-badge">
+                                          <span class="badge">{{Profile.srv_followingCount}}</span>
+                                        </span>
+                                        <span class="count-title">
+                                          Following
+                                        </span>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                  <div class="col-xs-6 col-sm-2 col-md-2 follow-col">
+                                    <a href="javascript:;"
+                                      ng-click="Follow(Profile)"
+                                      ng-class="{following:Profile.srv_following}">
+                                      <i class="xa-icon-event-details-follow"></i>
+                                      <span ng-hide="Profile.srv_following">Follow</span>
+                                      <span ng-show="Profile.srv_following">Following</span>
+                                    </a>
+                                  </div>
+                                </div>
 
                             </div>
                         </div>
@@ -80,23 +80,9 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <!-- <ul class="nav nav-tabs event-details-tabs">
-                    <li class="active"><a data-toggle="tab" data-target="#stream">Live Stream</a></li>
-                    <li><a data-toggle="tab" data-target="#photos">{{EventObj.srv_photosCount}} Photos</a></li>
-                    <li><a data-toggle="tab" data-target="#followers">{{EventObj.srv_followersCount}} Followers</a></li>
-                </ul> -->
-
-                <div class="tab-content event-details-tab-contents">
-                  <div class="active tab-pane" id="stream">
+                  <div id="stream">
                       <ng-include src="'stream/partial_stream_list.tpl.html'"></ng-include>
                   </div>
-                  <div class="tab-pane" id="photos">
-                      <ng-include src="'events/partial_event_details_photos.tpl.html'"></ng-include>
-                  </div>
-                  <div class="tab-pane" id="followers">
-                      Followers
-                  </div>
-                </div>
             </div>
         </div>
     </div>

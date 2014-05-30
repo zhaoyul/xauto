@@ -821,18 +821,13 @@ angular.module('blvdx.events', [
             });
 
             $scope.stateUpdate = function(){
-                // display photo::
-                // proxy for stream ::
-                //$photoview.EventObj = $scope.EventObj;
-
-
                 if($photoview.invoked){
                     $photoview.invoked = false;
                     return;
                 }
                 var p = $state.params.focus;
                 var imgValid = false;
-                if(p){
+                if (p){
                     switch(p.charAt(0)){
                         case 'p':
                             var i, j;// album iteration ; photo iteration ;
@@ -857,7 +852,7 @@ angular.module('blvdx.events', [
                                     return;
                                 }
                                 var photos = $scope.Albums[i].photos;
-                                var delegate = {eventId: $scope.stateParams.eventId , base:'p',invoked:true,first:true};
+                                var delegate = {eventId: $scope.stateParams.eventId, base:'p', invoked:true, first:true};
                                 $photoview.setup(
                                     $scope,
                                     function(id){
@@ -968,18 +963,6 @@ angular.module('blvdx.events', [
 						});
                     }
                  );
-
-				//$http.get('/app/api/current-user/').then(function (response) {
-//                Accounts.getCurrentUser().then(function (response) {
-//					if (response.user == null) {
-//						$(".navbar-nav a").eq(1).click();
-//					} else {
-//						Events.follow($scope.EventObj).then(function (data) {
-//							$scope.EventObj.srv_following = data.srv_following;
-//							$scope.EventObj.srv_followersCount = data.srv_followersCount;
-//						});
-//					}
-//				});
 			};
 
 			$scope.reloadEvent();
@@ -987,22 +970,24 @@ angular.module('blvdx.events', [
 			$scope.selectPhoto = function () {
 				// select photo by click in html
                 var photos = this.$parent.album.photos;
-                var delegate = {eventId: $scope.stateParams.eventId , base:'p',invoked:true, first:true};
-				$photoview.setup( $scope, function(id){
-                    delegate.focus = delegate.base + id;
-                    $photoview.invoked = true;
-                    if(delegate.first){
+                var delegate = {eventId: $scope.stateParams.eventId, base:'p', invoked:true, first:true};
+				$photoview.setup($scope, function(id){
                         var params = null;
-                        delegate.first = false;
-                    } else {
-                        params = {location :'replace'};
-                    }
-                    $state.transitionTo('eventDetails.Focus',delegate,params);
-                },photos, this.$index ,$scope.EventObj.profile, $scope.EventObj,function(){
-                    delete delegate.base;
-                    $photoview.invoked = true;
-                    $state.transitionTo('eventDetails',delegate);
-                });
+                        delegate.focus = delegate.base + id;
+                        $photoview.invoked = true;
+
+                        if(delegate.first){
+                            delegate.first = false;
+                        } else {
+                            params = {location: 'replace'};
+                        }
+                        $state.transitionTo('eventDetails.Focus', delegate, params);
+                    }, photos, this.$index, $scope.EventObj.profile, $scope.EventObj, function(){
+                        delete delegate.focus;
+                        //delete delegate.base;
+                        $photoview.invoked = true;
+                        $state.transitionTo('eventDetails', delegate);
+                    });
                 //'/#/events/' + $scope.stateParams.eventId
 			};
 
