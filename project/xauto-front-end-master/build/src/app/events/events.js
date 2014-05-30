@@ -983,8 +983,8 @@ angular.module('blvdx.events', [
                         }
                         $state.transitionTo('eventDetails.Focus', delegate, params);
                     }, photos, this.$index, $scope.EventObj.profile, $scope.EventObj, function(){
-                        delete delegate.focus;
-                        //delete delegate.base;
+                        //delete delegate.focus;
+                        delete delegate.base;
                         $photoview.invoked = true;
                         $state.transitionTo('eventDetails', delegate);
                     });

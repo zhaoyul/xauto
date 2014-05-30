@@ -1,8 +1,5 @@
 (function () {
-  console.log('moment timezone data - add data');
-
   var initialize_momenttz = function(moment){
-      console.log('moment tz init');
       moment.tz.add({
         "zones": {
             "Africa/Abidjan": [

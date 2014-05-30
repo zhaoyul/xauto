@@ -162,9 +162,6 @@ angular.module( 'blvdx.stream', [
   };
 
 //  $scope.$on('$stateChangeSuccess' , function(){
-//    console.log('state changed!');
-//    console.log('state: '+$state.current.name);
-//      console.log('state: '+$state.params);
 //    if ($state.current.name !== 'profileView.photo'){
 //        if($photoview.invoked){
 //            $photoview.close(true);
@@ -173,7 +170,7 @@ angular.module( 'blvdx.stream', [
 //  });
 
   $scope.$on('$stateChangeStart' , function(event, toState, toParams, fromState, fromParams){
-    if (toState.name !== 'profileView.photo'){
+    if ((toState.name !== 'profileView.photo') && (toState.name !== 'eventDetails.Focus')){
         $photoview.close(true);
     }
   });
@@ -196,7 +193,6 @@ angular.module( 'blvdx.stream', [
                   $state.transitionTo('profileView.photo', delegate, params);
               };
               var end = function(){
-                  console.log('end called');
                   delete delegate.photoId;
                   $photoview.invoked = false;
                   $state.go('profileView', delegate);
