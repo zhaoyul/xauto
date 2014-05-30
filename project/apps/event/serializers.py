@@ -110,9 +110,7 @@ class EventSerializer(serializers.ModelSerializer):
 
     def get_photo(self, obj):
         if obj.main_image:
-            return obj.main_image.list_thumb_url()
-            #return obj.main_image.card_thumb_url()
-            #return obj.thumb_url(560, 400)
+            return obj.main_image.card_thumb_url()
         return u''
 
     def get_photo_small(self, obj):

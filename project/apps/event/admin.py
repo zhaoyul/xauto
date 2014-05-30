@@ -75,7 +75,6 @@ class EventAdmin(AdminImageMixin, admin.ModelAdmin):
     """
     save_on_top = True
 
-
     inlines = [
         EventDateInline,
         ]
@@ -85,12 +84,12 @@ class EventAdmin(AdminImageMixin, admin.ModelAdmin):
             'fields': ('title', 'about', 'author', 'main_image'),
             }),
         ('Followed', {
-            'classes' : ('grp-collapse grp-open',),
-            'fields'  : ('followed',),
+            'classes': ('grp-collapse grp-open',),
+            'fields': ('followed',),
             }),
         ('Details', {
-            'classes' : ('grp-collapse grp-open',),
-            'fields'  : ('status', 'eventSize', 'capacity', 'short_link',),
+            'classes': ('grp-collapse grp-open',),
+            'fields': ('status', 'eventSize', 'capacity', 'short_link',),
             }),
         )
 
