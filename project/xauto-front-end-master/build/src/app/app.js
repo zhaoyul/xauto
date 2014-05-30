@@ -362,7 +362,6 @@ angular.module( 'blvdx', [
             $(album).each(function(index) {
                 Events.getEvent(this.eventslug.split('/')[2]).then(function(event) {
                     album[index].EventObj = event;
-                    console.log(event.srv_following);
                 });
                 Profiles.getDetails(this.userslug.split('/')[2]).then(function(author){
                     album[index].author = author;

@@ -200,7 +200,7 @@ angular.module( 'blvdx.stream', [
               var slug = 1;
       }
       $photoview.setup($scope, change, $scope.stream, this.$index,
-                       $scope.$parent.$parent.Profile, null, end);
+                       $scope.$parent.$parent.Profile, null, end, slug);
   };
 }])
 
