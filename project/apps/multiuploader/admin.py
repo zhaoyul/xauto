@@ -27,7 +27,7 @@ class MultiuploaderImageAdmin(AdminImageMixin, admin.ModelAdmin):
         if obj.event_date:
             event = obj.event_date.event
             if bool(event.main_image):
-                image_url = event.admin_thumb_url()
+                image_url = event.main_image.admin_thumb_url()
 
         return u'<img src="{}"/ width="50"  height="50">'.format(image_url)
 
