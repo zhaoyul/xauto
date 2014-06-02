@@ -1652,7 +1652,7 @@ angular.module("stream/partial_stream_list.tpl.html", []).run(["$templateCache",
     "                          </a>\n" +
     "                        </li>\n" +
     "                        <li class=\"action-share\">\n" +
-    "                            <a href=\"#\" tooltip-placement=\"left\" tooltip=\"Share\" ng-click=\"selectImage()\"><i class=\"icon-share\"></i></a>\n" +
+    "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Share\" ng-click=\"selectImage()\"><i class=\"icon-share\"></i></a>\n" +
     "                        </li>\n" +
     "                        <li ng-hide=\"item.reported\" class=\"action-report\">\n" +
     "                            <a href=\"javascript:;\" tooltip-placement=\"left\" tooltip=\"Report\"\n" +
