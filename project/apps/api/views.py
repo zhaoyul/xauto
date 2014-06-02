@@ -974,11 +974,19 @@ class CoordinatedPhotoUploader(APIView):
         """
         now = timezone.now()
 
-        # TODO: in case of multiple events we can try to reduce radius
+        # find all events (event dates) happening now
+        events = []
         for event_date in EventDate.objects.filter(start_date__lt=now, end_date__gt=now):
+            # calculate distance to event
             distance = self.haversine_distance((lat, lon), (event_date.latitude, event_date.longitude))
-            if distance < radius:
-                return event_date
+            events.append((distance, event_date))
+        for i in range(1, radius, 5):
+            lookup_distance = i
+            for event in events:
+                # if distance is lte then assume that proper event is found
+                if event[0] <= lookup_distance:
+                    return event[1]
+                # if event not found then try greater distance (step = 5 kilometers)
 
         return None
 
