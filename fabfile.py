@@ -24,3 +24,19 @@ def update(syncdb=False, migrate=False, buildout=False):
     local('bin/django collectstatic')
     local('supervisorctl restart xauto')
     local('supervisorctl restart xauto-photostreamer')
+
+def dep(syncdb=False, migrate=False, buildout=False):
+    env.host_string = '54.187.65.140'
+    env.user = 'ubuntu'
+    env.key_filename = 'xauto_key.pem'
+    with cd('/home/ubuntu/sites/xauto'):
+        local('git pull')
+        if syncdb:
+            _syncdb()
+        if migrate:
+            _migrate()
+        if buildout:
+            _buildout()
+        local('bin/django collectstatic')
+        local('supervisorctl restart xauto')
+        local('supervisorctl restart xauto-photostreamer')

@@ -376,11 +376,11 @@ angular.module("account/partial_edit_account.tpl.html", []).run(["$templateCache
     "      <span class=\"help-block\" ng-show=\"errors.full_name\" ng-repeat=\"error in errors.full_name\">{{error}}</span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\" ng-class=\"{'has-error': form.name.$invalid || errors.name || AccountObj.username_available == 'Unavailable'}\">\n" +
+    "  <div class=\"form-group\" ng-class=\"{'has-error': form.username.$invalid || errors.username || AccountObj.user.username_available == 'Unavailable'}\">\n" +
     "    <label class=\"col-lg-3 control-label\">Username</label>\n" +
     "    <div class=\"col-lg-6\">\n" +
-    "      <input name=\"name\" ng-keyup=\"checkUsername($event.target.value)\" type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.name\" ng-keyup=\"checkUsername($event.target.value)\" ng-maxlenght=\"255\">\n" +
-    "      <span class=\"help-block\" ng-show=\"errors.name\" ng-repeat=\"error in errors.name\">{{error}}</span>\n" +
+    "      <input name=\"username\" ng-keyup=\"checkUsername($event.target.value)\" type=\"text\" class=\"form-control\" placeholder=\"\" ng-model=\"AccountObj.user.username\" ng-keyup=\"checkUsername($event.target.value)\" ng-maxlenght=\"255\">\n" +
+    "      <span class=\"help-block\" ng-show=\"errors.name\" ng-repeat=\"error in errors.username\">{{error}}</span>\n" +
     "    </div>\n" +
     "    <div class=\"col-lg-3\">\n" +
     "        {{AccountObj.username_available}}\n" +

@@ -29,7 +29,8 @@ class UserProfile(TimestampedModel):
 
     user = models.OneToOneField(User, related_name='profile')
     slug = AutoSlugField(populate_from=lambda instance:instance.user.username,
-        slugify=lambda value: value.replace(' ', '-'))
+                         always_update=True,
+                         slugify=lambda value: value.replace(' ', '-'))
     about = models.TextField(null=True, blank=True)
 
     location_address = models.CharField(max_length=255, null=True, blank=True)

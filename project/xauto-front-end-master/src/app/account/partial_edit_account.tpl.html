@@ -7,11 +7,11 @@
       <span class="help-block" ng-show="errors.full_name" ng-repeat="error in errors.full_name">{{error}}</span>
     </div>
   </div>
-  <div class="form-group" ng-class="{'has-error': form.name.$invalid || errors.name || AccountObj.username_available == 'Unavailable'}">
+  <div class="form-group" ng-class="{'has-error': form.username.$invalid || errors.username || AccountObj.user.username_available == 'Unavailable'}">
     <label class="col-lg-3 control-label">Username</label>
     <div class="col-lg-6">
-      <input name="name" ng-keyup="checkUsername($event.target.value)" type="text" class="form-control" placeholder="" ng-model="AccountObj.name" ng-keyup="checkUsername($event.target.value)" ng-maxlenght="255">
-      <span class="help-block" ng-show="errors.name" ng-repeat="error in errors.name">{{error}}</span>
+      <input name="username" ng-keyup="checkUsername($event.target.value)" type="text" class="form-control" placeholder="" ng-model="AccountObj.user.username" ng-keyup="checkUsername($event.target.value)" ng-maxlenght="255">
+      <span class="help-block" ng-show="errors.name" ng-repeat="error in errors.username">{{error}}</span>
     </div>
     <div class="col-lg-3">
         {{AccountObj.username_available}}

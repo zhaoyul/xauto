@@ -154,6 +154,7 @@ class AlbumPhotosUploader(APIView):
                 ff = ff[1]
             else:
                 ff = photo['file']
+
             imageObj.image.save(
                 photo['name'],
                 ContentFile(ff.decode('base64')),
